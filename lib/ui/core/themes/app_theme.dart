@@ -5,13 +5,25 @@ import 'package:waylight_mobile/ui/core/themes/status_colors.dart';
 
 /// The Material 3 themes of the app (docs/design/README.md).
 ///
-/// Colours come from the accent of the Waylight web interface
-/// (`--color-accent` in `web/src/shared/theme/tokens.css` of the server).
+/// Colours come from Amber, the default theme of the Waylight web interface
+/// (`internal/modules/appearance/adapter/gateway/themes/amber.json` of the
+/// server).
 /// The component themes give every button, field and card its look, so
 /// screens use plain Material widgets and stay free of styling.
 abstract final class AppTheme {
-  /// The Waylight accent colour.
-  static const Color seed = Color(0xFF3365E8);
+  /// The Amber accent: the surface of filled buttons, and the seed of the
+  /// colour scheme.
+  static const Color seed = Color(0xFFF2B441);
+
+  /// Text and icons on the accent (`--color-accent-contrast`).
+  static const Color onSeed = Color(0xFF1A1206);
+
+  /// Accent for text, icons and focus on light backgrounds
+  /// (`--color-accent-text`). Amber itself is too light for text there.
+  static const Color accentTextLight = Color(0xFF9C5D00);
+
+  /// Accent for text, icons and focus on dark backgrounds.
+  static const Color accentTextDark = Color(0xFFFFD27A);
 
   /// The font family of the wordmark (bundled with #10; until then the
   /// platform's serif font is used).
@@ -25,23 +37,38 @@ abstract final class AppTheme {
 
   static ThemeData _theme(Brightness brightness, StatusColors status) {
     // fidelity keeps the chroma of the seed instead of muting it
-    // (tonalSpot). In light mode the seed itself is the primary colour, as
-    // on the web: white text on it has a contrast of 5.0:1.
+    // (tonalSpot). primary is used for text and icons, so it takes the
+    // readable accent text of the web theme; Amber itself stays the surface
+    // of filled buttons, with dark text on it in both modes.
     final scheme = ColorScheme.fromSeed(
       seedColor: seed,
       brightness: brightness,
       dynamicSchemeVariant: DynamicSchemeVariant.fidelity,
     );
-    final colors = brightness == Brightness.light
-        ? scheme.copyWith(primary: seed, onPrimary: const Color(0xFFFFFFFF))
-        : scheme;
+    final light = brightness == Brightness.light;
+    final colors = scheme.copyWith(
+      primary: light ? accentTextLight : accentTextDark,
+      onPrimary: light ? const Color(0xFFFFFFFF) : onSeed,
+    );
     const buttonSize = Size(64, Dimens.tapTarget);
     return ThemeData(
       colorScheme: colors,
       extensions: [status],
       appBarTheme: const AppBarTheme(centerTitle: false),
-      filledButtonTheme: const FilledButtonThemeData(
-        style: ButtonStyle(minimumSize: WidgetStatePropertyAll(buttonSize)),
+      filledButtonTheme: FilledButtonThemeData(
+        style: ButtonStyle(
+          minimumSize: const WidgetStatePropertyAll(buttonSize),
+          backgroundColor: WidgetStateProperty.resolveWith(
+            (states) => states.contains(WidgetState.disabled)
+                ? colors.onSurface.withValues(alpha: 0.12)
+                : seed,
+          ),
+          foregroundColor: WidgetStateProperty.resolveWith(
+            (states) => states.contains(WidgetState.disabled)
+                ? colors.onSurface.withValues(alpha: 0.38)
+                : onSeed,
+          ),
+        ),
       ),
       outlinedButtonTheme: const OutlinedButtonThemeData(
         style: ButtonStyle(minimumSize: WidgetStatePropertyAll(buttonSize)),

@@ -15,8 +15,9 @@ web interface in light and dark mode.
 ## Decision
 
 1. **Tokens in the theme.** `AppTheme` derives the colour scheme from the
-   Waylight blue with `DynamicSchemeVariant.fidelity` (the blue itself is
-   primary in light mode) and sets component themes for buttons, fields and
+   Amber, the default theme of the web interface (#54), with
+   `DynamicSchemeVariant.fidelity`; Amber fills buttons and the darker
+   accent text of the web theme is primary and sets component themes for buttons, fields and
    cards. Colours the scheme has no role for (warning, success) are a
    `ThemeExtension` (`StatusColors`). Spacing, sizes and radii are
    constants in `Dimens`.
