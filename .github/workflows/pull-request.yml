@@ -31,6 +31,10 @@ jobs:
             chore
             revert
           requireScope: false
+          # Dependabot titles start with "Bump …"; its commit messages carry
+          # the build/ci prefix already (.github/dependabot.yml).
+          ignoreLabels: |
+            dependencies
           subjectPattern: ^[a-z].+[^.]$
           subjectPatternError: |
             The subject "{subject}" must start with a lower-case letter and
@@ -54,6 +58,9 @@ jobs:
   dependencies:
     name: Dependency review
     runs-on: ubuntu-latest
+    # The dependency review API needs GitHub Code Security on private
+    # repositories (#34); it runs once the repository is public.
+    if: ${{ !github.event.repository.private }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: actions/dependency-review-action@bbc44d14a204704ccc493733616cd1e93a0321ec # v5.0.1

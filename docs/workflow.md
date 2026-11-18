@@ -97,7 +97,7 @@ Commits on a branch can be messy; the pull request title is what lands on
 | Build Android | `ci.yml` | The debug APK does not build |
 | Conventional title | `pull-request.yml` | The title is not a Conventional Commit |
 | Linked issue | `pull-request.yml` | The description closes no issue |
-| Dependency review | `pull-request.yml` | A new dependency has a known vulnerability (moderate or worse) |
+| Dependency review | `pull-request.yml` | A new dependency has a known vulnerability (moderate or worse). Runs only on a public repository: on a private one the API needs GitHub Code Security |
 
 The labeler adds `area: …` labels from the changed files.
 
@@ -143,7 +143,9 @@ repository settings, because they cannot live in files.
   code owners, dismiss stale approvals on new pushes, require conversation
   resolution; allowed merge method: squash
 - Require status checks to pass, branches up to date: *Lint & test*,
-  *Build Android*, *Conventional title*, *Linked issue*, *Dependency review*
+  *Build Android*, *Conventional title*, *Linked issue*; add *Dependency
+  review* once the repository is public. Dependabot pull requests skip
+  the title and issue checks: they pass as skipped
 
 **General** (Settings → General):
 
