@@ -13,7 +13,9 @@ the whole suite runs in seconds without device, network or storage.
 | View models | `test/ui/<feature>/*_view_model_test.dart` | fake repositories | Command results, state changes, that invalid input never reaches the repository |
 | Views | `test/ui/<feature>/*_screen_test.dart` | `testWidgets`, `pumpScreen` | Main states, one interaction per command, German texts, accessibility guidelines |
 | Routing | `test/routing/router_test.dart` | full app with fakes | Redirects |
+| Shared components | `test/ui/core/*_test.dart` | `testWidgets`, `pumpScreen` | Every variant, the interaction, contrast in light and dark |
 | Architecture | `test/architecture_test.dart` | — | Import rules ([architecture](architecture.md#enforcement)) |
+| Conventions | `test/conventions_test.dart` | — | No colour literals or font sizes outside the theme, no `print`, TODOs with issue ([code conventions](code-conventions.md#16-enforcement)) |
 | Translations | `test/l10n_test.dart` | — | Every key in every language, same placeholders |
 
 ## Fakes, not mocks
@@ -40,7 +42,9 @@ JSON; copy real responses of a demo server, shortened to what matters.
 
 ## Accessibility
 
-Screen tests call the guidelines of `flutter_test`:
+`pumpScreen(screen, brightness: Brightness.dark)` shows a screen in dark
+mode; check contrast in both. Screen tests call the guidelines of
+`flutter_test`:
 
 ```dart
 await expectLater(tester, meetsGuideline(androidTapTargetGuideline));

@@ -42,7 +42,8 @@ signing is set up.
 
 - **Developing:** [development setup](docs/development.md),
   [architecture](docs/architecture.md), [adding a feature](docs/adding-a-feature.md),
-  [coding guidelines](docs/coding-guidelines.md), [testing](docs/testing.md)
+  [code conventions](docs/code-conventions.md),
+  [UI components](docs/ui-components.md), [design](docs/design/README.md), [testing](docs/testing.md)
 - **Working together:** [workflow](docs/workflow.md),
   [releasing](docs/releasing.md), [decision records](docs/adr/README.md)
 - **Trust:** [security and privacy](docs/security.md), [SECURITY.md](SECURITY.md)

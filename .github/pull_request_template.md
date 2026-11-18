@@ -15,6 +15,7 @@ Closes #
 - [ ] The title follows Conventional Commits, e.g. `feat(auth): sign in with a passkey`
 - [ ] The change respects the layers (UI → repositories → services, domain without Flutter); `test/architecture_test.dart` passes
 - [ ] Tests for every affected layer (domain, service, repository, view model, widget)
+- [ ] UI is built from the shared components and theme tokens (`docs/ui-components.md`) and matches the mockup in `docs/design/`
 - [ ] `make ci` passes locally
 - [ ] Texts come from `lib/l10n/app_en.arb` with a German translation in `app_de.arb`
 - [ ] Docs updated where needed (README, `docs/`, ADR for a significant decision)

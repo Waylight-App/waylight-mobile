@@ -44,15 +44,8 @@ class AppLocalizationsEn extends AppLocalizations {
       'Leave out user name, password and anything after ? or #.';
 
   @override
-  String get connectErrorUnreachable =>
-      'The server cannot be reached. Is your phone in the same network or VPN?';
-
-  @override
   String get connectErrorNotWaylight =>
       'This address does not answer like a Waylight server.';
-
-  @override
-  String get connectErrorUnknown => 'Something went wrong. Please try again.';
 
   @override
   String get connectInsecureWarning =>
@@ -73,4 +66,39 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get homeDisconnect => 'Use another server';
+
+  @override
+  String get connectPrivacy => 'The app talks to your server and nobody else.';
+
+  @override
+  String get homeServerTitle => 'Server';
+
+  @override
+  String get errorUnreachable =>
+      'The server cannot be reached. Is your phone in the same network or VPN?';
+
+  @override
+  String get errorUnauthorized =>
+      'Your session has ended. Please sign in again.';
+
+  @override
+  String get errorForbidden => 'Your account may not do this.';
+
+  @override
+  String get errorNotFound =>
+      'This is not available on your server. The module may be switched off.';
+
+  @override
+  String get errorInvalid => 'Please check your input.';
+
+  @override
+  String get errorTooManyRequests =>
+      'Too many attempts. Please wait a few minutes and try again.';
+
+  @override
+  String get errorServer =>
+      'The server answered with an error. Please try again later.';
+
+  @override
+  String get errorUnknown => 'Something went wrong. Please try again.';
 }

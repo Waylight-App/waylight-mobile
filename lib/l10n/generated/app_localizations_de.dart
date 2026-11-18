@@ -44,16 +44,8 @@ class AppLocalizationsDe extends AppLocalizations {
       'Lass Benutzername, Passwort und alles nach ? oder # weg.';
 
   @override
-  String get connectErrorUnreachable =>
-      'Der Server ist nicht erreichbar. Ist dein Handy im selben Netz oder VPN?';
-
-  @override
   String get connectErrorNotWaylight =>
       'Unter dieser Adresse antwortet kein Waylight-Server.';
-
-  @override
-  String get connectErrorUnknown =>
-      'Etwas ist schiefgelaufen. Bitte versuche es noch einmal.';
 
   @override
   String get connectInsecureWarning =>
@@ -74,4 +66,41 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get homeDisconnect => 'Anderen Server verwenden';
+
+  @override
+  String get connectPrivacy =>
+      'Die App spricht nur mit deinem Server und mit niemandem sonst.';
+
+  @override
+  String get homeServerTitle => 'Server';
+
+  @override
+  String get errorUnreachable =>
+      'Der Server ist nicht erreichbar. Ist dein Handy im selben Netz oder VPN?';
+
+  @override
+  String get errorUnauthorized =>
+      'Deine Sitzung ist abgelaufen. Bitte melde dich erneut an.';
+
+  @override
+  String get errorForbidden => 'Dein Konto darf das nicht.';
+
+  @override
+  String get errorNotFound =>
+      'Das gibt es auf deinem Server nicht. Vielleicht ist das Modul abgeschaltet.';
+
+  @override
+  String get errorInvalid => 'Bitte prüfe deine Eingabe.';
+
+  @override
+  String get errorTooManyRequests =>
+      'Zu viele Versuche. Bitte warte ein paar Minuten und versuche es dann erneut.';
+
+  @override
+  String get errorServer =>
+      'Der Server hat mit einem Fehler geantwortet. Bitte versuche es später noch einmal.';
+
+  @override
+  String get errorUnknown =>
+      'Etwas ist schiefgelaufen. Bitte versuche es noch einmal.';
 }

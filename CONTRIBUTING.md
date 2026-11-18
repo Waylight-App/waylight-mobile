@@ -30,7 +30,8 @@ Details, editor setup and troubleshooting: [docs/development.md](docs/developmen
 2. **Architecture.** Read [docs/architecture.md](docs/architecture.md) and
    follow [adding a feature](docs/adding-a-feature.md). The layer rules are
    enforced by `test/architecture_test.dart`.
-3. **Clean code.** Follow the [coding guidelines](docs/coding-guidelines.md).
+3. **Clean code.** Follow the [code conventions](docs/code-conventions.md)
+   and reuse the [UI components](docs/ui-components.md).
    Code, comments and docs are in English; every public member has a doc
    comment; comments explain *why*.
 4. **Tests** for every layer you touch ([testing](docs/testing.md)).

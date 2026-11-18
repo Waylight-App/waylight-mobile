@@ -5,14 +5,15 @@ import 'package:waylight_mobile/data/repositories/server/server_repository.dart'
 import 'package:waylight_mobile/routing/routes.dart';
 import 'package:waylight_mobile/ui/connect_server/view_models/connect_server_view_model.dart';
 import 'package:waylight_mobile/ui/connect_server/widgets/connect_server_screen.dart';
+import 'package:waylight_mobile/ui/core/widgets/view_model_host.dart';
 import 'package:waylight_mobile/ui/home/view_models/home_view_model.dart';
 import 'package:waylight_mobile/ui/home/widgets/home_screen.dart';
 
 /// Creates the router of the app.
 ///
 /// Redirects follow the [ServerRepository]: without a server every route
-/// leads to [Routes.connect]. View models are created per route, so their
-/// state lives exactly as long as the screen.
+/// leads to [Routes.connect]. Each route hosts its view model in a
+/// [ViewModelHost], so the view model lives exactly as long as the screen.
 GoRouter createRouter(ServerRepository serverRepository) => GoRouter(
   initialLocation: Routes.home,
   refreshListenable: serverRepository,
@@ -26,14 +27,18 @@ GoRouter createRouter(ServerRepository serverRepository) => GoRouter(
   routes: [
     GoRoute(
       path: Routes.home,
-      builder: (context, state) => HomeScreen(
-        viewModel: HomeViewModel(serverRepository: context.read()),
+      builder: (context, state) => ViewModelHost(
+        create: (context) => HomeViewModel(serverRepository: context.read()),
+        builder: (context, viewModel) => HomeScreen(viewModel: viewModel),
       ),
     ),
     GoRoute(
       path: Routes.connect,
-      builder: (context, state) => ConnectServerScreen(
-        viewModel: ConnectServerViewModel(serverRepository: context.read()),
+      builder: (context, state) => ViewModelHost(
+        create: (context) =>
+            ConnectServerViewModel(serverRepository: context.read()),
+        builder: (context, viewModel) =>
+            ConnectServerScreen(viewModel: viewModel),
       ),
     ),
   ],

@@ -35,7 +35,7 @@ flowchart TB
 | Repositories | `lib/data/repositories/<name>` | Single source of truth for one kind of data. Combine services, cache, map API models to domain models, notify listeners. Abstract class + implementation. | utils, domain, services |
 | View models | `lib/ui/<feature>/view_models` | State and actions of one screen as `ChangeNotifier` with `Command`s. No widgets, no `BuildContext`. | utils, domain, repositories (abstract) |
 | Views | `lib/ui/<feature>/widgets` | Widgets. Render the view model, forward user input to commands. No logic beyond layout. | view model of the same feature, `ui/core`, l10n |
-| Shared UI | `lib/ui/core` | Theme, spacing, shared widgets, localisation helpers. | utils, domain, l10n |
+| Shared UI | `lib/ui/core` | The design system: theme tokens, reusable components, shared error texts, localisation helpers ([UI components](ui-components.md)). | utils, domain, l10n |
 | Routing | `lib/routing` | `GoRouter`, route constants, redirects. Creates view models per route. | repositories, ui |
 | Composition root | `lib/config`, `lib/main.dart`, `lib/app.dart` | Creates the concrete services and repositories and provides them. The only place that knows implementations. | everything |
 
@@ -55,14 +55,17 @@ flowchart TB
 5. **Expected failures are values.** Services and repositories return
    `Result<T>`; `switch` over it is exhaustive. Only programming errors throw.
 6. **One way to do each thing:** `provider` for dependency injection,
-   `ChangeNotifier` + `Command` for state, `go_router` for navigation,
-   `gen-l10n` for texts, `logging` for logs ([ADR 0002](adr/0002-flutter-stack.md)).
+   `ChangeNotifier` + `Command` for state, `ViewModelHost` for the life of
+   a view model, `go_router` for navigation, the components of `ui/core`
+   for UI, `gen-l10n` for texts, `logging` for logs
+   ([ADR 0002](adr/0002-flutter-stack.md), [ADR 0005](adr/0005-design-system.md)).
 
 ### Enforcement
 
 | Check | What it enforces |
 | --- | --- |
 | `test/architecture_test.dart` | The import matrix above, no imports between features, no `package:flutter/material.dart` (use `material_ui`), package imports only |
+| `test/conventions_test.dart` | No colour literals or font sizes outside the theme, no `print`, TODOs with issue, route constants |
 | `flutter analyze --fatal-infos` | Strict casts, inference and raw types, docs on every public member, the lint set in `analysis_options.yaml` |
 | `dart format --set-exit-if-changed` | One formatting |
 | `tool/check_coverage.dart` | At least 80 % line coverage of `lib/` |
@@ -86,7 +89,9 @@ lib/
 │   └── repositories/
 │       └── server/           server_repository.dart (abstract), server_repository_remote.dart
 ├── ui/
-│   ├── core/                 themes/, widgets/, localization.dart
+│   ├── core/                 themes/ (AppTheme, StatusColors, Dimens), widgets/ (CommandButton,
+│   │                         MessageBanner, SectionCard, FormPage, Wordmark, ViewModelHost),
+│   │                         error_messages.dart, localization.dart
 │   ├── connect_server/       view_models/, widgets/
 │   └── home/                 view_models/, widgets/
 └── l10n/                     app_en.arb, app_de.arb, generated/ (committed)
@@ -126,8 +131,55 @@ sequenceDiagram
   `context.go`: the router listens to the `ServerRepository` and redirects.
   The same will hold for sign-in and sign-out. Use `context.go` only for
   navigation the user chose (opening a detail screen).
-- **View models live as long as their route.** The router creates them; the
-  repositories are app-wide singletons from `config/dependencies.dart`.
+- **View models live as long as their route.** Each route creates its view
+  model in a `ViewModelHost`, which keeps it across router rebuilds and
+  disposes it with the screen; the repositories are app-wide singletons from
+  `config/dependencies.dart`.
+- **Screens are built from the design system.** Buttons that run a command
+  are `CommandButton`s, failures are `MessageBanner`s, cards are
+  `SectionCard`s; colours, type and spacing come from the theme
+  ([UI components](ui-components.md)).
+
+## Design patterns
+
+Each pattern is used because it solves a problem we have, not for its own
+sake ([code conventions](code-conventions.md#1-principles)).
+
+| Pattern | Where | Problem it solves |
+| --- | --- | --- |
+| MVVM | `ui/<feature>/{widgets,view_models}` | Keeps logic out of widgets; view models are testable without Flutter UI |
+| Command | `utils/command.dart`, `CommandButton` | One way to run an action and show running / done / failed; prevents double submits |
+| Result | `utils/result.dart` | Expected failures are values the compiler makes you handle |
+| Repository | `data/repositories` | One source of truth per kind of data; hides where data comes from |
+| Adapter (service) | `data/services` | Wraps one external system (HTTP API, secure storage) behind a small interface |
+| Observer | `ChangeNotifier`, `ListenableBuilder`, `refreshListenable` | Views and router follow state instead of being told |
+| Dependency injection, composition root | `config/dependencies.dart`, `provider` | Only one place knows implementations; tests swap in fakes |
+| Value object | `ServerAddress` | Validation once, at the boundary; invalid values cannot exist |
+| Theme extension (design tokens) | `ui/core/themes` | Colours and sizes in one place, switched with light and dark |
+| Registry (planned, #17) | dashboard widgets | New widget kinds without touching the dashboard ([below](#dashboard-widgets)) |
+
+Not used on purpose: service locators (hide dependencies), global
+singletons (untestable), inheritance between view models or screens
+(composition instead), event buses (state flows through repositories).
+
+## Dashboard widgets
+
+The dashboard (#16) shows widgets of many kinds, each of them a feature of
+its own (#17). To keep "features never import each other", the dashboard
+does not know any widget:
+
+1. `ui/core` defines a small registry type: a map from the widget kind of
+   the server (`todos`, `weather` …) to a builder that takes the placement
+   and returns a widget.
+2. Each widget kind is a feature folder named after its server module
+   (`ui/todos/`, `ui/weather/` …) and offers its builder, which hosts its
+   own view model with `ViewModelHost`.
+3. The composition root (`config/`) builds the registry from the enabled
+   features and provides it; the dashboard looks kinds up and falls back to
+   the fallback card (#18) for unknown kinds.
+
+Adding a widget kind is then a new feature folder plus one line in the
+composition root (open/closed principle). The exact API is settled in #17.
 
 ## Models at the boundaries
 
@@ -147,9 +199,10 @@ widget without passing through the domain model.
   its `code`, `message` and `field` (the server's error envelope).
 - Validation failures of the domain are domain exceptions, e.g.
   `InvalidServerAddress` with a reason.
-- Views translate errors into texts with an exhaustive `switch`
-  (`errorText` in `connect_server_screen.dart`); the English server message
-  is never shown as is.
+- Views translate errors into texts: their own errors with an exhaustive
+  `switch` (`fieldError` in `connect_server_screen.dart`), everything else
+  with `l10n.errorMessage(error)` from `ui/core/error_messages.dart`. The
+  English server message is never shown as is.
 
 ## The server API
 

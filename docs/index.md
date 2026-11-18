@@ -5,7 +5,9 @@
 - [Development setup](development.md): requirements, first run, commands, translations
 - [Architecture](architecture.md): layers, rules, folder structure, data flow
 - [Adding a feature](adding-a-feature.md): a new screen end to end
-- [Coding guidelines](coding-guidelines.md): names, Dart, widgets, comments, logging
+- [Code conventions](code-conventions.md): principles (SOLID, KISS, DRY, YAGNI), names, Dart, widgets, errors, texts, logging
+- [UI components](ui-components.md): design tokens and the reusable components
+- [Design](design/README.md): mockups of every screen and the design decisions
 - [Testing](testing.md): what is tested where, fakes, accessibility, coverage
 
 ## Working together

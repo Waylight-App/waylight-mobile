@@ -57,8 +57,13 @@ repository: no widgets, no network.
 ## 5. View — `lib/ui/todos/widgets/todos_screen.dart`
 
 A widget that takes the view model in its constructor and renders it with
-`ListenableBuilder`. Texts come from `context.l10n`; spacing from `Dimens`.
-Give interactive widgets a `ValueKey('todos.…')` for tests.
+`ListenableBuilder`. Build it from the [UI components](ui-components.md):
+`CommandButton` for actions, `MessageBanner` for failures
+(`l10n.errorMessage(error)`), `SectionCard` for titled groups. Texts come
+from `context.l10n`, colours and type from the theme, spacing from
+`Dimens` — no colour values or font sizes. Give interactive widgets a
+`ValueKey('todos.…')` for tests. Compare the result with the mockup in
+`docs/design/`.
 
 Test it with `tester.pumpScreen(...)` from `test/testing/pump_app.dart`:
 the main states (loading, list, empty, error), one interaction, the German
@@ -66,8 +71,9 @@ texts and the accessibility guidelines.
 
 ## 6. Route — `lib/routing/`
 
-Add the path to `routes.dart` and a `GoRoute` to `router.dart` that creates
-the view model with `context.read()`. Extend `test/routing/router_test.dart`
+Add the path to `routes.dart` and a `GoRoute` to `router.dart` that hosts
+the view model in a `ViewModelHost`, created with `context.read()` for its
+repositories. Extend `test/routing/router_test.dart`
 if the route has redirects.
 
 ## 7. Texts
