@@ -1,0 +1,79 @@
+<!doctype html>
+<!-- Mockup of the Waylight app (docs/design/README.md). Static HTML, not app code. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Server tab, dark, offline</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&amp;family=Roboto:wght@400;500;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#B5C4FF}a:hover{color:#DCE1FF}
+</style>
+</head>
+<body style="margin: 0; background: #E3E1E9">
+<main style="width: 390px; height: 844px; box-sizing: border-box; background: #121318; color: #E3E1E9; font-family: Roboto, system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden">
+  <header style="height: 64px; display: flex; align-items: center; padding: 8px 4px 0 16px; gap: 4px">
+    <span style="font-family: Fraunces, Georgia, serif; font-weight: 600; font-size: 22px; flex: 1">Waylight</span>
+    <a href="search.html" aria-label="Search" style="width: 48px; height: 48px; border-radius: 24px; display: flex; align-items: center; justify-content: center; color: #C5C6D0">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg>
+    </a>
+    <a href="settings.html" aria-label="Settings" style="width: 48px; height: 48px; border-radius: 24px; display: flex; align-items: center; justify-content: center; color: #C5C6D0">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"></path></svg>
+    </a>
+  </header>
+
+  <nav aria-label="Tabs" style="display: flex; border-bottom: 1px solid #45464F; padding: 0 8px">
+    <a href="dashboard.html" style="height: 48px; padding: 0 16px; display: flex; align-items: center; font-size: 14px; font-weight: 500; color: #C5C6D0; text-decoration: none">Home</a>
+    <a href="#" aria-current="page" style="height: 48px; padding: 0 16px; display: flex; align-items: center; font-size: 14px; font-weight: 500; color: #B5C4FF; text-decoration: none; border-bottom: 3px solid #B5C4FF; box-sizing: border-box">Server</a>
+    <a href="#" style="height: 48px; padding: 0 16px; display: flex; align-items: center; font-size: 14px; font-weight: 500; color: #C5C6D0; text-decoration: none">Family</a>
+    <a href="#" style="height: 48px; padding: 0 16px; display: flex; align-items: center; font-size: 14px; font-weight: 500; color: #C5C6D0; text-decoration: none">News</a>
+  </nav>
+
+  <div role="status" style="margin: 12px 16px 0; padding: 12px 16px; border-radius: 12px; background: #5C4300; color: #FFDEA6; display: flex; align-items: center; gap: 12px; font-size: 14px; line-height: 20px">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none"><path d="M2 2l20 20M8.5 16.5a5 5 0 0 1 7 0M5 13a10 10 0 0 1 5.2-2.7M19 13a10 10 0 0 0-2.1-1.5M2 8.8a15 15 0 0 1 4.2-2.6M22 8.8A15 15 0 0 0 11 5M12 20h.01"></path></svg>
+    <span style="flex: 1">Offline · showing the data from 07:58</span>
+  </div>
+
+  <div style="flex: 1; padding: 12px 16px; display: flex; flex-direction: column; gap: 12px">
+    <section aria-label="Services" style="border-radius: 16px; background: #1E1F25; padding: 8px 0">
+      <div style="display: flex; align-items: baseline; padding: 8px 16px">
+        <h2 style="margin: 0; flex: 1; font-size: 16px; line-height: 24px; font-weight: 500">Services</h2>
+        <span style="font-size: 12px; color: #C5C6D0">6 h old</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 16px; font-size: 14px"><span style="width: 10px; height: 10px; border-radius: 5px; background: #8BD88E"></span><span style="flex: 1">Cloud</span><span style="color: #8BD88E; font-weight: 500">Up · 41 ms</span></div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 16px; font-size: 14px"><span style="width: 10px; height: 10px; border-radius: 5px; background: #8BD88E"></span><span style="flex: 1">Media server</span><span style="color: #8BD88E; font-weight: 500">Up · 12 ms</span></div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 16px; font-size: 14px"><span style="width: 10px; height: 10px; border-radius: 2px; background: #FFB4AB"></span><span style="flex: 1">Photo backup</span><span style="color: #FFB4AB; font-weight: 500">Down since 06:10</span></div>
+      <div style="display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 16px; font-size: 14px"><span style="width: 10px; height: 10px; border-radius: 5px; background: #8BD88E"></span><span style="flex: 1">Smart home</span><span style="color: #8BD88E; font-weight: 500">Up · 8 ms</span></div>
+    </section>
+
+    <section aria-label="System" style="border-radius: 16px; background: #1E1F25; padding: 16px; display: flex; flex-direction: column; gap: 12px">
+      <div style="display: flex; align-items: baseline">
+        <h2 style="margin: 0; flex: 1; font-size: 16px; line-height: 24px; font-weight: 500">System</h2>
+        <span style="font-size: 12px; color: #C5C6D0">6 h old</span>
+      </div>
+      <div style="display: grid; grid-template-columns: 56px minmax(0, 1fr) 64px; gap: 10px 12px; align-items: center; font-size: 14px">
+        <span style="color: #C5C6D0">CPU</span><span style="height: 8px; border-radius: 4px; background: #292A2F; overflow: hidden"><span style="display: block; width: 12%; height: 100%; background: #B5C4FF"></span></span><span style="text-align: right">12 %</span>
+        <span style="color: #C5C6D0">Memory</span><span style="height: 8px; border-radius: 4px; background: #292A2F; overflow: hidden"><span style="display: block; width: 39%; height: 100%; background: #B5C4FF"></span></span><span style="text-align: right">3.1 GB</span>
+        <span style="color: #C5C6D0">Disk</span><span style="height: 8px; border-radius: 4px; background: #292A2F; overflow: hidden"><span style="display: block; width: 61%; height: 100%; background: #B5C4FF"></span></span><span style="text-align: right">61 %</span>
+      </div>
+    </section>
+
+    <section aria-label="Docker containers" style="border-radius: 16px; border: 1px solid #45464F; padding: 16px; display: flex; flex-direction: column; gap: 12px">
+      <div style="display: flex; align-items: center; gap: 12px">
+        <span style="width: 40px; height: 40px; border-radius: 12px; background: #292A2F; display: flex; align-items: center; justify-content: center; color: #C5C6D0">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M3 7l9-4 9 4-9 4z"></path><path d="M3 12l9 4 9-4M3 17l9 4 9-4"></path></svg>
+        </span>
+        <div style="flex: 1">
+          <h2 style="margin: 0; font-size: 16px; line-height: 24px; font-weight: 500">Docker containers</h2>
+          <p style="margin: 0; font-size: 12px; line-height: 16px; color: #C5C6D0">Not available in the app yet</p>
+        </div>
+      </div>
+      <a href="#" style="align-self: flex-start; height: 40px; padding: 0 16px; border-radius: 20px; border: 1px solid #8F909A; color: #B5C4FF; display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; text-decoration: none">
+        Open in Waylight
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"></path></svg>
+      </a>
+    </section>
+  </div>
+</main>
+</body>
+</html>

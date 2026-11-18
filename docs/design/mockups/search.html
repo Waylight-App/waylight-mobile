@@ -1,0 +1,57 @@
+<!doctype html>
+<!-- Mockup of the Waylight app (docs/design/README.md). Static HTML, not app code. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Smart search</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#3365E8}a:hover{color:#1F4FC9}
+</style>
+</head>
+<body style="margin: 0; background: #E3E1E9">
+<main style="width: 390px; height: 844px; box-sizing: border-box; background: #FAF8FF; color: #1A1B21; font-family: Roboto, system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden">
+  <div style="padding: 16px 16px 8px">
+    <div style="height: 56px; border-radius: 28px; background: #E8E7EF; display: flex; align-items: center; gap: 4px; padding: 0 4px">
+      <a href="dashboard.html" aria-label="Back" style="width: 48px; height: 48px; border-radius: 24px; display: flex; align-items: center; justify-content: center; color: #1A1B21">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"></path></svg>
+      </a>
+      <label for="q" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Ask Waylight</label>
+      <input id="q" type="search" value="when is the next train" style="flex: 1; min-width: 0; height: 48px; border: 0; background: transparent; font: 400 16px Roboto, system-ui, sans-serif; color: #1A1B21; outline: none">
+      <button type="button" aria-label="Clear" style="width: 48px; height: 48px; border: 0; border-radius: 24px; background: transparent; color: #45464F; display: flex; align-items: center; justify-content: center; cursor: pointer">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+      </button>
+    </div>
+  </div>
+
+  <div style="flex: 1; padding: 8px 16px; display: flex; flex-direction: column; gap: 12px">
+    <section aria-label="Answer from Transit" style="border-radius: 16px; background: #DCE1FF; color: #00174B; padding: 16px; display: flex; flex-direction: column; gap: 12px">
+      <div style="display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 500; letter-spacing: 0.4px">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="14" rx="3"></rect><path d="M5 11h14M9 21l-2 0M8 17l-2 4M16 17l2 4M9 14h.01M15 14h.01"></path></svg>
+        TRANSIT · HAUPTSTRASSE
+      </div>
+      <p style="margin: 0; font-size: 22px; line-height: 28px">S1 to Hauptbahnhof at <strong style="font-weight: 500">14:41</strong>, in 9 minutes, platform 2</p>
+      <div style="display: grid; grid-template-columns: 56px minmax(0, 1fr) auto; gap: 8px; font-size: 14px; line-height: 20px">
+        <span style="font-weight: 500">14:53</span><span>S1 Hauptbahnhof</span><span>+2 min</span>
+        <span style="font-weight: 500">15:01</span><span>Bus 140 Ostkreuz</span><span>on time</span>
+      </div>
+      <a href="dashboard.html" style="align-self: flex-start; height: 40px; display: flex; align-items: center; color: #1F4FC9; font-size: 14px; font-weight: 500; text-decoration: none">Show on the Family tab</a>
+    </section>
+
+    <section aria-label="Calendar cannot answer" style="border-radius: 16px; background: #EEEDF4; padding: 16px; display: flex; gap: 12px; font-size: 14px; line-height: 20px">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#45464F" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="flex: none"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v6M12 7.5h.01"></path></svg>
+      <span style="color: #45464F"><strong style="font-weight: 500; color: #1A1B21">Calendar</strong> cannot answer this: it knows appointments, not departures.</span>
+    </section>
+
+    <h2 style="margin: 12px 0 0; font-size: 14px; line-height: 20px; font-weight: 500; color: #45464F">Try also</h2>
+    <div style="display: flex; flex-wrap: wrap; gap: 8px">
+      <a href="#" style="height: 32px; padding: 0 12px; border-radius: 8px; border: 1px solid #757780; display: flex; align-items: center; font-size: 14px; color: #45464F; text-decoration: none">Is the backup OK?</a>
+      <a href="#" style="height: 32px; padding: 0 12px; border-radius: 8px; border: 1px solid #757780; display: flex; align-items: center; font-size: 14px; color: #45464F; text-decoration: none">Weather tomorrow</a>
+      <a href="#" style="height: 32px; padding: 0 12px; border-radius: 8px; border: 1px solid #757780; display: flex; align-items: center; font-size: 14px; color: #45464F; text-decoration: none">Open to-dos</a>
+      <a href="#" style="height: 32px; padding: 0 12px; border-radius: 8px; border: 1px solid #757780; display: flex; align-items: center; font-size: 14px; color: #45464F; text-decoration: none">Parcels today</a>
+    </div>
+  </div>
+</main>
+</body>
+</html>

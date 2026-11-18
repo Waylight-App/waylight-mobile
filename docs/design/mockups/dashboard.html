@@ -1,0 +1,94 @@
+<!doctype html>
+<!-- Mockup of the Waylight app (docs/design/README.md). Static HTML, not app code. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Dashboard, Home tab</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&amp;family=Roboto:wght@400;500;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#3365E8}a:hover{color:#1F4FC9}
+</style>
+</head>
+<body style="margin: 0; background: #E3E1E9">
+<main style="position: relative; width: 390px; height: 844px; box-sizing: border-box; background: #FAF8FF; color: #1A1B21; font-family: Roboto, system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden">
+  <header style="height: 64px; display: flex; align-items: center; padding: 8px 4px 0 16px; gap: 4px">
+    <span style="font-family: Fraunces, Georgia, serif; font-weight: 600; font-size: 22px; flex: 1">Waylight</span>
+    <a href="search.html" aria-label="Search" style="width: 48px; height: 48px; border-radius: 24px; display: flex; align-items: center; justify-content: center; color: #45464F">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg>
+    </a>
+    <a href="settings.html" aria-label="Settings" style="width: 48px; height: 48px; border-radius: 24px; display: flex; align-items: center; justify-content: center; color: #45464F">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"></path></svg>
+    </a>
+  </header>
+
+  <nav aria-label="Tabs" style="display: flex; border-bottom: 1px solid #C5C6D0; padding: 0 8px">
+    <a href="#" aria-current="page" style="height: 48px; padding: 0 16px; display: flex; align-items: center; font-size: 14px; font-weight: 500; color: #3365E8; text-decoration: none; border-bottom: 3px solid #3365E8; box-sizing: border-box">Home</a>
+    <a href="dashboard-dark-offline.html" style="height: 48px; padding: 0 16px; display: flex; align-items: center; font-size: 14px; font-weight: 500; color: #45464F; text-decoration: none">Server</a>
+    <a href="#" style="height: 48px; padding: 0 16px; display: flex; align-items: center; font-size: 14px; font-weight: 500; color: #45464F; text-decoration: none">Family</a>
+    <a href="#" style="height: 48px; padding: 0 16px; display: flex; align-items: center; font-size: 14px; font-weight: 500; color: #45464F; text-decoration: none">News</a>
+  </nav>
+
+  <div style="flex: 1; padding: 16px; display: flex; flex-direction: column; gap: 12px">
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+      <section aria-label="Clock" style="border-radius: 16px; background: #EEEDF4; padding: 16px; display: flex; flex-direction: column; gap: 4px">
+        <span style="font-size: 36px; line-height: 44px; font-weight: 400">14:32</span>
+        <span style="font-size: 14px; line-height: 20px; color: #45464F">Wednesday, 18 November</span>
+      </section>
+      <section aria-label="Weather" style="border-radius: 16px; background: #DCE1FF; color: #00174B; padding: 16px; display: flex; flex-direction: column; gap: 4px">
+        <div style="display: flex; align-items: center; gap: 8px">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17a4 4 0 1 1 .9-7.9A5 5 0 0 1 17.6 10 3.5 3.5 0 0 1 17 17z"></path><path d="M9 20l-1 2M13 20l-1 2M17 20l-1 2"></path></svg>
+          <span style="font-size: 36px; line-height: 44px">8°</span>
+        </div>
+        <span style="font-size: 14px; line-height: 20px">Light rain · Berlin</span>
+        <span style="font-size: 12px; line-height: 16px">H 10° · L 4°</span>
+      </section>
+    </div>
+
+    <section aria-label="To-dos" style="border-radius: 16px; background: #EEEDF4; padding: 8px 0">
+      <div style="display: flex; align-items: center; padding: 8px 16px">
+        <h2 style="margin: 0; flex: 1; font-size: 16px; line-height: 24px; font-weight: 500">To-dos</h2>
+        <span style="font-size: 12px; color: #45464F">3 open</span>
+      </div>
+      <label style="display: flex; align-items: center; gap: 12px; min-height: 48px; padding: 0 16px; font-size: 16px">
+        <input type="checkbox" style="width: 20px; height: 20px; accent-color: #3365E8; margin: 0"> Buy milk
+      </label>
+      <label style="display: flex; align-items: center; gap: 12px; min-height: 48px; padding: 0 16px; font-size: 16px">
+        <input type="checkbox" style="width: 20px; height: 20px; accent-color: #3365E8; margin: 0"> Renew the domain
+        <span style="margin-left: auto; font-size: 12px; color: #A1351D; font-weight: 500">today</span>
+      </label>
+      <label style="display: flex; align-items: center; gap: 12px; min-height: 48px; padding: 0 16px; font-size: 16px; color: #45464F">
+        <input type="checkbox" checked style="width: 20px; height: 20px; accent-color: #3365E8; margin: 0"> <span style="text-decoration: line-through">Call the plumber</span>
+      </label>
+      <a href="capture.html" style="display: flex; align-items: center; gap: 12px; min-height: 48px; padding: 0 16px; font-size: 16px; text-decoration: none">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
+        Add a to-do
+      </a>
+    </section>
+
+    <section aria-label="Bookmarks" style="border-radius: 16px; background: #EEEDF4; padding: 16px; display: flex; flex-direction: column; gap: 12px">
+      <h2 style="margin: 0; font-size: 16px; line-height: 24px; font-weight: 500">Bookmarks</h2>
+      <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; text-align: center; font-size: 12px; line-height: 16px">
+        <a href="#" style="display: flex; flex-direction: column; align-items: center; gap: 6px; color: #1A1B21; text-decoration: none"><span style="width: 44px; height: 44px; border-radius: 12px; background: #FAF8FF; display: flex; align-items: center; justify-content: center; font-weight: 700; color: #3365E8">C</span>Cloud</a>
+        <a href="#" style="display: flex; flex-direction: column; align-items: center; gap: 6px; color: #1A1B21; text-decoration: none"><span style="width: 44px; height: 44px; border-radius: 12px; background: #FAF8FF; display: flex; align-items: center; justify-content: center; font-weight: 700; color: #3365E8">M</span>Media</a>
+        <a href="#" style="display: flex; flex-direction: column; align-items: center; gap: 6px; color: #1A1B21; text-decoration: none"><span style="width: 44px; height: 44px; border-radius: 12px; background: #FAF8FF; display: flex; align-items: center; justify-content: center; font-weight: 700; color: #3365E8">H</span>Home</a>
+        <a href="#" style="display: flex; flex-direction: column; align-items: center; gap: 6px; color: #1A1B21; text-decoration: none"><span style="width: 44px; height: 44px; border-radius: 12px; background: #FAF8FF; display: flex; align-items: center; justify-content: center; font-weight: 700; color: #3365E8">R</span>Router</a>
+      </div>
+    </section>
+
+    <section aria-label="Notes" style="border-radius: 16px; background: #EEEDF4; padding: 16px; display: flex; flex-direction: column; gap: 4px">
+      <div style="display: flex; align-items: baseline">
+        <h2 style="margin: 0; flex: 1; font-size: 16px; line-height: 24px; font-weight: 500">Notes</h2>
+        <span style="font-size: 12px; color: #45464F">updated 5 min ago</span>
+      </div>
+      <p style="margin: 0; font-size: 14px; line-height: 20px; color: #45464F">Holiday packing list: passports, chargers, the good umbrella …</p>
+    </section>
+  </div>
+
+  <a href="capture.html" style="position: absolute; right: 16px; bottom: 24px; height: 56px; padding: 0 20px 0 16px; border-radius: 16px; background: #DCE1FF; color: #00174B; display: flex; align-items: center; gap: 12px; font-size: 14px; font-weight: 500; text-decoration: none; box-shadow: 0 3px 6px rgba(0,0,0,0.18)">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
+    Capture
+  </a>
+</main>
+</body>
+</html>

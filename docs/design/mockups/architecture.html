@@ -1,0 +1,90 @@
+<!doctype html>
+<!-- Mockup of the Waylight app (docs/design/README.md). Static HTML, not app code. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Architecture behind the screens</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&amp;family=Roboto:wght@400;500;700&amp;family=Roboto+Mono:wght@400;500&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#3365E8}a:hover{color:#1F4FC9}
+</style>
+</head>
+<body style="margin: 0; background: #E3E1E9">
+<main style="width: 1330px; height: 844px; box-sizing: border-box; background: #FAF8FF; color: #1A1B21; font-family: Roboto, system-ui, sans-serif; padding: 40px 48px; display: flex; flex-direction: column; gap: 24px">
+  <header style="display: flex; align-items: baseline; gap: 16px">
+    <h1 style="margin: 0; font-family: Fraunces, Georgia, serif; font-weight: 600; font-size: 34px; line-height: 40px">Every screen, built the same way</h1>
+    <p style="margin: 0; font-size: 15px; color: #45464F">Flutter architecture guide: MVVM + repositories + services, dependencies point inwards</p>
+  </header>
+
+  <div style="display: flex; gap: 32px; flex: 1; min-height: 0">
+    <section aria-label="Layers" style="width: 330px; flex: none; display: flex; flex-direction: column; gap: 6px">
+      <div style="border-radius: 14px; background: #DCE1FF; color: #00174B; padding: 12px 16px">
+        <p style="margin: 0; font-size: 12px; font-weight: 500; letter-spacing: 0.4px">UI · lib/ui/&lt;feature&gt;/widgets</p>
+        <p style="margin: 2px 0 0; font-size: 16px; font-weight: 500">View</p>
+        <p style="margin: 2px 0 0; font-size: 13px; line-height: 18px">Renders the view model, forwards taps to commands. No logic.</p>
+      </div>
+      <p style="margin: 0; text-align: center; font-size: 12px; color: #45464F">listens to ↓</p>
+      <div style="border-radius: 14px; background: #DCE1FF; color: #00174B; padding: 12px 16px">
+        <p style="margin: 0; font-size: 12px; font-weight: 500; letter-spacing: 0.4px">UI · lib/ui/&lt;feature&gt;/view_models</p>
+        <p style="margin: 2px 0 0; font-size: 16px; font-weight: 500">ViewModel + Commands</p>
+        <p style="margin: 2px 0 0; font-size: 13px; line-height: 18px">ChangeNotifier per screen; running / completed / error per action.</p>
+      </div>
+      <p style="margin: 0; text-align: center; font-size: 12px; color: #45464F">depends on the abstract ↓</p>
+      <div style="border-radius: 14px; background: #E8E7EF; padding: 12px 16px">
+        <p style="margin: 0; font-size: 12px; font-weight: 500; letter-spacing: 0.4px; color: #45464F">DATA · lib/data/repositories</p>
+        <p style="margin: 2px 0 0; font-size: 16px; font-weight: 500">Repository</p>
+        <p style="margin: 2px 0 0; font-size: 13px; line-height: 18px; color: #45464F">Single source of truth; maps API → domain; caches; notifies the router.</p>
+      </div>
+      <p style="margin: 0; text-align: center; font-size: 12px; color: #45464F">uses ↓</p>
+      <div style="border-radius: 14px; background: #E8E7EF; padding: 12px 16px">
+        <p style="margin: 0; font-size: 12px; font-weight: 500; letter-spacing: 0.4px; color: #45464F">DATA · lib/data/services</p>
+        <p style="margin: 2px 0 0; font-size: 16px; font-weight: 500">Service</p>
+        <p style="margin: 2px 0 0; font-size: 13px; line-height: 18px; color: #45464F">Stateless: one per endpoint group or store. Returns Result.</p>
+      </div>
+      <div style="margin-top: 6px; border-radius: 14px; border: 1px dashed #757780; padding: 12px 16px">
+        <p style="margin: 0; font-size: 12px; font-weight: 500; letter-spacing: 0.4px; color: #45464F">DOMAIN · lib/domain/models</p>
+        <p style="margin: 2px 0 0; font-size: 13px; line-height: 18px; color: #45464F">Immutable pure-Dart models with their rules, used by every layer; knows none of them.</p>
+      </div>
+    </section>
+
+    <section aria-label="Screens and their layers" style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+      <table style="width: 100%; border-collapse: collapse; font-size: 13px; line-height: 18px">
+        <thead>
+          <tr style="text-align: left; color: #45464F; font-size: 12px; letter-spacing: 0.3px">
+            <th scope="col" style="padding: 0 10px 8px 0; font-weight: 500; border-bottom: 1px solid #757780">Screen</th>
+            <th scope="col" style="padding: 0 10px 8px; font-weight: 500; border-bottom: 1px solid #757780">Route</th>
+            <th scope="col" style="padding: 0 10px 8px; font-weight: 500; border-bottom: 1px solid #757780">ViewModel · commands</th>
+            <th scope="col" style="padding: 0 10px 8px; font-weight: 500; border-bottom: 1px solid #757780">Repository</th>
+            <th scope="col" style="padding: 0 10px 8px; font-weight: 500; border-bottom: 1px solid #757780">Service · endpoint</th>
+            <th scope="col" style="padding: 0 0 8px 10px; font-weight: 500; border-bottom: 1px solid #757780">Issue</th>
+          </tr>
+        </thead>
+        <tbody style="font-family: 'Roboto Mono', ui-monospace, monospace; font-size: 12px">
+          <tr><th scope="row" style="padding: 8px 10px 8px 0; text-align: left; font: 500 13px Roboto, sans-serif; border-bottom: 1px solid #C5C6D0">Connect</th><td style="padding: 8px 10px; border-bottom: 1px solid #C5C6D0">/connect</td><td style="padding: 8px 10px; border-bottom: 1px solid #C5C6D0">ConnectServerViewModel · connect</td><td style="padding: 8px 10px; border-bottom: 1px solid #C5C6D0">ServerRepository</td><td style="padding: 8px 10px; border-bottom: 1px solid #C5C6D0">PlatformApi · GET /api/auth/status</td><td style="padding: 8px 0 8px 10px; border-bottom: 1px solid #C5C6D0; color: #2E6B30">#7 built</td></tr>
+          <tr><th scope="row" style="padding: 8px 10px 8px 0; text-align: left; font: 500 13px Roboto, sans-serif; border-bottom: 1px solid #C5C6D0">Sign in, code</th><td style="padding: 8px 10px; border-bottom: 1px solid #C5C6D0">/sign-in</td><td style="padding: 8px 10px; border-bottom: 1px solid #C5C6D0">SignInViewModel · signIn, submitCode</td><td style="padding: 8px 10px; border-bottom: 1px solid #C5C6D0">SessionRepository</td><td style="padding: 8px 10px; border-bottom: 1px solid #C5C6D0">AuthApi · POST /api/auth/login</td><td style="padding: 8px 0 8px 10px; border-bottom: 1px solid #C5C6D0">#12 #13</td></tr>
+          <tr><th scope="row" style="padding: 8px 10px 8px 0; text-align: left; font: 500 13px Roboto, sans-serif; border-bottom: 1px solid #C5C6D0">Dashboard</th><td style="padding: 8px 10px; border-bottom: 1px solid #C5C6D0">/</td><td style="padding: 8px 10px; border-bottom: 1px solid #C5C6D0">DashboardViewModel · load, refresh</td><td style="padding: 8px 10px; border-bottom: 1px solid #C5C6D0">DashboardRepository</td><td style="padding: 8px 10px; border-bottom: 1px solid #C5C6D0">DashboardApi · GET /api/dashboard</td><td style="padding: 8px 0 8px 10px; border-bottom: 1px solid #C5C6D0">#16 #19</td></tr>
+          <tr><th scope="row" style="padding: 8px 10px 8px 0; text-align: left; font: 500 13px Roboto, sans-serif; border-bottom: 1px solid #C5C6D0">To-do widget</th><td style="padding: 8px 10px; border-bottom: 1px solid #C5C6D0">in a tab</td><td style="padding: 8px 10px; border-bottom: 1px solid #C5C6D0">TodosViewModel · load, toggle, add</td><td style="padding: 8px 10px; border-bottom: 1px solid #C5C6D0">TodosRepository</td><td style="padding: 8px 10px; border-bottom: 1px solid #C5C6D0">TodosApi · /api/todos</td><td style="padding: 8px 0 8px 10px; border-bottom: 1px solid #C5C6D0">#17 #20</td></tr>
+          <tr><th scope="row" style="padding: 8px 10px 8px 0; text-align: left; font: 500 13px Roboto, sans-serif; border-bottom: 1px solid #C5C6D0">Fallback widget</th><td style="padding: 8px 10px; border-bottom: 1px solid #C5C6D0">in a tab</td><td style="padding: 8px 10px; border-bottom: 1px solid #C5C6D0">none: stateless view</td><td style="padding: 8px 10px; border-bottom: 1px solid #C5C6D0">ServerRepository (link)</td><td style="padding: 8px 10px; border-bottom: 1px solid #C5C6D0">none</td><td style="padding: 8px 0 8px 10px; border-bottom: 1px solid #C5C6D0">#18</td></tr>
+          <tr><th scope="row" style="padding: 8px 10px 8px 0; text-align: left; font: 500 13px Roboto, sans-serif; border-bottom: 1px solid #C5C6D0">Offline banner</th><td style="padding: 8px 10px; border-bottom: 1px solid #C5C6D0">in a tab</td><td style="padding: 8px 10px; border-bottom: 1px solid #C5C6D0">DashboardViewModel · isStale</td><td style="padding: 8px 10px; border-bottom: 1px solid #C5C6D0">every repository + cache</td><td style="padding: 8px 10px; border-bottom: 1px solid #C5C6D0">CacheStore</td><td style="padding: 8px 0 8px 10px; border-bottom: 1px solid #C5C6D0">#23</td></tr>
+          <tr><th scope="row" style="padding: 8px 10px 8px 0; text-align: left; font: 500 13px Roboto, sans-serif; border-bottom: 1px solid #C5C6D0">Quick capture</th><td style="padding: 8px 10px; border-bottom: 1px solid #C5C6D0">/capture</td><td style="padding: 8px 10px; border-bottom: 1px solid #C5C6D0">CaptureViewModel · save</td><td style="padding: 8px 10px; border-bottom: 1px solid #C5C6D0">Todos-, Notes-, ReadLaterRepository</td><td style="padding: 8px 10px; border-bottom: 1px solid #C5C6D0">one Api per module</td><td style="padding: 8px 0 8px 10px; border-bottom: 1px solid #C5C6D0">#21</td></tr>
+          <tr><th scope="row" style="padding: 8px 10px 8px 0; text-align: left; font: 500 13px Roboto, sans-serif; border-bottom: 1px solid #C5C6D0">Search</th><td style="padding: 8px 10px; border-bottom: 1px solid #C5C6D0">/search</td><td style="padding: 8px 10px; border-bottom: 1px solid #C5C6D0">SearchViewModel · search</td><td style="padding: 8px 10px; border-bottom: 1px solid #C5C6D0">SearchRepository</td><td style="padding: 8px 10px; border-bottom: 1px solid #C5C6D0">SearchApi · /api/search</td><td style="padding: 8px 0 8px 10px; border-bottom: 1px solid #C5C6D0">#22</td></tr>
+          <tr><th scope="row" style="padding: 8px 10px 8px 0; text-align: left; font: 500 13px Roboto, sans-serif">Settings</th><td style="padding: 8px 10px">/settings</td><td style="padding: 8px 10px">SettingsViewModel · signOut, disconnect, setTheme</td><td style="padding: 8px 10px">Session-, Server-, PreferencesRepository</td><td style="padding: 8px 10px">AuthApi, KeyValueStore</td><td style="padding: 8px 0 8px 10px">#14</td></tr>
+        </tbody>
+      </table>
+
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; font-size: 13px; line-height: 19px">
+        <div style="border-radius: 14px; background: #EEEDF4; padding: 14px 16px">
+          <p style="margin: 0 0 4px; font-weight: 500">Widgets without cross-feature imports</p>
+          <p style="margin: 0; color: #45464F">The dashboard only knows a WidgetRegistry (ui/core). Each widget lives in its own feature folder; the composition root registers the renderers by widget kind. Unknown kinds get the fallback card.</p>
+        </div>
+        <div style="border-radius: 14px; background: #EEEDF4; padding: 14px 16px">
+          <p style="margin: 0 0 4px; font-weight: 500">Navigation follows state</p>
+          <p style="margin: 0; color: #45464F">Connect, sign-in, sign-out and session expiry change a repository; GoRouter listens and redirects. Screens never decide where to go after an action.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!doctype html>
+<!-- Mockup of the Waylight app (docs/design/README.md). Static HTML, not app code. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Connect your Waylight</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&amp;family=Roboto:wght@400;500;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#3365E8}a:hover{color:#1F4FC9}
+</style>
+</head>
+<body style="margin: 0; background: #E3E1E9">
+<main style="width: 390px; height: 844px; box-sizing: border-box; background: #FAF8FF; color: #1A1B21; font-family: Roboto, system-ui, sans-serif; display: flex; flex-direction: column; padding: 56px 24px 32px">
+  <div style="display: flex; align-items: center; gap: 10px">
+    <svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#3365E8"></rect><path d="M16 7v18M7 16h18M10 10l12 12M22 10L10 22" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" opacity="0.9"></path><circle cx="16" cy="16" r="4" fill="#FFFFFF"></circle></svg>
+    <span style="font-family: Fraunces, Georgia, serif; font-weight: 600; font-size: 26px; letter-spacing: -0.2px">Waylight</span>
+  </div>
+
+  <h1 style="margin: 48px 0 0; font-size: 28px; line-height: 36px; font-weight: 400">Connect your Waylight</h1>
+  <p style="margin: 8px 0 0; font-size: 16px; line-height: 24px; color: #45464F">Enter the address you open Waylight with in your browser.</p>
+
+  <div style="margin-top: 32px; display: flex; flex-direction: column; gap: 6px">
+    <div style="position: relative">
+      <label for="address" style="position: absolute; top: -9px; left: 12px; padding: 0 4px; background: #FAF8FF; font-size: 12px; line-height: 16px; color: #3365E8">Server address</label>
+      <input id="address" type="url" value="http://192.168.178.115:8090" style="box-sizing: border-box; width: 100%; height: 56px; padding: 0 16px; border: 2px solid #3365E8; border-radius: 4px; background: transparent; font: 400 16px Roboto, system-ui, sans-serif; color: #1A1B21; outline: none">
+    </div>
+    <div style="display: flex; gap: 8px; padding: 0 16px; font-size: 12px; line-height: 16px; color: #7A4F00">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7A4F00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none; margin-top: 1px"><path d="M12 3l9 16H3z"></path><path d="M12 10v4M12 17h.01"></path></svg>
+      <span>Without https:// your password travels unencrypted. Use this only in your own network.</span>
+    </div>
+  </div>
+
+  <a href="sign-in.html" style="margin-top: 24px; height: 48px; border-radius: 24px; background: #3365E8; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 500; letter-spacing: 0.1px; text-decoration: none">Connect</a>
+
+  <div style="margin-top: 16px; padding: 12px 16px; border-radius: 12px; background: #FFDAD6; color: #410002; font-size: 14px; line-height: 20px; display: flex; gap: 12px">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#410002" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="flex: none"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v6M12 16.5h.01"></path></svg>
+    <span>Example of an error state: The server cannot be reached. Is your phone in the same network or VPN?</span>
+  </div>
+
+  <div style="flex: 1"></div>
+  <p style="margin: 0; display: flex; gap: 8px; align-items: center; font-size: 12px; line-height: 16px; color: #45464F">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#45464F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex: none"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V8a4 4 0 0 1 8 0v3"></path></svg>
+    The app talks to your server and nobody else.
+  </p>
+</main>
+</body>
+</html>
