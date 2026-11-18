@@ -1,0 +1,50 @@
+name: Bug report
+description: Something in the app does not work as intended
+type: Bug
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      value: |
+        1.
+        2.
+    validations:
+      required: true
+  - type: input
+    id: app-version
+    attributes:
+      label: App version
+      description: Settings → About, or the version of the installed APK.
+    validations:
+      required: true
+  - type: input
+    id: device
+    attributes:
+      label: Device and OS version
+      placeholder: Pixel 8, Android 16 / iPhone 15, iOS 26
+    validations:
+      required: true
+  - type: input
+    id: server-version
+    attributes:
+      label: Waylight server version
+      description: Output of `docker compose exec waylight /waylight version`
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or screenshots
+      description: Remove server addresses, tokens and personal data first.
+      render: text

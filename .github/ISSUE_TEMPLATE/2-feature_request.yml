@@ -1,0 +1,49 @@
+name: Feature request
+description: Suggest a new feature or an improvement of the app
+type: Feature
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for the idea! Please describe the problem first — the solution can still change.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem / motivation
+      description: What is missing or annoying today? Who benefits?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: How could the app solve it? Sketches welcome.
+    validations:
+      required: true
+  - type: textarea
+    id: criteria
+    attributes:
+      label: Acceptance criteria
+      description: Checklist that tells when the issue is done.
+      value: |
+        - [ ]
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options: [auth, dashboard, widgets, offline, notifications, ux, a11y, i18n, android, ios, other]
+    validations:
+      required: true
+  - type: dropdown
+    id: server
+    attributes:
+      label: Does it need a change in the Waylight server?
+      options: ["No", "Yes", "Not sure"]
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Architecture, security or privacy notes
+      description: Affected layers, new endpoints, secrets, permissions, new dependencies …

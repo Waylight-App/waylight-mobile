@@ -1,0 +1,16 @@
+# Architecture Decision Records
+
+Each record documents one significant decision of the app: its context, the
+decision and its consequences. Records are immutable; a changed decision
+gets a new record that supersedes the old one. Decisions of the server are
+in the [server repository](https://github.com/Waylight-App/waylight/tree/main/docs/adr).
+
+Copy [`template.md`](template.md) to `NNNN-short-title.md`, start with
+status *Proposed*, and discuss it in the pull request.
+
+| No. | Title | Status |
+| --- | --- | --- |
+| [0001](0001-app-architecture.md) | App architecture: the Flutter architecture guide (MVVM, repositories, services) with enforced layers | Accepted |
+| [0002](0002-flutter-stack.md) | Flutter stack: material_ui, provider, ChangeNotifier with commands, go_router, http, gen-l10n | Accepted |
+| [0003](0003-dependency-policy.md) | Dependency policy: every runtime dependency needs a reason | Accepted |
+| [0004](0004-authentication.md) | Sign-in of the app: session endpoints first, app sessions from the server later | Proposed |
