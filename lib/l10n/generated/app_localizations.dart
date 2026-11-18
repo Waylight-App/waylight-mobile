@@ -158,23 +158,11 @@ abstract class AppLocalizations {
   /// **'Leave out user name, password and anything after ? or #.'**
   String get connectErrorParts;
 
-  /// Error: no answer from the server.
-  ///
-  /// In en, this message translates to:
-  /// **'The server cannot be reached. Is your phone in the same network or VPN?'**
-  String get connectErrorUnreachable;
-
   /// Error: the server answered, but not with the Waylight API.
   ///
   /// In en, this message translates to:
   /// **'This address does not answer like a Waylight server.'**
   String get connectErrorNotWaylight;
-
-  /// Fallback error message.
-  ///
-  /// In en, this message translates to:
-  /// **'Something went wrong. Please try again.'**
-  String get connectErrorUnknown;
 
   /// Warning shown below the field when the address starts with http://.
   ///
@@ -205,6 +193,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Use another server'**
   String get homeDisconnect;
+
+  /// Footnote on the connect screen about privacy.
+  ///
+  /// In en, this message translates to:
+  /// **'The app talks to your server and nobody else.'**
+  String get connectPrivacy;
+
+  /// Title of the card that shows the connected server.
+  ///
+  /// In en, this message translates to:
+  /// **'Server'**
+  String get homeServerTitle;
+
+  /// Error: no answer from the server.
+  ///
+  /// In en, this message translates to:
+  /// **'The server cannot be reached. Is your phone in the same network or VPN?'**
+  String get errorUnreachable;
+
+  /// Error: HTTP 401, the session is missing or expired.
+  ///
+  /// In en, this message translates to:
+  /// **'Your session has ended. Please sign in again.'**
+  String get errorUnauthorized;
+
+  /// Error: HTTP 403.
+  ///
+  /// In en, this message translates to:
+  /// **'Your account may not do this.'**
+  String get errorForbidden;
+
+  /// Error: HTTP 404, e.g. a disabled module.
+  ///
+  /// In en, this message translates to:
+  /// **'This is not available on your server. The module may be switched off.'**
+  String get errorNotFound;
+
+  /// Error: HTTP 422 without a field-specific message.
+  ///
+  /// In en, this message translates to:
+  /// **'Please check your input.'**
+  String get errorInvalid;
+
+  /// Error: HTTP 429, locked out after failed attempts.
+  ///
+  /// In en, this message translates to:
+  /// **'Too many attempts. Please wait a few minutes and try again.'**
+  String get errorTooManyRequests;
+
+  /// Error: HTTP 5xx or an unexpected answer.
+  ///
+  /// In en, this message translates to:
+  /// **'The server answered with an error. Please try again later.'**
+  String get errorServer;
+
+  /// Fallback error message.
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong. Please try again.'**
+  String get errorUnknown;
 }
 
 class _AppLocalizationsDelegate

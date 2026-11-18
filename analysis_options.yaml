@@ -1,4 +1,4 @@
-# Static analysis for waylight-mobile (docs/coding-guidelines.md).
+# Static analysis for waylight-mobile (docs/code-conventions.md).
 # `make lint` and CI run `flutter analyze --fatal-infos`: every hint fails.
 include: package:flutter_lints/flutter.yaml
 
@@ -43,10 +43,14 @@ linter:
     prefer_final_in_for_each: true
     prefer_const_constructors: true
     prefer_const_declarations: true
+    prefer_const_constructors_in_immutables: true
+    prefer_const_literals_to_create_immutables: true
     avoid_positional_boolean_parameters: true
     avoid_catches_without_on_clauses: true
     only_throw_errors: true
     use_named_constants: true
+    avoid_redundant_argument_values: true
+    avoid_multiple_declarations_per_line: true
     # Style
     prefer_single_quotes: true
     sort_child_properties_last: true
@@ -54,6 +58,9 @@ linter:
     unnecessary_lambdas: true
     unnecessary_parenthesis: true
     use_super_parameters: true
+    use_colored_box: true
+    use_decorated_box: true
+    matching_super_parameters: true
     # Documentation of the public API
     public_member_api_docs: true
     comment_references: true

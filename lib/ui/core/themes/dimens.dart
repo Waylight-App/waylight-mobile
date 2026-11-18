@@ -1,13 +1,35 @@
-/// Spacing values, so every screen uses the same rhythm.
+/// Spacing, sizes and corner radii: the layout tokens of the design system
+/// (docs/ui-components.md#tokens).
+///
+/// Widgets use these names instead of numbers, so every screen keeps the
+/// same rhythm and a change happens in one place.
 abstract final class Dimens {
-  /// Small gap, e.g. between a label and its value.
+  /// Small gap, e.g. between a heading and its text.
   static const double gapSmall = 8;
 
-  /// Default gap between elements.
+  /// Gap between cards in a list or grid.
+  static const double gapCard = 12;
+
+  /// Default gap between elements, and the padding of a page.
   static const double gap = 16;
 
-  /// Large gap, e.g. between sections.
+  /// Large gap, e.g. between the sections of a form.
   static const double gapLarge = 32;
+
+  /// Minimum size of anything the user can tap (Material and WCAG).
+  static const double tapTarget = 48;
+
+  /// Size of a progress indicator inside a button.
+  static const double inlineProgress = 20;
+
+  /// Size of an icon next to text, e.g. in a banner.
+  static const double iconSmall = 20;
+
+  /// Corner radius of cards.
+  static const double radiusCard = 16;
+
+  /// Corner radius of banners and small containers.
+  static const double radiusBanner = 12;
 
   /// Maximum width of forms on tablets and in landscape.
   static const double maxFormWidth = 480;

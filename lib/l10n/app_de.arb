@@ -10,12 +10,20 @@
   "connectErrorInvalid": "Das ist keine gültige Adresse. Beispiel: https://home.example.org",
   "connectErrorScheme": "Die Adresse muss mit http:// oder https:// beginnen.",
   "connectErrorParts": "Lass Benutzername, Passwort und alles nach ? oder # weg.",
-  "connectErrorUnreachable": "Der Server ist nicht erreichbar. Ist dein Handy im selben Netz oder VPN?",
   "connectErrorNotWaylight": "Unter dieser Adresse antwortet kein Waylight-Server.",
-  "connectErrorUnknown": "Etwas ist schiefgelaufen. Bitte versuche es noch einmal.",
   "connectInsecureWarning": "Ohne https:// wird dein Passwort unverschlüsselt übertragen. Nutze das nur in deinem eigenen Netz.",
   "homeConnectedTo": "Verbunden mit {server}",
   "homeSetupRequired": "Dieser Server hat noch kein Konto. Schließe zuerst die Einrichtung im Browser ab.",
   "homeComingSoon": "Anmeldung und dein Dashboard folgen in den nächsten Versionen.",
-  "homeDisconnect": "Anderen Server verwenden"
+  "homeDisconnect": "Anderen Server verwenden",
+  "connectPrivacy": "Die App spricht nur mit deinem Server und mit niemandem sonst.",
+  "homeServerTitle": "Server",
+  "errorUnreachable": "Der Server ist nicht erreichbar. Ist dein Handy im selben Netz oder VPN?",
+  "errorUnauthorized": "Deine Sitzung ist abgelaufen. Bitte melde dich erneut an.",
+  "errorForbidden": "Dein Konto darf das nicht.",
+  "errorNotFound": "Das gibt es auf deinem Server nicht. Vielleicht ist das Modul abgeschaltet.",
+  "errorInvalid": "Bitte prüfe deine Eingabe.",
+  "errorTooManyRequests": "Zu viele Versuche. Bitte warte ein paar Minuten und versuche es dann erneut.",
+  "errorServer": "Der Server hat mit einem Fehler geantwortet. Bitte versuche es später noch einmal.",
+  "errorUnknown": "Etwas ist schiefgelaufen. Bitte versuche es noch einmal."
 }

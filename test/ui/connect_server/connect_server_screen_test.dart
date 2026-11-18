@@ -52,7 +52,7 @@ void main() {
 
     await enter(tester, 'home.example.org');
 
-    expect(find.text(l10nEn.connectErrorUnreachable), findsOneWidget);
+    expect(find.text(l10nEn.errorUnreachable), findsOneWidget);
   });
 
   testWidgets('warns about plain HTTP', (tester) async {
@@ -87,13 +87,33 @@ void main() {
     semantics.dispose();
   });
 
-  test('errorText has a message for every error', () {
-    for (final reason in InvalidServerAddressReason.values) {
-      expect(errorText(l10nEn, InvalidServerAddress(reason)), isNotEmpty);
-    }
-    for (final failure in ApiFailure.values) {
-      expect(errorText(l10nEn, ApiException(failure)), isNotEmpty);
-    }
-    expect(errorText(l10nEn, Exception()), l10nEn.connectErrorUnknown);
+  testWidgets('says when the address is not a Waylight server', (tester) async {
+    repository.statusResult = const Result.error(
+      ApiException(ApiFailure.server),
+    );
+    await tester.pumpScreen(ConnectServerScreen(viewModel: viewModel));
+
+    await enter(tester, 'router.example.org');
+
+    expect(find.text(l10nEn.connectErrorNotWaylight), findsOneWidget);
+  });
+
+  group('an error is shown either at the field or in the banner', () {
+    test('invalid addresses at the field', () {
+      for (final reason in InvalidServerAddressReason.values) {
+        final error = InvalidServerAddress(reason);
+        expect(fieldError(l10nEn, error), isNotEmpty, reason: reason.name);
+        expect(bannerError(l10nEn, error), isNull, reason: reason.name);
+      }
+    });
+
+    test('everything else in the banner', () {
+      for (final failure in ApiFailure.values) {
+        final error = ApiException(failure);
+        expect(fieldError(l10nEn, error), isNull, reason: failure.name);
+        expect(bannerError(l10nEn, error), isNotEmpty, reason: failure.name);
+      }
+      expect(bannerError(l10nEn, Exception()), l10nEn.errorUnknown);
+    });
   });
 }

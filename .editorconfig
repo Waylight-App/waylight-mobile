@@ -1,4 +1,4 @@
-# Same whitespace in every editor (docs/coding-guidelines.md).
+# Same whitespace in every editor (docs/code-conventions.md).
 root = true
 
 [*]
