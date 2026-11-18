@@ -61,8 +61,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'This server has no account yet. Finish the setup in your browser first.';
 
   @override
-  String get homeComingSoon =>
-      'Sign-in and your dashboard follow in the next versions.';
+  String get homeComingSoon => 'Your dashboard follows in the next version.';
 
   @override
   String get homeDisconnect => 'Use another server';
@@ -101,4 +100,48 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get errorUnknown => 'Something went wrong. Please try again.';
+
+  @override
+  String get signInTitle => 'Sign in';
+
+  @override
+  String signInServer(String server) {
+    return 'on $server';
+  }
+
+  @override
+  String get signInExpired => 'Your session has ended. Please sign in again.';
+
+  @override
+  String get signInUsernameLabel => 'Account name';
+
+  @override
+  String get signInUsernameHelper => 'Leave empty for the owner account.';
+
+  @override
+  String get signInPasswordLabel => 'Password';
+
+  @override
+  String get signInCodeLabel => 'Code';
+
+  @override
+  String get signInCodeHint =>
+      'The code from your authenticator app, or a recovery code.';
+
+  @override
+  String get signInCodeHintRecovery =>
+      'This account uses a passkey. Enter one of your recovery codes.';
+
+  @override
+  String get signInButton => 'Sign in';
+
+  @override
+  String get signInErrorCredentials =>
+      'The account name or the password is wrong.';
+
+  @override
+  String get signInErrorCode => 'The password or the code is wrong.';
+
+  @override
+  String get homeSignOut => 'Sign out';
 }

@@ -1,6 +1,6 @@
 # ADR 0004: Sign-in of the app
 
-- Status: Proposed
+- Status: Accepted (2026-11-18)
 - Date: 2026-11-18
 
 ## Context
@@ -19,7 +19,7 @@ A phone app needs a sign-in that a user can do on the phone, that survives
 app restarts, can be revoked per device, works with two-factor
 authentication, and stores nothing but a revocable credential.
 
-## Decision (proposed)
+## Decision
 
 1. **Phase 1:** the app uses the existing session endpoints. It signs in
    with password and TOTP code, keeps the session cookie and the CSRF token

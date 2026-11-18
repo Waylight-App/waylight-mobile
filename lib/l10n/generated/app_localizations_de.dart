@@ -61,8 +61,7 @@ class AppLocalizationsDe extends AppLocalizations {
       'Dieser Server hat noch kein Konto. Schließe zuerst die Einrichtung im Browser ab.';
 
   @override
-  String get homeComingSoon =>
-      'Anmeldung und dein Dashboard folgen in den nächsten Versionen.';
+  String get homeComingSoon => 'Dein Dashboard folgt in der nächsten Version.';
 
   @override
   String get homeDisconnect => 'Anderen Server verwenden';
@@ -103,4 +102,48 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get errorUnknown =>
       'Etwas ist schiefgelaufen. Bitte versuche es noch einmal.';
+
+  @override
+  String get signInTitle => 'Anmelden';
+
+  @override
+  String signInServer(String server) {
+    return 'bei $server';
+  }
+
+  @override
+  String get signInExpired =>
+      'Deine Sitzung ist abgelaufen. Bitte melde dich erneut an.';
+
+  @override
+  String get signInUsernameLabel => 'Kontoname';
+
+  @override
+  String get signInUsernameHelper => 'Für das Eigentümerkonto leer lassen.';
+
+  @override
+  String get signInPasswordLabel => 'Passwort';
+
+  @override
+  String get signInCodeLabel => 'Code';
+
+  @override
+  String get signInCodeHint =>
+      'Der Code aus deiner Authenticator-App oder ein Wiederherstellungscode.';
+
+  @override
+  String get signInCodeHintRecovery =>
+      'Dieses Konto nutzt einen Passkey. Gib einen deiner Wiederherstellungscodes ein.';
+
+  @override
+  String get signInButton => 'Anmelden';
+
+  @override
+  String get signInErrorCredentials => 'Kontoname oder Passwort ist falsch.';
+
+  @override
+  String get signInErrorCode => 'Passwort oder Code ist falsch.';
+
+  @override
+  String get homeSignOut => 'Abmelden';
 }

@@ -185,7 +185,7 @@ abstract class AppLocalizations {
   /// Placeholder text until sign-in is implemented.
   ///
   /// In en, this message translates to:
-  /// **'Sign-in and your dashboard follow in the next versions.'**
+  /// **'Your dashboard follows in the next version.'**
   String get homeComingSoon;
 
   /// Button that forgets the server address.
@@ -253,6 +253,84 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Something went wrong. Please try again.'**
   String get errorUnknown;
+
+  /// Title of the sign-in screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in'**
+  String get signInTitle;
+
+  /// Line below the title naming the server.
+  ///
+  /// In en, this message translates to:
+  /// **'on {server}'**
+  String signInServer(String server);
+
+  /// Shown when the server ended the session.
+  ///
+  /// In en, this message translates to:
+  /// **'Your session has ended. Please sign in again.'**
+  String get signInExpired;
+
+  /// Label of the account name field.
+  ///
+  /// In en, this message translates to:
+  /// **'Account name'**
+  String get signInUsernameLabel;
+
+  /// Helper text below the account name field.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave empty for the owner account.'**
+  String get signInUsernameHelper;
+
+  /// Label of the password field.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get signInPasswordLabel;
+
+  /// Label of the second-factor code field.
+  ///
+  /// In en, this message translates to:
+  /// **'Code'**
+  String get signInCodeLabel;
+
+  /// Helper text of the code field.
+  ///
+  /// In en, this message translates to:
+  /// **'The code from your authenticator app, or a recovery code.'**
+  String get signInCodeHint;
+
+  /// Helper text of the code field for accounts with passkeys only.
+  ///
+  /// In en, this message translates to:
+  /// **'This account uses a passkey. Enter one of your recovery codes.'**
+  String get signInCodeHintRecovery;
+
+  /// Button that signs in.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in'**
+  String get signInButton;
+
+  /// Error: wrong credentials.
+  ///
+  /// In en, this message translates to:
+  /// **'The account name or the password is wrong.'**
+  String get signInErrorCredentials;
+
+  /// Error in the second step.
+  ///
+  /// In en, this message translates to:
+  /// **'The password or the code is wrong.'**
+  String get signInErrorCode;
+
+  /// Button that signs out.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign out'**
+  String get homeSignOut;
 }
 
 class _AppLocalizationsDelegate

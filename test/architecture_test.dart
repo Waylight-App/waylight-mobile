@@ -73,7 +73,8 @@ const _layers = <_Layer>[
   _Layer(
     'routing/',
     mayImport: ['data/repositories/', 'ui/', 'routing/'],
-    packages: ['go_router/', 'provider/'],
+    // foundation for Listenable: the redirects follow several repositories.
+    packages: [..._flutterBase, 'go_router/', 'provider/'],
   ),
   _Layer('l10n/', packages: ['flutter/', 'flutter_localizations/', 'intl/']),
   _Layer(
