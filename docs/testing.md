@@ -59,6 +59,19 @@ review.
 
 ## Integration tests
 
-End-to-end tests on a device or emulator against a demo server are planned
-(see the roadmap). They will live in `integration_test/` and run on a
-schedule, not on every pull request.
+End-to-end tests in `integration_test/` run the real app on a device or
+emulator against a real Waylight server: connect, then (as the app grows)
+sign in and open the dashboard. They find steps through the widget keys
+(`connect.address`, `home.disconnect`, …).
+
+- **Locally:** start an emulator or connect a phone, then `make integration`.
+  It tests against the public demo; another server with
+  `make integration WAYLIGHT_URL=https://home.example.org`.
+- **In CI:** the *Integration* workflow runs nightly and on demand on an
+  Android emulator, against the public demo by default or the address given
+  when it is started by hand. It does not run on pull requests: it takes
+  minutes and depends on a server outside the repository.
+
+The public demo is served over HTTPS, so the tests need no exception for
+plain HTTP. Its data is reset every hour; tests must not depend on changes
+made by an earlier run.
