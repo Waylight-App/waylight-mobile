@@ -1,0 +1,22 @@
+# Area labels for pull requests by changed files (.github/workflows/labeler.yml).
+"area: architecture":
+  - changed-files:
+      - any-glob-to-any-file: [lib/utils/**, lib/config/**, lib/routing/**, test/architecture_test.dart]
+"area: auth":
+  - changed-files:
+      - any-glob-to-any-file: [lib/data/repositories/server/**, lib/data/repositories/auth/**, lib/ui/connect_server/**, lib/ui/sign_in/**]
+"area: i18n":
+  - changed-files:
+      - any-glob-to-any-file: [lib/l10n/*.arb, l10n.yaml]
+"area: android":
+  - changed-files:
+      - any-glob-to-any-file: [android/**]
+"area: ios":
+  - changed-files:
+      - any-glob-to-any-file: [ios/**]
+"area: ci":
+  - changed-files:
+      - any-glob-to-any-file: [.github/**, Makefile, tool/**]
+"area: docs":
+  - changed-files:
+      - any-glob-to-any-file: ["docs/**", "*.md"]

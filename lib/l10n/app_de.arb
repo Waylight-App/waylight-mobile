@@ -1,0 +1,21 @@
+{
+  "@@locale": "de",
+  "appTitle": "Waylight",
+  "connectTitle": "Verbinde dein Waylight",
+  "connectIntro": "Gib die Adresse ein, mit der du Waylight im Browser öffnest.",
+  "connectAddressLabel": "Serveradresse",
+  "connectAddressHint": "https://home.example.org",
+  "connectButton": "Verbinden",
+  "connectErrorEmpty": "Gib die Adresse deines Servers ein.",
+  "connectErrorInvalid": "Das ist keine gültige Adresse. Beispiel: https://home.example.org",
+  "connectErrorScheme": "Die Adresse muss mit http:// oder https:// beginnen.",
+  "connectErrorParts": "Lass Benutzername, Passwort und alles nach ? oder # weg.",
+  "connectErrorUnreachable": "Der Server ist nicht erreichbar. Ist dein Handy im selben Netz oder VPN?",
+  "connectErrorNotWaylight": "Unter dieser Adresse antwortet kein Waylight-Server.",
+  "connectErrorUnknown": "Etwas ist schiefgelaufen. Bitte versuche es noch einmal.",
+  "connectInsecureWarning": "Ohne https:// wird dein Passwort unverschlüsselt übertragen. Nutze das nur in deinem eigenen Netz.",
+  "homeConnectedTo": "Verbunden mit {server}",
+  "homeSetupRequired": "Dieser Server hat noch kein Konto. Schließe zuerst die Einrichtung im Browser ab.",
+  "homeComingSoon": "Anmeldung und dein Dashboard folgen in den nächsten Versionen.",
+  "homeDisconnect": "Anderen Server verwenden"
+}

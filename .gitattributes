@@ -1,0 +1,9 @@
+* text=auto eol=lf
+*.png binary
+*.jar binary
+*.bat text eol=crlf
+
+# Generated files: collapsed in diffs and left out of the language statistics.
+lib/l10n/generated/** linguist-generated=true
+pubspec.lock linguist-generated=true
+CHANGELOG.md linguist-generated=true

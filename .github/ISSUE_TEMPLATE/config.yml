@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Report a security vulnerability
+    url: https://github.com/Waylight-App/waylight-mobile/security/advisories/new
+    about: Please report vulnerabilities privately, not as a public issue.
+  - name: Problem with the Waylight server or web interface
+    url: https://github.com/Waylight-App/waylight/issues/new/choose
+    about: Everything that also happens in the browser belongs to the server repository.

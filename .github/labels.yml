@@ -1,0 +1,34 @@
+# Repository labels, synced by .github/workflows/labels.yml.
+# The kind of an issue is its issue type (Feature, Bug, Task), not a label
+# (docs/workflow.md#issues).
+
+# Area: where the change happens
+- { name: "area: architecture", color: "0e8a16", description: "Layers, dependency injection, routing, shared utilities" }
+- { name: "area: auth", color: "0e8a16", description: "Server connection, sign-in, sessions" }
+- { name: "area: dashboard", color: "0e8a16", description: "Tabs and the widget grid" }
+- { name: "area: widgets", color: "0e8a16", description: "Single widget renderers (to-dos, weather …)" }
+- { name: "area: offline", color: "0e8a16", description: "Caching and the offline queue" }
+- { name: "area: notifications", color: "0e8a16", description: "Push and local notifications" }
+- { name: "area: ux", color: "0e8a16", description: "Look and feel, navigation, theming" }
+- { name: "area: a11y", color: "0e8a16", description: "Accessibility" }
+- { name: "area: i18n", color: "0e8a16", description: "Translations and locale formats" }
+- { name: "area: android", color: "0e8a16", description: "Android-specific code and configuration" }
+- { name: "area: ios", color: "0e8a16", description: "iOS-specific code and configuration" }
+- { name: "area: ci", color: "0e8a16", description: "Workflows, tooling, repository setup" }
+- { name: "area: release", color: "0e8a16", description: "Versioning, signing, store listings" }
+- { name: "area: docs", color: "0e8a16", description: "Documentation" }
+- { name: "area: security", color: "0e8a16", description: "Secrets, transport security, privacy" }
+
+# Priority
+- { name: "priority: high", color: "b60205", description: "Blocks a milestone or users" }
+- { name: "priority: medium", color: "fbca04", description: "Planned for the current milestone" }
+- { name: "priority: low", color: "c2e0c6", description: "Nice to have" }
+
+# Status and other
+- { name: "epic", color: "3e4b9e", description: "Parent issue that groups the issues of a roadmap phase" }
+- { name: "needs: server", color: "d93f0b", description: "Depends on a change in Waylight-App/waylight" }
+- { name: "blocked", color: "000000", description: "Cannot continue; the issue says why" }
+- { name: "needs: decision", color: "d876e3", description: "Needs a decision (usually an ADR) before work starts" }
+- { name: "good first issue", color: "7057ff", description: "Names the files and tests to touch; good way in" }
+- { name: "help wanted", color: "008672", description: "Contributions welcome" }
+- { name: "dependencies", color: "0366d6", description: "Dependency updates (Dependabot)" }

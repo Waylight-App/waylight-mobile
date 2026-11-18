@@ -1,0 +1,19 @@
+{
+  "dart.lineLength": 80,
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit",
+    "source.organizeImports": "explicit"
+  },
+  "editor.rulers": [80],
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+  "files.exclude": {
+    "**/.dart_tool": true,
+    "build": true
+  },
+  "search.exclude": {
+    "lib/l10n/generated/**": true,
+    "pubspec.lock": true
+  }
+}
