@@ -1,0 +1,806 @@
+{
+ "tabs": [
+  {
+   "id": "f127f43cb21c1ffd29418b58d6b2f223",
+   "name": "Home",
+   "position": 0,
+   "background": "",
+   "rules": [],
+   "widgets": [
+    {
+     "id": "6178a0b2456197db88c0427876960875",
+     "tabId": "f127f43cb21c1ffd29418b58d6b2f223",
+     "kind": "clock",
+     "x": 0,
+     "y": 0,
+     "w": 3,
+     "h": 5,
+     "config": {}
+    },
+    {
+     "id": "54598c48687e68347a04e2f30aab0584",
+     "tabId": "f127f43cb21c1ffd29418b58d6b2f223",
+     "kind": "weather",
+     "x": 3,
+     "y": 0,
+     "w": 3,
+     "h": 5,
+     "config": {
+      "days": 4,
+      "label": "Berlin",
+      "lat": 52.52,
+      "lon": 13.41
+     }
+    },
+    {
+     "id": "b92a367d730714b235b22741ec840b8a",
+     "tabId": "f127f43cb21c1ffd29418b58d6b2f223",
+     "kind": "todos",
+     "x": 6,
+     "y": 0,
+     "w": 3,
+     "h": 5,
+     "config": {}
+    },
+    {
+     "id": "b150923ab48201f8d42ba86b1e7c2b29",
+     "tabId": "f127f43cb21c1ffd29418b58d6b2f223",
+     "kind": "notes",
+     "x": 9,
+     "y": 0,
+     "w": 3,
+     "h": 5,
+     "config": {}
+    },
+    {
+     "id": "2f545aea3fc9cbc2d5a05cefdb1c8c47",
+     "tabId": "f127f43cb21c1ffd29418b58d6b2f223",
+     "kind": "calendar",
+     "x": 0,
+     "y": 5,
+     "w": 3,
+     "h": 5,
+     "config": {}
+    },
+    {
+     "id": "2e607d1a96fbde0f321f691df7dffcae",
+     "tabId": "f127f43cb21c1ffd29418b58d6b2f223",
+     "kind": "bookmarks",
+     "x": 3,
+     "y": 5,
+     "w": 3,
+     "h": 5,
+     "config": {}
+    },
+    {
+     "id": "cfdf43ef3dc6592edb9e96bc800cc76c",
+     "tabId": "f127f43cb21c1ffd29418b58d6b2f223",
+     "kind": "rss",
+     "x": 6,
+     "y": 5,
+     "w": 3,
+     "h": 5,
+     "config": {}
+    },
+    {
+     "id": "550f4ca6c248e1d99b8216eb14357c61",
+     "tabId": "f127f43cb21c1ffd29418b58d6b2f223",
+     "kind": "countdown",
+     "x": 9,
+     "y": 5,
+     "w": 3,
+     "h": 5,
+     "config": {}
+    },
+    {
+     "id": "924eec25026159dc55c5a8059af039a4",
+     "tabId": "f127f43cb21c1ffd29418b58d6b2f223",
+     "kind": "habits",
+     "x": 0,
+     "y": 10,
+     "w": 3,
+     "h": 5,
+     "config": {}
+    },
+    {
+     "id": "b9d7c4aa8d6ab37f851aea369c73d574",
+     "tabId": "f127f43cb21c1ffd29418b58d6b2f223",
+     "kind": "focus",
+     "x": 3,
+     "y": 10,
+     "w": 3,
+     "h": 5,
+     "config": {}
+    },
+    {
+     "id": "aad1c1d647e036135e1c505738ba4c66",
+     "tabId": "f127f43cb21c1ffd29418b58d6b2f223",
+     "kind": "birthdays",
+     "x": 6,
+     "y": 10,
+     "w": 3,
+     "h": 5,
+     "config": {}
+    },
+    {
+     "id": "4e6c94925e521dbe8e9bdd6e78278b15",
+     "tabId": "f127f43cb21c1ffd29418b58d6b2f223",
+     "kind": "holidays",
+     "x": 9,
+     "y": 10,
+     "w": 3,
+     "h": 5,
+     "config": {}
+    },
+    {
+     "id": "c805e61e6971a342c8b511c27e9ccc44",
+     "tabId": "f127f43cb21c1ffd29418b58d6b2f223",
+     "kind": "briefing",
+     "x": 0,
+     "y": 15,
+     "w": 3,
+     "h": 5,
+     "config": {}
+    },
+    {
+     "id": "999c3d26ec966252b27166eafa0f0d1a",
+     "tabId": "f127f43cb21c1ffd29418b58d6b2f223",
+     "kind": "timeline",
+     "x": 3,
+     "y": 15,
+     "w": 3,
+     "h": 5,
+     "config": {}
+    },
+    {
+     "id": "5ef46f1fd08fe3e7d2669a586255f4f1",
+     "tabId": "f127f43cb21c1ffd29418b58d6b2f223",
+     "kind": "study",
+     "x": 6,
+     "y": 15,
+     "w": 3,
+     "h": 5,
+     "config": {}
+    },
+    {
+     "id": "ad1bc16410ab5083fc0156e2a14ac1d7",
+     "tabId": "f127f43cb21c1ffd29418b58d6b2f223",
+     "kind": "readlater",
+     "x": 9,
+     "y": 15,
+     "w": 3,
+     "h": 5,
+     "config": {}
+    },
+    {
+     "id": "fb847ca3930b3ad9fc45b052e886e309",
+     "tabId": "f127f43cb21c1ffd29418b58d6b2f223",
+     "kind": "shopping",
+     "x": 0,
+     "y": 20,
+     "w": 3,
+     "h": 5,
+     "config": {}
+    },
+    {
+     "id": "69b6d7c0b181bb7abe4284d2372bce5d",
+     "tabId": "f127f43cb21c1ffd29418b58d6b2f223",
+     "kind": "drop",
+     "x": 3,
+     "y": 20,
+     "w": 3,
+     "h": 5,
+     "config": {}
+    }
+   ],
+   "mobile": [
+    {
+     "id": "6178a0b2456197db88c0427876960875",
+     "hidden": false,
+     "rows": 5
+    },
+    {
+     "id": "54598c48687e68347a04e2f30aab0584",
+     "hidden": false,
+     "rows": 5
+    },
+    {
+     "id": "b92a367d730714b235b22741ec840b8a",
+     "hidden": false,
+     "rows": 5
+    },
+    {
+     "id": "b150923ab48201f8d42ba86b1e7c2b29",
+     "hidden": false,
+     "rows": 5
+    },
+    {
+     "id": "2f545aea3fc9cbc2d5a05cefdb1c8c47",
+     "hidden": false,
+     "rows": 5
+    },
+    {
+     "id": "2e607d1a96fbde0f321f691df7dffcae",
+     "hidden": false,
+     "rows": 5
+    },
+    {
+     "id": "cfdf43ef3dc6592edb9e96bc800cc76c",
+     "hidden": false,
+     "rows": 5
+    },
+    {
+     "id": "550f4ca6c248e1d99b8216eb14357c61",
+     "hidden": false,
+     "rows": 5
+    },
+    {
+     "id": "924eec25026159dc55c5a8059af039a4",
+     "hidden": false,
+     "rows": 5
+    },
+    {
+     "id": "b9d7c4aa8d6ab37f851aea369c73d574",
+     "hidden": false,
+     "rows": 5
+    },
+    {
+     "id": "aad1c1d647e036135e1c505738ba4c66",
+     "hidden": false,
+     "rows": 5
+    },
+    {
+     "id": "4e6c94925e521dbe8e9bdd6e78278b15",
+     "hidden": false,
+     "rows": 5
+    },
+    {
+     "id": "c805e61e6971a342c8b511c27e9ccc44",
+     "hidden": false,
+     "rows": 5
+    },
+    {
+     "id": "999c3d26ec966252b27166eafa0f0d1a",
+     "hidden": false,
+     "rows": 5
+    },
+    {
+     "id": "5ef46f1fd08fe3e7d2669a586255f4f1",
+     "hidden": false,
+     "rows": 5
+    },
+    {
+     "id": "ad1bc16410ab5083fc0156e2a14ac1d7",
+     "hidden": false,
+     "rows": 5
+    },
+    {
+     "id": "fb847ca3930b3ad9fc45b052e886e309",
+     "hidden": false,
+     "rows": 5
+    },
+    {
+     "id": "69b6d7c0b181bb7abe4284d2372bce5d",
+     "hidden": false,
+     "rows": 5
+    }
+   ],
+   "mobileCustom": false,
+   "mine": true,
+   "visibility": "private"
+  },
+  {
+   "id": "d1bf47d6a866d28ac82d1989a0c92aa8",
+   "name": "Out and about",
+   "position": 1,
+   "background": "",
+   "rules": [],
+   "widgets": [
+    {
+     "id": "aa495a780bc8dc5470be50378c0e6fd1",
+     "tabId": "d1bf47d6a866d28ac82d1989a0c92aa8",
+     "kind": "transit",
+     "x": 0,
+     "y": 0,
+     "w": 3,
+     "h": 5,
+     "config": {
+      "stopId": "demo_de:03403:16750",
+      "stopName": "Oldenburg Hbf",
+      "count": 6
+     }
+    },
+    {
+     "id": "2b70f466ba08972035de61f9a063b736",
+     "tabId": "d1bf47d6a866d28ac82d1989a0c92aa8",
+     "kind": "waste",
+     "x": 3,
+     "y": 0,
+     "w": 3,
+     "h": 5,
+     "config": {}
+    },
+    {
+     "id": "ba610818f8f19baaf0f956c0a5a1fedf",
+     "tabId": "d1bf47d6a866d28ac82d1989a0c92aa8",
+     "kind": "parcels",
+     "x": 6,
+     "y": 0,
+     "w": 3,
+     "h": 5,
+     "config": {}
+    },
+    {
+     "id": "5757e34e7bfb783320472cbeb9ad78cd",
+     "tabId": "d1bf47d6a866d28ac82d1989a0c92aa8",
+     "kind": "fuel",
+     "x": 9,
+     "y": 0,
+     "w": 3,
+     "h": 5,
+     "config": {}
+    },
+    {
+     "id": "11555a926b587c313db9c8dab3e15e1e",
+     "tabId": "d1bf47d6a866d28ac82d1989a0c92aa8",
+     "kind": "radar",
+     "x": 0,
+     "y": 5,
+     "w": 3,
+     "h": 5,
+     "config": {
+      "lat": 53.14,
+      "lon": 8.21,
+      "label": "Oldenburg"
+     }
+    },
+    {
+     "id": "13725b6fb41ad7405c9d9571e1a4e1b6",
+     "tabId": "d1bf47d6a866d28ac82d1989a0c92aa8",
+     "kind": "space",
+     "x": 3,
+     "y": 5,
+     "w": 3,
+     "h": 5,
+     "config": {}
+    },
+    {
+     "id": "030f2bdbd0aa49be54b30a66a133e9b9",
+     "tabId": "d1bf47d6a866d28ac82d1989a0c92aa8",
+     "kind": "sports",
+     "x": 6,
+     "y": 5,
+     "w": 3,
+     "h": 5,
+     "config": {}
+    },
+    {
+     "id": "8b4beb889a353d181544afb40fbef590",
+     "tabId": "d1bf47d6a866d28ac82d1989a0c92aa8",
+     "kind": "markets",
+     "x": 9,
+     "y": 5,
+     "w": 3,
+     "h": 5,
+     "config": {}
+    },
+    {
+     "id": "76f3a950525c920e92be2ab04f2eb762",
+     "tabId": "d1bf47d6a866d28ac82d1989a0c92aa8",
+     "kind": "electricity",
+     "x": 0,
+     "y": 10,
+     "w": 3,
+     "h": 5,
+     "config": {}
+    },
+    {
+     "id": "aa7812320e323beb6b7253327ce174db",
+     "tabId": "d1bf47d6a866d28ac82d1989a0c92aa8",
+     "kind": "gamedeals",
+     "x": 3,
+     "y": 10,
+     "w": 3,
+     "h": 5,
+     "config": {}
+    },
+    {
+     "id": "e14eeac24591bbd9a5a8ebf3c2ef52ff",
+     "tabId": "d1bf47d6a866d28ac82d1989a0c92aa8",
+     "kind": "photo-frame",
+     "x": 6,
+     "y": 10,
+     "w": 3,
+     "h": 5,
+     "config": {}
+    },
+    {
+     "id": "84375f5d43a51b550090a2da28a9713e",
+     "tabId": "d1bf47d6a866d28ac82d1989a0c92aa8",
+     "kind": "immich",
+     "x": 9,
+     "y": 10,
+     "w": 3,
+     "h": 5,
+     "config": {}
+    },
+    {
+     "id": "41ab7d7638b9a0a895177d5ff81807fd",
+     "tabId": "d1bf47d6a866d28ac82d1989a0c92aa8",
+     "kind": "media",
+     "x": 0,
+     "y": 15,
+     "w": 3,
+     "h": 5,
+     "config": {}
+    }
+   ],
+   "mobile": [
+    {
+     "id": "aa495a780bc8dc5470be50378c0e6fd1",
+     "hidden": false,
+     "rows": 5
+    },
+    {
+     "id": "2b70f466ba08972035de61f9a063b736",
+     "hidden": false,
+     "rows": 5
+    },
+    {
+     "id": "ba610818f8f19baaf0f956c0a5a1fedf",
+     "hidden": false,
+     "rows": 5
+    },
+    {
+     "id": "5757e34e7bfb783320472cbeb9ad78cd",
+     "hidden": false,
+     "rows": 5
+    },
+    {
+     "id": "11555a926b587c313db9c8dab3e15e1e",
+     "hidden": false,
+     "rows": 5
+    },
+    {
+     "id": "13725b6fb41ad7405c9d9571e1a4e1b6",
+     "hidden": false,
+     "rows": 5
+    },
+    {
+     "id": "030f2bdbd0aa49be54b30a66a133e9b9",
+     "hidden": false,
+     "rows": 5
+    },
+    {
+     "id": "8b4beb889a353d181544afb40fbef590",
+     "hidden": false,
+     "rows": 5
+    },
+    {
+     "id": "76f3a950525c920e92be2ab04f2eb762",
+     "hidden": false,
+     "rows": 5
+    },
+    {
+     "id": "aa7812320e323beb6b7253327ce174db",
+     "hidden": false,
+     "rows": 5
+    },
+    {
+     "id": "e14eeac24591bbd9a5a8ebf3c2ef52ff",
+     "hidden": false,
+     "rows": 5
+    },
+    {
+     "id": "84375f5d43a51b550090a2da28a9713e",
+     "hidden": false,
+     "rows": 5
+    },
+    {
+     "id": "41ab7d7638b9a0a895177d5ff81807fd",
+     "hidden": false,
+     "rows": 5
+    }
+   ],
+   "mobileCustom": false,
+   "mine": true,
+   "visibility": "private"
+  },
+  {
+   "id": "750e3e590bab267d3778888159028655",
+   "name": "Server",
+   "position": 2,
+   "background": "",
+   "rules": [],
+   "widgets": [
+    {
+     "id": "facff02bc81e8c94fa2ffe73126202f0",
+     "tabId": "750e3e590bab267d3778888159028655",
+     "kind": "services",
+     "x": 0,
+     "y": 0,
+     "w": 3,
+     "h": 5,
+     "config": {}
+    },
+    {
+     "id": "ca2bdb94000237476a7b78b2603d8c03",
+     "tabId": "750e3e590bab267d3778888159028655",
+     "kind": "status-overview",
+     "x": 3,
+     "y": 0,
+     "w": 3,
+     "h": 5,
+     "config": {}
+    },
+    {
+     "id": "8842892d649dd9db041a3b630c6726f3",
+     "tabId": "750e3e590bab267d3778888159028655",
+     "kind": "system",
+     "x": 6,
+     "y": 0,
+     "w": 3,
+     "h": 5,
+     "config": {}
+    },
+    {
+     "id": "8e93af703ef3ac0ff702736614ca936e",
+     "tabId": "750e3e590bab267d3778888159028655",
+     "kind": "docker",
+     "x": 9,
+     "y": 0,
+     "w": 3,
+     "h": 5,
+     "config": {}
+    },
+    {
+     "id": "386006ad5ec587afbdadc1fad9efb977",
+     "tabId": "750e3e590bab267d3778888159028655",
+     "kind": "adguard",
+     "x": 0,
+     "y": 5,
+     "w": 3,
+     "h": 5,
+     "config": {}
+    },
+    {
+     "id": "f581fb1a5eebff620473c6e8af4bed4c",
+     "tabId": "750e3e590bab267d3778888159028655",
+     "kind": "diskhealth",
+     "x": 3,
+     "y": 5,
+     "w": 3,
+     "h": 5,
+     "config": {}
+    },
+    {
+     "id": "011bc6ad8e7708f11ee24bf2ad75f214",
+     "tabId": "750e3e590bab267d3778888159028655",
+     "kind": "speedtest",
+     "x": 6,
+     "y": 5,
+     "w": 3,
+     "h": 5,
+     "config": {}
+    },
+    {
+     "id": "b006168d9f8ff98b0c3865b4bcbd05c3",
+     "tabId": "750e3e590bab267d3778888159028655",
+     "kind": "backup-status",
+     "x": 9,
+     "y": 5,
+     "w": 3,
+     "h": 5,
+     "config": {}
+    },
+    {
+     "id": "2b82c1ca6e589149c1ebc68457aebc95",
+     "tabId": "750e3e590bab267d3778888159028655",
+     "kind": "proxmox",
+     "x": 0,
+     "y": 10,
+     "w": 3,
+     "h": 5,
+     "config": {}
+    },
+    {
+     "id": "6065852687da79827f4b2995fe9602e1",
+     "tabId": "750e3e590bab267d3778888159028655",
+     "kind": "wireguard",
+     "x": 3,
+     "y": 10,
+     "w": 3,
+     "h": 5,
+     "config": {}
+    },
+    {
+     "id": "090f540c6c23cafc4384019085ae5f53",
+     "tabId": "750e3e590bab267d3778888159028655",
+     "kind": "releases",
+     "x": 6,
+     "y": 10,
+     "w": 3,
+     "h": 5,
+     "config": {}
+    },
+    {
+     "id": "933d30a911c55f572358f9202b1f53c9",
+     "tabId": "750e3e590bab267d3778888159028655",
+     "kind": "nextcloud",
+     "x": 9,
+     "y": 10,
+     "w": 3,
+     "h": 5,
+     "config": {}
+    },
+    {
+     "id": "cf0382329d81136935813cc7ba5d7547",
+     "tabId": "750e3e590bab267d3778888159028655",
+     "kind": "fritzbox",
+     "x": 0,
+     "y": 15,
+     "w": 3,
+     "h": 5,
+     "config": {}
+    },
+    {
+     "id": "783ddaf1aec62c611583a9aa2dda348c",
+     "tabId": "750e3e590bab267d3778888159028655",
+     "kind": "fritzbox-calls",
+     "x": 3,
+     "y": 15,
+     "w": 3,
+     "h": 5,
+     "config": {}
+    },
+    {
+     "id": "a1e87ab03757384990e966724c8bb796",
+     "tabId": "750e3e590bab267d3778888159028655",
+     "kind": "arr",
+     "x": 6,
+     "y": 15,
+     "w": 3,
+     "h": 5,
+     "config": {}
+    },
+    {
+     "id": "8db566febff5b7781019db6a1192964b",
+     "tabId": "750e3e590bab267d3778888159028655",
+     "kind": "apiwidget",
+     "x": 9,
+     "y": 15,
+     "w": 3,
+     "h": 5,
+     "config": {
+      "endpointId": "23b456b8d9630ecb70080e4f12f3cfc6"
+     }
+    },
+    {
+     "id": "dedbbf33295805e9cf21f9470f9843cc",
+     "tabId": "750e3e590bab267d3778888159028655",
+     "kind": "smarthome",
+     "x": 0,
+     "y": 20,
+     "w": 3,
+     "h": 5,
+     "config": {
+      "entities": [
+       "sensor.living_room_temperature",
+       "sensor.balcony_solar_power",
+       "light.desk_lamp",
+       "switch.coffee_machine",
+       "sensor.washing_machine_power",
+       "binary_sensor.front_door"
+      ]
+     }
+    },
+    {
+     "id": "107fd4aa49ce6dd981bff541ebab1ea2",
+     "tabId": "750e3e590bab267d3778888159028655",
+     "kind": "phonelist",
+     "x": 3,
+     "y": 20,
+     "w": 3,
+     "h": 5,
+     "config": {}
+    }
+   ],
+   "mobile": [
+    {
+     "id": "facff02bc81e8c94fa2ffe73126202f0",
+     "hidden": false,
+     "rows": 5
+    },
+    {
+     "id": "ca2bdb94000237476a7b78b2603d8c03",
+     "hidden": false,
+     "rows": 5
+    },
+    {
+     "id": "8842892d649dd9db041a3b630c6726f3",
+     "hidden": false,
+     "rows": 5
+    },
+    {
+     "id": "8e93af703ef3ac0ff702736614ca936e",
+     "hidden": false,
+     "rows": 5
+    },
+    {
+     "id": "386006ad5ec587afbdadc1fad9efb977",
+     "hidden": false,
+     "rows": 5
+    },
+    {
+     "id": "f581fb1a5eebff620473c6e8af4bed4c",
+     "hidden": false,
+     "rows": 5
+    },
+    {
+     "id": "011bc6ad8e7708f11ee24bf2ad75f214",
+     "hidden": false,
+     "rows": 5
+    },
+    {
+     "id": "b006168d9f8ff98b0c3865b4bcbd05c3",
+     "hidden": false,
+     "rows": 5
+    },
+    {
+     "id": "2b82c1ca6e589149c1ebc68457aebc95",
+     "hidden": false,
+     "rows": 5
+    },
+    {
+     "id": "6065852687da79827f4b2995fe9602e1",
+     "hidden": false,
+     "rows": 5
+    },
+    {
+     "id": "090f540c6c23cafc4384019085ae5f53",
+     "hidden": false,
+     "rows": 5
+    },
+    {
+     "id": "933d30a911c55f572358f9202b1f53c9",
+     "hidden": false,
+     "rows": 5
+    },
+    {
+     "id": "cf0382329d81136935813cc7ba5d7547",
+     "hidden": false,
+     "rows": 5
+    },
+    {
+     "id": "783ddaf1aec62c611583a9aa2dda348c",
+     "hidden": false,
+     "rows": 5
+    },
+    {
+     "id": "a1e87ab03757384990e966724c8bb796",
+     "hidden": false,
+     "rows": 5
+    },
+    {
+     "id": "8db566febff5b7781019db6a1192964b",
+     "hidden": false,
+     "rows": 5
+    },
+    {
+     "id": "dedbbf33295805e9cf21f9470f9843cc",
+     "hidden": false,
+     "rows": 5
+    },
+    {
+     "id": "107fd4aa49ce6dd981bff541ebab1ea2",
+     "hidden": false,
+     "rows": 5
+    }
+   ],
+   "mobileCustom": false,
+   "mine": true,
+   "visibility": "private"
+  }
+ ],
+ "defaultTabId": ""
+}

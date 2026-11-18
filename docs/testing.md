@@ -66,7 +66,7 @@ review.
 End-to-end tests in `integration_test/` run the real app on a device or
 emulator against a real Waylight server: connect, then (as the app grows)
 sign in and open the dashboard. They find steps through the widget keys
-(`connect.address`, `home.disconnect`, …).
+(`connect.address`, `signIn.password`, `dashboard.menu`, …).
 
 - **Locally:** start an emulator or connect a phone, then `make integration`.
   It tests against the public demo and signs in with the demo's public

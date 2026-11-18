@@ -6,9 +6,10 @@ import 'package:waylight_mobile/config/dependencies.dart';
 import 'package:waylight_mobile/routing/router.dart';
 import 'package:waylight_mobile/routing/routes.dart';
 import 'package:waylight_mobile/ui/connect_server/widgets/connect_server_screen.dart';
-import 'package:waylight_mobile/ui/home/widgets/home_screen.dart';
+import 'package:waylight_mobile/ui/dashboard/widgets/dashboard_screen.dart';
 import 'package:waylight_mobile/ui/sign_in/widgets/sign_in_screen.dart';
 
+import '../testing/fakes/fake_dashboard_repository.dart';
 import '../testing/fakes/fake_server_repository.dart';
 import '../testing/fakes/fake_session_repository.dart';
 
@@ -20,7 +21,11 @@ void main() {
   ) async {
     await tester.pumpWidget(
       MultiProvider(
-        providers: providers((server: servers, session: sessions)),
+        providers: providers((
+          server: servers,
+          session: sessions,
+          dashboard: FakeDashboardRepository(),
+        )),
         child: WaylightApp(router: createRouter(servers, sessions)),
       ),
     );
@@ -54,7 +59,7 @@ void main() {
 
     await sessions.signIn(testServer(), password: 'pw');
     await tester.pumpAndSettle();
-    expect(find.byType(HomeScreen), findsOneWidget);
+    expect(find.byType(DashboardScreen), findsOneWidget);
 
     await sessions.signOut();
     await tester.pumpAndSettle();
