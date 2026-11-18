@@ -42,6 +42,10 @@ jobs:
           channel: stable
           flutter-version: ${{ steps.flutter.outputs.version }}
           cache: true
+      # The runner image ships toolchains this job does not use; without
+      # removing some of them the emulator cannot create its data partition.
+      - name: Free disk space
+        run: sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/.ghcup /opt/hostedtoolcache/CodeQL && df -h /
       - name: Enable KVM for the emulator
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
@@ -53,4 +57,7 @@ jobs:
           arch: x86_64
           target: google_apis
           disable-animations: true
+          cores: 4
+          disk-size: 2048M
+          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -no-metrics
           script: flutter test integration_test --dart-define=WAYLIGHT_URL=$WAYLIGHT_URL
