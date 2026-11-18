@@ -5,8 +5,12 @@ import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 
 import 'package:waylight_mobile/data/services/api/api_client.dart';
+import 'package:waylight_mobile/data/services/api/api_credentials.dart';
 import 'package:waylight_mobile/domain/models/api_exception.dart';
+import 'package:waylight_mobile/domain/models/session.dart';
 import 'package:waylight_mobile/utils/result.dart';
+
+import '../../../testing/fakes/fake_server_repository.dart';
 
 void main() {
   final uri = Uri.parse('https://home.example.org/api/todos');
@@ -102,5 +106,63 @@ void main() {
       ((result as Error<Object?>).error as ApiException).failure,
       ApiFailure.unreachable,
     );
+  });
+
+  group('with a session', () {
+    late ApiCredentials credentials;
+    late http.Request sent;
+
+    ApiClient clientWith(int status) => ApiClient(
+      credentials: credentials,
+      client: MockClient((request) async {
+        sent = request;
+        return http.Response('', status);
+      }),
+    );
+
+    setUp(() {
+      credentials = ApiCredentials()
+        ..session = Session(
+          server: testServer(),
+          cookie: 'waylight_session=s',
+          csrfToken: 'csrf',
+        );
+    });
+
+    test('adds cookie and CSRF token to requests to its server', () async {
+      await clientWith(204).postJson(uri);
+
+      expect(sent.headers['cookie'], 'waylight_session=s');
+      expect(sent.headers['X-CSRF-Token'], 'csrf');
+    });
+
+    test('reports a 401 to the credentials', () async {
+      var rejected = false;
+      credentials.onRejected = () => rejected = true;
+
+      final result = await clientWith(401).getJson(uri);
+
+      expect(rejected, isTrue);
+      expect(
+        ((result as Error<Object?>).error as ApiException).failure,
+        ApiFailure.unauthorized,
+      );
+    });
+
+    test('returns status and headers on request', () async {
+      final client = ApiClient(
+        client: MockClient(
+          (request) async =>
+              http.Response('{"a":1}', 202, headers: {'set-cookie': 'x=y'}),
+        ),
+      );
+
+      final result = await client.postJsonResponse(uri);
+
+      final response = (result as Ok<ApiResponse>).value;
+      expect(response.statusCode, 202);
+      expect(response.body, {'a': 1});
+      expect(response.headers['set-cookie'], 'x=y');
+    });
   });
 }

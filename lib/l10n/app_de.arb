@@ -14,7 +14,7 @@
   "connectInsecureWarning": "Ohne https:// wird dein Passwort unverschlüsselt übertragen. Nutze das nur in deinem eigenen Netz.",
   "homeConnectedTo": "Verbunden mit {server}",
   "homeSetupRequired": "Dieser Server hat noch kein Konto. Schließe zuerst die Einrichtung im Browser ab.",
-  "homeComingSoon": "Anmeldung und dein Dashboard folgen in den nächsten Versionen.",
+  "homeComingSoon": "Dein Dashboard folgt in der nächsten Version.",
   "homeDisconnect": "Anderen Server verwenden",
   "connectPrivacy": "Die App spricht nur mit deinem Server und mit niemandem sonst.",
   "homeServerTitle": "Server",
@@ -25,5 +25,18 @@
   "errorInvalid": "Bitte prüfe deine Eingabe.",
   "errorTooManyRequests": "Zu viele Versuche. Bitte warte ein paar Minuten und versuche es dann erneut.",
   "errorServer": "Der Server hat mit einem Fehler geantwortet. Bitte versuche es später noch einmal.",
-  "errorUnknown": "Etwas ist schiefgelaufen. Bitte versuche es noch einmal."
+  "errorUnknown": "Etwas ist schiefgelaufen. Bitte versuche es noch einmal.",
+  "signInTitle": "Anmelden",
+  "signInServer": "bei {server}",
+  "signInExpired": "Deine Sitzung ist abgelaufen. Bitte melde dich erneut an.",
+  "signInUsernameLabel": "Kontoname",
+  "signInUsernameHelper": "Für das Eigentümerkonto leer lassen.",
+  "signInPasswordLabel": "Passwort",
+  "signInCodeLabel": "Code",
+  "signInCodeHint": "Der Code aus deiner Authenticator-App oder ein Wiederherstellungscode.",
+  "signInCodeHintRecovery": "Dieses Konto nutzt einen Passkey. Gib einen deiner Wiederherstellungscodes ein.",
+  "signInButton": "Anmelden",
+  "signInErrorCredentials": "Kontoname oder Passwort ist falsch.",
+  "signInErrorCode": "Passwort oder Code ist falsch.",
+  "homeSignOut": "Abmelden"
 }

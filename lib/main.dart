@@ -10,14 +10,18 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   setupLogging();
 
-  final serverRepository = createServerRepository();
-  // A failure only means the user has to enter the address again.
-  await serverRepository.restore();
+  final repositories = createRepositories();
+  // A failure only means the user has to enter the address or sign in
+  // again. The session needs the restored server to check it belongs to it.
+  await repositories.server.restore();
+  await repositories.session.restore(repositories.server.current);
 
   runApp(
     MultiProvider(
-      providers: providers(serverRepository: serverRepository),
-      child: WaylightApp(router: createRouter(serverRepository)),
+      providers: providers(repositories),
+      child: WaylightApp(
+        router: createRouter(repositories.server, repositories.session),
+      ),
     ),
   );
 }

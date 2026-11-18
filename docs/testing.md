@@ -69,11 +69,14 @@ sign in and open the dashboard. They find steps through the widget keys
 (`connect.address`, `home.disconnect`, …).
 
 - **Locally:** start an emulator or connect a phone, then `make integration`.
-  It tests against the public demo; another server with
-  `make integration WAYLIGHT_URL=https://home.example.org`.
+  It tests against the public demo and signs in with the demo's public
+  password; another server with
+  `make integration WAYLIGHT_URL=https://home.example.org WAYLIGHT_PASSWORD=…`.
 - **In CI:** the *Integration* workflow runs nightly and on demand on an
   Android emulator, against the public demo by default or the address given
-  when it is started by hand. It does not run on pull requests: it takes
+  when it is started by hand; for another server the owner's password comes
+  from the repository secret `WAYLIGHT_PASSWORD`, never from an input, which
+  would appear in the log. It does not run on pull requests: it takes
   minutes and depends on a server outside the repository.
 
 The public demo is served over HTTPS, so the tests need no exception for

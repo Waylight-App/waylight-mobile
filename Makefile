@@ -5,6 +5,7 @@ DART    ?= $(shell command -v fvm >/dev/null 2>&1 && echo "fvm dart" || echo dar
 COVERAGE_MIN ?= 80
 # Server of the end-to-end tests (make integration).
 WAYLIGHT_URL ?= https://demo.getwaylight.app
+WAYLIGHT_PASSWORD ?= waylight-demo
 
 .DEFAULT_GOAL := help
 .PHONY: help deps gen format format-check lint test coverage check-generated ci integration run clean
@@ -40,7 +41,7 @@ check-generated: gen ## Fail if generated files are not committed
 ci: deps check-generated format-check lint coverage ## Everything CI checks, before every pull request
 
 integration: ## End-to-end tests on the connected device against WAYLIGHT_URL
-	$(FLUTTER) test integration_test --dart-define=WAYLIGHT_URL=$(WAYLIGHT_URL)
+	$(FLUTTER) test integration_test --dart-define=WAYLIGHT_URL=$(WAYLIGHT_URL) --dart-define=WAYLIGHT_PASSWORD=$(WAYLIGHT_PASSWORD)
 
 run: ## Start the app on the connected device
 	$(FLUTTER) run

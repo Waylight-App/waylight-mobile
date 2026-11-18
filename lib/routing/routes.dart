@@ -5,4 +5,7 @@ abstract final class Routes {
 
   /// The screen that asks for the server address.
   static const connect = '/connect';
+
+  /// The screen that asks for account name and password.
+  static const signIn = '/sign-in';
 }

@@ -34,5 +34,24 @@ the app allows it for local addresses is decided in
 
 ## Sign-in
 
-How the app signs in is decided in
-[ADR 0004](adr/0004-authentication.md) (proposed).
+How the app signs in is decided in [ADR 0004](adr/0004-authentication.md).
+Today the app uses the session of a browser (phase 1):
+
+- **What is kept.** After the sign-in the app keeps the session cookie and
+  its CSRF token, together with the server address they belong to, in the
+  secure storage (Keychain on iOS, Keystore on Android) and nowhere else.
+  The password and the second-factor code are never stored or logged; the
+  sign-in screen clears them after a failed attempt. `Session.toString()`
+  leaves the secrets out, so they cannot end up in a log by accident.
+- **Where it is sent.** `ApiCredentials` adds the cookie to requests, and the
+  CSRF token to POST, PUT, PATCH and DELETE, but only to requests under the
+  address of the session's own server. Connecting another server cannot
+  leak the session to it.
+- **When it ends.** A 401 from any request that carried the session ends it
+  on the device, and the sign-in screen says that the session has ended.
+  *Sign out* asks the server to end the session and forgets it on the device
+  even when the server cannot be reached; it can then be ended in the
+  session list of the web interface. *Use another server* signs out first.
+- **Second factor.** Accounts with an authenticator app enter its code or a
+  recovery code. Accounts with passkeys only can sign in with a recovery
+  code until the app can sign in through the browser (#45).
