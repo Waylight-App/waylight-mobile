@@ -39,8 +39,11 @@ Use the roles, never colour values (a test enforces it).
 | Warnings (HTTP, offline, stale data) | `StatusColors.of(context).warning`, `warningContainer` / `onWarningContainer` |
 | Success (service up) | `StatusColors.of(context).success` |
 
-The scheme comes from the Waylight blue `#3365E8` with
-`DynamicSchemeVariant.fidelity`; in light mode the blue itself is primary.
+The scheme comes from Amber `#F2B441`, the default theme of the web
+interface, with `DynamicSchemeVariant.fidelity`. Amber is the surface of
+filled buttons, with `#1A1206` on it; `primary` (text, icons, focus) is the
+readable accent text of the web theme, `#9C5D00` in light and `#FFD27A` in
+dark mode.
 All pairs above have a contrast of at least 4.5:1 in light and dark.
 
 ### Type

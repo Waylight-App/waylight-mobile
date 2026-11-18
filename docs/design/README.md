@@ -35,10 +35,10 @@ service ([architecture](../architecture.md)).
 - **Material 3**, the design language of Android and of
   `package:material_ui`; on iOS the same look, with platform behaviour
   (back swipe, scroll physics) from Flutter.
-- **Waylight blue `#3365E8` as primary colour**, the accent of the web
+- **Amber `#F2B441` as accent colour**, the default theme of the web
   interface. In code: `ColorScheme.fromSeed` with
-  `DynamicSchemeVariant.fidelity`, which keeps the seed colour as primary
-  instead of muting it.
+  `DynamicSchemeVariant.fidelity`; filled buttons are Amber with dark text,
+  and text and icons use the darker accent text of the web theme.
 - **Light and dark** from the same seed; every screen works in both.
 - **Type:** Roboto (the system font on Android, San Francisco on iOS) for
   everything; the wordmark *Waylight* in Fraunces, as on the sign-in card of
