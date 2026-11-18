@@ -39,6 +39,9 @@ Details, editor setup and troubleshooting: [docs/development.md](docs/developmen
 6. **Conventional Commits** for the pull request title
    (`feat(auth): sign in with a passkey`); it becomes the commit on `main`
    and the changelog entry ([workflow](docs/workflow.md#3-commits)).
+   Branches are named `<type>/<issue>-<slug>`. Commits carry no trailers
+   except `Signed-off-by`, and nothing in the repository attributes work to
+   tools or assistants or links to sessions or chats.
 7. **`make ci` before every push.** CI runs the same.
 8. **Lean by default.** A new runtime dependency needs a reason in the pull
    request ([ADR 0003](docs/adr/0003-dependency-policy.md)).
