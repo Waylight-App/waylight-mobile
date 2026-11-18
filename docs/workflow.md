@@ -26,7 +26,9 @@ Every change starts with an issue, created with one of the issue forms.
 - **Labels** say where and how urgent: one or more `area: …`, one
   `priority: …`, and if needed `needs: server` (waits for a change in the
   server repository), `needs: decision` (an ADR first), `blocked`,
-  `good first issue`. The list is in [`.github/labels.yml`](../.github/labels.yml).
+  `good first issue`. The list is in [`.github/labels.yml`](../.github/labels.yml);
+  the *Labels* workflow creates and updates them on `main` (labels that are
+  not in the file are kept).
 - **Epics** are parent issues labelled `epic`, one per roadmap phase. Their
   sub-issues are the actual work, so the progress bar of the epic shows how
   far a phase is ([ROADMAP.md](../ROADMAP.md)).
