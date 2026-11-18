@@ -19,7 +19,8 @@ const _serverTimeout = Duration(seconds: 30);
 
 final _address = find.byKey(const ValueKey('connect.address'));
 final _submit = find.byKey(const ValueKey('connect.submit'));
-final _disconnect = find.byKey(const ValueKey('home.disconnect'));
+final _menu = find.byKey(const ValueKey('dashboard.menu'));
+final _disconnect = find.byKey(const ValueKey('dashboard.disconnect'));
 final _otherServer = find.byKey(const ValueKey('signIn.otherServer'));
 final _password = find.byKey(const ValueKey('signIn.password'));
 final _signIn = find.byKey(const ValueKey('signIn.submit'));
@@ -27,7 +28,7 @@ final _signIn = find.byKey(const ValueKey('signIn.submit'));
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets('connects to the server, signs in and shows the home screen', (
+  testWidgets('connects to the server, signs in and shows the tabs', (
     tester,
   ) async {
     expect(
@@ -39,11 +40,15 @@ void main() {
     await tester.pumpAndSettle();
 
     // A server and session kept from an earlier run skip the first screens.
-    for (final leave in [_disconnect, _otherServer]) {
-      if (leave.evaluate().isNotEmpty) {
-        await tester.tap(leave);
-        await _pumpUntilFound(tester, _address);
-      }
+    if (_menu.evaluate().isNotEmpty) {
+      await tester.tap(_menu);
+      await tester.pumpAndSettle();
+      await tester.tap(_disconnect);
+      await _pumpUntilFound(tester, _address);
+    }
+    if (_otherServer.evaluate().isNotEmpty) {
+      await tester.tap(_otherServer);
+      await _pumpUntilFound(tester, _address);
     }
 
     await tester.enterText(_address, serverUrl);
@@ -52,9 +57,11 @@ void main() {
 
     await tester.enterText(_password, password);
     await tester.tap(_signIn);
-    await _pumpUntilFound(tester, _disconnect);
+    await _pumpUntilFound(tester, find.byType(Tab));
 
-    expect(_disconnect, findsOneWidget);
+    // The demo has several tabs; the first is open with its widgets.
+    expect(find.byType(Tab), findsWidgets);
+    expect(find.text('Home'), findsWidgets);
   });
 }
 

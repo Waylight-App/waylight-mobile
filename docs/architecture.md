@@ -187,7 +187,7 @@ composition root (open/closed principle). The exact API is settled in #17.
 | --- | --- | --- | --- |
 | API model | `data/services/api/models` | `AuthStatusApiModel` | Exactly the JSON of one endpoint (see `api/modules/*.yaml` of the server). Parsed with patterns; unknown shapes become `null` or an `ApiException`. |
 | Domain model | `domain/models` | `ServerStatus` | What the app needs, independent of the JSON. Immutable, with `==` and `hashCode`. |
-| UI state | view model getters | `HomeViewModel.server` | Formatted for display. |
+| UI state | view model getters | `SignInViewModel.server` | Formatted for display. |
 
 Mapping happens in the repository. A new server field never reaches a
 widget without passing through the domain model.

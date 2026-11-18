@@ -52,16 +52,8 @@ class AppLocalizationsDe extends AppLocalizations {
       'Ohne https:// wird dein Passwort unverschlüsselt übertragen. Nutze das nur in deinem eigenen Netz.';
 
   @override
-  String homeConnectedTo(String server) {
-    return 'Verbunden mit $server';
-  }
-
-  @override
   String get homeSetupRequired =>
       'Dieser Server hat noch kein Konto. Schließe zuerst die Einrichtung im Browser ab.';
-
-  @override
-  String get homeComingSoon => 'Dein Dashboard folgt in der nächsten Version.';
 
   @override
   String get homeDisconnect => 'Anderen Server verwenden';
@@ -69,9 +61,6 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get connectPrivacy =>
       'Die App spricht nur mit deinem Server und mit niemandem sonst.';
-
-  @override
-  String get homeServerTitle => 'Server';
 
   @override
   String get errorUnreachable =>
@@ -146,4 +135,20 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get homeSignOut => 'Abmelden';
+
+  @override
+  String get dashboardWidgetNotYet => 'Noch nicht in der App verfügbar.';
+
+  @override
+  String get dashboardRetry => 'Erneut versuchen';
+
+  @override
+  String get dashboardNoTabs =>
+      'Für dein Konto gibt es noch keine Tabs. Lege einen in der Weboberfläche an.';
+
+  @override
+  String get dashboardEmptyTab => 'Dieser Tab hat noch keine Widgets.';
+
+  @override
+  String get dashboardMenu => 'Konto';
 }

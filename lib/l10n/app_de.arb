@@ -12,12 +12,9 @@
   "connectErrorParts": "Lass Benutzername, Passwort und alles nach ? oder # weg.",
   "connectErrorNotWaylight": "Unter dieser Adresse antwortet kein Waylight-Server.",
   "connectInsecureWarning": "Ohne https:// wird dein Passwort unverschlüsselt übertragen. Nutze das nur in deinem eigenen Netz.",
-  "homeConnectedTo": "Verbunden mit {server}",
   "homeSetupRequired": "Dieser Server hat noch kein Konto. Schließe zuerst die Einrichtung im Browser ab.",
-  "homeComingSoon": "Dein Dashboard folgt in der nächsten Version.",
   "homeDisconnect": "Anderen Server verwenden",
   "connectPrivacy": "Die App spricht nur mit deinem Server und mit niemandem sonst.",
-  "homeServerTitle": "Server",
   "errorUnreachable": "Der Server ist nicht erreichbar. Ist dein Handy im selben Netz oder VPN?",
   "errorUnauthorized": "Deine Sitzung ist abgelaufen. Bitte melde dich erneut an.",
   "errorForbidden": "Dein Konto darf das nicht.",
@@ -38,5 +35,10 @@
   "signInButton": "Anmelden",
   "signInErrorCredentials": "Kontoname oder Passwort ist falsch.",
   "signInErrorCode": "Passwort oder Code ist falsch.",
-  "homeSignOut": "Abmelden"
+  "homeSignOut": "Abmelden",
+  "dashboardWidgetNotYet": "Noch nicht in der App verfügbar.",
+  "dashboardRetry": "Erneut versuchen",
+  "dashboardNoTabs": "Für dein Konto gibt es noch keine Tabs. Lege einen in der Weboberfläche an.",
+  "dashboardEmptyTab": "Dieser Tab hat noch keine Widgets.",
+  "dashboardMenu": "Konto"
 }

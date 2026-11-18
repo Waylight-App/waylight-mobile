@@ -170,23 +170,11 @@ abstract class AppLocalizations {
   /// **'Without https:// your password travels unencrypted. Use this only in your own network.'**
   String get connectInsecureWarning;
 
-  /// Status line on the home screen.
-  ///
-  /// In en, this message translates to:
-  /// **'Connected to {server}'**
-  String homeConnectedTo(String server);
-
   /// Hint when the server still needs its first setup.
   ///
   /// In en, this message translates to:
   /// **'This server has no account yet. Finish the setup in your browser first.'**
   String get homeSetupRequired;
-
-  /// Placeholder text until sign-in is implemented.
-  ///
-  /// In en, this message translates to:
-  /// **'Your dashboard follows in the next version.'**
-  String get homeComingSoon;
 
   /// Button that forgets the server address.
   ///
@@ -199,12 +187,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The app talks to your server and nobody else.'**
   String get connectPrivacy;
-
-  /// Title of the card that shows the connected server.
-  ///
-  /// In en, this message translates to:
-  /// **'Server'**
-  String get homeServerTitle;
 
   /// Error: no answer from the server.
   ///
@@ -331,6 +313,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sign out'**
   String get homeSignOut;
+
+  /// Placeholder text of a widget without a native view.
+  ///
+  /// In en, this message translates to:
+  /// **'Not available in the app yet.'**
+  String get dashboardWidgetNotYet;
+
+  /// Button that reloads the dashboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get dashboardRetry;
+
+  /// Shown when the account has no tabs.
+  ///
+  /// In en, this message translates to:
+  /// **'There are no tabs for your account yet. Add one in the web interface.'**
+  String get dashboardNoTabs;
+
+  /// Shown on a tab without widgets.
+  ///
+  /// In en, this message translates to:
+  /// **'This tab has no widgets yet.'**
+  String get dashboardEmptyTab;
+
+  /// Tooltip of the account menu in the app bar.
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get dashboardMenu;
 }
 
 class _AppLocalizationsDelegate

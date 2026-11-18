@@ -158,8 +158,11 @@ rebuilds.
 GoRoute(
   path: Routes.home,
   builder: (context, state) => ViewModelHost(
-    create: (context) => HomeViewModel(serverRepository: context.read()),
-    builder: (context, viewModel) => HomeScreen(viewModel: viewModel),
+    create: (context) => SignInViewModel(
+      serverRepository: context.read(),
+      sessionRepository: context.read(),
+    ),
+    builder: (context, viewModel) => SignInScreen(viewModel: viewModel),
   ),
 )
 ```
