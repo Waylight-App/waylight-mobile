@@ -40,6 +40,21 @@ jobs:
             The subject "{subject}" must start with a lower-case letter and
             must not end with a full stop, e.g. "feat(auth): sign in with a passkey".
 
+  hygiene:
+    name: Commit hygiene
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - name: Branch name, trailers and attribution (docs/workflow.md)
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+          BRANCH: ${{ github.head_ref }}
+          BASE: ${{ github.event.pull_request.base.sha }}
+          HEAD: ${{ github.event.pull_request.head.sha }}
+        run: tool/check_pr_hygiene.sh "$BRANCH" "$BASE" "$HEAD"
+
   linked-issue:
     name: Linked issue
     runs-on: ubuntu-latest

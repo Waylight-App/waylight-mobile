@@ -79,6 +79,17 @@ footer.
 Commits on a branch can be messy; the pull request title is what lands on
 `main`.
 
+Commit messages describe the change and nothing else:
+
+- No trailers except `Signed-off-by` (no co-author lines, no tool tags).
+- No attribution to tools or assistants and no links to sessions or chats,
+  in commits, pull request descriptions, issues or comments.
+- Issues and pull requests state decisions and facts; internal discussions,
+  motives and business reasoning stay out of the repository.
+
+The *Commit hygiene* check of every pull request enforces the branch name
+and these rules.
+
 ## 4. Pull requests
 
 1. Run `make ci` locally.
