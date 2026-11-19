@@ -1,0 +1,46 @@
+{
+  "league": {
+    "id": "bl1",
+    "name": "1. Bundesliga"
+  },
+  "season": 2026,
+  "team": null,
+  "last": null,
+  "next": null,
+  "position": null,
+  "table": [
+    {
+      "position": 1,
+      "team": {
+        "id": 1,
+        "name": "FC Musterstadt",
+        "shortName": "Musterstadt"
+      },
+      "played": 11,
+      "points": 25,
+      "goalDiff": 12
+    },
+    {
+      "position": 2,
+      "team": {
+        "id": 3,
+        "name": "VfB Demodorf",
+        "shortName": "Demodorf"
+      },
+      "played": 11,
+      "points": 20,
+      "goalDiff": 5
+    },
+    {
+      "position": 3,
+      "team": {
+        "id": 2,
+        "name": "SV Beispielhausen",
+        "shortName": "Beispielhausen"
+      },
+      "played": 11,
+      "points": 14,
+      "goalDiff": -4
+    }
+  ]
+}

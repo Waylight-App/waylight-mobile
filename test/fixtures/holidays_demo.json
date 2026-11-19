@@ -1,0 +1,80 @@
+{
+  "state": "NI",
+  "entries": [
+    {
+      "kind": "public",
+      "key": "christmas_day",
+      "name": "",
+      "start": "2026-12-25",
+      "end": "2026-12-25",
+      "current": false,
+      "daysUntil": 36
+    },
+    {
+      "kind": "public",
+      "key": "boxing_day",
+      "name": "",
+      "start": "2026-12-26",
+      "end": "2026-12-26",
+      "current": false,
+      "daysUntil": 37
+    },
+    {
+      "kind": "public",
+      "key": "new_year",
+      "name": "",
+      "start": "2027-01-01",
+      "end": "2027-01-01",
+      "current": false,
+      "daysUntil": 43
+    },
+    {
+      "kind": "public",
+      "key": "good_friday",
+      "name": "",
+      "start": "2027-03-26",
+      "end": "2027-03-26",
+      "current": false,
+      "daysUntil": 127
+    },
+    {
+      "kind": "public",
+      "key": "easter_monday",
+      "name": "",
+      "start": "2027-03-29",
+      "end": "2027-03-29",
+      "current": false,
+      "daysUntil": 130
+    },
+    {
+      "kind": "public",
+      "key": "labour_day",
+      "name": "",
+      "start": "2027-05-01",
+      "end": "2027-05-01",
+      "current": false,
+      "daysUntil": 163
+    },
+    {
+      "kind": "public",
+      "key": "ascension",
+      "name": "",
+      "start": "2027-05-06",
+      "end": "2027-05-06",
+      "current": false,
+      "daysUntil": 168
+    },
+    {
+      "kind": "public",
+      "key": "whit_monday",
+      "name": "",
+      "start": "2027-05-17",
+      "end": "2027-05-17",
+      "current": false,
+      "daysUntil": 179
+    }
+  ],
+  "school": false,
+  "schoolUpdatedAt": null,
+  "schoolError": ""
+}

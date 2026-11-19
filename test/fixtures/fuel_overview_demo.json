@@ -1,0 +1,43 @@
+{
+  "fuel": "e10",
+  "place": "Oldenburg",
+  "cheapest": [
+    {
+      "id": "0a1b2c3d-0000-4000-8000-000000000012",
+      "name": "Ammerl\u00e4nder Heerstra\u00dfe",
+      "brand": "JET",
+      "address": "Ammerl\u00e4nder Heerstr. 201, Oldenburg",
+      "distanceKm": 1.6,
+      "price": 1.689,
+      "open": true
+    },
+    {
+      "id": "0a1b2c3d-0000-4000-8000-000000000014",
+      "name": "Freie Tankstelle B\u00fcrgerfelde",
+      "brand": "",
+      "address": "Alexanderstr. 88, Oldenburg",
+      "distanceKm": 2.2,
+      "price": 1.709,
+      "open": true
+    },
+    {
+      "id": "0a1b2c3d-0000-4000-8000-000000000011",
+      "name": "Tankstelle am Stadion",
+      "brand": "ARAL",
+      "address": "Maastrichter Str. 12, Oldenburg",
+      "distanceKm": 0.8,
+      "price": 1.739,
+      "open": true
+    },
+    {
+      "id": "0a1b2c3d-0000-4000-8000-000000000013",
+      "name": "Autohof Etzhorn",
+      "brand": "Shell",
+      "address": "Butjadinger Str. 330, Oldenburg",
+      "distanceKm": 3.1,
+      "price": 1.769,
+      "open": true
+    }
+  ],
+  "favourites": []
+}

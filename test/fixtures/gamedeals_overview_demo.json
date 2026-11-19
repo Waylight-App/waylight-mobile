@@ -1,0 +1,48 @@
+{
+  "deals": [
+    {
+      "name": "Skyline Gardens",
+      "url": "https://store.steampowered.com/app/1003",
+      "discountPct": 75,
+      "finalPrice": "4,49\u20ac",
+      "endsAt": "2026-11-22T20:37:38Z"
+    },
+    {
+      "name": "Harbour Master Simulator",
+      "url": "https://store.steampowered.com/app/1001",
+      "discountPct": 60,
+      "finalPrice": "9,99\u20ac",
+      "endsAt": "2026-11-22T20:37:38Z"
+    },
+    {
+      "name": "Northern Rails",
+      "url": "https://store.steampowered.com/app/1002",
+      "discountPct": 26,
+      "finalPrice": "14,79\u20ac",
+      "endsAt": "2026-11-22T20:37:38Z"
+    }
+  ],
+  "freeNow": [
+    {
+      "title": "Lighthouse Builder",
+      "url": "https://store.epicgames.com/p/lighthouse-builder",
+      "start": "2026-11-17T20:37:38Z",
+      "end": "2026-11-24T20:37:38Z"
+    },
+    {
+      "title": "Tidal Racers",
+      "url": "https://store.epicgames.com/p/tidal-racers",
+      "start": "2026-11-17T20:37:38Z",
+      "end": "2026-11-24T20:37:38Z"
+    }
+  ],
+  "freeNext": [
+    {
+      "title": "Moorland Mysteries",
+      "url": "https://store.epicgames.com/p/moorland-mysteries",
+      "start": "2026-11-24T20:37:38Z",
+      "end": "2026-12-01T20:37:38Z"
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,49 @@
+{
+  "calls": [
+    {
+      "type": "incoming",
+      "number": "0441 123456",
+      "name": "Mama",
+      "at": "2026-11-19T20:03:00+01:00",
+      "durationMinutes": 12
+    },
+    {
+      "type": "missed",
+      "number": "0170 9876543",
+      "name": "",
+      "at": "2026-11-19T18:03:00+01:00",
+      "durationMinutes": 0
+    },
+    {
+      "type": "outgoing",
+      "number": "0441 765432",
+      "name": "Pizzeria Lappan",
+      "at": "2026-11-19T16:03:00+01:00",
+      "durationMinutes": 2
+    },
+    {
+      "type": "incoming",
+      "number": "0441 555010",
+      "name": "Praxis Dr. Meyer",
+      "at": "2026-11-18T19:03:00+01:00",
+      "durationMinutes": 4
+    },
+    {
+      "type": "rejected",
+      "number": "0800 1112223",
+      "name": "",
+      "at": "2026-11-18T15:03:00+01:00",
+      "durationMinutes": 0
+    },
+    {
+      "type": "outgoing",
+      "number": "0151 2233445",
+      "name": "Jonas",
+      "at": "2026-11-17T20:03:00+01:00",
+      "durationMinutes": 31
+    }
+  ],
+  "updatedAt": "2026-11-19T21:03:56.926519382Z",
+  "hint": "",
+  "error": ""
+}

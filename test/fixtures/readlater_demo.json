@@ -1,0 +1,54 @@
+[
+  {
+    "id": "b5fc332d2861911595d4b934e40bfc9e",
+    "url": "https://example.org/homelab/backups-3-2-1",
+    "title": "The 3-2-1 backup rule, explained for a homelab",
+    "site": "Homelab Notes",
+    "excerpt": "Three copies, two media, one offsite: what that means for a small server at home.",
+    "readingMinutes": 9,
+    "status": "unread",
+    "savedAt": "2026-11-19T10:37:30.888258646Z",
+    "bytes": 336,
+    "error": "",
+    "pending": false
+  },
+  {
+    "id": "ce003398b2c87ae9cc35d89f5ba9826e",
+    "url": "https://example.org/cooking/sourdough-starter",
+    "title": "A sourdough starter in five days",
+    "site": "Weekend Kitchen",
+    "excerpt": "Flour, water and patience: a schedule that fits around a working week.",
+    "readingMinutes": 5,
+    "status": "unread",
+    "savedAt": "2026-11-18T11:37:30.888258646Z",
+    "bytes": 103,
+    "error": "",
+    "pending": false
+  },
+  {
+    "id": "e495efb368548d4e98ddc85f206c5134",
+    "url": "https://example.org/travel/north-sea-islands",
+    "title": "Five North Sea islands for a long weekend",
+    "site": "Coastal Travel",
+    "excerpt": "From Norderney to Spiekeroog: which island suits which kind of trip.",
+    "readingMinutes": 6,
+    "status": "read",
+    "savedAt": "2026-11-16T13:37:30.888258646Z",
+    "bytes": 123,
+    "error": "",
+    "pending": false
+  },
+  {
+    "id": "b34b5f98d90e6d15ec52503b813a9889",
+    "url": "https://example.org/tech/self-hosting-checklist",
+    "title": "A checklist before you expose a service to the internet",
+    "site": "Self-Hosted Weekly",
+    "excerpt": "Reverse proxy, updates, backups and two-factor authentication: the boring parts that matter.",
+    "readingMinutes": 11,
+    "status": "unread",
+    "savedAt": "2026-11-14T13:37:30.888258646Z",
+    "bytes": 119,
+    "error": "",
+    "pending": false
+  }
+]

@@ -1351,6 +1351,582 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Cheapest hours: {hours}'**
   String electricityCheapest(String hours);
+
+  /// Default title of the holidays widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Holidays'**
+  String get holidaysTitle;
+
+  /// Holidays widget without entries.
+  ///
+  /// In en, this message translates to:
+  /// **'No holidays ahead.'**
+  String get holidaysEmpty;
+
+  /// A holiday going on now.
+  ///
+  /// In en, this message translates to:
+  /// **'now'**
+  String get holidaysNow;
+
+  /// Public holiday.
+  ///
+  /// In en, this message translates to:
+  /// **'New Year\'s Day'**
+  String get holidayNewYear;
+
+  /// Public holiday.
+  ///
+  /// In en, this message translates to:
+  /// **'Epiphany'**
+  String get holidayEpiphany;
+
+  /// Public holiday.
+  ///
+  /// In en, this message translates to:
+  /// **'International Women\'s Day'**
+  String get holidayWomensDay;
+
+  /// Public holiday.
+  ///
+  /// In en, this message translates to:
+  /// **'Good Friday'**
+  String get holidayGoodFriday;
+
+  /// Public holiday.
+  ///
+  /// In en, this message translates to:
+  /// **'Easter Sunday'**
+  String get holidayEasterSunday;
+
+  /// Public holiday.
+  ///
+  /// In en, this message translates to:
+  /// **'Easter Monday'**
+  String get holidayEasterMonday;
+
+  /// Public holiday.
+  ///
+  /// In en, this message translates to:
+  /// **'Labour Day'**
+  String get holidayLabourDay;
+
+  /// Public holiday.
+  ///
+  /// In en, this message translates to:
+  /// **'Ascension Day'**
+  String get holidayAscension;
+
+  /// Public holiday.
+  ///
+  /// In en, this message translates to:
+  /// **'Whit Sunday'**
+  String get holidayWhitSunday;
+
+  /// Public holiday.
+  ///
+  /// In en, this message translates to:
+  /// **'Whit Monday'**
+  String get holidayWhitMonday;
+
+  /// Public holiday.
+  ///
+  /// In en, this message translates to:
+  /// **'Corpus Christi'**
+  String get holidayCorpusChristi;
+
+  /// Public holiday.
+  ///
+  /// In en, this message translates to:
+  /// **'Assumption Day'**
+  String get holidayAssumption;
+
+  /// Public holiday.
+  ///
+  /// In en, this message translates to:
+  /// **'World Children\'s Day'**
+  String get holidayChildrensDay;
+
+  /// Public holiday.
+  ///
+  /// In en, this message translates to:
+  /// **'Day of German Unity'**
+  String get holidayGermanUnity;
+
+  /// Public holiday.
+  ///
+  /// In en, this message translates to:
+  /// **'Reformation Day'**
+  String get holidayReformation;
+
+  /// Public holiday.
+  ///
+  /// In en, this message translates to:
+  /// **'All Saints\' Day'**
+  String get holidayAllSaints;
+
+  /// Public holiday.
+  ///
+  /// In en, this message translates to:
+  /// **'Day of Repentance and Prayer'**
+  String get holidayRepentance;
+
+  /// Public holiday.
+  ///
+  /// In en, this message translates to:
+  /// **'Christmas Day'**
+  String get holidayChristmasDay;
+
+  /// Public holiday.
+  ///
+  /// In en, this message translates to:
+  /// **'Boxing Day'**
+  String get holidayBoxingDay;
+
+  /// Default title of the disk health widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Disk health'**
+  String get diskHealthTitle;
+
+  /// Disk health widget without disks.
+  ///
+  /// In en, this message translates to:
+  /// **'No disks reported yet.'**
+  String get diskHealthEmpty;
+
+  /// A disk that needs attention.
+  ///
+  /// In en, this message translates to:
+  /// **'Warning'**
+  String get diskHealthWarning;
+
+  /// A disk that is failing.
+  ///
+  /// In en, this message translates to:
+  /// **'Failing'**
+  String get diskHealthFailing;
+
+  /// A disk without a current verdict.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown'**
+  String get diskHealthUnknown;
+
+  /// Default title of the Docker widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Docker'**
+  String get dockerTitle;
+
+  /// A container whose health check fails.
+  ///
+  /// In en, this message translates to:
+  /// **'unhealthy'**
+  String get dockerUnhealthy;
+
+  /// A running Proxmox guest.
+  ///
+  /// In en, this message translates to:
+  /// **'Running'**
+  String get proxmoxRunning;
+
+  /// A stopped Proxmox guest.
+  ///
+  /// In en, this message translates to:
+  /// **'Stopped'**
+  String get proxmoxStopped;
+
+  /// Default title of the speed test widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Speed test'**
+  String get speedtestTitle;
+
+  /// Speed test widget without results.
+  ///
+  /// In en, this message translates to:
+  /// **'No results yet.'**
+  String get speedtestEmpty;
+
+  /// Download speed.
+  ///
+  /// In en, this message translates to:
+  /// **'Download'**
+  String get speedtestDownload;
+
+  /// Upload speed.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload'**
+  String get speedtestUpload;
+
+  /// Ping time.
+  ///
+  /// In en, this message translates to:
+  /// **'Ping'**
+  String get speedtestPing;
+
+  /// Default title of the timeline widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Timeline'**
+  String get timelineTitle;
+
+  /// Timeline widget without events.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing happened yet.'**
+  String get timelineEmpty;
+
+  /// WireGuard widget without peers.
+  ///
+  /// In en, this message translates to:
+  /// **'No peers yet.'**
+  String get wireguardEmpty;
+
+  /// Default title of the FRITZ!Box call list.
+  ///
+  /// In en, this message translates to:
+  /// **'Calls'**
+  String get callsTitle;
+
+  /// Call list without calls.
+  ///
+  /// In en, this message translates to:
+  /// **'No calls.'**
+  String get callsEmpty;
+
+  /// Spoken kind of a call.
+  ///
+  /// In en, this message translates to:
+  /// **'Incoming call'**
+  String get callsIncoming;
+
+  /// Spoken kind of a call.
+  ///
+  /// In en, this message translates to:
+  /// **'Outgoing call'**
+  String get callsOutgoing;
+
+  /// A missed call.
+  ///
+  /// In en, this message translates to:
+  /// **'missed'**
+  String get callsMissed;
+
+  /// Spoken kind of a call.
+  ///
+  /// In en, this message translates to:
+  /// **'Rejected call'**
+  String get callsRejected;
+
+  /// Default title of the AdGuard/Pi-hole widget.
+  ///
+  /// In en, this message translates to:
+  /// **'DNS filter'**
+  String get dnsFilterTitle;
+
+  /// DNS blocking is on.
+  ///
+  /// In en, this message translates to:
+  /// **'Protection on'**
+  String get dnsFilterOn;
+
+  /// DNS blocking is paused.
+  ///
+  /// In en, this message translates to:
+  /// **'Protection paused'**
+  String get dnsFilterPaused;
+
+  /// Wear of an SSD.
+  ///
+  /// In en, this message translates to:
+  /// **'{percent} % worn'**
+  String diskHealthWear(int percent);
+
+  /// Container counts.
+  ///
+  /// In en, this message translates to:
+  /// **'{running} running · {stopped} stopped · {unhealthy} unhealthy'**
+  String dockerSummary(int running, int stopped, int unhealthy);
+
+  /// Average of recent results.
+  ///
+  /// In en, this message translates to:
+  /// **'average {mbps} Mbit/s'**
+  String speedtestAverage(int mbps);
+
+  /// Date of the last handshake.
+  ///
+  /// In en, this message translates to:
+  /// **'last handshake {date}'**
+  String wireguardHandshake(String date);
+
+  /// Queries in the last day.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} queries in 24 h'**
+  String dnsFilterQueries(String count);
+
+  /// Blocked queries.
+  ///
+  /// In en, this message translates to:
+  /// **'Blocked: {count}'**
+  String dnsFilterBlocked(String count);
+
+  /// Default title of the briefing widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily briefing'**
+  String get briefingTitle;
+
+  /// Briefing section.
+  ///
+  /// In en, this message translates to:
+  /// **'Weather warnings'**
+  String get briefingWarnings;
+
+  /// Briefing section with failures.
+  ///
+  /// In en, this message translates to:
+  /// **'Since last evening'**
+  String get briefingIncidents;
+
+  /// Briefing section.
+  ///
+  /// In en, this message translates to:
+  /// **'To-dos'**
+  String get briefingTodos;
+
+  /// Briefing section.
+  ///
+  /// In en, this message translates to:
+  /// **'Appointments'**
+  String get briefingEvents;
+
+  /// Health warnings of Sonarr/Radarr.
+  ///
+  /// In en, this message translates to:
+  /// **'Warnings'**
+  String get arrHealth;
+
+  /// Upcoming episodes and films.
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming'**
+  String get arrUpcoming;
+
+  /// Download queue.
+  ///
+  /// In en, this message translates to:
+  /// **'Downloads'**
+  String get arrQueue;
+
+  /// Default title of the media widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Media'**
+  String get mediaTitle;
+
+  /// Media playing now.
+  ///
+  /// In en, this message translates to:
+  /// **'Playing now'**
+  String get mediaPlaying;
+
+  /// Recently added media.
+  ///
+  /// In en, this message translates to:
+  /// **'Recently added'**
+  String get mediaRecent;
+
+  /// Default title of the music releases widget.
+  ///
+  /// In en, this message translates to:
+  /// **'New releases'**
+  String get releasesTitle;
+
+  /// Default title of the game deals widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Game deals'**
+  String get gameDealsTitle;
+
+  /// Free games now.
+  ///
+  /// In en, this message translates to:
+  /// **'Free now'**
+  String get gameDealsFree;
+
+  /// Discounted games.
+  ///
+  /// In en, this message translates to:
+  /// **'On sale'**
+  String get gameDealsDeals;
+
+  /// Free games next.
+  ///
+  /// In en, this message translates to:
+  /// **'Free soon'**
+  String get gameDealsNext;
+
+  /// Default title of the space widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Rocket launches'**
+  String get spaceTitle;
+
+  /// Default title of the read later widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Read later'**
+  String get readLaterTitle;
+
+  /// A list widget without entries.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing here yet.'**
+  String get listEmpty;
+
+  /// Default title of the fuel widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Fuel prices'**
+  String get fuelTitle;
+
+  /// Fuel widget without stations.
+  ///
+  /// In en, this message translates to:
+  /// **'No stations found.'**
+  String get fuelEmpty;
+
+  /// A closed station.
+  ///
+  /// In en, this message translates to:
+  /// **'closed'**
+  String get fuelClosed;
+
+  /// Default title of the markets widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Markets'**
+  String get marketsTitle;
+
+  /// Default title of the calendar widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Calendar'**
+  String get calendarTitle;
+
+  /// Calendar widget without events.
+  ///
+  /// In en, this message translates to:
+  /// **'No appointments ahead.'**
+  String get calendarEmpty;
+
+  /// An all-day event.
+  ///
+  /// In en, this message translates to:
+  /// **'all day'**
+  String get calendarAllDay;
+
+  /// Default title of the phone list widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone list'**
+  String get phoneListTitle;
+
+  /// Phone list without entries.
+  ///
+  /// In en, this message translates to:
+  /// **'No entries yet.'**
+  String get phoneListEmpty;
+
+  /// Default title of the study widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Study progress'**
+  String get studyTitle;
+
+  /// Weighted grade average.
+  ///
+  /// In en, this message translates to:
+  /// **'Average grade'**
+  String get studyAverage;
+
+  /// A module in progress.
+  ///
+  /// In en, this message translates to:
+  /// **'in progress'**
+  String get studyInProgress;
+
+  /// Number of photos.
+  ///
+  /// In en, this message translates to:
+  /// **'Photos'**
+  String get appPhotos;
+
+  /// Number of videos.
+  ///
+  /// In en, this message translates to:
+  /// **'Videos'**
+  String get appVideos;
+
+  /// Number of accounts.
+  ///
+  /// In en, this message translates to:
+  /// **'Users'**
+  String get appUsers;
+
+  /// Pending app updates.
+  ///
+  /// In en, this message translates to:
+  /// **'App updates'**
+  String get appUpdates;
+
+  /// Nextcloud in maintenance mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Maintenance mode'**
+  String get appMaintenance;
+
+  /// Used storage.
+  ///
+  /// In en, this message translates to:
+  /// **'Storage'**
+  String get appStorage;
+
+  /// Default title of the sports widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Sports'**
+  String get sportsTitle;
+
+  /// More entries than shown.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} more'**
+  String listMore(int count);
+
+  /// Passed credits.
+  ///
+  /// In en, this message translates to:
+  /// **'{passed} of {total} credits'**
+  String studyCredits(String passed, String total);
+
+  /// Games played.
+  ///
+  /// In en, this message translates to:
+  /// **'{games} games'**
+  String sportsPlayed(int games);
+
+  /// Points in the table.
+  ///
+  /// In en, this message translates to:
+  /// **'{points} pts'**
+  String sportsPoints(int points);
 }
 
 class _AppLocalizationsDelegate

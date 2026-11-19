@@ -1,0 +1,29 @@
+{
+  "totalEcts": 180,
+  "passedEcts": 35,
+  "inProgressEcts": 10,
+  "openEcts": 12,
+  "passedModules": 4,
+  "modules": 7,
+  "percent": 19.444444444444446,
+  "average": 1.9,
+  "gradedEcts": 35,
+  "inProgress": [
+    {
+      "id": "8bf8cfcb9b03f9d4cfe2b66195ad9554",
+      "name": "Computer Networks",
+      "ects": 5,
+      "semester": 3,
+      "status": "in_progress",
+      "grade": null
+    },
+    {
+      "id": "826f505d36af035c7ee86c9c49ec7ab8",
+      "name": "IT Security",
+      "ects": 5,
+      "semester": 3,
+      "status": "in_progress",
+      "grade": null
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "upcoming": [
+    {
+      "instance": "Sonarr",
+      "title": "North Sea Stories",
+      "detail": "S02E05 \u00b7 Spring Tide",
+      "date": "2026-11-20T21:09:58Z",
+      "hasFile": false
+    },
+    {
+      "instance": "Sonarr",
+      "title": "Harbour Watch",
+      "detail": "S01E08 \u00b7 The Last Ferry",
+      "date": "2026-11-21T21:09:58Z",
+      "hasFile": false
+    },
+    {
+      "instance": "Radarr",
+      "title": "Paper Moons",
+      "detail": "2026",
+      "date": "2026-11-22T21:09:58Z",
+      "hasFile": false
+    },
+    {
+      "instance": "Sonarr",
+      "title": "North Sea Stories",
+      "detail": "S02E06 \u00b7 Gale Warning",
+      "date": "2026-11-27T21:09:58Z",
+      "hasFile": false
+    },
+    {
+      "instance": "Radarr",
+      "title": "The Quiet Harbour",
+      "detail": "2026",
+      "date": "2026-11-28T21:09:58Z",
+      "hasFile": false
+    }
+  ],
+  "queue": [
+    {
+      "instance": "Sonarr",
+      "title": "North.Sea.Stories.S02E04.1080p",
+      "status": "downloading",
+      "progress": 80,
+      "timeLeftSeconds": 130,
+      "error": ""
+    },
+    {
+      "instance": "Radarr",
+      "title": "Copper.Sky.2023.1080p",
+      "status": "downloading",
+      "progress": 70,
+      "timeLeftSeconds": 460,
+      "error": ""
+    }
+  ],
+  "health": [
+    {
+      "instance": "Radarr",
+      "severity": "warning",
+      "message": "Indexer Example Tracker is unavailable due to failures for more than 6 hours"
+    }
+  ],
+  "missing": {
+    "Radarr": 2,
+    "Sonarr": 5
+  },
+  "errors": []
+}

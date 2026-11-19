@@ -1,0 +1,34 @@
+{
+  "releases": [
+    {
+      "id": "a1b2c3d4-0000-4000-8000-000000000101",
+      "title": "Polar Night",
+      "artist": "Nordlicht Ensemble",
+      "type": "Album",
+      "date": "2026-11-17"
+    },
+    {
+      "id": "a1b2c3d4-0000-4000-8000-000000000201",
+      "title": "Ferry Songs",
+      "artist": "The Harbour Lights",
+      "type": "EP",
+      "date": "2026-11-13"
+    },
+    {
+      "id": "a1b2c3d4-0000-4000-8000-000000000301",
+      "title": "Heathland Sessions (Live)",
+      "artist": "Moorland Radio",
+      "type": "Album",
+      "date": "2026-11-08"
+    },
+    {
+      "id": "a1b2c3d4-0000-4000-8000-000000000102",
+      "title": "Low Sun",
+      "artist": "Nordlicht Ensemble",
+      "type": "Single",
+      "date": "2026-10-31"
+    }
+  ],
+  "updatedAt": "2026-11-19T19:37:38.591869634Z",
+  "error": ""
+}

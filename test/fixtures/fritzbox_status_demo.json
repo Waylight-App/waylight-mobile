@@ -1,0 +1,18 @@
+{
+  "model": "FRITZ!Box 7590 AX",
+  "wan": {
+    "connected": true,
+    "externalIp": "203.0.113.42",
+    "uptimeSeconds": 1033200,
+    "throughputKnown": true,
+    "downstreamBytesPerSecond": 4215000,
+    "upstreamBytesPerSecond": 612000,
+    "downstreamMaxBits": 250000000,
+    "upstreamMaxBits": 40000000,
+    "downstreamPercent": 13.488,
+    "upstreamPercent": 12.24
+  },
+  "hint": "",
+  "updatedAt": "2026-11-19T21:03:53.590903487Z",
+  "error": ""
+}

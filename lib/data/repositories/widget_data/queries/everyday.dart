@@ -90,3 +90,44 @@ ElectricityPrices? parseElectricity(Object? json) {
   }
   return null;
 }
+
+/// `GET /api/holidays`.
+const holidaysQuery = WidgetQuery<List<Holiday>>(
+  '/api/holidays',
+  parseHolidays,
+);
+
+/// Maps `GET /api/holidays`.
+List<Holiday>? parseHolidays(Object? json) {
+  if (json case {'entries': final Object? entries}) {
+    return listOf<Holiday>(entries, (e) {
+      if (e case {
+        'kind': final String kind,
+        'start': final String start,
+        'end': final String end,
+        'daysUntil': final int days,
+      }) {
+        final from = asDay(start);
+        final to = asDay(end);
+        if (from == null || to == null) return null;
+        return Holiday(
+          school: kind == 'school',
+          key: switch (e['key']) {
+            final String k => k,
+            _ => '',
+          },
+          name: switch (e['name']) {
+            final String n => n,
+            _ => '',
+          },
+          start: from,
+          end: to,
+          daysUntil: days,
+          current: e['current'] == true,
+        );
+      }
+      return null;
+    });
+  }
+  return null;
+}

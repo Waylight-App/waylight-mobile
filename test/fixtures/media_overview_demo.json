@@ -1,0 +1,64 @@
+{
+  "serverName": "Living room media server",
+  "recent": [
+    {
+      "id": "a1",
+      "title": "The Lighthouse Keeper",
+      "series": "",
+      "kind": "movie",
+      "year": 2025,
+      "addedAt": "2026-11-19T18:09:58Z"
+    },
+    {
+      "id": "a2",
+      "title": "Low Tide",
+      "series": "North Sea Stories",
+      "kind": "episode",
+      "year": 2026,
+      "addedAt": "2026-11-19T12:09:58Z"
+    },
+    {
+      "id": "a3",
+      "title": "Harbour Lights",
+      "series": "Nordlicht Ensemble",
+      "kind": "album",
+      "year": 2026,
+      "addedAt": "2026-11-19T01:09:58Z"
+    },
+    {
+      "id": "a4",
+      "title": "Paper Moons",
+      "series": "",
+      "kind": "movie",
+      "year": 2024,
+      "addedAt": "2026-11-18T15:09:58Z"
+    },
+    {
+      "id": "a5",
+      "title": "The Wadden Line",
+      "series": "North Sea Stories",
+      "kind": "episode",
+      "year": 2026,
+      "addedAt": "2026-11-17T19:09:58Z"
+    },
+    {
+      "id": "a6",
+      "title": "Copper Sky",
+      "series": "",
+      "kind": "movie",
+      "year": 2023,
+      "addedAt": "2026-11-16T18:09:58Z"
+    }
+  ],
+  "sessions": [
+    {
+      "user": "Anna",
+      "device": "Living room TV",
+      "title": "The Lighthouse Keeper",
+      "series": "",
+      "kind": "movie",
+      "paused": false,
+      "progress": 39
+    }
+  ]
+}

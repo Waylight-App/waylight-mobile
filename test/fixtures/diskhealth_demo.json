@@ -1,0 +1,53 @@
+[
+  {
+    "device": "/dev/nvme0",
+    "model": "Samsung SSD 980 PRO 1TB",
+    "protocol": "NVMe",
+    "capacityBytes": 1000204886016,
+    "checkedAt": "2026-11-19T14:27:30+01:00",
+    "status": "unknown",
+    "findings": [
+      {
+        "status": "unknown",
+        "code": "stale",
+        "value": 0,
+        "name": "",
+        "message": "The export is outdated; check the cron job of scripts/smart-export.sh"
+      }
+    ],
+    "temperature": 41,
+    "powerOnHours": 8123,
+    "reallocated": null,
+    "pending": null,
+    "percentageUsed": 3
+  },
+  {
+    "device": "/dev/sda",
+    "model": "WDC WD40EFRX-68N32N0",
+    "protocol": "ATA",
+    "capacityBytes": 4000787030016,
+    "checkedAt": "2026-11-19T14:27:30+01:00",
+    "status": "unknown",
+    "findings": [
+      {
+        "status": "unknown",
+        "code": "stale",
+        "value": 0,
+        "name": "",
+        "message": "The export is outdated; check the cron job of scripts/smart-export.sh"
+      },
+      {
+        "status": "warning",
+        "code": "reallocated",
+        "value": 2,
+        "name": "",
+        "message": "2 reallocated sectors"
+      }
+    ],
+    "temperature": 34,
+    "powerOnHours": 33712,
+    "reallocated": 2,
+    "pending": 0,
+    "percentageUsed": null
+  }
+]

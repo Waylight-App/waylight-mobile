@@ -730,4 +730,312 @@ class AppLocalizationsDe extends AppLocalizations {
   String electricityCheapest(String hours) {
     return 'Günstigste Stunden: $hours';
   }
+
+  @override
+  String get holidaysTitle => 'Feiertage';
+
+  @override
+  String get holidaysEmpty => 'Keine Feiertage in Sicht.';
+
+  @override
+  String get holidaysNow => 'jetzt';
+
+  @override
+  String get holidayNewYear => 'Neujahr';
+
+  @override
+  String get holidayEpiphany => 'Heilige Drei Könige';
+
+  @override
+  String get holidayWomensDay => 'Internationaler Frauentag';
+
+  @override
+  String get holidayGoodFriday => 'Karfreitag';
+
+  @override
+  String get holidayEasterSunday => 'Ostersonntag';
+
+  @override
+  String get holidayEasterMonday => 'Ostermontag';
+
+  @override
+  String get holidayLabourDay => 'Tag der Arbeit';
+
+  @override
+  String get holidayAscension => 'Christi Himmelfahrt';
+
+  @override
+  String get holidayWhitSunday => 'Pfingstsonntag';
+
+  @override
+  String get holidayWhitMonday => 'Pfingstmontag';
+
+  @override
+  String get holidayCorpusChristi => 'Fronleichnam';
+
+  @override
+  String get holidayAssumption => 'Mariä Himmelfahrt';
+
+  @override
+  String get holidayChildrensDay => 'Weltkindertag';
+
+  @override
+  String get holidayGermanUnity => 'Tag der Deutschen Einheit';
+
+  @override
+  String get holidayReformation => 'Reformationstag';
+
+  @override
+  String get holidayAllSaints => 'Allerheiligen';
+
+  @override
+  String get holidayRepentance => 'Buß- und Bettag';
+
+  @override
+  String get holidayChristmasDay => '1. Weihnachtstag';
+
+  @override
+  String get holidayBoxingDay => '2. Weihnachtstag';
+
+  @override
+  String get diskHealthTitle => 'Festplatten';
+
+  @override
+  String get diskHealthEmpty => 'Noch keine Festplatten gemeldet.';
+
+  @override
+  String get diskHealthWarning => 'Warnung';
+
+  @override
+  String get diskHealthFailing => 'Defekt';
+
+  @override
+  String get diskHealthUnknown => 'Unbekannt';
+
+  @override
+  String get dockerTitle => 'Docker';
+
+  @override
+  String get dockerUnhealthy => 'fehlerhaft';
+
+  @override
+  String get proxmoxRunning => 'Läuft';
+
+  @override
+  String get proxmoxStopped => 'Gestoppt';
+
+  @override
+  String get speedtestTitle => 'Speedtest';
+
+  @override
+  String get speedtestEmpty => 'Noch keine Ergebnisse.';
+
+  @override
+  String get speedtestDownload => 'Download';
+
+  @override
+  String get speedtestUpload => 'Upload';
+
+  @override
+  String get speedtestPing => 'Ping';
+
+  @override
+  String get timelineTitle => 'Timeline';
+
+  @override
+  String get timelineEmpty => 'Noch nichts passiert.';
+
+  @override
+  String get wireguardEmpty => 'Noch keine Peers.';
+
+  @override
+  String get callsTitle => 'Anrufe';
+
+  @override
+  String get callsEmpty => 'Keine Anrufe.';
+
+  @override
+  String get callsIncoming => 'Eingehender Anruf';
+
+  @override
+  String get callsOutgoing => 'Ausgehender Anruf';
+
+  @override
+  String get callsMissed => 'verpasst';
+
+  @override
+  String get callsRejected => 'Abgewiesener Anruf';
+
+  @override
+  String get dnsFilterTitle => 'DNS-Filter';
+
+  @override
+  String get dnsFilterOn => 'Schutz aktiv';
+
+  @override
+  String get dnsFilterPaused => 'Schutz pausiert';
+
+  @override
+  String diskHealthWear(int percent) {
+    return '$percent % abgenutzt';
+  }
+
+  @override
+  String dockerSummary(int running, int stopped, int unhealthy) {
+    return '$running laufen · $stopped gestoppt · $unhealthy fehlerhaft';
+  }
+
+  @override
+  String speedtestAverage(int mbps) {
+    return 'Schnitt $mbps Mbit/s';
+  }
+
+  @override
+  String wireguardHandshake(String date) {
+    return 'letzter Handshake $date';
+  }
+
+  @override
+  String dnsFilterQueries(String count) {
+    return '$count Anfragen in 24 Std.';
+  }
+
+  @override
+  String dnsFilterBlocked(String count) {
+    return 'Blockiert: $count';
+  }
+
+  @override
+  String get briefingTitle => 'Tagesüberblick';
+
+  @override
+  String get briefingWarnings => 'Wetterwarnungen';
+
+  @override
+  String get briefingIncidents => 'Seit gestern Abend';
+
+  @override
+  String get briefingTodos => 'Aufgaben';
+
+  @override
+  String get briefingEvents => 'Termine';
+
+  @override
+  String get arrHealth => 'Warnungen';
+
+  @override
+  String get arrUpcoming => 'Demnächst';
+
+  @override
+  String get arrQueue => 'Downloads';
+
+  @override
+  String get mediaTitle => 'Medien';
+
+  @override
+  String get mediaPlaying => 'Läuft gerade';
+
+  @override
+  String get mediaRecent => 'Neu hinzugefügt';
+
+  @override
+  String get releasesTitle => 'Neuerscheinungen';
+
+  @override
+  String get gameDealsTitle => 'Spiele-Angebote';
+
+  @override
+  String get gameDealsFree => 'Jetzt gratis';
+
+  @override
+  String get gameDealsDeals => 'Im Angebot';
+
+  @override
+  String get gameDealsNext => 'Bald gratis';
+
+  @override
+  String get spaceTitle => 'Raketenstarts';
+
+  @override
+  String get readLaterTitle => 'Später lesen';
+
+  @override
+  String get listEmpty => 'Noch nichts da.';
+
+  @override
+  String get fuelTitle => 'Spritpreise';
+
+  @override
+  String get fuelEmpty => 'Keine Tankstellen gefunden.';
+
+  @override
+  String get fuelClosed => 'geschlossen';
+
+  @override
+  String get marketsTitle => 'Märkte';
+
+  @override
+  String get calendarTitle => 'Kalender';
+
+  @override
+  String get calendarEmpty => 'Keine Termine in Sicht.';
+
+  @override
+  String get calendarAllDay => 'ganztägig';
+
+  @override
+  String get phoneListTitle => 'Telefonliste';
+
+  @override
+  String get phoneListEmpty => 'Noch keine Einträge.';
+
+  @override
+  String get studyTitle => 'Studienfortschritt';
+
+  @override
+  String get studyAverage => 'Notenschnitt';
+
+  @override
+  String get studyInProgress => 'läuft';
+
+  @override
+  String get appPhotos => 'Fotos';
+
+  @override
+  String get appVideos => 'Videos';
+
+  @override
+  String get appUsers => 'Nutzer';
+
+  @override
+  String get appUpdates => 'App-Updates';
+
+  @override
+  String get appMaintenance => 'Wartungsmodus';
+
+  @override
+  String get appStorage => 'Speicher';
+
+  @override
+  String get sportsTitle => 'Sport';
+
+  @override
+  String listMore(int count) {
+    return '$count weitere';
+  }
+
+  @override
+  String studyCredits(String passed, String total) {
+    return '$passed von $total ECTS';
+  }
+
+  @override
+  String sportsPlayed(int games) {
+    return '$games Spiele';
+  }
+
+  @override
+  String sportsPoints(int points) {
+    return '$points Pkt.';
+  }
 }

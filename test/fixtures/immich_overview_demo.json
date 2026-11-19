@@ -1,0 +1,24 @@
+{
+  "version": "2.1.0",
+  "photos": 18432,
+  "videos": 1206,
+  "diskUsed": 812345678848,
+  "diskTotal": 2000398934016,
+  "diskPercent": 40.6,
+  "memories": [
+    {
+      "yearsAgo": 1,
+      "assetIds": [
+        "6f1c2a3e-4b5d-4e6f-8a9b-0c1d2e3f4a5b",
+        "7a2b3c4d-5e6f-4a7b-8c9d-0e1f2a3b4c5d"
+      ]
+    },
+    {
+      "yearsAgo": 4,
+      "assetIds": [
+        "8b3c4d5e-6f7a-4b8c-9d0e-1f2a3b4c5d6e",
+        "9c4d5e6f-7a8b-4c9d-8e1f-2a3b4c5d6e7f"
+      ]
+    }
+  ]
+}

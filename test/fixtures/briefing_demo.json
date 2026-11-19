@@ -1,0 +1,102 @@
+{
+  "sections": [
+    {
+      "kind": "warnings",
+      "items": [
+        {
+          "text": "Amtliche WARNUNG vor STARKEN WINDB\u00d6EN",
+          "detail": "",
+          "at": "2026-11-20T02:09:59Z",
+          "severity": "warning"
+        }
+      ],
+      "more": 0
+    },
+    {
+      "kind": "incidents",
+      "items": [
+        {
+          "text": "Backup restic-offsite failed: repository locked",
+          "detail": "",
+          "at": "2026-11-19T07:37:30Z",
+          "severity": "critical"
+        },
+        {
+          "text": "Nextcloud is not reachable",
+          "detail": "",
+          "at": "2026-11-19T10:31:30Z",
+          "severity": "critical"
+        },
+        {
+          "text": "The certificate of cloud.example.org expires in 12 days",
+          "detail": "",
+          "at": "2026-11-19T04:37:30Z",
+          "severity": "warning"
+        },
+        {
+          "text": "Disk / is 85 % full",
+          "detail": "",
+          "at": "2026-11-19T12:27:30Z",
+          "severity": "warning"
+        }
+      ],
+      "more": 0
+    },
+    {
+      "kind": "todos",
+      "items": [
+        {
+          "text": "Renew the TLS certificate of the NAS",
+          "detail": "overdue",
+          "at": "2026-11-18T00:00:00Z",
+          "severity": "warning"
+        },
+        {
+          "text": "Try edit mode: drag and resize a widget",
+          "detail": "",
+          "at": "2026-11-19T00:00:00Z",
+          "severity": "info"
+        },
+        {
+          "text": "Book the car inspection",
+          "detail": "",
+          "at": "2026-11-19T00:00:00Z",
+          "severity": "info"
+        }
+      ],
+      "more": 0
+    },
+    {
+      "kind": "events",
+      "items": [
+        {
+          "text": "Team call",
+          "detail": "Online",
+          "at": "2026-11-20T09:00:00Z",
+          "severity": "info"
+        },
+        {
+          "text": "Dentist",
+          "detail": "Praxis am Schlossplatz",
+          "at": "2026-11-20T16:15:00Z",
+          "severity": "info"
+        }
+      ],
+      "more": 0
+    },
+    {
+      "kind": "waste",
+      "items": [
+        {
+          "text": "Organic waste",
+          "detail": "tomorrow",
+          "at": "2026-11-20T00:00:00Z",
+          "severity": "info"
+        }
+      ],
+      "more": 0
+    }
+  ],
+  "unavailable": [],
+  "at": "2026-11-19T22:09:59.527504805+01:00"
+}

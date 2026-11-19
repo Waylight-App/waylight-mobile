@@ -1,0 +1,28 @@
+{
+  "queries": 48213,
+  "blocked": 9127,
+  "blockedPercent": 18.9,
+  "avgProcessingMs": 4.2,
+  "protectionEnabled": true,
+  "pausedUntil": null,
+  "topBlocked": [
+    {
+      "domain": "telemetry.example-tv.com",
+      "count": 1844
+    },
+    {
+      "domain": "ads.example-cdn.net",
+      "count": 1201
+    },
+    {
+      "domain": "tracker.example-shop.de",
+      "count": 766
+    },
+    {
+      "domain": "metrics.example-app.io",
+      "count": 512
+    }
+  ],
+  "updatedAt": "2026-11-19T21:03:38.591019639Z",
+  "error": ""
+}
