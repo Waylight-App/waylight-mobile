@@ -17,10 +17,13 @@ import 'package:waylight_mobile/ui/widgets/holidays/holidays_widget.dart';
 import 'package:waylight_mobile/ui/widgets/lists/list_widgets.dart';
 import 'package:waylight_mobile/ui/widgets/markets/markets_widget.dart';
 import 'package:waylight_mobile/ui/widgets/notes/notes_widget.dart';
+import 'package:waylight_mobile/ui/widgets/parcels/parcels_widget.dart';
 import 'package:waylight_mobile/ui/widgets/phonelist/phonelist_widget.dart';
 import 'package:waylight_mobile/ui/widgets/proxmox/proxmox_widget.dart';
+import 'package:waylight_mobile/ui/widgets/rss/rss_widget.dart';
 import 'package:waylight_mobile/ui/widgets/services/services_widget.dart';
 import 'package:waylight_mobile/ui/widgets/shopping/shopping_widget.dart';
+import 'package:waylight_mobile/ui/widgets/smarthome/smarthome_widget.dart';
 import 'package:waylight_mobile/ui/widgets/speedtest/speedtest_widget.dart';
 import 'package:waylight_mobile/ui/widgets/sports/sports_widget.dart';
 import 'package:waylight_mobile/ui/widgets/study/study_widget.dart';
@@ -58,12 +61,15 @@ const nativeWidgets = WidgetRegistry({
   'media': ListWidget.media,
   'nextcloud': AppOverviewWidget.nextcloud,
   'notes': NotesWidget.forPlacement,
+  'parcels': ParcelsWidget.forPlacement,
   'phonelist': PhoneListWidget.forPlacement,
   'proxmox': ProxmoxWidget.forPlacement,
   'readlater': ListWidget.readLater,
   'releases': ListWidget.releases,
+  'rss': RssWidget.forPlacement,
   'services': ServicesWidget.forPlacement,
   'shopping': ShoppingWidget.forPlacement,
+  'smarthome': SmartHomeWidget.forPlacement,
   'space': ListWidget.space,
   'speedtest': SpeedtestWidget.forPlacement,
   'sports': SportsWidget.forPlacement,

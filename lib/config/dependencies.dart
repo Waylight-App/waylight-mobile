@@ -4,6 +4,9 @@ import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
+import 'package:waylight_mobile/data/repositories/actions/parcels_repository.dart';
+import 'package:waylight_mobile/data/repositories/actions/rss_repository.dart';
+import 'package:waylight_mobile/data/repositories/actions/smarthome_repository.dart';
 import 'package:waylight_mobile/data/repositories/bookmarks/bookmarks_repository.dart';
 import 'package:waylight_mobile/data/repositories/bookmarks/bookmarks_repository_remote.dart';
 import 'package:waylight_mobile/data/repositories/dashboard/dashboard_repository.dart';
@@ -69,6 +72,9 @@ typedef Repositories = ({
   WidgetDataRepository widgetData,
   ShoppingRepository shopping,
   HabitsRepository habits,
+  RssRepository rss,
+  ParcelsRepository parcels,
+  SmartHomeRepository smartHome,
   PreferencesRepository preferences,
   OfflineRepository offline,
   SearchRepository search,
@@ -93,6 +99,9 @@ List<SingleChildWidget> providers(Repositories repositories) => [
   Provider<WidgetDataRepository>.value(value: repositories.widgetData),
   Provider<ShoppingRepository>.value(value: repositories.shopping),
   Provider<HabitsRepository>.value(value: repositories.habits),
+  Provider<RssRepository>.value(value: repositories.rss),
+  Provider<ParcelsRepository>.value(value: repositories.parcels),
+  Provider<SmartHomeRepository>.value(value: repositories.smartHome),
   Provider<SearchRepository>.value(value: repositories.search),
   ChangeNotifierProvider<AppLockRepository>.value(value: repositories.lock),
   ChangeNotifierProvider<PreferencesRepository>.value(
@@ -148,6 +157,9 @@ Repositories createRepositories() {
     widgetData: WidgetDataRepositoryRemote(api: modules),
     shopping: ShoppingRepositoryRemote(api: modules),
     habits: HabitsRepositoryRemote(api: modules),
+    rss: RssRepositoryRemote(api: modules),
+    parcels: ParcelsRepositoryRemote(api: modules),
+    smartHome: SmartHomeRepositoryRemote(api: modules),
     preferences: PreferencesRepositoryLocal(store: store),
     offline: OfflineRepository(offline),
     search: SearchRepositoryRemote(api: SearchApi(client)),

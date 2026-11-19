@@ -1065,4 +1065,66 @@ class AppLocalizationsEn extends AppLocalizations {
   String habitsStreak(int current, int best) {
     return '$current days in a row · best $best';
   }
+
+  @override
+  String get rssTitle => 'Feeds';
+
+  @override
+  String get rssCaughtUp => 'All caught up.';
+
+  @override
+  String get rssMarkRead => 'Mark as read';
+
+  @override
+  String get rssMarkUnread => 'Mark as unread';
+
+  @override
+  String get parcelsTitle => 'Parcels';
+
+  @override
+  String get parcelsEmpty => 'No parcels on their way.';
+
+  @override
+  String get parcelsAdd => 'Add parcel';
+
+  @override
+  String get parcelsNumber => 'Tracking number';
+
+  @override
+  String get parcelsLabel => 'What is it? (optional)';
+
+  @override
+  String get parcelsCancel => 'Cancel';
+
+  @override
+  String get parcelsTrack => 'Track at the carrier';
+
+  @override
+  String get parcelsDelete => 'Stop tracking';
+
+  @override
+  String get parcelsAnnounced => 'announced';
+
+  @override
+  String get parcelsOnTheWay => 'on its way';
+
+  @override
+  String get parcelsDelivered => 'delivered';
+
+  @override
+  String get parcelsCheck => 'check';
+
+  @override
+  String get smartHomeTitle => 'Smart home';
+
+  @override
+  String get smartHomeEmpty => 'Choose entities in the web interface.';
+
+  @override
+  String get smartHomeRun => 'Run';
+
+  @override
+  String parcelsExpected(String date) {
+    return 'expected $date';
+  }
 }

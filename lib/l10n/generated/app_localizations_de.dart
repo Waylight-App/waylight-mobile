@@ -1067,4 +1067,66 @@ class AppLocalizationsDe extends AppLocalizations {
   String habitsStreak(int current, int best) {
     return '$current Tage in Folge · Rekord $best';
   }
+
+  @override
+  String get rssTitle => 'Feeds';
+
+  @override
+  String get rssCaughtUp => 'Alles gelesen.';
+
+  @override
+  String get rssMarkRead => 'Als gelesen markieren';
+
+  @override
+  String get rssMarkUnread => 'Als ungelesen markieren';
+
+  @override
+  String get parcelsTitle => 'Pakete';
+
+  @override
+  String get parcelsEmpty => 'Keine Pakete unterwegs.';
+
+  @override
+  String get parcelsAdd => 'Paket hinzufügen';
+
+  @override
+  String get parcelsNumber => 'Sendungsnummer';
+
+  @override
+  String get parcelsLabel => 'Was ist es? (optional)';
+
+  @override
+  String get parcelsCancel => 'Abbrechen';
+
+  @override
+  String get parcelsTrack => 'Beim Paketdienst verfolgen';
+
+  @override
+  String get parcelsDelete => 'Nicht mehr verfolgen';
+
+  @override
+  String get parcelsAnnounced => 'angekündigt';
+
+  @override
+  String get parcelsOnTheWay => 'unterwegs';
+
+  @override
+  String get parcelsDelivered => 'zugestellt';
+
+  @override
+  String get parcelsCheck => 'prüfen';
+
+  @override
+  String get smartHomeTitle => 'Smart Home';
+
+  @override
+  String get smartHomeEmpty => 'Wähle im Web Entitäten aus.';
+
+  @override
+  String get smartHomeRun => 'Ausführen';
+
+  @override
+  String parcelsExpected(String date) {
+    return 'erwartet $date';
+  }
 }

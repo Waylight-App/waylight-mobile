@@ -1975,6 +1975,126 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{current} days in a row · best {best}'**
   String habitsStreak(int current, int best);
+
+  /// Default title of the feed widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Feeds'**
+  String get rssTitle;
+
+  /// Feed widget without unread items.
+  ///
+  /// In en, this message translates to:
+  /// **'All caught up.'**
+  String get rssCaughtUp;
+
+  /// Button on a feed item.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as read'**
+  String get rssMarkRead;
+
+  /// Button on a read feed item.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as unread'**
+  String get rssMarkUnread;
+
+  /// Default title of the parcels widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Parcels'**
+  String get parcelsTitle;
+
+  /// Parcels widget without parcels.
+  ///
+  /// In en, this message translates to:
+  /// **'No parcels on their way.'**
+  String get parcelsEmpty;
+
+  /// Button and dialog title.
+  ///
+  /// In en, this message translates to:
+  /// **'Add parcel'**
+  String get parcelsAdd;
+
+  /// Field for the tracking number.
+  ///
+  /// In en, this message translates to:
+  /// **'Tracking number'**
+  String get parcelsNumber;
+
+  /// Field for a description.
+  ///
+  /// In en, this message translates to:
+  /// **'What is it? (optional)'**
+  String get parcelsLabel;
+
+  /// Closes the dialog.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get parcelsCancel;
+
+  /// Opens the tracking page.
+  ///
+  /// In en, this message translates to:
+  /// **'Track at the carrier'**
+  String get parcelsTrack;
+
+  /// Deletes the parcel.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop tracking'**
+  String get parcelsDelete;
+
+  /// Parcel not handed over yet.
+  ///
+  /// In en, this message translates to:
+  /// **'announced'**
+  String get parcelsAnnounced;
+
+  /// Parcel in transit.
+  ///
+  /// In en, this message translates to:
+  /// **'on its way'**
+  String get parcelsOnTheWay;
+
+  /// Delivered parcel.
+  ///
+  /// In en, this message translates to:
+  /// **'delivered'**
+  String get parcelsDelivered;
+
+  /// Parcel with an unusual state.
+  ///
+  /// In en, this message translates to:
+  /// **'check'**
+  String get parcelsCheck;
+
+  /// Default title of the smart home widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Smart home'**
+  String get smartHomeTitle;
+
+  /// Smart home widget without entities.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose entities in the web interface.'**
+  String get smartHomeEmpty;
+
+  /// Runs a scene or presses a button.
+  ///
+  /// In en, this message translates to:
+  /// **'Run'**
+  String get smartHomeRun;
+
+  /// Expected delivery date.
+  ///
+  /// In en, this message translates to:
+  /// **'expected {date}'**
+  String parcelsExpected(String date);
 }
 
 class _AppLocalizationsDelegate
