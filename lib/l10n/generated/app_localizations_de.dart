@@ -730,4 +730,178 @@ class AppLocalizationsDe extends AppLocalizations {
   String electricityCheapest(String hours) {
     return 'Günstigste Stunden: $hours';
   }
+
+  @override
+  String get holidaysTitle => 'Feiertage';
+
+  @override
+  String get holidaysEmpty => 'Keine Feiertage in Sicht.';
+
+  @override
+  String get holidaysNow => 'jetzt';
+
+  @override
+  String get holidayNewYear => 'Neujahr';
+
+  @override
+  String get holidayEpiphany => 'Heilige Drei Könige';
+
+  @override
+  String get holidayWomensDay => 'Internationaler Frauentag';
+
+  @override
+  String get holidayGoodFriday => 'Karfreitag';
+
+  @override
+  String get holidayEasterSunday => 'Ostersonntag';
+
+  @override
+  String get holidayEasterMonday => 'Ostermontag';
+
+  @override
+  String get holidayLabourDay => 'Tag der Arbeit';
+
+  @override
+  String get holidayAscension => 'Christi Himmelfahrt';
+
+  @override
+  String get holidayWhitSunday => 'Pfingstsonntag';
+
+  @override
+  String get holidayWhitMonday => 'Pfingstmontag';
+
+  @override
+  String get holidayCorpusChristi => 'Fronleichnam';
+
+  @override
+  String get holidayAssumption => 'Mariä Himmelfahrt';
+
+  @override
+  String get holidayChildrensDay => 'Weltkindertag';
+
+  @override
+  String get holidayGermanUnity => 'Tag der Deutschen Einheit';
+
+  @override
+  String get holidayReformation => 'Reformationstag';
+
+  @override
+  String get holidayAllSaints => 'Allerheiligen';
+
+  @override
+  String get holidayRepentance => 'Buß- und Bettag';
+
+  @override
+  String get holidayChristmasDay => '1. Weihnachtstag';
+
+  @override
+  String get holidayBoxingDay => '2. Weihnachtstag';
+
+  @override
+  String get diskHealthTitle => 'Festplatten';
+
+  @override
+  String get diskHealthEmpty => 'Noch keine Festplatten gemeldet.';
+
+  @override
+  String get diskHealthWarning => 'Warnung';
+
+  @override
+  String get diskHealthFailing => 'Defekt';
+
+  @override
+  String get diskHealthUnknown => 'Unbekannt';
+
+  @override
+  String get dockerTitle => 'Docker';
+
+  @override
+  String get dockerUnhealthy => 'fehlerhaft';
+
+  @override
+  String get proxmoxRunning => 'Läuft';
+
+  @override
+  String get proxmoxStopped => 'Gestoppt';
+
+  @override
+  String get speedtestTitle => 'Speedtest';
+
+  @override
+  String get speedtestEmpty => 'Noch keine Ergebnisse.';
+
+  @override
+  String get speedtestDownload => 'Download';
+
+  @override
+  String get speedtestUpload => 'Upload';
+
+  @override
+  String get speedtestPing => 'Ping';
+
+  @override
+  String get timelineTitle => 'Timeline';
+
+  @override
+  String get timelineEmpty => 'Noch nichts passiert.';
+
+  @override
+  String get wireguardEmpty => 'Noch keine Peers.';
+
+  @override
+  String get callsTitle => 'Anrufe';
+
+  @override
+  String get callsEmpty => 'Keine Anrufe.';
+
+  @override
+  String get callsIncoming => 'Eingehender Anruf';
+
+  @override
+  String get callsOutgoing => 'Ausgehender Anruf';
+
+  @override
+  String get callsMissed => 'verpasst';
+
+  @override
+  String get callsRejected => 'Abgewiesener Anruf';
+
+  @override
+  String get dnsFilterTitle => 'DNS-Filter';
+
+  @override
+  String get dnsFilterOn => 'Schutz aktiv';
+
+  @override
+  String get dnsFilterPaused => 'Schutz pausiert';
+
+  @override
+  String diskHealthWear(int percent) {
+    return '$percent % abgenutzt';
+  }
+
+  @override
+  String dockerSummary(int running, int stopped, int unhealthy) {
+    return '$running laufen · $stopped gestoppt · $unhealthy fehlerhaft';
+  }
+
+  @override
+  String speedtestAverage(int mbps) {
+    return 'Schnitt $mbps Mbit/s';
+  }
+
+  @override
+  String wireguardHandshake(String date) {
+    return 'letzter Handshake $date';
+  }
+
+  @override
+  String dnsFilterQueries(String count) {
+    return '$count Anfragen in 24 Std.';
+  }
+
+  @override
+  String dnsFilterBlocked(String count) {
+    return 'Blockiert: $count';
+  }
 }

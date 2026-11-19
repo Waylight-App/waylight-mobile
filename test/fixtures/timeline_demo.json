@@ -1,0 +1,82 @@
+[
+  {
+    "id": "579e6a8f8f5010249239eadce5f5dff2",
+    "at": "2026-11-19T13:12:30.888982727Z",
+    "source": "container",
+    "severity": "info",
+    "subject": "jellyfin",
+    "message": "jellyfin was restarted after an image update"
+  },
+  {
+    "id": "329e3fbec8bd678f7800adcd71a4a124",
+    "at": "2026-11-19T12:27:30.888982727Z",
+    "source": "disk",
+    "severity": "warning",
+    "subject": "/",
+    "message": "Disk / is 85 % full"
+  },
+  {
+    "id": "01f53bf32cd5c773ddae31b3beb652bf",
+    "at": "2026-11-19T11:37:30.888982727Z",
+    "source": "parcel",
+    "severity": "info",
+    "subject": "coffee",
+    "message": "Parcel \"Coffee beans\" was delivered"
+  },
+  {
+    "id": "b6cf68a81b59c37b5a3fcf681069adb8",
+    "at": "2026-11-19T10:37:30.888982727Z",
+    "source": "service",
+    "severity": "info",
+    "subject": "nextcloud",
+    "message": "Nextcloud is OK again"
+  },
+  {
+    "id": "c48cc559917627b68e5a89b61f316856",
+    "at": "2026-11-19T10:31:30.888982727Z",
+    "source": "service",
+    "severity": "critical",
+    "subject": "nextcloud",
+    "message": "Nextcloud is not reachable"
+  },
+  {
+    "id": "eb2fb794e6ff7b9d4b3d93d5e4b63c68",
+    "at": "2026-11-19T07:37:30.888982727Z",
+    "source": "backup",
+    "severity": "critical",
+    "subject": "restic-offsite",
+    "message": "Backup restic-offsite failed: repository locked"
+  },
+  {
+    "id": "ac6f65425e70049828db09ee87c98f02",
+    "at": "2026-11-19T06:37:30.888982727Z",
+    "source": "sports",
+    "severity": "info",
+    "subject": "bundesliga",
+    "message": "Werder Bremen 2 : 1 VfL Wolfsburg"
+  },
+  {
+    "id": "1d67d3f867416dc954b917b7ce6f5147",
+    "at": "2026-11-19T04:37:30.888982727Z",
+    "source": "tls",
+    "severity": "warning",
+    "subject": "cloud",
+    "message": "The certificate of cloud.example.org expires in 12 days"
+  },
+  {
+    "id": "6f2b6a212b4913a1e15d18c8f3e7db2e",
+    "at": "2026-11-18T17:37:30.888982727Z",
+    "source": "backup",
+    "severity": "info",
+    "subject": "paperless-export",
+    "message": "Backup paperless-export finished"
+  },
+  {
+    "id": "b30c4766dd20c4509ab53b9c5e162e69",
+    "at": "2026-11-18T08:37:30.888982727Z",
+    "source": "diskhealth",
+    "severity": "info",
+    "subject": "sda",
+    "message": "Disk sda passed its S.M.A.R.T. self-test"
+  }
+]

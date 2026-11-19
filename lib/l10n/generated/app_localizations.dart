@@ -1351,6 +1351,330 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Cheapest hours: {hours}'**
   String electricityCheapest(String hours);
+
+  /// Default title of the holidays widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Holidays'**
+  String get holidaysTitle;
+
+  /// Holidays widget without entries.
+  ///
+  /// In en, this message translates to:
+  /// **'No holidays ahead.'**
+  String get holidaysEmpty;
+
+  /// A holiday going on now.
+  ///
+  /// In en, this message translates to:
+  /// **'now'**
+  String get holidaysNow;
+
+  /// Public holiday.
+  ///
+  /// In en, this message translates to:
+  /// **'New Year\'s Day'**
+  String get holidayNewYear;
+
+  /// Public holiday.
+  ///
+  /// In en, this message translates to:
+  /// **'Epiphany'**
+  String get holidayEpiphany;
+
+  /// Public holiday.
+  ///
+  /// In en, this message translates to:
+  /// **'International Women\'s Day'**
+  String get holidayWomensDay;
+
+  /// Public holiday.
+  ///
+  /// In en, this message translates to:
+  /// **'Good Friday'**
+  String get holidayGoodFriday;
+
+  /// Public holiday.
+  ///
+  /// In en, this message translates to:
+  /// **'Easter Sunday'**
+  String get holidayEasterSunday;
+
+  /// Public holiday.
+  ///
+  /// In en, this message translates to:
+  /// **'Easter Monday'**
+  String get holidayEasterMonday;
+
+  /// Public holiday.
+  ///
+  /// In en, this message translates to:
+  /// **'Labour Day'**
+  String get holidayLabourDay;
+
+  /// Public holiday.
+  ///
+  /// In en, this message translates to:
+  /// **'Ascension Day'**
+  String get holidayAscension;
+
+  /// Public holiday.
+  ///
+  /// In en, this message translates to:
+  /// **'Whit Sunday'**
+  String get holidayWhitSunday;
+
+  /// Public holiday.
+  ///
+  /// In en, this message translates to:
+  /// **'Whit Monday'**
+  String get holidayWhitMonday;
+
+  /// Public holiday.
+  ///
+  /// In en, this message translates to:
+  /// **'Corpus Christi'**
+  String get holidayCorpusChristi;
+
+  /// Public holiday.
+  ///
+  /// In en, this message translates to:
+  /// **'Assumption Day'**
+  String get holidayAssumption;
+
+  /// Public holiday.
+  ///
+  /// In en, this message translates to:
+  /// **'World Children\'s Day'**
+  String get holidayChildrensDay;
+
+  /// Public holiday.
+  ///
+  /// In en, this message translates to:
+  /// **'Day of German Unity'**
+  String get holidayGermanUnity;
+
+  /// Public holiday.
+  ///
+  /// In en, this message translates to:
+  /// **'Reformation Day'**
+  String get holidayReformation;
+
+  /// Public holiday.
+  ///
+  /// In en, this message translates to:
+  /// **'All Saints\' Day'**
+  String get holidayAllSaints;
+
+  /// Public holiday.
+  ///
+  /// In en, this message translates to:
+  /// **'Day of Repentance and Prayer'**
+  String get holidayRepentance;
+
+  /// Public holiday.
+  ///
+  /// In en, this message translates to:
+  /// **'Christmas Day'**
+  String get holidayChristmasDay;
+
+  /// Public holiday.
+  ///
+  /// In en, this message translates to:
+  /// **'Boxing Day'**
+  String get holidayBoxingDay;
+
+  /// Default title of the disk health widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Disk health'**
+  String get diskHealthTitle;
+
+  /// Disk health widget without disks.
+  ///
+  /// In en, this message translates to:
+  /// **'No disks reported yet.'**
+  String get diskHealthEmpty;
+
+  /// A disk that needs attention.
+  ///
+  /// In en, this message translates to:
+  /// **'Warning'**
+  String get diskHealthWarning;
+
+  /// A disk that is failing.
+  ///
+  /// In en, this message translates to:
+  /// **'Failing'**
+  String get diskHealthFailing;
+
+  /// A disk without a current verdict.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown'**
+  String get diskHealthUnknown;
+
+  /// Default title of the Docker widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Docker'**
+  String get dockerTitle;
+
+  /// A container whose health check fails.
+  ///
+  /// In en, this message translates to:
+  /// **'unhealthy'**
+  String get dockerUnhealthy;
+
+  /// A running Proxmox guest.
+  ///
+  /// In en, this message translates to:
+  /// **'Running'**
+  String get proxmoxRunning;
+
+  /// A stopped Proxmox guest.
+  ///
+  /// In en, this message translates to:
+  /// **'Stopped'**
+  String get proxmoxStopped;
+
+  /// Default title of the speed test widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Speed test'**
+  String get speedtestTitle;
+
+  /// Speed test widget without results.
+  ///
+  /// In en, this message translates to:
+  /// **'No results yet.'**
+  String get speedtestEmpty;
+
+  /// Download speed.
+  ///
+  /// In en, this message translates to:
+  /// **'Download'**
+  String get speedtestDownload;
+
+  /// Upload speed.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload'**
+  String get speedtestUpload;
+
+  /// Ping time.
+  ///
+  /// In en, this message translates to:
+  /// **'Ping'**
+  String get speedtestPing;
+
+  /// Default title of the timeline widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Timeline'**
+  String get timelineTitle;
+
+  /// Timeline widget without events.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing happened yet.'**
+  String get timelineEmpty;
+
+  /// WireGuard widget without peers.
+  ///
+  /// In en, this message translates to:
+  /// **'No peers yet.'**
+  String get wireguardEmpty;
+
+  /// Default title of the FRITZ!Box call list.
+  ///
+  /// In en, this message translates to:
+  /// **'Calls'**
+  String get callsTitle;
+
+  /// Call list without calls.
+  ///
+  /// In en, this message translates to:
+  /// **'No calls.'**
+  String get callsEmpty;
+
+  /// Spoken kind of a call.
+  ///
+  /// In en, this message translates to:
+  /// **'Incoming call'**
+  String get callsIncoming;
+
+  /// Spoken kind of a call.
+  ///
+  /// In en, this message translates to:
+  /// **'Outgoing call'**
+  String get callsOutgoing;
+
+  /// A missed call.
+  ///
+  /// In en, this message translates to:
+  /// **'missed'**
+  String get callsMissed;
+
+  /// Spoken kind of a call.
+  ///
+  /// In en, this message translates to:
+  /// **'Rejected call'**
+  String get callsRejected;
+
+  /// Default title of the AdGuard/Pi-hole widget.
+  ///
+  /// In en, this message translates to:
+  /// **'DNS filter'**
+  String get dnsFilterTitle;
+
+  /// DNS blocking is on.
+  ///
+  /// In en, this message translates to:
+  /// **'Protection on'**
+  String get dnsFilterOn;
+
+  /// DNS blocking is paused.
+  ///
+  /// In en, this message translates to:
+  /// **'Protection paused'**
+  String get dnsFilterPaused;
+
+  /// Wear of an SSD.
+  ///
+  /// In en, this message translates to:
+  /// **'{percent} % worn'**
+  String diskHealthWear(int percent);
+
+  /// Container counts.
+  ///
+  /// In en, this message translates to:
+  /// **'{running} running · {stopped} stopped · {unhealthy} unhealthy'**
+  String dockerSummary(int running, int stopped, int unhealthy);
+
+  /// Average of recent results.
+  ///
+  /// In en, this message translates to:
+  /// **'average {mbps} Mbit/s'**
+  String speedtestAverage(int mbps);
+
+  /// Date of the last handshake.
+  ///
+  /// In en, this message translates to:
+  /// **'last handshake {date}'**
+  String wireguardHandshake(String date);
+
+  /// Queries in the last day.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} queries in 24 h'**
+  String dnsFilterQueries(String count);
+
+  /// Blocked queries.
+  ///
+  /// In en, this message translates to:
+  /// **'Blocked: {count}'**
+  String dnsFilterBlocked(String count);
 }
 
 class _AppLocalizationsDelegate

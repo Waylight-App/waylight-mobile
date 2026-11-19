@@ -1,0 +1,100 @@
+{
+  "nodes": [
+    {
+      "name": "pve",
+      "online": true,
+      "cpuPercent": 18,
+      "cpus": 8,
+      "memUsed": 22548578304,
+      "memTotal": 68719476736,
+      "diskUsed": 40802189312,
+      "diskTotal": 100931731456,
+      "uptimeSeconds": 1728000
+    }
+  ],
+  "guests": [
+    {
+      "id": 100,
+      "name": "home-assistant",
+      "node": "pve",
+      "kind": "qemu",
+      "status": "running",
+      "uptimeSeconds": 1224000,
+      "cpuPercent": 6,
+      "memUsed": 3221225472,
+      "memTotal": 4294967296,
+      "actions": false
+    },
+    {
+      "id": 101,
+      "name": "pihole",
+      "node": "pve",
+      "kind": "lxc",
+      "status": "running",
+      "uptimeSeconds": 1227600,
+      "cpuPercent": 1,
+      "memUsed": 268435456,
+      "memTotal": 536870912,
+      "actions": false
+    },
+    {
+      "id": 102,
+      "name": "jellyfin",
+      "node": "pve",
+      "kind": "lxc",
+      "status": "running",
+      "uptimeSeconds": 1231200,
+      "cpuPercent": 22,
+      "memUsed": 3221225472,
+      "memTotal": 6442450944,
+      "actions": false
+    },
+    {
+      "id": 103,
+      "name": "paperless",
+      "node": "pve",
+      "kind": "lxc",
+      "status": "running",
+      "uptimeSeconds": 1234800,
+      "cpuPercent": 4,
+      "memUsed": 2147483648,
+      "memTotal": 4294967296,
+      "actions": false
+    },
+    {
+      "id": 104,
+      "name": "nextcloud",
+      "node": "pve",
+      "kind": "lxc",
+      "status": "running",
+      "uptimeSeconds": 1238400,
+      "cpuPercent": 9,
+      "memUsed": 4294967296,
+      "memTotal": 8589934592,
+      "actions": false
+    },
+    {
+      "id": 105,
+      "name": "windows-11",
+      "node": "pve",
+      "kind": "qemu",
+      "status": "stopped",
+      "uptimeSeconds": 0,
+      "cpuPercent": 0,
+      "memUsed": 0,
+      "memTotal": 8589934592,
+      "actions": false
+    }
+  ],
+  "storages": [
+    {
+      "name": "local-lvm",
+      "node": "pve",
+      "used": 442381631488,
+      "total": 966367641600,
+      "active": true
+    }
+  ],
+  "updatedAt": "2026-11-19T21:03:38.592445679Z",
+  "error": ""
+}

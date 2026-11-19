@@ -149,3 +149,165 @@ final class BackupSource {
   /// The message of the last report, such as an error.
   final String message;
 }
+
+/// The S.M.A.R.T. verdict of a disk (`GET /api/diskhealth`).
+final class DiskHealth {
+  /// Creates the verdict.
+  const DiskHealth({
+    required this.device,
+    required this.model,
+    required this.status,
+    this.temperature,
+    this.percentageUsed,
+    this.findings = const [],
+  });
+
+  /// The device, such as `/dev/nvme0`.
+  final String device;
+
+  /// The disk model.
+  final String model;
+
+  /// "ok", "warning", "failing" or "unknown", as the server decides.
+  final String status;
+
+  /// The temperature in °C, if known.
+  final int? temperature;
+
+  /// The wear of an SSD in percent, if known.
+  final int? percentageUsed;
+
+  /// What the server noticed, as sentences.
+  final List<String> findings;
+}
+
+/// The containers of the Docker host (`GET /api/docker/containers`).
+final class DockerOverview {
+  /// Creates the overview.
+  const DockerOverview({
+    required this.containers,
+    required this.running,
+    required this.stopped,
+    required this.unhealthy,
+  });
+
+  /// The containers.
+  final List<DockerContainer> containers;
+
+  /// How many containers run.
+  final int running;
+
+  /// How many containers are stopped.
+  final int stopped;
+
+  /// How many containers report unhealthy.
+  final int unhealthy;
+}
+
+/// One container.
+final class DockerContainer {
+  /// Creates the container.
+  const DockerContainer({
+    required this.name,
+    required this.state,
+    required this.status,
+    this.health = 'none',
+  });
+
+  /// The container name.
+  final String name;
+
+  /// Docker's state, such as "running" or "exited".
+  final String state;
+
+  /// Docker's status text, such as "Up 3 days".
+  final String status;
+
+  /// "healthy", "unhealthy", "starting" or "none".
+  final String health;
+}
+
+/// Nodes and guests of Proxmox VE (`GET /api/proxmox/status`).
+final class ProxmoxOverview {
+  /// Creates the overview.
+  const ProxmoxOverview({required this.nodes, required this.guests});
+
+  /// The cluster nodes.
+  final List<ProxmoxNode> nodes;
+
+  /// The VMs and containers.
+  final List<ProxmoxGuest> guests;
+}
+
+/// A Proxmox node.
+final class ProxmoxNode {
+  /// Creates the node.
+  const ProxmoxNode({
+    required this.name,
+    required this.online,
+    required this.cpuPercent,
+    required this.memoryPercent,
+  });
+
+  /// The node name.
+  final String name;
+
+  /// Whether it answers.
+  final bool online;
+
+  /// CPU usage in percent.
+  final double cpuPercent;
+
+  /// Memory usage in percent.
+  final double memoryPercent;
+}
+
+/// A Proxmox VM or container.
+final class ProxmoxGuest {
+  /// Creates the guest.
+  const ProxmoxGuest({
+    required this.id,
+    required this.name,
+    required this.kind,
+    required this.running,
+  });
+
+  /// The VMID.
+  final int id;
+
+  /// The guest name.
+  final String name;
+
+  /// "qemu" or "lxc".
+  final String kind;
+
+  /// Whether it runs.
+  final bool running;
+}
+
+/// An entry of the instance's timeline (`GET /api/timeline`).
+final class TimelineEntry {
+  /// Creates the entry.
+  const TimelineEntry({
+    required this.at,
+    required this.source,
+    required this.severity,
+    required this.subject,
+    required this.message,
+  });
+
+  /// When it happened.
+  final DateTime at;
+
+  /// Where it came from, such as "service" or "container".
+  final String source;
+
+  /// "info", "warning" or "critical".
+  final String severity;
+
+  /// What it is about.
+  final String subject;
+
+  /// What happened.
+  final String message;
+}

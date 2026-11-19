@@ -1,0 +1,60 @@
+{
+  "containers": [
+    {
+      "id": "c3",
+      "name": "adguardhome",
+      "image": "adguard/adguardhome:latest",
+      "state": "running",
+      "status": "Up 3 days",
+      "health": "none",
+      "project": "",
+      "created": "2026-11-16T21:03:38Z"
+    },
+    {
+      "id": "e5",
+      "name": "backup-job",
+      "image": "restic/restic:latest",
+      "state": "exited",
+      "status": "Exited (0) 5 hours ago",
+      "health": "none",
+      "project": "",
+      "created": "2026-11-16T21:03:38Z"
+    },
+    {
+      "id": "b2",
+      "name": "jellyfin",
+      "image": "jellyfin/jellyfin:latest",
+      "state": "running",
+      "status": "Up 3 days",
+      "health": "none",
+      "project": "",
+      "created": "2026-11-16T21:03:38Z"
+    },
+    {
+      "id": "d4",
+      "name": "paperless",
+      "image": "ghcr.io/paperless-ngx/paperless-ngx:latest",
+      "state": "running",
+      "status": "Up 2 hours",
+      "health": "none",
+      "project": "",
+      "created": "2026-11-16T21:03:38Z"
+    },
+    {
+      "id": "a1",
+      "name": "waylight",
+      "image": "ghcr.io/itadori26/waylight:latest",
+      "state": "running",
+      "status": "Up 3 days (healthy)",
+      "health": "healthy",
+      "project": "",
+      "created": "2026-11-16T21:03:38Z"
+    }
+  ],
+  "total": 5,
+  "running": 4,
+  "stopped": 1,
+  "unhealthy": 0,
+  "updatedAt": "2026-11-19T21:03:38.590250439Z",
+  "error": ""
+}

@@ -130,3 +130,152 @@ List<BackupSource>? parseBackupSources(Object? json) =>
       }
       return null;
     });
+
+/// `GET /api/diskhealth`.
+const diskHealthQuery = WidgetQuery<List<DiskHealth>>(
+  '/api/diskhealth',
+  parseDiskHealth,
+);
+
+/// `GET /api/docker/containers`.
+const dockerQuery = WidgetQuery<DockerOverview>(
+  '/api/docker/containers',
+  parseDocker,
+);
+
+/// `GET /api/proxmox/status`.
+const proxmoxQuery = WidgetQuery<ProxmoxOverview>(
+  '/api/proxmox/status',
+  parseProxmox,
+);
+
+/// `GET /api/timeline`, newest first.
+const timelineQuery = WidgetQuery<List<TimelineEntry>>(
+  '/api/timeline',
+  parseTimeline,
+);
+
+int? _int(Object? v) => v is num ? v.toInt() : null;
+
+double _percent(Object? used, Object? total) {
+  final u = asDouble(used);
+  final t = asDouble(total);
+  return u == null || t == null || t == 0 ? 0 : u / t * 100;
+}
+
+/// Maps `GET /api/diskhealth`.
+List<DiskHealth>? parseDiskHealth(Object? json) =>
+    listOf<DiskHealth>(json, (d) {
+      if (d case {
+        'device': final String device,
+        'model': final String model,
+        'status': final String status,
+      }) {
+        return DiskHealth(
+          device: device,
+          model: model,
+          status: status,
+          temperature: _int(d['temperature']),
+          percentageUsed: _int(d['percentageUsed']),
+          findings: [
+            if (d['findings'] case final List<Object?> findings)
+              for (final f in findings)
+                if (f case {'message': final String m} when m.isNotEmpty) m,
+          ],
+        );
+      }
+      return null;
+    });
+
+/// Maps `GET /api/docker/containers`.
+DockerOverview? parseDocker(Object? json) {
+  if (json case {'containers': final Object? list}) {
+    final containers = listOf<DockerContainer>(list, (c) {
+      if (c case {
+        'name': final String name,
+        'state': final String state,
+        'status': final String status,
+      }) {
+        return DockerContainer(
+          name: name,
+          state: state,
+          status: status,
+          health: switch (c['health']) {
+            final String h => h,
+            _ => 'none',
+          },
+        );
+      }
+      return null;
+    });
+    if (containers == null) return null;
+    return DockerOverview(
+      containers: containers,
+      running: _int(json['running']) ?? 0,
+      stopped: _int(json['stopped']) ?? 0,
+      unhealthy: _int(json['unhealthy']) ?? 0,
+    );
+  }
+  return null;
+}
+
+/// Maps `GET /api/proxmox/status`.
+ProxmoxOverview? parseProxmox(Object? json) {
+  if (json case {
+    'nodes': final Object? nodes,
+    'guests': final Object? guests,
+  }) {
+    final n = listOf<ProxmoxNode>(nodes, (x) {
+      if (x case {'name': final String name}) {
+        return ProxmoxNode(
+          name: name,
+          online: x['online'] == true,
+          cpuPercent: asDouble(x['cpuPercent']) ?? 0,
+          memoryPercent: _percent(x['memUsed'], x['memTotal']),
+        );
+      }
+      return null;
+    });
+    final g = listOf<ProxmoxGuest>(guests, (x) {
+      if (x case {
+        'id': final int id,
+        'name': final String name,
+        'kind': final String kind,
+      }) {
+        return ProxmoxGuest(
+          id: id,
+          name: name,
+          kind: kind,
+          running: x['status'] == 'running',
+        );
+      }
+      return null;
+    });
+    if (n == null || g == null) return null;
+    return ProxmoxOverview(nodes: n, guests: g);
+  }
+  return null;
+}
+
+/// Maps `GET /api/timeline`.
+List<TimelineEntry>? parseTimeline(Object? json) =>
+    listOf<TimelineEntry>(json, (e) {
+      if (e case {
+        'at': final String at,
+        'source': final String source,
+        'severity': final String severity,
+        'subject': final String subject,
+        'message': final String message,
+      }) {
+        final time = DateTime.tryParse(at);
+        if (time == null) return null;
+        return TimelineEntry(
+          at: time,
+          source: source,
+          severity: severity,
+          subject: subject,
+          message: message,
+        );
+      }
+      return null;
+    });
