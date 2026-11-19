@@ -1127,4 +1127,57 @@ class AppLocalizationsEn extends AppLocalizations {
   String parcelsExpected(String date) {
     return 'expected $date';
   }
+
+  @override
+  String get photoFrameTitle => 'Photos';
+
+  @override
+  String get photoFrameEmpty => 'No photos in this album yet.';
+
+  @override
+  String get radarTitle => 'Rain radar';
+
+  @override
+  String get radarNoPlace => 'Choose a place in the web interface.';
+
+  @override
+  String get apodTitle => 'Picture of the day';
+
+  @override
+  String get apiWidgetNoEndpoint => 'Choose an endpoint in the web interface.';
+
+  @override
+  String get mailTitle => 'Mail';
+
+  @override
+  String get dropTitle => 'Drop zone';
+
+  @override
+  String get dropEmpty => 'Nothing dropped yet.';
+
+  @override
+  String get focusTitle => 'Focus';
+
+  @override
+  String get focusStart => 'Start';
+
+  @override
+  String get focusStop => 'Stop';
+
+  @override
+  String mailUnread(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count unread messages',
+      one: '1 unread message',
+      zero: '0 unread messages',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String focusToday(int minutes, int sessions) {
+    return 'Today: $minutes min in $sessions sessions';
+  }
 }

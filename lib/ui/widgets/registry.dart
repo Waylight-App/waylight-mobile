@@ -16,6 +16,7 @@ import 'package:waylight_mobile/ui/widgets/habits/habits_widget.dart';
 import 'package:waylight_mobile/ui/widgets/holidays/holidays_widget.dart';
 import 'package:waylight_mobile/ui/widgets/lists/list_widgets.dart';
 import 'package:waylight_mobile/ui/widgets/markets/markets_widget.dart';
+import 'package:waylight_mobile/ui/widgets/media/media_widgets.dart';
 import 'package:waylight_mobile/ui/widgets/notes/notes_widget.dart';
 import 'package:waylight_mobile/ui/widgets/parcels/parcels_widget.dart';
 import 'package:waylight_mobile/ui/widgets/phonelist/phonelist_widget.dart';
@@ -39,6 +40,7 @@ import 'package:waylight_mobile/ui/widgets/wireguard/wireguard_widget.dart';
 /// folder in `ui/widgets/` is done (docs/adding-a-feature.md).
 const nativeWidgets = WidgetRegistry({
   'adguard': AdguardWidget.forPlacement,
+  'apiwidget': ApiValuesWidget.forPlacement,
   'arr': ListWidget.arr,
   'backup-status': BackupsWidget.forPlacement,
   'birthdays': BirthdaysWidget.forPlacement,
@@ -49,7 +51,9 @@ const nativeWidgets = WidgetRegistry({
   'countdown': CountdownWidget.forPlacement,
   'diskhealth': DiskHealthWidget.forPlacement,
   'docker': DockerWidget.forPlacement,
+  'drop': DropWidget.forPlacement,
   'electricity': ElectricityWidget.forPlacement,
+  'focus': FocusWidget.forPlacement,
   'fritzbox': FritzboxWidget.forPlacement,
   'fritzbox-calls': CallsWidget.forPlacement,
   'fuel': FuelWidget.forPlacement,
@@ -57,20 +61,23 @@ const nativeWidgets = WidgetRegistry({
   'habits': HabitsWidget.forPlacement,
   'holidays': HolidaysWidget.forPlacement,
   'immich': AppOverviewWidget.immich,
+  'mail': MailWidget.forPlacement,
   'markets': MarketsWidget.forPlacement,
   'media': ListWidget.media,
   'nextcloud': AppOverviewWidget.nextcloud,
   'notes': NotesWidget.forPlacement,
   'parcels': ParcelsWidget.forPlacement,
   'phonelist': PhoneListWidget.forPlacement,
+  'photo-frame': PhotoFrameWidget.forPlacement,
   'proxmox': ProxmoxWidget.forPlacement,
+  'radar': RadarWidget.forPlacement,
   'readlater': ListWidget.readLater,
   'releases': ListWidget.releases,
   'rss': RssWidget.forPlacement,
   'services': ServicesWidget.forPlacement,
   'shopping': ShoppingWidget.forPlacement,
   'smarthome': SmartHomeWidget.forPlacement,
-  'space': ListWidget.space,
+  'space': SpaceWidget.forPlacement,
   'speedtest': SpeedtestWidget.forPlacement,
   'sports': SportsWidget.forPlacement,
   'status-overview': StatusOverviewWidget.forPlacement,

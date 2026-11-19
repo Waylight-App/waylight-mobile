@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:waylight_mobile/data/repositories/widget_data/widget_data_repository.dart';
 import 'package:waylight_mobile/data/services/api/module_api.dart';
 import 'package:waylight_mobile/domain/models/server_address.dart';
@@ -14,4 +16,11 @@ class WidgetDataRepositoryRemote implements WidgetDataRepository {
   @override
   Future<Result<T>> read<T>(ServerAddress server, WidgetQuery<T> query) =>
       _api.read(server, query.path, query.parse, query: query.query);
+
+  @override
+  Future<Result<Uint8List>> image(
+    ServerAddress server,
+    String path, {
+    Map<String, String> query = const {},
+  }) => _api.bytes(server, path, query: query);
 }

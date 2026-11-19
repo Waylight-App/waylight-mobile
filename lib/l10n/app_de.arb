@@ -332,5 +332,19 @@
   "smartHomeTitle": "Smart Home",
   "smartHomeEmpty": "Wähle im Web Entitäten aus.",
   "smartHomeRun": "Ausführen",
-  "parcelsExpected": "erwartet {date}"
+  "parcelsExpected": "erwartet {date}",
+  "photoFrameTitle": "Fotos",
+  "photoFrameEmpty": "Noch keine Fotos in diesem Album.",
+  "radarTitle": "Regenradar",
+  "radarNoPlace": "Wähle im Web einen Ort.",
+  "apodTitle": "Bild des Tages",
+  "apiWidgetNoEndpoint": "Wähle im Web einen Endpunkt.",
+  "mailTitle": "Mail",
+  "dropTitle": "Ablage",
+  "dropEmpty": "Noch nichts abgelegt.",
+  "focusTitle": "Fokus",
+  "focusStart": "Starten",
+  "focusStop": "Stoppen",
+  "mailUnread": "{count, plural, =0{0 ungelesene Nachrichten} =1{1 ungelesene Nachricht} other{{count} ungelesene Nachrichten}}",
+  "focusToday": "Heute: {minutes} Min. in {sessions} Sitzungen"
 }

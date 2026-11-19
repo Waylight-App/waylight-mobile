@@ -1,0 +1,9 @@
+{
+  "unread": 2,
+  "messages": [
+    {"account": "home", "from": "Anna <anna@example.org>", "subject": "Dinner on Friday?", "date": "2026-11-19T17:02:00Z"},
+    {"account": "home", "from": "Paperless", "subject": "Export finished", "date": "2026-11-19T06:30:00Z"}
+  ],
+  "webmailUrl": "https://mail.example.org",
+  "failed": []
+}

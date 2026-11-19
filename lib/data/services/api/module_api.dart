@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:waylight_mobile/data/services/api/api_client.dart';
 import 'package:waylight_mobile/domain/models/api_exception.dart';
 import 'package:waylight_mobile/domain/models/server_address.dart';
@@ -25,7 +27,8 @@ class ModuleApi {
     final uri = server
         .resolve(path)
         .replace(queryParameters: query.isEmpty ? null : query);
-    final result = await _client.getJson(uri);
+    // Widget data is kept for offline use like the dashboard (ADR 0007).
+    final result = await _client.getJson(uri, keepOffline: true);
     switch (result) {
       case Ok(:final value):
         final parsed = parse(value);
@@ -50,6 +53,15 @@ class ModuleApi {
     String path, {
     Object? body,
   }) => _client.putJson(server.resolve(path), body: body);
+
+  /// Reads `GET path` as raw bytes, such as an image.
+  Future<Result<Uint8List>> bytes(
+    ServerAddress server,
+    String path, {
+    Map<String, String> query = const {},
+  }) => _client.getBytes(
+    server.resolve(path).replace(queryParameters: query.isEmpty ? null : query),
+  );
 
   /// Sends `DELETE path`.
   Future<Result<void>> delete(ServerAddress server, String path) =>

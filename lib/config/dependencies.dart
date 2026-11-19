@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
+import 'package:waylight_mobile/data/repositories/actions/focus_repository.dart';
 import 'package:waylight_mobile/data/repositories/actions/parcels_repository.dart';
 import 'package:waylight_mobile/data/repositories/actions/rss_repository.dart';
 import 'package:waylight_mobile/data/repositories/actions/smarthome_repository.dart';
@@ -75,6 +76,7 @@ typedef Repositories = ({
   RssRepository rss,
   ParcelsRepository parcels,
   SmartHomeRepository smartHome,
+  FocusRepository focus,
   PreferencesRepository preferences,
   OfflineRepository offline,
   SearchRepository search,
@@ -102,6 +104,7 @@ List<SingleChildWidget> providers(Repositories repositories) => [
   Provider<RssRepository>.value(value: repositories.rss),
   Provider<ParcelsRepository>.value(value: repositories.parcels),
   Provider<SmartHomeRepository>.value(value: repositories.smartHome),
+  Provider<FocusRepository>.value(value: repositories.focus),
   Provider<SearchRepository>.value(value: repositories.search),
   ChangeNotifierProvider<AppLockRepository>.value(value: repositories.lock),
   ChangeNotifierProvider<PreferencesRepository>.value(
@@ -160,6 +163,7 @@ Repositories createRepositories() {
     rss: RssRepositoryRemote(api: modules),
     parcels: ParcelsRepositoryRemote(api: modules),
     smartHome: SmartHomeRepositoryRemote(api: modules),
+    focus: FocusRepositoryRemote(api: modules),
     preferences: PreferencesRepositoryLocal(store: store),
     offline: OfflineRepository(offline),
     search: SearchRepositoryRemote(api: SearchApi(client)),

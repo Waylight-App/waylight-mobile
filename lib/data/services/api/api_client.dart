@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
@@ -81,15 +82,18 @@ class ApiClient {
   };
 
   /// Sends a GET request and returns the decoded JSON body. For the
-  /// [cachedPaths], the answer is kept and served when the server cannot be
-  /// reached.
+  /// [cachedPaths], or with [keepOffline], the answer is kept and served
+  /// when the server cannot be reached (ADR 0007).
   Future<Result<Object?>> getJson(
     Uri uri, {
     Map<String, String> headers = const {},
+    bool keepOffline = false,
   }) async {
     final result = await _send('GET', uri, headers: headers);
     final cache = _cache;
-    if (cache == null || !_cachable(uri)) return _bodyOf(result);
+    if (cache == null || !(keepOffline || _cachable(uri))) {
+      return _bodyOf(result);
+    }
     switch (result) {
       case Ok(:final value):
         await cache.write(uri, jsonEncode(value.body), _now());
@@ -158,6 +162,58 @@ class ApiClient {
     required Map<String, String> headers,
     String? body,
   }) async {
+    final result = await _transport(method, uri, headers: headers, body: body);
+    switch (result) {
+      case Error(:final error):
+        return Result.error(error);
+      case Ok(value: final response):
+        // JSON is always UTF-8 (RFC 8259); Response.body would fall back to
+        // Latin-1 when the content type names no charset.
+        final decoded = _decode(
+          utf8.decode(response.bodyBytes, allowMalformed: true),
+        );
+        if (response.statusCode >= 200 && response.statusCode < 300) {
+          return Result.ok(
+            ApiResponse(
+              statusCode: response.statusCode,
+              body: decoded,
+              headers: response.headers,
+            ),
+          );
+        }
+        _log.warning('HTTP ${response.statusCode}: ${uri.path}');
+        if (response.statusCode == 401) _credentials.rejected(uri);
+        return Result.error(_toException(response.statusCode, decoded));
+    }
+  }
+
+  /// Sends a GET request and returns the raw body, such as an image.
+  Future<Result<Uint8List>> getBytes(Uri uri) async {
+    final result = await _transport(
+      'GET',
+      uri,
+      headers: const {HttpHeaders.acceptHeader: '*/*'},
+    );
+    switch (result) {
+      case Error(:final error):
+        return Result.error(error);
+      case Ok(value: final response):
+        if (response.statusCode >= 200 && response.statusCode < 300) {
+          return Result.ok(response.bodyBytes);
+        }
+        if (response.statusCode == 401) _credentials.rejected(uri);
+        return Result.error(_toException(response.statusCode, null));
+    }
+  }
+
+  /// Sends the request with the credentials; transport failures and
+  /// timeouts become `ApiFailure.unreachable`.
+  Future<Result<http.Response>> _transport(
+    String method,
+    Uri uri, {
+    required Map<String, String> headers,
+    String? body,
+  }) async {
     final request = http.Request(method, uri)
       ..headers.addAll({
         ..._jsonHeaders,
@@ -165,42 +221,21 @@ class ApiClient {
         ...headers,
       });
     if (body != null) request.body = body;
-
-    final http.Response response;
     try {
-      response = await _client
+      final response = await _client
           .send(request)
           .then(http.Response.fromStream)
           .timeout(timeout);
+      _offline.reachedServer();
+      return Result.ok(response);
     } on TimeoutException {
       _log.info('Timeout: ${uri.path}');
-      return const Result.error(ApiException(ApiFailure.unreachable));
     } on http.ClientException catch (e) {
       _log.info('Unreachable: ${uri.path}', e);
-      return const Result.error(ApiException(ApiFailure.unreachable));
     } on SocketException catch (e) {
       _log.info('Unreachable: ${uri.path}', e);
-      return const Result.error(ApiException(ApiFailure.unreachable));
     }
-
-    _offline.reachedServer();
-    // JSON is always UTF-8 (RFC 8259); Response.body would fall back to
-    // Latin-1 when the content type names no charset.
-    final decoded = _decode(
-      utf8.decode(response.bodyBytes, allowMalformed: true),
-    );
-    if (response.statusCode >= 200 && response.statusCode < 300) {
-      return Result.ok(
-        ApiResponse(
-          statusCode: response.statusCode,
-          body: decoded,
-          headers: response.headers,
-        ),
-      );
-    }
-    _log.warning('HTTP ${response.statusCode}: ${uri.path}');
-    if (response.statusCode == 401) _credentials.rejected(uri);
-    return Result.error(_toException(response.statusCode, decoded));
+    return const Result.error(ApiException(ApiFailure.unreachable));
   }
 
   static Object? _decode(String body) {

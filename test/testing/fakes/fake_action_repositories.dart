@@ -1,3 +1,4 @@
+import 'package:waylight_mobile/data/repositories/actions/focus_repository.dart';
 import 'package:waylight_mobile/data/repositories/actions/parcels_repository.dart';
 import 'package:waylight_mobile/data/repositories/actions/rss_repository.dart';
 import 'package:waylight_mobile/data/repositories/actions/smarthome_repository.dart';
@@ -90,4 +91,14 @@ class FakeSmartHomeRepository with _Calls implements SmartHomeRepository {
   @override
   Future<Result<void>> act(ServerAddress server, String id) async =>
       _record('act:$id');
+}
+
+/// A [FocusRepository] in memory.
+class FakeFocusRepository with _Calls implements FocusRepository {
+  @override
+  Future<Result<void>> save(
+    ServerAddress server, {
+    required int minutes,
+    required DateTime endedAt,
+  }) async => _record('save:$minutes');
 }

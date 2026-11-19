@@ -59,6 +59,7 @@ void main() {
           rss: FakeRssRepository(),
           parcels: FakeParcelsRepository(),
           smartHome: FakeSmartHomeRepository(),
+          focus: FakeFocusRepository(),
           preferences: FakePreferencesRepository(),
           offline: OfflineRepository(OfflineStatus()),
           search: FakeSearchRepository(),

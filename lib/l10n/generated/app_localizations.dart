@@ -2095,6 +2095,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'expected {date}'**
   String parcelsExpected(String date);
+
+  /// Default title of the photo frame.
+  ///
+  /// In en, this message translates to:
+  /// **'Photos'**
+  String get photoFrameTitle;
+
+  /// Photo frame without photos.
+  ///
+  /// In en, this message translates to:
+  /// **'No photos in this album yet.'**
+  String get photoFrameEmpty;
+
+  /// Default title of the radar widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Rain radar'**
+  String get radarTitle;
+
+  /// Radar widget without a place.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a place in the web interface.'**
+  String get radarNoPlace;
+
+  /// NASA astronomy picture of the day.
+  ///
+  /// In en, this message translates to:
+  /// **'Picture of the day'**
+  String get apodTitle;
+
+  /// JSON widget without an endpoint.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose an endpoint in the web interface.'**
+  String get apiWidgetNoEndpoint;
+
+  /// Default title of the mail widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Mail'**
+  String get mailTitle;
+
+  /// Default title of the drop zone.
+  ///
+  /// In en, this message translates to:
+  /// **'Drop zone'**
+  String get dropTitle;
+
+  /// Drop zone without items.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing dropped yet.'**
+  String get dropEmpty;
+
+  /// Default title of the focus timer.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus'**
+  String get focusTitle;
+
+  /// Starts a focus session.
+  ///
+  /// In en, this message translates to:
+  /// **'Start'**
+  String get focusStart;
+
+  /// Stops a focus session.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop'**
+  String get focusStop;
+
+  /// Unread count.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{0 unread messages} =1{1 unread message} other{{count} unread messages}}'**
+  String mailUnread(int count);
+
+  /// Focus time today.
+  ///
+  /// In en, this message translates to:
+  /// **'Today: {minutes} min in {sessions} sessions'**
+  String focusToday(int minutes, int sessions);
 }
 
 class _AppLocalizationsDelegate
