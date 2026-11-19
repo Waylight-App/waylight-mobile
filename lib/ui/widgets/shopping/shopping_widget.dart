@@ -1,7 +1,9 @@
+import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
 import 'package:waylight_mobile/domain/models/dashboard.dart';
+import 'package:waylight_mobile/routing/routes.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
 import 'package:waylight_mobile/ui/core/widgets/view_model_host.dart';
@@ -111,14 +113,20 @@ class _ShoppingListState extends State<_ShoppingList> {
                 ),
               ),
             ),
-            if (done > 0)
-              Align(
-                alignment: Alignment.centerRight,
-                child: TextButton(
-                  onPressed: vm.clearCompleted,
-                  child: Text(l10n.shoppingClear(done)),
+            Wrap(
+              alignment: WrapAlignment.end,
+              children: [
+                if (done > 0)
+                  TextButton(
+                    onPressed: vm.clearCompleted,
+                    child: Text(l10n.shoppingClear(done)),
+                  ),
+                TextButton(
+                  onPressed: () => context.push(Routes.shopping),
+                  child: Text(l10n.shoppingOpen),
                 ),
-              ),
+              ],
+            ),
           ],
         );
       },

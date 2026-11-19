@@ -1,4 +1,7 @@
 import 'package:material_ui/material_ui.dart';
+import 'package:provider/provider.dart';
+
+import 'package:waylight_mobile/data/repositories/actions/home_server_actions_repository.dart';
 
 import 'package:waylight_mobile/data/repositories/widget_data/queries/home_server.dart';
 import 'package:waylight_mobile/domain/models/dashboard.dart';
@@ -6,6 +9,7 @@ import 'package:waylight_mobile/domain/models/home_server.dart';
 import 'package:waylight_mobile/ui/core/link_opener.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
+import 'package:waylight_mobile/ui/widgets/common/admin_actions.dart';
 import 'package:waylight_mobile/ui/widgets/common/remote_widget.dart';
 import 'package:waylight_mobile/ui/widgets/common/widget_rows.dart';
 
@@ -55,9 +59,9 @@ class ServicesWidget extends StatelessWidget {
                   trailingTone: s.state == ServiceState.offline
                       ? Tone.critical
                       : null,
-                  onTap: url == null
+                  onTap: url == null && !s.canWake
                       ? null
-                      : () => LinkOpener.of(context).open(url),
+                      : () => _actions(context, s),
                 );
               },
             ),
@@ -65,6 +69,32 @@ class ServicesWidget extends StatelessWidget {
       );
     },
   );
+}
+
+Future<void> _actions(BuildContext context, MonitoredService s) async {
+  final l10n = context.l10n;
+  final url = s.url;
+  final admin = s.canWake && await isAdmin(context);
+  if (!context.mounted) return;
+  await showActions(context, [
+    if (url != null)
+      (
+        icon: Icons.open_in_new,
+        label: l10n.servicesOpen,
+        onTap: () => LinkOpener.of(context).open(url),
+      ),
+    if (admin)
+      (
+        icon: Icons.power_settings_new,
+        label: l10n.servicesWake,
+        onTap: () => runAction(
+          context,
+          (server) =>
+              context.read<HomeServerActionsRepository>().wake(server, s.id),
+          done: l10n.servicesWakeSent(s.name),
+        ),
+      ),
+  ]);
 }
 
 /// The native view of the status overview (#144): how many services are

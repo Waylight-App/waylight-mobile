@@ -1180,4 +1180,136 @@ class AppLocalizationsEn extends AppLocalizations {
   String focusToday(int minutes, int sessions) {
     return 'Today: $minutes min in $sessions sessions';
   }
+
+  @override
+  String get servicesOpen => 'Open';
+
+  @override
+  String get servicesWake => 'Wake up';
+
+  @override
+  String get dockerRestart => 'Restart';
+
+  @override
+  String get dockerLogs => 'Show log';
+
+  @override
+  String get proxmoxStart => 'Start';
+
+  @override
+  String get proxmoxShutdown => 'Shut down';
+
+  @override
+  String servicesWakeSent(String name) {
+    return 'Wake-up sent to $name.';
+  }
+
+  @override
+  String dockerRestartConfirm(String name) {
+    return 'Restart $name?';
+  }
+
+  @override
+  String dockerRestarted(String name) {
+    return '$name is restarting.';
+  }
+
+  @override
+  String proxmoxSent(String name) {
+    return 'Sent to $name.';
+  }
+
+  @override
+  String dnsFilterPause(int minutes) {
+    return 'Pause for $minutes minutes';
+  }
+
+  @override
+  String get weatherWarning => 'Weather warning';
+
+  @override
+  String get weatherUv => 'UV index today';
+
+  @override
+  String weatherWarningUntil(String time) {
+    return 'until $time';
+  }
+
+  @override
+  String get calendarNewEvent => 'New event';
+
+  @override
+  String get calendarEventTitle => 'Title';
+
+  @override
+  String get calendarEventLocation => 'Location (optional)';
+
+  @override
+  String get calendarSave => 'Save';
+
+  @override
+  String get calendarShowAll => 'Show agenda';
+
+  @override
+  String get shoppingOpen => 'Open list';
+
+  @override
+  String calendarEventAdded(String title) {
+    return 'Added $title.';
+  }
+
+  @override
+  String get smartHomeAll => 'All devices';
+
+  @override
+  String get rssOpen => 'Open reader';
+
+  @override
+  String get rssAllRead => 'Mark all read';
+
+  @override
+  String get rssUnreadOnly => 'Unread';
+
+  @override
+  String get rssAllFeeds => 'All';
+
+  @override
+  String get timelineOpen => 'All events';
+
+  @override
+  String get timelineAll => 'All';
+
+  @override
+  String get timelineCritical => 'Critical';
+
+  @override
+  String get noteNew => 'New note';
+
+  @override
+  String get noteEdit => 'Edit note';
+
+  @override
+  String get noteBodyHint => 'Text (Markdown)';
+
+  @override
+  String get noteSaved => 'Note saved.';
+
+  @override
+  String get noteConflict =>
+      'This note was changed elsewhere. Reload it and edit again.';
+
+  @override
+  String get noteTitleMissing => 'Give the note a title.';
+
+  @override
+  String get noteDelete => 'Delete';
+
+  @override
+  String get noteDeleteConfirm => 'Delete this note?';
+
+  @override
+  String get notePin => 'Pin';
+
+  @override
+  String get noteUnpin => 'Unpin';
 }

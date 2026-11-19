@@ -39,6 +39,21 @@ final class FeedArticle {
   );
 }
 
+/// A subscribed feed (`GET /api/rss/feeds`).
+final class RssFeed {
+  /// Creates the feed.
+  const RssFeed({required this.id, required this.title, this.unread = 0});
+
+  /// The server's id.
+  final String id;
+
+  /// The feed's title.
+  final String title;
+
+  /// How many items are unread.
+  final int unread;
+}
+
 /// The state of a parcel.
 enum ParcelStatus {
   /// Announced, not handed over yet.

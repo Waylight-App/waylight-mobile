@@ -293,3 +293,46 @@ final class LeagueRow {
   /// Games played.
   final int played;
 }
+
+/// A calendar new events can be written to (`GET /api/calendar/writable`).
+final class WritableCalendar {
+  /// Creates the choice.
+  const WritableCalendar({required this.id, required this.name});
+
+  /// The id the server expects as `calendarUrl`.
+  final String id;
+
+  /// The calendar's name.
+  final String name;
+}
+
+/// A new event for `POST /api/calendar/events`.
+final class NewEvent {
+  /// Creates the event.
+  const NewEvent({
+    required this.calendarId,
+    required this.summary,
+    required this.start,
+    required this.end,
+    this.allDay = false,
+    this.location = '',
+  });
+
+  /// The calendar to write to.
+  final String calendarId;
+
+  /// The title.
+  final String summary;
+
+  /// The start; for all-day events only the date counts.
+  final DateTime start;
+
+  /// The end; for all-day events the last day, inclusive.
+  final DateTime end;
+
+  /// Whether it lasts whole days.
+  final bool allDay;
+
+  /// Where it takes place.
+  final String location;
+}

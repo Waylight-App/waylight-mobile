@@ -88,6 +88,7 @@ final class MonitoredService {
     this.icon = '',
     this.latencyMs,
     this.certExpiresSoon = false,
+    this.canWake = false,
   });
 
   /// The server's id.
@@ -110,6 +111,9 @@ final class MonitoredService {
 
   /// Whether its TLS certificate expires soon.
   final bool certExpiresSoon;
+
+  /// Whether it has a MAC address, so it can be woken by Wake-on-LAN.
+  final bool canWake;
 }
 
 /// The state of a monitored backup or job (`GET /api/backup-status/sources`).
@@ -270,6 +274,7 @@ final class ProxmoxGuest {
     required this.name,
     required this.kind,
     required this.running,
+    this.actions = false,
   });
 
   /// The VMID.
@@ -283,6 +288,9 @@ final class ProxmoxGuest {
 
   /// Whether it runs.
   final bool running;
+
+  /// Whether the owner allowed starting and shutting it down.
+  final bool actions;
 }
 
 /// An entry of the instance's timeline (`GET /api/timeline`).

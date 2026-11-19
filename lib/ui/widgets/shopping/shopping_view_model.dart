@@ -24,6 +24,7 @@ class ShoppingViewModel extends ChangeNotifier {
   final ShoppingRepository _shoppingRepository;
 
   ShoppingList? _list;
+  List<ShoppingList> _lists = const [];
   List<ShoppingItem> _items = const [];
   Exception? _lastError;
 
@@ -32,6 +33,17 @@ class ShoppingViewModel extends ChangeNotifier {
 
   /// The list shown, or `null` when the account has none yet.
   ShoppingList? get list => _list;
+
+  /// All lists the account can see.
+  List<ShoppingList> get lists => _lists;
+
+  /// Shows [list] instead; the choice lasts while the view model lives.
+  Future<void> select(ShoppingList list) async {
+    _list = list;
+    _items = const [];
+    notifyListeners();
+    await load.execute();
+  }
 
   /// Open items first, then the ones in the basket.
   List<ShoppingItem> get items => [
@@ -55,10 +67,12 @@ class ShoppingViewModel extends ChangeNotifier {
         return Result.error(error);
       case Ok(:final value):
         final lists = value.lists;
+        _lists = lists;
+        final chosen = _list?.id ?? value.current;
         _list = lists.isEmpty
             ? null
             : lists.firstWhere(
-                (l) => l.id == value.current,
+                (l) => l.id == chosen,
                 orElse: () => lists.first,
               );
     }

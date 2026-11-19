@@ -33,6 +33,7 @@ void main() {
     expect(shortcutLocation(AppShortcut.addTodo), '/search?q=t+');
     expect(shortcutLocation(AppShortcut.departures), '/?widget=transit');
     expect(shortcutLocation(AppShortcut.search), '/search');
+    expect(shortcutLocation(AppShortcut.shopping), '/shopping');
     expect(AppShortcut.ofType('search'), AppShortcut.search);
     expect(AppShortcut.ofType('other'), isNull);
   });
@@ -92,6 +93,7 @@ void main() {
     expect(actions.items.map((i) => i.type), [
       'addTodo',
       'departures',
+      'shopping',
       'search',
     ]);
     expect(actions.items.first.localizedTitle, 'Add to-do');

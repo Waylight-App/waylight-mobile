@@ -2179,6 +2179,240 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Today: {minutes} min in {sessions} sessions'**
   String focusToday(int minutes, int sessions);
+
+  /// Opens a service in the browser.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get servicesOpen;
+
+  /// Sends Wake-on-LAN to a service.
+  ///
+  /// In en, this message translates to:
+  /// **'Wake up'**
+  String get servicesWake;
+
+  /// Restarts a container.
+  ///
+  /// In en, this message translates to:
+  /// **'Restart'**
+  String get dockerRestart;
+
+  /// Shows the log of a container.
+  ///
+  /// In en, this message translates to:
+  /// **'Show log'**
+  String get dockerLogs;
+
+  /// Starts a Proxmox guest.
+  ///
+  /// In en, this message translates to:
+  /// **'Start'**
+  String get proxmoxStart;
+
+  /// Shuts a Proxmox guest down.
+  ///
+  /// In en, this message translates to:
+  /// **'Shut down'**
+  String get proxmoxShutdown;
+
+  /// After sending Wake-on-LAN.
+  ///
+  /// In en, this message translates to:
+  /// **'Wake-up sent to {name}.'**
+  String servicesWakeSent(String name);
+
+  /// Confirmation before a restart.
+  ///
+  /// In en, this message translates to:
+  /// **'Restart {name}?'**
+  String dockerRestartConfirm(String name);
+
+  /// After a restart was sent.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} is restarting.'**
+  String dockerRestarted(String name);
+
+  /// After a power action was sent.
+  ///
+  /// In en, this message translates to:
+  /// **'Sent to {name}.'**
+  String proxmoxSent(String name);
+
+  /// Pauses DNS blocking.
+  ///
+  /// In en, this message translates to:
+  /// **'Pause for {minutes} minutes'**
+  String dnsFilterPause(int minutes);
+
+  /// Spoken label of a warning.
+  ///
+  /// In en, this message translates to:
+  /// **'Weather warning'**
+  String get weatherWarning;
+
+  /// Today's UV index.
+  ///
+  /// In en, this message translates to:
+  /// **'UV index today'**
+  String get weatherUv;
+
+  /// End of a warning.
+  ///
+  /// In en, this message translates to:
+  /// **'until {time}'**
+  String weatherWarningUntil(String time);
+
+  /// New event of the calendar.
+  ///
+  /// In en, this message translates to:
+  /// **'New event'**
+  String get calendarNewEvent;
+
+  /// Title of a new event.
+  ///
+  /// In en, this message translates to:
+  /// **'Title'**
+  String get calendarEventTitle;
+
+  /// Location of a new event.
+  ///
+  /// In en, this message translates to:
+  /// **'Location (optional)'**
+  String get calendarEventLocation;
+
+  /// Saves a new event.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get calendarSave;
+
+  /// Opens the calendar screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Show agenda'**
+  String get calendarShowAll;
+
+  /// Opens the shopping list screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Open list'**
+  String get shoppingOpen;
+
+  /// After a new event was saved.
+  ///
+  /// In en, this message translates to:
+  /// **'Added {title}.'**
+  String calendarEventAdded(String title);
+
+  /// Opens the smart home screen.
+  ///
+  /// In en, this message translates to:
+  /// **'All devices'**
+  String get smartHomeAll;
+
+  /// Opens the feed reader.
+  ///
+  /// In en, this message translates to:
+  /// **'Open reader'**
+  String get rssOpen;
+
+  /// Marks every item read.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark all read'**
+  String get rssAllRead;
+
+  /// Filter: unread items only.
+  ///
+  /// In en, this message translates to:
+  /// **'Unread'**
+  String get rssUnreadOnly;
+
+  /// Filter: all feeds.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get rssAllFeeds;
+
+  /// Opens the timeline screen.
+  ///
+  /// In en, this message translates to:
+  /// **'All events'**
+  String get timelineOpen;
+
+  /// Filter: all events.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get timelineAll;
+
+  /// Filter: critical events.
+  ///
+  /// In en, this message translates to:
+  /// **'Critical'**
+  String get timelineCritical;
+
+  /// Title of the editor for a new note.
+  ///
+  /// In en, this message translates to:
+  /// **'New note'**
+  String get noteNew;
+
+  /// Title of the editor.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit note'**
+  String get noteEdit;
+
+  /// Hint of the note text.
+  ///
+  /// In en, this message translates to:
+  /// **'Text (Markdown)'**
+  String get noteBodyHint;
+
+  /// After saving a note.
+  ///
+  /// In en, this message translates to:
+  /// **'Note saved.'**
+  String get noteSaved;
+
+  /// Saving failed because of a newer version.
+  ///
+  /// In en, this message translates to:
+  /// **'This note was changed elsewhere. Reload it and edit again.'**
+  String get noteConflict;
+
+  /// Saving without a title.
+  ///
+  /// In en, this message translates to:
+  /// **'Give the note a title.'**
+  String get noteTitleMissing;
+
+  /// Deletes a note.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get noteDelete;
+
+  /// Confirmation before deleting a note.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this note?'**
+  String get noteDeleteConfirm;
+
+  /// Pins a note.
+  ///
+  /// In en, this message translates to:
+  /// **'Pin'**
+  String get notePin;
+
+  /// Unpins a note.
+  ///
+  /// In en, this message translates to:
+  /// **'Unpin'**
+  String get noteUnpin;
 }
 
 class _AppLocalizationsDelegate

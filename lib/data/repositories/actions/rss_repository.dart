@@ -20,6 +20,15 @@ abstract interface class RssRepository {
     String id, {
     required bool read,
   });
+
+  /// The subscribed feeds with their unread counts.
+  Future<Result<List<RssFeed>>> feeds(ServerAddress server);
+
+  /// Marks every item read, of one feed when [feedId] is set.
+  Future<Result<void>> markAllRead(ServerAddress server, {String feedId = ''});
+
+  /// Asks the server to fetch the feeds now.
+  Future<Result<void>> refresh(ServerAddress server);
 }
 
 /// An [RssRepository] on `/api/rss`.
@@ -59,7 +68,43 @@ class RssRepositoryRemote implements RssRepository {
     Ok() => const Result.ok(null),
     Error(:final error) => Result.error(error),
   };
+
+  @override
+  Future<Result<List<RssFeed>>> feeds(ServerAddress server) =>
+      _api.read(server, '/api/rss/feeds', parseFeeds);
+
+  @override
+  Future<Result<void>> markAllRead(
+    ServerAddress server, {
+    String feedId = '',
+  }) async => switch (await _api.post(
+    server,
+    '/api/rss/read-all',
+    body: {'feedId': feedId},
+  )) {
+    Ok() => const Result.ok(null),
+    Error(:final error) => Result.error(error),
+  };
+
+  @override
+  Future<Result<void>> refresh(ServerAddress server) async =>
+      switch (await _api.post(server, '/api/rss/refresh')) {
+        Ok() => const Result.ok(null),
+        Error(:final error) => Result.error(error),
+      };
 }
+
+/// Maps `GET /api/rss/feeds`.
+List<RssFeed>? parseFeeds(Object? json) => listOf<RssFeed>(json, (f) {
+  if (f case {'id': final String id, 'title': final String title}) {
+    return RssFeed(
+      id: id,
+      title: title,
+      unread: (f['unread'] as num?)?.toInt() ?? 0,
+    );
+  }
+  return null;
+});
 
 /// Maps `GET /api/rss/items`.
 List<FeedArticle>? parseFeedArticles(Object? json) =>

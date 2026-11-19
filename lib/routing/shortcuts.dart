@@ -12,5 +12,6 @@ String shortcutLocation(AppShortcut shortcut) => switch (shortcut) {
     path: Routes.home,
     queryParameters: {'widget': 'transit'},
   ).toString(),
+  AppShortcut.shopping => Routes.shopping,
   AppShortcut.search => Routes.search,
 };

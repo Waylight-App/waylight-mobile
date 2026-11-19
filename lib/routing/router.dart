@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:waylight_mobile/data/repositories/lock/app_lock_repository.dart';
 import 'package:waylight_mobile/data/repositories/server/server_repository.dart';
 import 'package:waylight_mobile/data/repositories/session/session_repository.dart';
+import 'package:waylight_mobile/data/repositories/widget_data/queries/home_server.dart';
 import 'package:waylight_mobile/routing/routes.dart';
 import 'package:waylight_mobile/ui/auth_callback/view_models/auth_callback_view_model.dart';
 import 'package:waylight_mobile/ui/auth_callback/widgets/auth_callback_screen.dart';
@@ -24,7 +25,18 @@ import 'package:waylight_mobile/ui/settings/view_models/settings_view_model.dart
 import 'package:waylight_mobile/ui/settings/widgets/settings_screen.dart';
 import 'package:waylight_mobile/ui/sign_in/view_models/sign_in_view_model.dart';
 import 'package:waylight_mobile/ui/sign_in/widgets/sign_in_screen.dart';
+import 'package:waylight_mobile/ui/widgets/calendar/calendar_screen.dart';
+import 'package:waylight_mobile/ui/widgets/calendar/calendar_view_model.dart';
+import 'package:waylight_mobile/ui/widgets/common/remote_widget.dart';
+import 'package:waylight_mobile/ui/widgets/notes/note_editor_screen.dart';
+import 'package:waylight_mobile/ui/widgets/notes/note_editor_view_model.dart';
 import 'package:waylight_mobile/ui/widgets/registry.dart';
+import 'package:waylight_mobile/ui/widgets/rss/rss_reader_view_model.dart';
+import 'package:waylight_mobile/ui/widgets/rss/rss_screen.dart';
+import 'package:waylight_mobile/ui/widgets/shopping/shopping_screen.dart';
+import 'package:waylight_mobile/ui/widgets/shopping/shopping_view_model.dart';
+import 'package:waylight_mobile/ui/widgets/smarthome/smarthome_screen.dart';
+import 'package:waylight_mobile/ui/widgets/timeline/timeline_screen.dart';
 
 /// Creates the router of the app.
 ///
@@ -110,6 +122,62 @@ GoRouter createRouter(
           todosRepository: context.read(),
         ),
         builder: (context, viewModel) => SearchScreen(viewModel: viewModel),
+      ),
+    ),
+    GoRoute(
+      path: Routes.calendar,
+      builder: (context, state) => ViewModelHost(
+        create: (context) => CalendarViewModel(
+          serverRepository: context.read(),
+          calendarRepository: context.read(),
+        ),
+        builder: (context, viewModel) => CalendarScreen(viewModel: viewModel),
+      ),
+    ),
+    GoRoute(
+      path: Routes.shopping,
+      builder: (context, state) => ViewModelHost(
+        create: (context) => ShoppingViewModel(
+          serverRepository: context.read(),
+          shoppingRepository: context.read(),
+        ),
+        builder: (context, viewModel) => ShoppingScreen(viewModel: viewModel),
+      ),
+    ),
+    GoRoute(
+      path: Routes.feeds,
+      builder: (context, state) => ViewModelHost(
+        create: (context) => RssReaderViewModel(
+          serverRepository: context.read(),
+          rss: context.read(),
+        ),
+        builder: (context, viewModel) => RssScreen(viewModel: viewModel),
+      ),
+    ),
+    GoRoute(
+      path: Routes.timeline,
+      builder: (context, state) => ViewModelHost(
+        create: (context) => RemoteWidgetViewModel(
+          server: context.read(),
+          data: context.read(),
+          query: timelineQuery,
+        ),
+        builder: (context, viewModel) => TimelineScreen(viewModel: viewModel),
+      ),
+    ),
+    GoRoute(
+      path: Routes.smartHome,
+      builder: (context, state) => SmartHomeScreen.route(),
+    ),
+    GoRoute(
+      path: Routes.note,
+      builder: (context, state) => ViewModelHost(
+        create: (context) => NoteEditorViewModel(
+          noteId: state.uri.queryParameters['id'] ?? '',
+          serverRepository: context.read(),
+          notesRepository: context.read(),
+        ),
+        builder: (context, viewModel) => NoteEditorScreen(viewModel: viewModel),
       ),
     ),
     GoRoute(

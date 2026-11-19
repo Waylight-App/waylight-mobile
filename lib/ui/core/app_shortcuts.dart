@@ -11,6 +11,9 @@ enum AppShortcut {
   /// Opens the tab with the departures.
   departures,
 
+  /// Opens the shopping list (#103).
+  shopping,
+
   /// Opens the search.
   search;
 
@@ -75,6 +78,10 @@ class _AppShortcutsState extends State<AppShortcuts> {
       ShortcutItem(
         type: AppShortcut.departures.name,
         localizedTitle: l10n.shortcutDepartures,
+      ),
+      ShortcutItem(
+        type: AppShortcut.shopping.name,
+        localizedTitle: l10n.shoppingTitle,
       ),
       ShortcutItem(
         type: AppShortcut.search.name,

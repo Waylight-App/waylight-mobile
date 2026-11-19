@@ -1,0 +1,22 @@
+[
+  {
+    "id": "32a2a78599f1b4be3623a12b56f8c7ab",
+    "url": "https://go.dev/blog/feed.atom",
+    "title": "Demo feed (go.dev)",
+    "siteUrl": "",
+    "lastError": "",
+    "lastFetchedAt": "2026-11-19T21:37:38.612991693Z",
+    "unread": 4,
+    "category": ""
+  },
+  {
+    "id": "8a3f258f5bb1e8044584558765a493da",
+    "url": "https://hnrss.org/frontpage",
+    "title": "Demo feed (hnrss.org)",
+    "siteUrl": "",
+    "lastError": "",
+    "lastFetchedAt": "2026-11-19T21:37:38.613697733Z",
+    "unread": 4,
+    "category": ""
+  }
+]

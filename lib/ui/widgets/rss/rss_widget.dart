@@ -1,12 +1,13 @@
 import 'dart:async';
 
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
-
 import 'package:waylight_mobile/data/repositories/actions/rss_repository.dart';
 import 'package:waylight_mobile/domain/models/actions.dart';
 import 'package:waylight_mobile/domain/models/dashboard.dart';
+import 'package:waylight_mobile/routing/routes.dart';
 import 'package:waylight_mobile/ui/core/link_opener.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/widgets/common/items_view_model.dart';
@@ -95,6 +96,13 @@ class RssWidget extends StatelessWidget {
                         unawaited(LinkOpener.of(context).open(a.link!));
                       },
               ),
+            Align(
+              alignment: Alignment.centerRight,
+              child: TextButton(
+                onPressed: () => context.push(Routes.feeds),
+                child: Text(context.l10n.rssOpen),
+              ),
+            ),
           ],
         );
       },

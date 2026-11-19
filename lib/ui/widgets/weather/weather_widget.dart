@@ -8,6 +8,7 @@ import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
 import 'package:waylight_mobile/ui/core/widgets/view_model_host.dart';
 import 'package:waylight_mobile/ui/core/widgets/widget_frame.dart';
+import 'package:waylight_mobile/ui/widgets/weather/weather_extras.dart';
 import 'package:waylight_mobile/ui/widgets/weather/weather_view_model.dart';
 
 /// The native view of the weather widget (#63).
@@ -41,7 +42,13 @@ class WeatherWidget extends StatelessWidget {
         interval: const Duration(minutes: 15),
         errorText: (error) =>
             error is NoPlaceException ? context.l10n.weatherNoPlace : null,
-        builder: (context, weather) => _WeatherContent(weather: weather),
+        builder: (context, weather) => Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            _WeatherContent(weather: weather),
+            WeatherExtras(config: widget.config),
+          ],
+        ),
       ),
     );
   }
