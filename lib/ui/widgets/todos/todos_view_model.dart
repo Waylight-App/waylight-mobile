@@ -1,8 +1,9 @@
 import 'package:flutter/foundation.dart';
-
 import 'package:waylight_mobile/data/repositories/server/server_repository.dart';
 import 'package:waylight_mobile/data/repositories/todos/todos_repository.dart';
+import 'package:waylight_mobile/data/repositories/todos/todos_repository_outbox.dart';
 import 'package:waylight_mobile/domain/models/api_exception.dart';
+import 'package:waylight_mobile/domain/models/outbox.dart';
 import 'package:waylight_mobile/domain/models/todo.dart';
 import 'package:waylight_mobile/utils/command.dart';
 import 'package:waylight_mobile/utils/result.dart';
@@ -42,7 +43,9 @@ class TodosViewModel extends ChangeNotifier {
     required this._serverRepository,
     required this._todosRepository,
     this._now = DateTime.now,
+    this._outbox,
   }) {
+    _outbox?.addListener(notifyListeners);
     load = Command0(_load)..execute().ignore();
     _loadRole().ignore();
   }
@@ -52,6 +55,25 @@ class TodosViewModel extends ChangeNotifier {
   final ServerRepository _serverRepository;
   final TodosRepository _todosRepository;
   final DateTime Function() _now;
+  final TodoOutbox? _outbox;
+
+  /// Changes made offline that the server refused; the user decides (#24).
+  List<Conflict> get conflicts => _outbox?.conflicts ?? const [];
+
+  /// Whether [todo] waits for the server.
+  bool isPending(Todo todo) => _outbox?.isPending(todo) ?? false;
+
+  /// Sends a refused change again on top of the server's version.
+  Future<void> keepMine(Conflict conflict) async {
+    await _outbox?.keepMine(conflict.change.key);
+    await load.execute();
+  }
+
+  /// Drops a refused change and keeps the server's version.
+  Future<void> keepServer(Conflict conflict) async {
+    await _outbox?.keepServer(conflict.change.key);
+    await load.execute();
+  }
 
   List<Todo> _todos = const [];
   bool _canEdit = false;
@@ -224,6 +246,7 @@ class TodosViewModel extends ChangeNotifier {
 
   @override
   void dispose() {
+    _outbox?.removeListener(notifyListeners);
     load.dispose();
     super.dispose();
   }

@@ -21,6 +21,7 @@ import 'package:waylight_mobile/data/repositories/server/server_repository_remot
 import 'package:waylight_mobile/data/repositories/session/session_repository.dart';
 import 'package:waylight_mobile/data/repositories/session/session_repository_remote.dart';
 import 'package:waylight_mobile/data/repositories/todos/todos_repository.dart';
+import 'package:waylight_mobile/data/repositories/todos/todos_repository_outbox.dart';
 import 'package:waylight_mobile/data/repositories/todos/todos_repository_remote.dart';
 import 'package:waylight_mobile/data/repositories/transit/transit_repository.dart';
 import 'package:waylight_mobile/data/repositories/transit/transit_repository_remote.dart';
@@ -53,7 +54,7 @@ typedef Repositories = ({
   SessionRepository session,
   DashboardRepository dashboard,
   WeatherRepository weather,
-  TodosRepository todos,
+  TodosRepositoryOutbox todos,
   NotesRepository notes,
   BookmarksRepository bookmarks,
   TransitRepository transit,
@@ -74,6 +75,7 @@ List<SingleChildWidget> providers(Repositories repositories) => [
   Provider<DashboardRepository>.value(value: repositories.dashboard),
   Provider<WeatherRepository>.value(value: repositories.weather),
   Provider<TodosRepository>.value(value: repositories.todos),
+  ChangeNotifierProvider<TodoOutbox>.value(value: repositories.todos.outbox),
   Provider<NotesRepository>.value(value: repositories.notes),
   Provider<BookmarksRepository>.value(value: repositories.bookmarks),
   Provider<TransitRepository>.value(value: repositories.transit),
@@ -102,21 +104,29 @@ Repositories createRepositories() {
     offline: offline,
   );
   const store = SecureKeyValueStore();
+  final server = ServerRepositoryRemote(
+    platformApi: PlatformApi(client),
+    store: store,
+  );
+  final todos = TodosRepositoryOutbox(
+    remote: TodosRepositoryRemote(api: TodosApi(client)),
+    store: store,
+    offline: offline,
+    server: () => server.current,
+  );
   return (
-    server: ServerRepositoryRemote(
-      platformApi: PlatformApi(client),
-      store: store,
-    ),
+    server: server,
     session: SessionRepositoryRemote(
       authApi: AuthApi(client),
       credentials: credentials,
       store: store,
       deviceName: deviceName(),
       cache: cache,
+      onForget: [todos.clear],
     ),
     dashboard: DashboardRepositoryRemote(api: DashboardApi(client)),
     weather: WeatherRepositoryRemote(api: WeatherApi(client)),
-    todos: TodosRepositoryRemote(api: TodosApi(client)),
+    todos: todos,
     notes: NotesRepositoryRemote(api: NotesApi(client)),
     bookmarks: BookmarksRepositoryRemote(api: BookmarksApi(client)),
     transit: TransitRepositoryRemote(api: TransitApi(client)),

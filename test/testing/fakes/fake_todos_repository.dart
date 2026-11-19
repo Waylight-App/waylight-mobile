@@ -40,9 +40,15 @@ class FakeTodosRepository implements TodosRepository {
     required String title,
     DateTime? due,
     String source = '',
+    String id = '',
   }) async => _write(
     'create $title',
-    Todo(id: 'srv-${writes.length}', title: title, due: due, version: 1),
+    Todo(
+      id: id.isEmpty ? 'srv-${writes.length}' : id,
+      title: title,
+      due: due,
+      version: 1,
+    ),
   );
 
   @override

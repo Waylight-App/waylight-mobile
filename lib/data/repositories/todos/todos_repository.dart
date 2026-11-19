@@ -17,6 +17,7 @@ abstract interface class TodosRepository {
     required String title,
     DateTime? due,
     String source = '',
+    String id = '',
   });
 
   /// Stores the changes of [todo].

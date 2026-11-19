@@ -160,5 +160,14 @@
   "settingsLockNow": "Sofort",
   "settingsLockMinutes": "{minutes} Min.",
   "shortcutAddTodo": "To-do hinzufügen",
-  "shortcutDepartures": "Abfahrten"
+  "shortcutDepartures": "Abfahrten",
+  "todosPending": "Noch nicht auf dem Server gespeichert",
+  "todosConflicts": "{count, plural, =1{1 Änderung konnte nicht gespeichert werden.} other{{count} Änderungen konnten nicht gespeichert werden.}}",
+  "todosConflictsDecide": "Entscheiden",
+  "todosConflictChanged": "Inzwischen anderswo geändert.",
+  "todosConflictRejected": "Vom Server abgelehnt: {message}",
+  "todosKeepMine": "Meins behalten",
+  "todosKeepServer": "Server-Version behalten",
+  "todosDiscard": "Verwerfen",
+  "todosDeletedTodo": "Gelöschtes To-do"
 }

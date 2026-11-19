@@ -25,7 +25,8 @@ class TodosRepositoryRemote implements TodosRepository {
     required String title,
     DateTime? due,
     String source = '',
-  }) => _api.create(server, title: title, due: due, source: source);
+    String id = '',
+  }) => _api.create(server, title: title, due: due, source: source, id: id);
 
   @override
   Future<Result<Todo>> update(

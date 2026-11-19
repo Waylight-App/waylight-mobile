@@ -1063,6 +1063,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Departures'**
   String get shortcutDepartures;
+
+  /// Marker of a to-do changed offline.
+  ///
+  /// In en, this message translates to:
+  /// **'Not saved on the server yet'**
+  String get todosPending;
+
+  /// Banner when the server refused offline changes.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 change could not be saved.} other{{count} changes could not be saved.}}'**
+  String todosConflicts(int count);
+
+  /// Button that opens the list of refused changes.
+  ///
+  /// In en, this message translates to:
+  /// **'Decide'**
+  String get todosConflictsDecide;
+
+  /// Reason of a conflict.
+  ///
+  /// In en, this message translates to:
+  /// **'Changed elsewhere in the meantime.'**
+  String get todosConflictChanged;
+
+  /// Reason of a rejected change.
+  ///
+  /// In en, this message translates to:
+  /// **'The server refused it: {message}'**
+  String todosConflictRejected(String message);
+
+  /// Resend the change.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep mine'**
+  String get todosKeepMine;
+
+  /// Drop the change.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep the server\'s'**
+  String get todosKeepServer;
+
+  /// Drop a rejected change.
+  ///
+  /// In en, this message translates to:
+  /// **'Discard'**
+  String get todosDiscard;
+
+  /// Title of a refused delete.
+  ///
+  /// In en, this message translates to:
+  /// **'Deleted to-do'**
+  String get todosDeletedTodo;
 }
 
 class _AppLocalizationsDelegate

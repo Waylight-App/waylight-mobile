@@ -24,6 +24,7 @@ class SessionRepositoryRemote extends SessionRepository {
     required this._store,
     required this.deviceName,
     this._cache,
+    this._onForget = const [],
   }) {
     _credentials.onRejected = _onRejected;
   }
@@ -36,6 +37,10 @@ class SessionRepositoryRemote extends SessionRepository {
 
   final AuthApi _authApi;
   final ResponseCache? _cache;
+
+  // Other data of the account that must not outlive the session, e.g. the
+  // to-do outbox (#24).
+  final List<Future<void> Function()> _onForget;
   final ApiCredentials _credentials;
   final KeyValueStore _store;
   final Logger _log = Logger('SessionRepository');
@@ -224,6 +229,9 @@ class SessionRepositoryRemote extends SessionRepository {
     _use(null);
     // The offline copy belongs to the account; nothing of it stays (#23).
     await _cache?.clear();
+    for (final forget in _onForget) {
+      await forget();
+    }
     try {
       await _store.delete(storageKey);
       return const Result.ok(null);

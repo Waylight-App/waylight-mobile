@@ -44,10 +44,12 @@ class TodosApi {
     required String title,
     DateTime? due,
     String source = '',
+    String id = '',
   }) async => _one(
     await _client.postJson(
       _uri(server, '/api/todos', source),
-      body: {'title': title, 'due': _date(due)},
+      // A client-generated id makes a replayed create idempotent (#24).
+      body: {'title': title, 'due': _date(due), if (id.isNotEmpty) 'id': id},
     ),
   );
 
