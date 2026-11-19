@@ -19,6 +19,12 @@ class ConnectServerViewModel extends ChangeNotifier {
   /// Checks the entered address and saves it if a Waylight server answers.
   late final Command1<ServerStatus, String> connect;
 
+  /// The public demo, to try the app without a server of one's own (#44).
+  static const demoAddress = 'https://demo.getwaylight.app';
+
+  /// Connects the public demo.
+  Future<void> tryDemo() => connect.execute(demoAddress);
+
   /// Whether the entered address uses plain HTTP; the screen warns then.
   bool get insecure => _insecure;
 
