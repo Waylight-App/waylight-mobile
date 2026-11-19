@@ -3,12 +3,14 @@ import 'package:material_ui/material_ui.dart';
 
 import 'package:waylight_mobile/domain/models/api_exception.dart';
 import 'package:waylight_mobile/domain/models/dashboard.dart';
+import 'package:waylight_mobile/ui/core/link_opener.dart';
 import 'package:waylight_mobile/ui/core/widget_registry.dart';
 import 'package:waylight_mobile/ui/dashboard/view_models/dashboard_view_model.dart';
 import 'package:waylight_mobile/ui/dashboard/widgets/dashboard_screen.dart';
 import 'package:waylight_mobile/utils/result.dart';
 
 import '../../testing/fakes/fake_dashboard_repository.dart';
+import '../../testing/fakes/fake_link_opener.dart';
 import '../../testing/fakes/fake_server_repository.dart';
 import '../../testing/fakes/fake_session_repository.dart';
 import '../../testing/pump_app.dart';
@@ -44,9 +46,15 @@ void main() {
     dashboardRepository: dashboards,
   );
 
+  late FakeLinkOpener opener;
+
   Future<void> pump(WidgetTester tester) async {
+    opener = FakeLinkOpener();
     await tester.pumpScreen(
-      DashboardScreen(viewModel: create(), registry: registry),
+      LinkOpenerScope(
+        opener: opener,
+        child: DashboardScreen(viewModel: create(), registry: registry),
+      ),
     );
     await tester.pumpAndSettle();
   }
@@ -152,5 +160,14 @@ void main() {
     expect(find.text('native w3'), findsOneWidget);
     expect(find.text('Status overview'), findsOneWidget);
     registry = const WidgetRegistry({});
+  });
+
+  testWidgets('opens the tab of a widget without native view', (tester) async {
+    await pump(tester);
+
+    await tester.tap(find.text(l10nEn.dashboardOpenInWaylight).first);
+    await tester.pump();
+
+    expect(opener.opened.single.toString(), 'https://home.example.org/?tab=t2');
   });
 }

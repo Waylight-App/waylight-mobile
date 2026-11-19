@@ -9,6 +9,7 @@ import 'package:waylight_mobile/ui/connect_server/widgets/connect_server_screen.
 import 'package:waylight_mobile/ui/dashboard/widgets/dashboard_screen.dart';
 import 'package:waylight_mobile/ui/sign_in/widgets/sign_in_screen.dart';
 
+import '../testing/fakes/fake_bookmarks_repository.dart';
 import '../testing/fakes/fake_dashboard_repository.dart';
 import '../testing/fakes/fake_notes_repository.dart';
 import '../testing/fakes/fake_server_repository.dart';
@@ -31,6 +32,7 @@ void main() {
           weather: FakeWeatherRepository(),
           todos: FakeTodosRepository(),
           notes: FakeNotesRepository(),
+          bookmarks: FakeBookmarksRepository(),
         )),
         child: WaylightApp(router: createRouter(servers, sessions)),
       ),

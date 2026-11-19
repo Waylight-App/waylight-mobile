@@ -279,4 +279,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notesPinned => 'Pinned';
+
+  @override
+  String get bookmarksTitle => 'Bookmarks';
+
+  @override
+  String get bookmarksEmpty => 'No bookmarks yet.';
+
+  @override
+  String get linkOpenFailed => 'The link could not be opened.';
+
+  @override
+  String get dashboardOpenInWaylight => 'Open in Waylight';
 }

@@ -2,6 +2,8 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
+import 'package:waylight_mobile/data/repositories/bookmarks/bookmarks_repository.dart';
+import 'package:waylight_mobile/data/repositories/bookmarks/bookmarks_repository_remote.dart';
 import 'package:waylight_mobile/data/repositories/dashboard/dashboard_repository.dart';
 import 'package:waylight_mobile/data/repositories/dashboard/dashboard_repository_remote.dart';
 import 'package:waylight_mobile/data/repositories/notes/notes_repository.dart';
@@ -17,6 +19,7 @@ import 'package:waylight_mobile/data/repositories/weather/weather_repository_rem
 import 'package:waylight_mobile/data/services/api/api_client.dart';
 import 'package:waylight_mobile/data/services/api/api_credentials.dart';
 import 'package:waylight_mobile/data/services/api/auth_api.dart';
+import 'package:waylight_mobile/data/services/api/bookmarks_api.dart';
 import 'package:waylight_mobile/data/services/api/dashboard_api.dart';
 import 'package:waylight_mobile/data/services/api/notes_api.dart';
 import 'package:waylight_mobile/data/services/api/platform_api.dart';
@@ -33,6 +36,7 @@ typedef Repositories = ({
   WeatherRepository weather,
   TodosRepository todos,
   NotesRepository notes,
+  BookmarksRepository bookmarks,
 });
 
 /// The services and repositories of the app: the composition root.
@@ -46,6 +50,7 @@ List<SingleChildWidget> providers(Repositories repositories) => [
   Provider<WeatherRepository>.value(value: repositories.weather),
   Provider<TodosRepository>.value(value: repositories.todos),
   Provider<NotesRepository>.value(value: repositories.notes),
+  Provider<BookmarksRepository>.value(value: repositories.bookmarks),
 ];
 
 /// Creates the repositories with their real services. They share one API
@@ -68,5 +73,6 @@ Repositories createRepositories() {
     weather: WeatherRepositoryRemote(api: WeatherApi(client)),
     todos: TodosRepositoryRemote(api: TodosApi(client)),
     notes: NotesRepositoryRemote(api: NotesApi(client)),
+    bookmarks: BookmarksRepositoryRemote(api: BookmarksApi(client)),
   );
 }

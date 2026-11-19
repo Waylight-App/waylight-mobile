@@ -161,5 +161,13 @@
   "notesNonePinned": "No pinned notes.",
   "@notesNonePinned": {"description": "Notes widget showing pinned notes, without any."},
   "notesPinned": "Pinned",
-  "@notesPinned": {"description": "Screen reader label of a pinned note."}
+  "@notesPinned": {"description": "Screen reader label of a pinned note."},
+  "bookmarksTitle": "Bookmarks",
+  "@bookmarksTitle": {"description": "Default title of the bookmarks widget."},
+  "bookmarksEmpty": "No bookmarks yet.",
+  "@bookmarksEmpty": {"description": "Bookmarks widget without links."},
+  "linkOpenFailed": "The link could not be opened.",
+  "@linkOpenFailed": {"description": "Snack bar when no app could open a link."},
+  "dashboardOpenInWaylight": "Open in Waylight",
+  "@dashboardOpenInWaylight": {"description": "Button that opens the widget's tab in the web interface."}
 }
