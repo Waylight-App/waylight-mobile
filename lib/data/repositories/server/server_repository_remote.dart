@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:logging/logging.dart';
 
 import 'package:waylight_mobile/data/repositories/server/server_repository.dart';
@@ -16,11 +18,18 @@ class ServerRepositoryRemote extends ServerRepository {
   /// The key under which the server address is stored.
   static const storageKey = 'server.address';
 
+  /// The key of the list of servers used on this device (#51).
+  static const knownKey = 'server.known';
+
   final PlatformApi _platformApi;
   final KeyValueStore _store;
   final Logger _log = Logger('ServerRepository');
 
   ServerAddress? _current;
+  List<ServerAddress> _known = const [];
+
+  @override
+  List<ServerAddress> get known => _known;
 
   @override
   ServerAddress? get current => _current;
@@ -28,11 +37,13 @@ class ServerRepositoryRemote extends ServerRepository {
   @override
   Future<Result<void>> restore() async {
     try {
+      _known = _decodeKnown(await _store.read(knownKey));
       final saved = await _store.read(storageKey);
       if (saved == null) return const Result.ok(null);
       switch (ServerAddress.parse(saved)) {
         case Ok(:final value):
           _setCurrent(value);
+          await _remember(value);
         case Error():
           _log.warning('Ignoring a stored server address that is invalid.');
           await _store.delete(storageKey);
@@ -56,6 +67,7 @@ class ServerRepositoryRemote extends ServerRepository {
           return Result.error(e);
         }
         _setCurrent(server);
+        await _remember(server);
         return Result.ok(ServerStatus(setupRequired: value.setupRequired));
       case Error(:final error):
         return Result.error(error);
@@ -91,7 +103,79 @@ class ServerRepositoryRemote extends ServerRepository {
   }
 
   @override
+  Future<Result<void>> switchTo(ServerAddress server) async {
+    try {
+      await _store.write(storageKey, server.toString());
+    } on Exception catch (e) {
+      return Result.error(e);
+    }
+    _setCurrent(server);
+    await _remember(server);
+    return const Result.ok(null);
+  }
+
+  @override
+  Future<Result<void>> leave() async {
+    try {
+      await _store.delete(storageKey);
+    } on Exception catch (e) {
+      return Result.error(e);
+    }
+    _setCurrent(null);
+    return const Result.ok(null);
+  }
+
+  @override
+  Future<Result<void>> forget(ServerAddress server) async {
+    _known = [
+      for (final s in _known)
+        if (s != server) s,
+    ];
+    await _saveKnown();
+    if (server == _current) return leave();
+    notifyListeners();
+    return const Result.ok(null);
+  }
+
+  Future<void> _remember(ServerAddress server) async {
+    if (_known.contains(server)) return;
+    _known = [..._known, server];
+    await _saveKnown();
+  }
+
+  Future<void> _saveKnown() async {
+    try {
+      await _store.write(
+        knownKey,
+        jsonEncode([for (final s in _known) s.toString()]),
+      );
+    } on Exception catch (e) {
+      _log.warning('Could not store the list of servers.', e);
+    }
+  }
+
+  static List<ServerAddress> _decodeKnown(String? raw) {
+    if (raw == null) return const [];
+    try {
+      return [
+        for (final a in (jsonDecode(raw) as List<Object?>).whereType<String>())
+          if (ServerAddress.parse(a) case Ok(:final value)) value,
+      ];
+    } on FormatException {
+      return const [];
+    }
+  }
+
+  @override
   Future<Result<void>> disconnect() async {
+    final server = _current;
+    if (server != null) {
+      _known = [
+        for (final s in _known)
+          if (s != server) s,
+      ];
+      await _saveKnown();
+    }
     try {
       await _store.delete(storageKey);
     } on Exception catch (e) {

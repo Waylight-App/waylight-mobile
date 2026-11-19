@@ -35,6 +35,19 @@ abstract class ServerRepository extends ChangeNotifier {
   /// The version the [current] server runs, if the account may see it.
   Future<Result<String>> version();
 
+  /// The servers used on this device, the current one included (#51).
+  List<ServerAddress> get known;
+
+  /// Makes the known [server] the current one without checking it again.
+  Future<Result<void>> switchTo(ServerAddress server);
+
+  /// Leaves the current server but keeps it in [known], e.g. to add
+  /// another one.
+  Future<Result<void>> leave();
+
+  /// Removes [server] from [known]; leaves it first if it is current.
+  Future<Result<void>> forget(ServerAddress server);
+
   /// Forgets the saved server.
   Future<Result<void>> disconnect();
 }

@@ -44,6 +44,32 @@ class FakeServerRepository extends ServerRepository {
   Future<Result<String>> version() async => versionResult;
 
   @override
+  List<ServerAddress> known = [];
+
+  @override
+  Future<Result<void>> switchTo(ServerAddress server) async {
+    _current = server;
+    if (!known.contains(server)) known.add(server);
+    notifyListeners();
+    return const Result.ok(null);
+  }
+
+  @override
+  Future<Result<void>> leave() async {
+    _current = null;
+    notifyListeners();
+    return const Result.ok(null);
+  }
+
+  @override
+  Future<Result<void>> forget(ServerAddress server) async {
+    known.remove(server);
+    if (server == _current) return leave();
+    notifyListeners();
+    return const Result.ok(null);
+  }
+
+  @override
   Future<Result<void>> disconnect() async {
     _current = null;
     notifyListeners();

@@ -124,6 +124,30 @@ void main() {
     await repo.disconnect();
 
     expect(repo.current, isNull);
-    expect(store.values, isEmpty);
+    expect(store.values[ServerRepositoryRemote.storageKey], isNull);
+    expect(repo.known, isEmpty);
+  });
+
+  test('keeps a list of servers to switch between', () async {
+    final repo = repository(waylight);
+    final other = testServer('https://other.example.org');
+    await repo.connect(testServer());
+    await repo.leave();
+    await repo.connect(other);
+
+    expect(repo.known, [testServer(), other]);
+
+    await repo.switchTo(testServer());
+    expect(repo.current, testServer());
+
+    final restarted = repository(waylight);
+    await restarted.restore();
+    expect(restarted.known, [testServer(), other]);
+    expect(restarted.current, testServer());
+
+    await restarted.forget(other);
+    expect(restarted.known, [testServer()]);
+    await restarted.forget(testServer());
+    expect(restarted.current, isNull);
   });
 }
