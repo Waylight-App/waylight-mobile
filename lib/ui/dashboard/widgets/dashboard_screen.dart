@@ -59,7 +59,12 @@ class DashboardScreen extends StatelessWidget {
           _ when tabs.isEmpty => _Hint(l10n.dashboardNoTabs),
           _ => TabBarView(
             children: [
-              for (final tab in tabs) _TabPage(tab: tab, registry: registry),
+              for (final tab in tabs)
+                _TabPage(
+                  tab: tab,
+                  registry: registry,
+                  webUrl: viewModel.webUrl(tab.id),
+                ),
             ],
           ),
         };
@@ -89,10 +94,11 @@ class DashboardScreen extends StatelessWidget {
 }
 
 class _TabPage extends StatelessWidget {
-  const _TabPage({required this.tab, required this.registry});
+  const _TabPage({required this.tab, required this.registry, this.webUrl});
 
   final DashboardTab tab;
   final WidgetRegistry registry;
+  final Uri? webUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +115,7 @@ class _TabPage extends StatelessWidget {
         final widget = tab.widgets[i];
         final builder = registry.builderFor(widget.kind);
         return builder == null
-            ? WidgetCard(widget: widget)
+            ? WidgetCard(widget: widget, webUrl: webUrl)
             : builder(context, widget);
       },
     );

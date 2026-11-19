@@ -80,5 +80,9 @@
   "notesTitle": "Notizen",
   "notesNone": "Noch keine Notizen.",
   "notesNonePinned": "Keine angehefteten Notizen.",
-  "notesPinned": "Angeheftet"
+  "notesPinned": "Angeheftet",
+  "bookmarksTitle": "Lesezeichen",
+  "bookmarksEmpty": "Noch keine Lesezeichen.",
+  "linkOpenFailed": "Der Link konnte nicht geöffnet werden.",
+  "dashboardOpenInWaylight": "In Waylight öffnen"
 }

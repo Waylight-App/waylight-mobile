@@ -49,7 +49,13 @@ const _layers = <_Layer>[
   _Layer(
     'ui/core/',
     mayImport: ['utils/', 'domain/', 'l10n/'],
-    packages: [..._flutterBase, 'material_ui/', 'flutter/widgets.dart'],
+    // url_launcher only behind LinkOpener, so features open links one way.
+    packages: [
+      ..._flutterBase,
+      'material_ui/',
+      'flutter/widgets.dart',
+      'url_launcher/',
+    ],
   ),
   _Layer(
     'ui/',

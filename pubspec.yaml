@@ -31,6 +31,9 @@ dependencies:
   # IANA time zones for the clock widget; pure Dart from the Dart team, no
   # platform code. The SDK only knows local time and UTC.
   timezone: ^0.11.2
+  # Opens bookmarks and the web interface in the browser; Flutter team,
+  # thin platform channels to the system's own URL handling.
+  url_launcher: ^6.3.3
 
 dev_dependencies:
   flutter_lints: ^6.0.0

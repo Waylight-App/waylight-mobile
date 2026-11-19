@@ -281,4 +281,16 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get notesPinned => 'Angeheftet';
+
+  @override
+  String get bookmarksTitle => 'Lesezeichen';
+
+  @override
+  String get bookmarksEmpty => 'Noch keine Lesezeichen.';
+
+  @override
+  String get linkOpenFailed => 'Der Link konnte nicht geöffnet werden.';
+
+  @override
+  String get dashboardOpenInWaylight => 'In Waylight öffnen';
 }

@@ -583,6 +583,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Pinned'**
   String get notesPinned;
+
+  /// Default title of the bookmarks widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Bookmarks'**
+  String get bookmarksTitle;
+
+  /// Bookmarks widget without links.
+  ///
+  /// In en, this message translates to:
+  /// **'No bookmarks yet.'**
+  String get bookmarksEmpty;
+
+  /// Snack bar when no app could open a link.
+  ///
+  /// In en, this message translates to:
+  /// **'The link could not be opened.'**
+  String get linkOpenFailed;
+
+  /// Button that opens the widget's tab in the web interface.
+  ///
+  /// In en, this message translates to:
+  /// **'Open in Waylight'**
+  String get dashboardOpenInWaylight;
 }
 
 class _AppLocalizationsDelegate

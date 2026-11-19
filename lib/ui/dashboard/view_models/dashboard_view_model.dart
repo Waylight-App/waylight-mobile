@@ -27,6 +27,12 @@ class DashboardViewModel extends ChangeNotifier {
   /// Loads the tabs and widgets; run again to reload.
   late final Command0<Dashboard> load;
 
+  /// The address of [tabId] in the web interface, for widgets without a
+  /// native view; `null` without a server.
+  Uri? webUrl(String tabId) => _serverRepository.current
+      ?.resolve('/')
+      .replace(queryParameters: {'tab': tabId});
+
   /// Signs out; the router then shows the sign-in screen.
   late final Command0<void> signOut;
 
