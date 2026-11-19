@@ -72,7 +72,7 @@ sign in and open the dashboard. They find steps through the widget keys
   It tests against the public demo and signs in with the demo's public
   password; another server with
   `make integration WAYLIGHT_URL=https://home.example.org WAYLIGHT_PASSWORD=…`.
-- **In CI:** the *Integration* workflow runs nightly and on demand on an
+- **In CI:** the *Integration* workflow runs weekly (Mondays) and on demand on an
   Android emulator, against the public demo by default or the address given
   when it is started by hand; for another server the owner's password comes
   from the repository secret `WAYLIGHT_PASSWORD`, never from an input, which
