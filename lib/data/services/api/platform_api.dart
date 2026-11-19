@@ -27,4 +27,15 @@ class PlatformApi {
         return Result.error(error);
     }
   }
+
+  /// Reads the running version from `GET /api/system/version`; accounts
+  /// that may not see it get an error.
+  Future<Result<String>> version(ServerAddress server) async {
+    final result = await _client.getJson(server.resolve('/api/system/version'));
+    return switch (result) {
+      Ok(value: {'current': final String current}) => Result.ok(current),
+      Ok() => const Result.error(ApiException(ApiFailure.server)),
+      Error(:final error) => Result.error(error),
+    };
+  }
 }

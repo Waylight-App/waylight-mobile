@@ -10,6 +10,8 @@ import 'package:waylight_mobile/ui/connect_server/widgets/connect_server_screen.
 import 'package:waylight_mobile/ui/core/widgets/view_model_host.dart';
 import 'package:waylight_mobile/ui/dashboard/view_models/dashboard_view_model.dart';
 import 'package:waylight_mobile/ui/dashboard/widgets/dashboard_screen.dart';
+import 'package:waylight_mobile/ui/settings/view_models/settings_view_model.dart';
+import 'package:waylight_mobile/ui/settings/widgets/settings_screen.dart';
 import 'package:waylight_mobile/ui/sign_in/view_models/sign_in_view_model.dart';
 import 'package:waylight_mobile/ui/sign_in/widgets/sign_in_screen.dart';
 import 'package:waylight_mobile/ui/widgets/registry.dart';
@@ -37,11 +39,21 @@ GoRouter createRouter(
       builder: (context, state) => ViewModelHost(
         create: (context) => DashboardViewModel(
           serverRepository: context.read(),
-          sessionRepository: context.read(),
           dashboardRepository: context.read(),
         ),
         builder: (context, viewModel) =>
             DashboardScreen(viewModel: viewModel, registry: nativeWidgets),
+      ),
+    ),
+    GoRoute(
+      path: Routes.settings,
+      builder: (context, state) => ViewModelHost(
+        create: (context) => SettingsViewModel(
+          serverRepository: context.read(),
+          sessionRepository: context.read(),
+          preferencesRepository: context.read(),
+        ),
+        builder: (context, viewModel) => SettingsScreen(viewModel: viewModel),
       ),
     ),
     GoRoute(

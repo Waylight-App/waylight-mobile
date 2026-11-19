@@ -338,12 +338,6 @@ abstract class AppLocalizations {
   /// **'This tab has no widgets yet.'**
   String get dashboardEmptyTab;
 
-  /// Tooltip of the account menu in the app bar.
-  ///
-  /// In en, this message translates to:
-  /// **'Account'**
-  String get dashboardMenu;
-
   /// Validation error: http:// to an address outside the private network.
   ///
   /// In en, this message translates to:
@@ -703,6 +697,138 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'refresh failed – {age}'**
   String freshnessFailed(String age);
+
+  /// Settings screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settingsTitle;
+
+  /// Settings screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Server'**
+  String get settingsServer;
+
+  /// Settings screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Address'**
+  String get settingsAddress;
+
+  /// Settings screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Version'**
+  String get settingsVersion;
+
+  /// Settings screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get settingsAccount;
+
+  /// Settings screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Owner account'**
+  String get settingsOwnerAccount;
+
+  /// Settings screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Owner'**
+  String get settingsRoleOwner;
+
+  /// Settings screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Admin'**
+  String get settingsRoleAdmin;
+
+  /// Settings screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Member'**
+  String get settingsRoleMember;
+
+  /// Settings screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Guest'**
+  String get settingsRoleGuest;
+
+  /// Settings screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Appearance'**
+  String get settingsAppearance;
+
+  /// Settings screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme'**
+  String get settingsTheme;
+
+  /// Settings screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get settingsLanguage;
+
+  /// Settings screen.
+  ///
+  /// In en, this message translates to:
+  /// **'System'**
+  String get settingsSystem;
+
+  /// Settings screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get settingsLight;
+
+  /// Settings screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark'**
+  String get settingsDark;
+
+  /// Settings screen.
+  ///
+  /// In en, this message translates to:
+  /// **'About'**
+  String get settingsAbout;
+
+  /// Settings screen.
+  ///
+  /// In en, this message translates to:
+  /// **'App version'**
+  String get settingsAppVersion;
+
+  /// Settings screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Licence'**
+  String get settingsLicence;
+
+  /// Settings screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Source code'**
+  String get settingsSource;
+
+  /// Settings screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy'**
+  String get settingsPrivacy;
+
+  /// Settings screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Open-source licences'**
+  String get settingsLicences;
 }
 
 class _AppLocalizationsDelegate

@@ -15,12 +15,19 @@ Future<void> main() async {
   // again. The session needs the restored server to check it belongs to it.
   await repositories.server.restore();
   await repositories.session.restore(repositories.server.current);
+  await repositories.preferences.restore();
 
+  final router = createRouter(repositories.server, repositories.session);
   runApp(
     MultiProvider(
       providers: providers(repositories),
-      child: WaylightApp(
-        router: createRouter(repositories.server, repositories.session),
+      // Theme and language apply as soon as they change in the settings.
+      child: ListenableBuilder(
+        listenable: repositories.preferences,
+        builder: (context, _) => WaylightApp(
+          router: router,
+          appearance: repositories.preferences.appearance,
+        ),
       ),
     ),
   );

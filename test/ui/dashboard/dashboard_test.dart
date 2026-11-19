@@ -12,12 +12,10 @@ import 'package:waylight_mobile/utils/result.dart';
 import '../../testing/fakes/fake_dashboard_repository.dart';
 import '../../testing/fakes/fake_link_opener.dart';
 import '../../testing/fakes/fake_server_repository.dart';
-import '../../testing/fakes/fake_session_repository.dart';
 import '../../testing/pump_app.dart';
 
 void main() {
   late FakeServerRepository servers;
-  late FakeSessionRepository sessions;
   late FakeDashboardRepository dashboards;
   var registry = const WidgetRegistry({});
 
@@ -42,7 +40,6 @@ void main() {
 
   DashboardViewModel create() => DashboardViewModel(
     serverRepository: servers,
-    sessionRepository: sessions,
     dashboardRepository: dashboards,
   );
 
@@ -61,7 +58,6 @@ void main() {
 
   setUp(() {
     servers = FakeServerRepository(current: testServer());
-    sessions = FakeSessionRepository(signedIn: true);
     dashboards = FakeDashboardRepository()..result = const Result.ok(twoTabs);
   });
 
@@ -115,30 +111,6 @@ void main() {
 
     expect(dashboards.calls, 2);
     expect(find.widgetWithText(Tab, 'Server'), findsOneWidget);
-  });
-
-  testWidgets('signs out from the menu', (tester) async {
-    await pump(tester);
-
-    await tester.tap(find.byKey(const ValueKey('dashboard.menu')));
-    await tester.pumpAndSettle();
-    await tester.tap(find.byKey(const ValueKey('dashboard.signOut')));
-    await tester.pumpAndSettle();
-
-    expect(sessions.signedIn, isFalse);
-    expect(servers.current, isNotNull);
-  });
-
-  testWidgets('signs out before it forgets the server', (tester) async {
-    await pump(tester);
-
-    await tester.tap(find.byKey(const ValueKey('dashboard.menu')));
-    await tester.pumpAndSettle();
-    await tester.tap(find.byKey(const ValueKey('dashboard.disconnect')));
-    await tester.pumpAndSettle();
-
-    expect(sessions.signOutCalls, 1);
-    expect(servers.current, isNull);
   });
 
   testWidgets('meets the accessibility guidelines', (tester) async {

@@ -8,6 +8,8 @@ import 'package:waylight_mobile/data/repositories/dashboard/dashboard_repository
 import 'package:waylight_mobile/data/repositories/dashboard/dashboard_repository_remote.dart';
 import 'package:waylight_mobile/data/repositories/notes/notes_repository.dart';
 import 'package:waylight_mobile/data/repositories/notes/notes_repository_remote.dart';
+import 'package:waylight_mobile/data/repositories/preferences/preferences_repository.dart';
+import 'package:waylight_mobile/data/repositories/preferences/preferences_repository_local.dart';
 import 'package:waylight_mobile/data/repositories/server/server_repository.dart';
 import 'package:waylight_mobile/data/repositories/server/server_repository_remote.dart';
 import 'package:waylight_mobile/data/repositories/session/session_repository.dart';
@@ -45,6 +47,7 @@ typedef Repositories = ({
   BookmarksRepository bookmarks,
   TransitRepository transit,
   WasteRepository waste,
+  PreferencesRepository preferences,
 });
 
 /// The services and repositories of the app: the composition root.
@@ -61,6 +64,9 @@ List<SingleChildWidget> providers(Repositories repositories) => [
   Provider<BookmarksRepository>.value(value: repositories.bookmarks),
   Provider<TransitRepository>.value(value: repositories.transit),
   Provider<WasteRepository>.value(value: repositories.waste),
+  ChangeNotifierProvider<PreferencesRepository>.value(
+    value: repositories.preferences,
+  ),
 ];
 
 /// Creates the repositories with their real services. They share one API
@@ -86,5 +92,6 @@ Repositories createRepositories() {
     bookmarks: BookmarksRepositoryRemote(api: BookmarksApi(client)),
     transit: TransitRepositoryRemote(api: TransitApi(client)),
     waste: WasteRepositoryRemote(api: WasteApi(client)),
+    preferences: PreferencesRepositoryLocal(store: store),
   );
 }
