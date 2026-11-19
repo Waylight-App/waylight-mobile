@@ -257,5 +257,7 @@
   "connectTryDemo": "Try the public demo",
   "@connectTryDemo": {"description": "Button that connects the public demo."},
   "dashboardDemo": "This is the public demo. Its data is reset every hour.",
-  "@dashboardDemo": {"description": "Banner on the dashboard of the demo."}
+  "@dashboardDemo": {"description": "Banner on the dashboard of the demo."},
+  "dashboardOffline": "Offline · showing the data from {time}",
+  "@dashboardOffline": {"description": "Banner while stored data is shown.", "placeholders": {"time": {"type": "String", "example": "07:58"}}}
 }

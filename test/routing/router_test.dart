@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 
 import 'package:waylight_mobile/app.dart';
 import 'package:waylight_mobile/config/dependencies.dart';
+import 'package:waylight_mobile/data/repositories/offline/offline_repository.dart';
+import 'package:waylight_mobile/data/services/api/offline_status.dart';
 import 'package:waylight_mobile/routing/router.dart';
 import 'package:waylight_mobile/routing/routes.dart';
 import 'package:waylight_mobile/ui/connect_server/widgets/connect_server_screen.dart';
@@ -39,6 +41,7 @@ void main() {
           transit: FakeTransitRepository(),
           waste: FakeWasteRepository(),
           preferences: FakePreferencesRepository(),
+          offline: OfflineRepository(OfflineStatus()),
         )),
         child: WaylightApp(router: createRouter(servers, sessions)),
       ),

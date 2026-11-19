@@ -14,9 +14,11 @@ import 'package:waylight_mobile/utils/result.dart';
 
 import '../../../testing/fakes/fake_server_repository.dart';
 import '../../../testing/fakes/in_memory_key_value_store.dart';
+import '../../../testing/fakes/in_memory_response_cache.dart';
 
 void main() {
   late InMemoryKeyValueStore store;
+  late InMemoryResponseCache responseCache;
   late ApiCredentials credentials;
   late ApiClient client;
   late List<http.Request> requests;
@@ -27,6 +29,7 @@ void main() {
     credentials: credentials,
     store: store,
     deviceName: 'Pixel',
+    cache: responseCache,
   );
 
   // A server without app sessions (phase 1): 404 for app sessions, a
@@ -42,6 +45,7 @@ void main() {
 
   setUp(() {
     store = InMemoryKeyValueStore();
+    responseCache = InMemoryResponseCache();
     credentials = ApiCredentials();
     requests = [];
     answer = signedInAnswer;
@@ -247,5 +251,16 @@ void main() {
 
     expect(result, isA<Error<void>>());
     expect(repository.signedIn, isFalse);
+  });
+
+  test('signing out deletes the offline copy', () async {
+    final repository = createRepository();
+    await repository.signIn(testServer(), password: 'pw');
+    responseCache.entries['x'] = (body: '{}', storedAt: DateTime(2026));
+    answer = (_) => http.Response('', 204);
+
+    await repository.signOut();
+
+    expect(responseCache.entries, isEmpty);
   });
 }

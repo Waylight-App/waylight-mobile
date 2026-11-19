@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 import 'package:waylight_mobile/data/repositories/dashboard/dashboard_repository.dart';
+import 'package:waylight_mobile/data/repositories/offline/offline_repository.dart';
 import 'package:waylight_mobile/data/repositories/server/server_repository.dart';
 import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/utils/command.dart';
@@ -12,13 +13,19 @@ class DashboardViewModel extends ChangeNotifier {
   DashboardViewModel({
     required this._serverRepository,
     required this._dashboardRepository,
-  }) {
+    OfflineRepository? offlineRepository,
+  }) : _offline = offlineRepository {
+    _offline?.addListener(notifyListeners);
     load = Command0(_load)..execute().ignore();
     _loadDemo().ignore();
   }
 
   final ServerRepository _serverRepository;
   final DashboardRepository _dashboardRepository;
+  final OfflineRepository? _offline;
+
+  /// When the server cannot be reached: the time of the stored data shown.
+  DateTime? get offlineSince => _offline?.showingDataFrom;
 
   bool _demo = false;
 
@@ -52,6 +59,7 @@ class DashboardViewModel extends ChangeNotifier {
 
   @override
   void dispose() {
+    _offline?.removeListener(notifyListeners);
     load.dispose();
     super.dispose();
   }

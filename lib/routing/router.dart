@@ -42,6 +42,7 @@ GoRouter createRouter(
         create: (context) => DashboardViewModel(
           serverRepository: context.read(),
           dashboardRepository: context.read(),
+          offlineRepository: context.read(),
         ),
         builder: (context, viewModel) =>
             DashboardScreen(viewModel: viewModel, registry: nativeWidgets),

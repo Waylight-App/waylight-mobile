@@ -443,4 +443,9 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get dashboardDemo =>
       'This is the public demo. Its data is reset every hour.';
+
+  @override
+  String dashboardOffline(String time) {
+    return 'Offline · showing the data from $time';
+  }
 }

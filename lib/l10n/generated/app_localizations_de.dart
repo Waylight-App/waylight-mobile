@@ -445,4 +445,9 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get dashboardDemo =>
       'Das ist die öffentliche Demo. Ihre Daten werden stündlich zurückgesetzt.';
+
+  @override
+  String dashboardOffline(String time) {
+    return 'Offline · Daten von $time';
+  }
 }

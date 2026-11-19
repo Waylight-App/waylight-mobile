@@ -871,6 +871,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This is the public demo. Its data is reset every hour.'**
   String get dashboardDemo;
+
+  /// Banner while stored data is shown.
+  ///
+  /// In en, this message translates to:
+  /// **'Offline · showing the data from {time}'**
+  String dashboardOffline(String time);
 }
 
 class _AppLocalizationsDelegate

@@ -1,6 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
+import 'package:waylight_mobile/data/repositories/offline/offline_repository.dart';
+import 'package:waylight_mobile/data/services/api/offline_status.dart';
 import 'package:waylight_mobile/domain/models/api_exception.dart';
 import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/ui/core/link_opener.dart';
@@ -17,6 +19,7 @@ import '../../testing/pump_app.dart';
 void main() {
   late FakeServerRepository servers;
   late FakeDashboardRepository dashboards;
+  late OfflineStatus offlineStatus;
   var registry = const WidgetRegistry({});
 
   const twoTabs = Dashboard(
@@ -41,6 +44,7 @@ void main() {
   DashboardViewModel create() => DashboardViewModel(
     serverRepository: servers,
     dashboardRepository: dashboards,
+    offlineRepository: OfflineRepository(offlineStatus),
   );
 
   late FakeLinkOpener opener;
@@ -58,6 +62,7 @@ void main() {
 
   setUp(() {
     servers = FakeServerRepository(current: testServer());
+    offlineStatus = OfflineStatus();
     dashboards = FakeDashboardRepository()..result = const Result.ok(twoTabs);
   });
 
@@ -154,5 +159,15 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byType(RefreshIndicator), findsWidgets);
+  });
+
+  testWidgets('says when it shows stored data', (tester) async {
+    await pump(tester);
+    expect(find.byKey(const ValueKey('dashboard.offline')), findsNothing);
+
+    offlineStatus.servedStored(DateTime(2026, 11, 19, 7, 58));
+    await tester.pump();
+
+    expect(find.text(l10nEn.dashboardOffline('07:58')), findsOneWidget);
   });
 }

@@ -5,6 +5,7 @@ import 'package:logging/logging.dart';
 import 'package:waylight_mobile/data/repositories/session/session_repository.dart';
 import 'package:waylight_mobile/data/services/api/api_credentials.dart';
 import 'package:waylight_mobile/data/services/api/auth_api.dart';
+import 'package:waylight_mobile/data/services/cache/response_cache.dart';
 import 'package:waylight_mobile/data/services/storage/key_value_store.dart';
 import 'package:waylight_mobile/domain/models/api_exception.dart';
 import 'package:waylight_mobile/domain/models/server_address.dart';
@@ -22,6 +23,7 @@ class SessionRepositoryRemote extends SessionRepository {
     required this._credentials,
     required this._store,
     required this.deviceName,
+    this._cache,
   }) {
     _credentials.onRejected = _onRejected;
   }
@@ -33,6 +35,7 @@ class SessionRepositoryRemote extends SessionRepository {
   final String deviceName;
 
   final AuthApi _authApi;
+  final ResponseCache? _cache;
   final ApiCredentials _credentials;
   final KeyValueStore _store;
   final Logger _log = Logger('SessionRepository');
@@ -148,6 +151,8 @@ class SessionRepositoryRemote extends SessionRepository {
   Future<Result<void>> _forget({required bool expired}) async {
     _expired = expired;
     _use(null);
+    // The offline copy belongs to the account; nothing of it stays (#23).
+    await _cache?.clear();
     try {
       await _store.delete(storageKey);
       return const Result.ok(null);

@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:material_ui/material_ui.dart';
 
 import 'package:waylight_mobile/domain/models/dashboard.dart';
@@ -99,6 +100,24 @@ class DashboardScreen extends StatelessWidget {
               listenable: viewModel,
               builder: (context, _) => Column(
                 children: [
+                  if (viewModel.offlineSince case final since?)
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(
+                        Dimens.gap,
+                        Dimens.gapSmall,
+                        Dimens.gap,
+                        0,
+                      ),
+                      child: MessageBanner(
+                        key: const ValueKey('dashboard.offline'),
+                        kind: MessageKind.warning,
+                        message: l10n.dashboardOffline(
+                          DateFormat.Hm(
+                            Localizations.localeOf(context).toLanguageTag(),
+                          ).format(since.toLocal()),
+                        ),
+                      ),
+                    ),
                   if (viewModel.demo)
                     Padding(
                       padding: const EdgeInsets.fromLTRB(
