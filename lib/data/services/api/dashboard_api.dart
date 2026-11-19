@@ -24,6 +24,33 @@ class DashboardApi {
         return Result.error(error);
     }
   }
+
+  /// Stores the phone layout of [tabId]
+  /// (`PUT /api/dashboard/tabs/{id}/mobile-layout`).
+  Future<Result<void>> saveLayout(
+    ServerAddress server,
+    String tabId,
+    List<PhoneLayoutItem> layout,
+  ) async => switch (await _client.putJson(
+    _layoutUri(server, tabId),
+    body: {
+      'items': [
+        for (final item in layout)
+          {'id': item.widget.id, 'hidden': item.hidden, 'rows': item.rows},
+      ],
+    },
+  )) {
+    Ok() => const Result.ok(null),
+    Error(:final error) => Result.error(error),
+  };
+
+  /// Lets the phone layout of [tabId] follow the desktop grid again.
+  Future<Result<void>> resetLayout(ServerAddress server, String tabId) =>
+      _client.delete(_layoutUri(server, tabId));
+
+  static Uri _layoutUri(ServerAddress server, String tabId) => server.resolve(
+    '/api/dashboard/tabs/${Uri.encodeComponent(tabId)}/mobile-layout',
+  );
 }
 
 /// Maps the JSON of `GET /api/dashboard` to a [Dashboard]; `null` if it
@@ -88,6 +115,22 @@ Dashboard? parseDashboard(Object? json) {
           if (item case {'id': final String id})
             (id: id, hidden: item['hidden'] == true),
     ];
+    final rows = <String, int>{
+      if (json['mobile'] case final List<Object?> items)
+        for (final item in items)
+          if (item case {'id': final String id, 'rows': final int r}) id: r,
+    };
+    // Every widget once, in phone order, hidden ones included (#53).
+    final order = [
+      for (final p in phone)
+        if (byId.containsKey(p.id)) p.id,
+      for (final g in grid)
+        if (!phone.any((p) => p.id == g.id)) g.id,
+    ];
+    final hidden = {
+      for (final p in phone)
+        if (p.hidden) p.id,
+    };
     final position = switch (json['position']) {
       final int p => p,
       _ => 0,
@@ -98,6 +141,15 @@ Dashboard? parseDashboard(Object? json) {
         id: id,
         name: name,
         widgets: [for (final id in phoneOrder(grid, phone)) byId[id]!],
+        layout: [
+          for (final id in order)
+            PhoneLayoutItem(
+              widget: byId[id]!,
+              hidden: hidden.contains(id),
+              rows: rows[id] ?? 1,
+            ),
+        ],
+        mine: json['mine'] != false,
       ),
     );
   }

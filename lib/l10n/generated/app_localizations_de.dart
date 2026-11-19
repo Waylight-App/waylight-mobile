@@ -595,4 +595,23 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get todosDeletedTodo => 'Gelöschtes To-do';
+
+  @override
+  String get editTabTitle => 'Tab bearbeiten';
+
+  @override
+  String get editTabReset => 'Zurücksetzen';
+
+  @override
+  String get editTabHidden => 'Auf Handys ausgeblendet';
+
+  @override
+  String get editTabUp => 'Nach oben';
+
+  @override
+  String get editTabDown => 'Nach unten';
+
+  @override
+  String get editTabNotEditable =>
+      'Dieser Tab ist mit dir geteilt und kann hier nicht geändert werden.';
 }

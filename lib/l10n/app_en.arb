@@ -339,5 +339,17 @@
   "todosDiscard": "Discard",
   "@todosDiscard": {"description": "Drop a rejected change."},
   "todosDeletedTodo": "Deleted to-do",
-  "@todosDeletedTodo": {"description": "Title of a refused delete."}
+  "@todosDeletedTodo": {"description": "Title of a refused delete."},
+  "editTabTitle": "Edit tab",
+  "@editTabTitle": {"description": "Title of the tab editor."},
+  "editTabReset": "Reset",
+  "@editTabReset": {"description": "Lets the phone layout follow the desktop grid again."},
+  "editTabHidden": "Hidden on phones",
+  "@editTabHidden": {"description": "Subtitle of a hidden widget."},
+  "editTabUp": "Move up",
+  "@editTabUp": {"description": "Tooltip of the up button."},
+  "editTabDown": "Move down",
+  "@editTabDown": {"description": "Tooltip of the down button."},
+  "editTabNotEditable": "This tab is shared with you and cannot be changed here.",
+  "@editTabNotEditable": {"description": "Team tab or unknown tab."}
 }

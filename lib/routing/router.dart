@@ -12,6 +12,8 @@ import 'package:waylight_mobile/ui/connect_server/widgets/connect_server_screen.
 import 'package:waylight_mobile/ui/core/widgets/view_model_host.dart';
 import 'package:waylight_mobile/ui/dashboard/view_models/dashboard_view_model.dart';
 import 'package:waylight_mobile/ui/dashboard/widgets/dashboard_screen.dart';
+import 'package:waylight_mobile/ui/edit_tab/view_models/edit_tab_view_model.dart';
+import 'package:waylight_mobile/ui/edit_tab/widgets/edit_tab_screen.dart';
 import 'package:waylight_mobile/ui/lock/view_models/lock_view_model.dart';
 import 'package:waylight_mobile/ui/lock/widgets/lock_screen.dart';
 import 'package:waylight_mobile/ui/pair/view_models/pair_view_model.dart';
@@ -115,6 +117,17 @@ GoRouter createRouter(
       builder: (context, state) => ViewModelHost(
         create: (context) => LockViewModel(lock: context.read()),
         builder: (context, viewModel) => LockScreen(viewModel: viewModel),
+      ),
+    ),
+    GoRoute(
+      path: Routes.editTab,
+      builder: (context, state) => ViewModelHost(
+        create: (context) => EditTabViewModel(
+          tabId: state.uri.queryParameters['tab'] ?? '',
+          serverRepository: context.read(),
+          dashboardRepository: context.read(),
+        ),
+        builder: (context, viewModel) => EditTabScreen(viewModel: viewModel),
       ),
     ),
     GoRoute(
