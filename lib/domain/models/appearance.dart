@@ -50,3 +50,50 @@ enum AppLanguage {
   /// German.
   de,
 }
+
+/// The colours of the account's theme in the web interface (#157), read
+/// from its CSS variables.
+final class ThemePalette {
+  /// Creates the palette.
+  const ThemePalette({
+    required this.accent,
+    required this.onAccent,
+    required this.light,
+    required this.dark,
+  });
+
+  /// The accent (`--color-accent`), the surface of filled buttons.
+  final int accent;
+
+  /// Text on the accent (`--color-accent-contrast`).
+  final int onAccent;
+
+  /// The colours in light mode.
+  final ThemeColors light;
+
+  /// The colours in dark mode.
+  final ThemeColors dark;
+}
+
+/// The colours of one mode of a [ThemePalette], as ARGB integers.
+final class ThemeColors {
+  /// Creates the colours.
+  const ThemeColors({
+    required this.accentText,
+    required this.background,
+    required this.surface,
+    required this.text,
+  });
+
+  /// Accent for text and icons (`--color-accent-text`).
+  final int accentText;
+
+  /// The page (`--color-bg`).
+  final int background;
+
+  /// Cards (`--color-surface`).
+  final int surface;
+
+  /// Text (`--color-text`).
+  final int text;
+}

@@ -18,6 +18,7 @@ Future<void> main() async {
   await repositories.session.restore(repositories.server.current);
   await repositories.preferences.restore();
   await repositories.lock.restore();
+  await repositories.theme.restore();
   await repositories.todos.restore();
   // The app lock counts the time in the background (#46).
   AppLifecycleListener(
@@ -35,10 +36,14 @@ Future<void> main() async {
       providers: providers(repositories),
       // Theme and language apply as soon as they change in the settings.
       child: ListenableBuilder(
-        listenable: repositories.preferences,
+        listenable: Listenable.merge([
+          repositories.preferences,
+          repositories.theme,
+        ]),
         builder: (context, _) => WaylightApp(
           router: router,
           appearance: repositories.preferences.appearance,
+          palette: repositories.theme.palette,
           onShortcut: (shortcut) => router.go(shortcutLocation(shortcut)),
         ),
       ),
