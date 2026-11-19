@@ -293,4 +293,50 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get dashboardOpenInWaylight => 'In Waylight öffnen';
+
+  @override
+  String get transitTitle => 'Abfahrten';
+
+  @override
+  String get transitNoStop =>
+      'Wähle für dieses Widget in der Weboberfläche eine Haltestelle.';
+
+  @override
+  String get transitEmpty => 'Keine Abfahrten in den nächsten Stunden.';
+
+  @override
+  String get transitNow => 'jetzt';
+
+  @override
+  String transitInMinutes(int minutes) {
+    return '$minutes Min.';
+  }
+
+  @override
+  String transitDelay(int minutes) {
+    return '+$minutes';
+  }
+
+  @override
+  String get transitCancelled => 'fällt aus';
+
+  @override
+  String transitTimeTrack(String time, String track) {
+    return '$time · Gleis $track';
+  }
+
+  @override
+  String get wasteTitle => 'Müllabfuhr';
+
+  @override
+  String get wasteNotConfigured =>
+      'Richte den Müllkalender in der Weboberfläche ein.';
+
+  @override
+  String get wasteEmpty => 'Keine anstehenden Abholungen.';
+
+  @override
+  String wasteInDays(int days) {
+    return 'in $days Tagen';
+  }
 }

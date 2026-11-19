@@ -607,6 +607,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Open in Waylight'**
   String get dashboardOpenInWaylight;
+
+  /// Default title of the departures widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Departures'**
+  String get transitTitle;
+
+  /// Departures widget without a stop.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a stop for this widget in the web interface.'**
+  String get transitNoStop;
+
+  /// Departures widget without departures.
+  ///
+  /// In en, this message translates to:
+  /// **'No departures in the next hours.'**
+  String get transitEmpty;
+
+  /// Departure leaves now.
+  ///
+  /// In en, this message translates to:
+  /// **'now'**
+  String get transitNow;
+
+  /// Minutes until a departure.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} min'**
+  String transitInMinutes(int minutes);
+
+  /// Delay in minutes.
+  ///
+  /// In en, this message translates to:
+  /// **'+{minutes}'**
+  String transitDelay(int minutes);
+
+  /// Departure does not run.
+  ///
+  /// In en, this message translates to:
+  /// **'cancelled'**
+  String get transitCancelled;
+
+  /// Planned time and platform.
+  ///
+  /// In en, this message translates to:
+  /// **'{time} · platform {track}'**
+  String transitTimeTrack(String time, String track);
+
+  /// Default title of the waste widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Waste collection'**
+  String get wasteTitle;
+
+  /// Waste widget while no calendar is set up.
+  ///
+  /// In en, this message translates to:
+  /// **'Set up the waste calendar in the web interface.'**
+  String get wasteNotConfigured;
+
+  /// Waste widget without dates.
+  ///
+  /// In en, this message translates to:
+  /// **'No collections ahead.'**
+  String get wasteEmpty;
+
+  /// Days until a collection.
+  ///
+  /// In en, this message translates to:
+  /// **'in {days} days'**
+  String wasteInDays(int days);
 }
 
 class _AppLocalizationsDelegate

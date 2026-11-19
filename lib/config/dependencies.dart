@@ -14,6 +14,10 @@ import 'package:waylight_mobile/data/repositories/session/session_repository.dar
 import 'package:waylight_mobile/data/repositories/session/session_repository_remote.dart';
 import 'package:waylight_mobile/data/repositories/todos/todos_repository.dart';
 import 'package:waylight_mobile/data/repositories/todos/todos_repository_remote.dart';
+import 'package:waylight_mobile/data/repositories/transit/transit_repository.dart';
+import 'package:waylight_mobile/data/repositories/transit/transit_repository_remote.dart';
+import 'package:waylight_mobile/data/repositories/waste/waste_repository.dart';
+import 'package:waylight_mobile/data/repositories/waste/waste_repository_remote.dart';
 import 'package:waylight_mobile/data/repositories/weather/weather_repository.dart';
 import 'package:waylight_mobile/data/repositories/weather/weather_repository_remote.dart';
 import 'package:waylight_mobile/data/services/api/api_client.dart';
@@ -24,6 +28,8 @@ import 'package:waylight_mobile/data/services/api/dashboard_api.dart';
 import 'package:waylight_mobile/data/services/api/notes_api.dart';
 import 'package:waylight_mobile/data/services/api/platform_api.dart';
 import 'package:waylight_mobile/data/services/api/todos_api.dart';
+import 'package:waylight_mobile/data/services/api/transit_api.dart';
+import 'package:waylight_mobile/data/services/api/waste_api.dart';
 import 'package:waylight_mobile/data/services/api/weather_api.dart';
 import 'package:waylight_mobile/data/services/storage/key_value_store.dart';
 
@@ -37,6 +43,8 @@ typedef Repositories = ({
   TodosRepository todos,
   NotesRepository notes,
   BookmarksRepository bookmarks,
+  TransitRepository transit,
+  WasteRepository waste,
 });
 
 /// The services and repositories of the app: the composition root.
@@ -51,6 +59,8 @@ List<SingleChildWidget> providers(Repositories repositories) => [
   Provider<TodosRepository>.value(value: repositories.todos),
   Provider<NotesRepository>.value(value: repositories.notes),
   Provider<BookmarksRepository>.value(value: repositories.bookmarks),
+  Provider<TransitRepository>.value(value: repositories.transit),
+  Provider<WasteRepository>.value(value: repositories.waste),
 ];
 
 /// Creates the repositories with their real services. They share one API
@@ -74,5 +84,7 @@ Repositories createRepositories() {
     todos: TodosRepositoryRemote(api: TodosApi(client)),
     notes: NotesRepositoryRemote(api: NotesApi(client)),
     bookmarks: BookmarksRepositoryRemote(api: BookmarksApi(client)),
+    transit: TransitRepositoryRemote(api: TransitApi(client)),
+    waste: WasteRepositoryRemote(api: WasteApi(client)),
   );
 }
