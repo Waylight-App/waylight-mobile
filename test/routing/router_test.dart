@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'package:waylight_mobile/app.dart';
 import 'package:waylight_mobile/config/dependencies.dart';
+import 'package:waylight_mobile/data/repositories/lock/app_lock_repository.dart';
 import 'package:waylight_mobile/data/repositories/offline/offline_repository.dart';
 import 'package:waylight_mobile/data/services/api/offline_status.dart';
 import 'package:waylight_mobile/routing/router.dart';
@@ -13,6 +14,7 @@ import 'package:waylight_mobile/ui/sign_in/widgets/sign_in_screen.dart';
 
 import '../testing/fakes/fake_bookmarks_repository.dart';
 import '../testing/fakes/fake_dashboard_repository.dart';
+import '../testing/fakes/fake_device_auth.dart';
 import '../testing/fakes/fake_notes_repository.dart';
 import '../testing/fakes/fake_preferences_repository.dart';
 import '../testing/fakes/fake_search_repository.dart';
@@ -22,6 +24,7 @@ import '../testing/fakes/fake_todos_repository.dart';
 import '../testing/fakes/fake_transit_repository.dart';
 import '../testing/fakes/fake_waste_repository.dart';
 import '../testing/fakes/fake_weather_repository.dart';
+import '../testing/fakes/in_memory_key_value_store.dart';
 
 void main() {
   Future<void> pumpApp(
@@ -44,6 +47,10 @@ void main() {
           preferences: FakePreferencesRepository(),
           offline: OfflineRepository(OfflineStatus()),
           search: FakeSearchRepository(),
+          lock: AppLockRepository(
+            auth: FakeDeviceAuth(),
+            store: InMemoryKeyValueStore(),
+          ),
         )),
         child: WaylightApp(router: createRouter(servers, sessions)),
       ),

@@ -16,8 +16,18 @@ Future<void> main() async {
   await repositories.server.restore();
   await repositories.session.restore(repositories.server.current);
   await repositories.preferences.restore();
+  await repositories.lock.restore();
+  // The app lock counts the time in the background (#46).
+  AppLifecycleListener(
+    onHide: repositories.lock.onHidden,
+    onResume: repositories.lock.onResumed,
+  );
 
-  final router = createRouter(repositories.server, repositories.session);
+  final router = createRouter(
+    repositories.server,
+    repositories.session,
+    lock: repositories.lock,
+  );
   runApp(
     MultiProvider(
       providers: providers(repositories),

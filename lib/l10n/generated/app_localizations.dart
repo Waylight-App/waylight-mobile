@@ -1003,6 +1003,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'On the tab {tab}'**
   String searchOnTab(String tab);
+
+  /// Title of the lock screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Waylight is locked'**
+  String get lockTitle;
+
+  /// Button on the lock screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock'**
+  String get lockUnlock;
+
+  /// Reason shown in the system's biometric prompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock Waylight'**
+  String get lockReason;
+
+  /// Settings section.
+  ///
+  /// In en, this message translates to:
+  /// **'App lock'**
+  String get settingsLock;
+
+  /// Switch of the app lock.
+  ///
+  /// In en, this message translates to:
+  /// **'Lock with fingerprint, face or device PIN'**
+  String get settingsLockSwitch;
+
+  /// Label of the lock timeout.
+  ///
+  /// In en, this message translates to:
+  /// **'Lock after'**
+  String get settingsLockAfter;
+
+  /// Lock timeout: at once.
+  ///
+  /// In en, this message translates to:
+  /// **'At once'**
+  String get settingsLockNow;
+
+  /// Lock timeout in minutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} min'**
+  String settingsLockMinutes(int minutes);
 }
 
 class _AppLocalizationsDelegate

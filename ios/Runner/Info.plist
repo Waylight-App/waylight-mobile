@@ -87,5 +87,8 @@
 	<!-- The launch screen shows the status bar like the app (flutter_native_splash). -->
 	<key>UIStatusBarHidden</key>
 	<false/>
+	<!-- The optional app lock (#46). -->
+	<key>NSFaceIDUsageDescription</key>
+	<string>Waylight uses Face ID to unlock the app when the app lock is on.</string>
 </dict>
 </plist>

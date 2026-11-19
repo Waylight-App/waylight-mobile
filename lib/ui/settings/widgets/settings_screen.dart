@@ -1,5 +1,6 @@
 import 'package:material_ui/material_ui.dart';
 
+import 'package:waylight_mobile/data/repositories/lock/app_lock_repository.dart';
 import 'package:waylight_mobile/domain/models/appearance.dart';
 import 'package:waylight_mobile/ui/core/link_opener.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
@@ -140,6 +141,47 @@ class SettingsScreen extends StatelessWidget {
                 ],
               ),
             ),
+            if (viewModel.lockAvailable) ...[
+              const SizedBox(height: Dimens.gap),
+              SectionCard(
+                title: l10n.settingsLock,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    SwitchListTile(
+                      key: const ValueKey('settings.lock'),
+                      contentPadding: EdgeInsets.zero,
+                      title: Text(l10n.settingsLockSwitch),
+                      value: viewModel.lockEnabled,
+                      onChanged: (on) => viewModel
+                          .setLock(on, reason: l10n.lockReason)
+                          .ignore(),
+                    ),
+                    if (viewModel.lockEnabled) ...[
+                      Text(l10n.settingsLockAfter),
+                      const SizedBox(height: Dimens.gapSmall),
+                      SegmentedButton<Duration>(
+                        key: const ValueKey('settings.lockAfter'),
+                        segments: [
+                          for (final t in AppLockRepository.timeouts)
+                            ButtonSegment(
+                              value: t,
+                              label: Text(
+                                t == Duration.zero
+                                    ? l10n.settingsLockNow
+                                    : l10n.settingsLockMinutes(t.inMinutes),
+                              ),
+                            ),
+                        ],
+                        selected: {viewModel.lockTimeout},
+                        onSelectionChanged: (s) =>
+                            viewModel.setLockTimeout(s.single).ignore(),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+            ],
             const SizedBox(height: Dimens.gap),
             SectionCard(
               title: l10n.settingsAbout,

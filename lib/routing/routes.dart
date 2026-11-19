@@ -21,6 +21,18 @@ abstract final class Routes {
   /// The search (#22).
   static const search = '/search';
 
+  /// Waits for biometrics or the device PIN (#46).
+  static const locked = '/locked';
+
   /// Every path the router knows; links to others open the dashboard.
-  static const all = {home, connect, signIn, settings, pair, auth, search};
+  static const all = {
+    home,
+    connect,
+    signIn,
+    settings,
+    pair,
+    auth,
+    search,
+    locked,
+  };
 }

@@ -150,5 +150,13 @@
   "searchWeb": "Im Web nach „{query}“ suchen",
   "searchAddTodo": "To-do „{title}“ anlegen",
   "searchTodoAdded": "To-do „{title}“ angelegt.",
-  "searchOnTab": "Im Tab {tab}"
+  "searchOnTab": "Im Tab {tab}",
+  "lockTitle": "Waylight ist gesperrt",
+  "lockUnlock": "Entsperren",
+  "lockReason": "Waylight entsperren",
+  "settingsLock": "App-Sperre",
+  "settingsLockSwitch": "Mit Fingerabdruck, Gesicht oder Geräte-PIN sperren",
+  "settingsLockAfter": "Sperren nach",
+  "settingsLockNow": "Sofort",
+  "settingsLockMinutes": "{minutes} Min."
 }
