@@ -6,6 +6,7 @@ final class Note {
     required this.title,
     required this.body,
     this.pinned = false,
+    this.version = 0,
   });
 
   /// The server's id.
@@ -19,6 +20,10 @@ final class Note {
 
   /// Whether the note is pinned to the top.
   final bool pinned;
+
+  /// The server's version; a change sent with an older one is refused with
+  /// a conflict, so edits made elsewhere are never overwritten.
+  final int version;
 
   /// The first line of text after the title, without Markdown marks, for a
   /// one-line preview.
@@ -37,4 +42,23 @@ final class Note {
     }
     return '';
   }
+}
+
+/// The fields of a note the user edits.
+final class NoteDraft {
+  /// Creates the draft.
+  const NoteDraft({
+    required this.title,
+    required this.body,
+    this.pinned = false,
+  });
+
+  /// The title.
+  final String title;
+
+  /// The text in Markdown.
+  final String body;
+
+  /// Whether it is pinned.
+  final bool pinned;
 }

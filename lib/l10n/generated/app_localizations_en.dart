@@ -1281,4 +1281,35 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get timelineCritical => 'Critical';
+
+  @override
+  String get noteNew => 'New note';
+
+  @override
+  String get noteEdit => 'Edit note';
+
+  @override
+  String get noteBodyHint => 'Text (Markdown)';
+
+  @override
+  String get noteSaved => 'Note saved.';
+
+  @override
+  String get noteConflict =>
+      'This note was changed elsewhere. Reload it and edit again.';
+
+  @override
+  String get noteTitleMissing => 'Give the note a title.';
+
+  @override
+  String get noteDelete => 'Delete';
+
+  @override
+  String get noteDeleteConfirm => 'Delete this note?';
+
+  @override
+  String get notePin => 'Pin';
+
+  @override
+  String get noteUnpin => 'Unpin';
 }

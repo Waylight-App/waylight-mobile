@@ -31,6 +31,74 @@ class NotesApi {
         return Result.error(error);
     }
   }
+
+  /// Reads one note (`GET /api/notes/{id}`).
+  Future<Result<Note>> note(ServerAddress server, String id) async =>
+      _single(await _client.getJson(server.resolve(_path(id))));
+
+  /// Creates a note (`POST /api/notes`).
+  Future<Result<Note>> create(ServerAddress server, NoteDraft draft) async =>
+      _single(
+        await _client.postJson(
+          server.resolve('/api/notes'),
+          body: _body(draft),
+        ),
+      );
+
+  /// Saves [draft] over the note [id] edited at [version]; a newer version
+  /// on the server answers `ApiFailure.conflict`.
+  Future<Result<Note>> update(
+    ServerAddress server,
+    String id,
+    NoteDraft draft, {
+    required int version,
+  }) async => _single(
+    await _client.putJson(
+      server.resolve(_path(id)),
+      body: {..._body(draft), 'version': version},
+    ),
+  );
+
+  /// Deletes a note.
+  Future<Result<void>> delete(ServerAddress server, String id) =>
+      _client.delete(server.resolve(_path(id)));
+
+  static String _path(String id) => '/api/notes/${Uri.encodeComponent(id)}';
+
+  static Map<String, Object?> _body(NoteDraft d) => {
+    'title': d.title,
+    'body': d.body,
+    'pinned': d.pinned,
+  };
+
+  static Result<Note> _single(Result<Object?> result) => switch (result) {
+    Ok(:final value) => switch (parseNote(value)) {
+      final note? => Result.ok(note),
+      null => const Result.error(ApiException(ApiFailure.server)),
+    },
+    Error(:final error) => Result.error(error),
+  };
+}
+
+Note _note(Map<Object?, Object?> item, String id, String title, String body) =>
+    Note(
+      id: id,
+      title: title,
+      body: body,
+      pinned: item['pinned'] == true,
+      version: (item['version'] as num?)?.toInt() ?? 0,
+    );
+
+/// Maps one note; `null` if it does not match.
+Note? parseNote(Object? json) {
+  if (json case {
+    'id': final String id,
+    'title': final String title,
+    'body': final String body,
+  }) {
+    return _note(json, id, title, body);
+  }
+  return null;
 }
 
 /// Maps the JSON of `GET /api/notes`; `null` if it does not match.
@@ -43,9 +111,7 @@ List<Note>? parseNotes(Object? json) {
       'title': final String title,
       'body': final String body,
     }) {
-      notes.add(
-        Note(id: id, title: title, body: body, pinned: item['pinned'] == true),
-      );
+      notes.add(_note(item, id, title, body));
     } else {
       return null;
     }

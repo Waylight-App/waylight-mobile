@@ -1283,4 +1283,35 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get timelineCritical => 'Kritisch';
+
+  @override
+  String get noteNew => 'Neue Notiz';
+
+  @override
+  String get noteEdit => 'Notiz bearbeiten';
+
+  @override
+  String get noteBodyHint => 'Text (Markdown)';
+
+  @override
+  String get noteSaved => 'Notiz gespeichert.';
+
+  @override
+  String get noteConflict =>
+      'Diese Notiz wurde woanders geändert. Lade sie neu und bearbeite sie erneut.';
+
+  @override
+  String get noteTitleMissing => 'Gib der Notiz einen Titel.';
+
+  @override
+  String get noteDelete => 'Löschen';
+
+  @override
+  String get noteDeleteConfirm => 'Diese Notiz löschen?';
+
+  @override
+  String get notePin => 'Anheften';
+
+  @override
+  String get noteUnpin => 'Lösen';
 }

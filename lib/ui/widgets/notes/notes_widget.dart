@@ -1,8 +1,10 @@
+import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
 import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/domain/models/note.dart';
+import 'package:waylight_mobile/routing/routes.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
 import 'package:waylight_mobile/ui/core/widgets/view_model_host.dart';
@@ -35,16 +37,41 @@ class NotesWidget extends StatelessWidget {
         title: widget.title.isNotEmpty ? widget.title : context.l10n.notesTitle,
         load: viewModel.load,
         interval: const Duration(minutes: 10),
-        builder: (context, notes) => notes.isEmpty
-            ? Text(
+        builder: (context, notes) => Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            if (notes.isEmpty)
+              Text(
                 scope == NotesScope.pinned
                     ? context.l10n.notesNonePinned
                     : context.l10n.notesNone,
-              )
-            : Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [for (final note in notes) _NoteRow(note: note)],
               ),
+            for (final note in notes)
+              InkWell(
+                onTap: () async {
+                  await context.push(
+                    Uri(
+                      path: Routes.note,
+                      queryParameters: {'id': note.id},
+                    ).toString(),
+                  );
+                  await viewModel.load.execute();
+                },
+                child: _NoteRow(note: note),
+              ),
+            Align(
+              alignment: Alignment.centerRight,
+              child: TextButton.icon(
+                icon: const Icon(Icons.add),
+                label: Text(context.l10n.noteNew),
+                onPressed: () async {
+                  await context.push(Routes.note);
+                  await viewModel.load.execute();
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

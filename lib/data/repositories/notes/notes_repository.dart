@@ -9,4 +9,17 @@ abstract interface class NotesRepository {
     ServerAddress server, {
     bool pinnedOnly = false,
   });
+
+  /// One note, for editing.
+  Future<Result<Note>> note(ServerAddress server, String id);
+
+  /// Creates a note.
+  Future<Result<Note>> create(ServerAddress server, NoteDraft draft);
+
+  /// Saves [draft] over [note]; fails with `ApiFailure.conflict` when the
+  /// note was changed elsewhere in the meantime.
+  Future<Result<Note>> update(ServerAddress server, Note note, NoteDraft draft);
+
+  /// Deletes a note.
+  Future<Result<void>> delete(ServerAddress server, String id);
 }

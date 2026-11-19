@@ -2353,6 +2353,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Critical'**
   String get timelineCritical;
+
+  /// Title of the editor for a new note.
+  ///
+  /// In en, this message translates to:
+  /// **'New note'**
+  String get noteNew;
+
+  /// Title of the editor.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit note'**
+  String get noteEdit;
+
+  /// Hint of the note text.
+  ///
+  /// In en, this message translates to:
+  /// **'Text (Markdown)'**
+  String get noteBodyHint;
+
+  /// After saving a note.
+  ///
+  /// In en, this message translates to:
+  /// **'Note saved.'**
+  String get noteSaved;
+
+  /// Saving failed because of a newer version.
+  ///
+  /// In en, this message translates to:
+  /// **'This note was changed elsewhere. Reload it and edit again.'**
+  String get noteConflict;
+
+  /// Saving without a title.
+  ///
+  /// In en, this message translates to:
+  /// **'Give the note a title.'**
+  String get noteTitleMissing;
+
+  /// Deletes a note.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get noteDelete;
+
+  /// Confirmation before deleting a note.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete this note?'**
+  String get noteDeleteConfirm;
+
+  /// Pins a note.
+  ///
+  /// In en, this message translates to:
+  /// **'Pin'**
+  String get notePin;
+
+  /// Unpins a note.
+  ///
+  /// In en, this message translates to:
+  /// **'Unpin'**
+  String get noteUnpin;
 }
 
 class _AppLocalizationsDelegate

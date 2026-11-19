@@ -42,6 +42,9 @@ abstract final class Routes {
   /// Every chosen smart home entity (#107).
   static const smartHome = '/smart-home';
 
+  /// Writes a note: `/note?id=<id>`, without an id a new one (#101).
+  static const note = '/note';
+
   /// Every path the router knows; links to others open the dashboard.
   static const all = {
     home,
@@ -58,5 +61,6 @@ abstract final class Routes {
     feeds,
     timeline,
     smartHome,
+    note,
   };
 }

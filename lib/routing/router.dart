@@ -31,6 +31,8 @@ import 'package:waylight_mobile/ui/widgets/calendar/calendar_screen.dart';
 import 'package:waylight_mobile/ui/widgets/calendar/calendar_view_model.dart';
 import 'package:waylight_mobile/ui/widgets/common/items_view_model.dart';
 import 'package:waylight_mobile/ui/widgets/common/remote_widget.dart';
+import 'package:waylight_mobile/ui/widgets/notes/note_editor_screen.dart';
+import 'package:waylight_mobile/ui/widgets/notes/note_editor_view_model.dart';
 import 'package:waylight_mobile/ui/widgets/registry.dart';
 import 'package:waylight_mobile/ui/widgets/rss/rss_reader_view_model.dart';
 import 'package:waylight_mobile/ui/widgets/rss/rss_screen.dart';
@@ -178,6 +180,17 @@ GoRouter createRouter(
           );
         },
         builder: (context, viewModel) => SmartHomeScreen(viewModel: viewModel),
+      ),
+    ),
+    GoRoute(
+      path: Routes.note,
+      builder: (context, state) => ViewModelHost(
+        create: (context) => NoteEditorViewModel(
+          noteId: state.uri.queryParameters['id'] ?? '',
+          serverRepository: context.read(),
+          notesRepository: context.read(),
+        ),
+        builder: (context, viewModel) => NoteEditorScreen(viewModel: viewModel),
       ),
     ),
     GoRoute(

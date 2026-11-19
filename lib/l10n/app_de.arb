@@ -375,5 +375,15 @@
   "rssAllFeeds": "Alle",
   "timelineOpen": "Alle Ereignisse",
   "timelineAll": "Alle",
-  "timelineCritical": "Kritisch"
+  "timelineCritical": "Kritisch",
+  "noteNew": "Neue Notiz",
+  "noteEdit": "Notiz bearbeiten",
+  "noteBodyHint": "Text (Markdown)",
+  "noteSaved": "Notiz gespeichert.",
+  "noteConflict": "Diese Notiz wurde woanders geändert. Lade sie neu und bearbeite sie erneut.",
+  "noteTitleMissing": "Gib der Notiz einen Titel.",
+  "noteDelete": "Löschen",
+  "noteDeleteConfirm": "Diese Notiz löschen?",
+  "notePin": "Anheften",
+  "noteUnpin": "Lösen"
 }
