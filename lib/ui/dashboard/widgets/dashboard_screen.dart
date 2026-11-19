@@ -1,7 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:material_ui/material_ui.dart';
-
 import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/routing/routes.dart';
 import 'package:waylight_mobile/ui/core/error_messages.dart';
@@ -12,6 +11,7 @@ import 'package:waylight_mobile/ui/core/widget_registry.dart';
 import 'package:waylight_mobile/ui/core/widgets/form_page.dart';
 import 'package:waylight_mobile/ui/core/widgets/message_banner.dart';
 import 'package:waylight_mobile/ui/core/widgets/wordmark.dart';
+import 'package:waylight_mobile/ui/core/window_size.dart';
 import 'package:waylight_mobile/ui/dashboard/view_models/dashboard_view_model.dart';
 import 'package:waylight_mobile/ui/dashboard/widgets/widget_card.dart';
 import 'package:waylight_mobile/utils/result.dart';
@@ -163,30 +163,61 @@ class _TabPage extends StatelessWidget {
   final WidgetRegistry registry;
   final Uri? webUrl;
 
+  Widget _card(BuildContext context, WidgetPlacement widget) {
+    final builder = registry.builderFor(widget.kind);
+    return builder == null
+        ? WidgetCard(widget: widget, webUrl: webUrl)
+        : builder(context, widget);
+  }
+
   @override
   Widget build(BuildContext context) {
     if (tab.widgets.isEmpty) return _Hint(context.l10n.dashboardEmptyTab);
+    final columns = WindowSize.of(context).columns;
     return RefreshIndicator(
       // Reloads the widgets of this tab that are on screen (#19).
       onRefresh: () =>
           RefreshHost.maybeOf(context)?.refresh() ?? Future.value(),
-      child: ListView.separated(
-        physics: const AlwaysScrollableScrollPhysics(),
-        // Each tab keeps its own scroll position when swiping between tabs.
-        key: PageStorageKey(tab.id),
-        padding: const EdgeInsets.all(Dimens.gap),
-        itemCount: tab.widgets.length,
-        separatorBuilder: (_, _) => const SizedBox(height: Dimens.gap),
-        // Built lazily: a widget's view model, and with it its request, only
-        // starts when the widget scrolls into view.
-        itemBuilder: (context, i) {
-          final widget = tab.widgets[i];
-          final builder = registry.builderFor(widget.kind);
-          return builder == null
-              ? WidgetCard(widget: widget, webUrl: webUrl)
-              : builder(context, widget);
-        },
-      ),
+      child: columns == 1
+          ? ListView.separated(
+              physics: const AlwaysScrollableScrollPhysics(),
+              // Each tab keeps its own scroll position when swiping.
+              key: PageStorageKey(tab.id),
+              padding: const EdgeInsets.all(Dimens.gap),
+              itemCount: tab.widgets.length,
+              separatorBuilder: (_, _) => const SizedBox(height: Dimens.gap),
+              // Built lazily: a widget's view model, and with it its
+              // request, only starts when the widget scrolls into view.
+              itemBuilder: (context, i) => _card(context, tab.widgets[i]),
+            )
+          : SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              key: PageStorageKey(tab.id),
+              padding: const EdgeInsets.all(Dimens.gap),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  for (var c = 0; c < columns; c++) ...[
+                    if (c > 0) const SizedBox(width: Dimens.gap),
+                    Expanded(
+                      // The phone order runs left to right, then down, so
+                      // the first widgets stay at the top.
+                      child: Column(
+                        children: [
+                          for (var i = c; i < tab.widgets.length; i += columns)
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                bottom: Dimens.gap,
+                              ),
+                              child: _card(context, tab.widgets[i]),
+                            ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ),
     );
   }
 }

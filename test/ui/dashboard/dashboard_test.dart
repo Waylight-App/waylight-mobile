@@ -170,4 +170,33 @@ void main() {
 
     expect(find.text(l10nEn.dashboardOffline('07:58')), findsOneWidget);
   });
+
+  for (final (width, columns) in [(390.0, 1), (700.0, 2), (1200.0, 3)]) {
+    testWidgets('uses $columns column(s) at $width dp', (tester) async {
+      tester.view.physicalSize = Size(width, 900);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.reset);
+      dashboards.result = Result.ok(
+        Dashboard(
+          tabs: [
+            DashboardTab(
+              id: 't',
+              name: 'Many',
+              widgets: [
+                for (var i = 0; i < 6; i++)
+                  WidgetPlacement(id: 'w$i', kind: 'kind$i'),
+              ],
+            ),
+          ],
+        ),
+      );
+      await pump(tester);
+
+      final lefts = {
+        for (var i = 0; i < 3; i++)
+          tester.getTopLeft(find.text('Kind$i')).dx.round(),
+      };
+      expect(lefts, hasLength(columns));
+    });
+  }
 }
