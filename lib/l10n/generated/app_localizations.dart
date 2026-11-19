@@ -679,6 +679,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'in {days} days'**
   String wasteInDays(int days);
+
+  /// Age of a widget's data.
+  ///
+  /// In en, this message translates to:
+  /// **'updated just now'**
+  String get freshnessJustNow;
+
+  /// Age of a widget's data.
+  ///
+  /// In en, this message translates to:
+  /// **'updated {minutes} min ago'**
+  String freshnessMinutesAgo(int minutes);
+
+  /// Data older than twice its refresh interval.
+  ///
+  /// In en, this message translates to:
+  /// **'outdated – {age}'**
+  String freshnessStale(String age);
+
+  /// The last reload failed; the older data stays.
+  ///
+  /// In en, this message translates to:
+  /// **'refresh failed – {age}'**
+  String freshnessFailed(String age);
 }
 
 class _AppLocalizationsDelegate

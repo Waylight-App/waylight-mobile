@@ -34,6 +34,7 @@ class NotesWidget extends StatelessWidget {
       builder: (context, viewModel) => WidgetFrame(
         title: widget.title.isNotEmpty ? widget.title : context.l10n.notesTitle,
         load: viewModel.load,
+        interval: const Duration(minutes: 10),
         builder: (context, notes) => notes.isEmpty
             ? Text(
                 scope == NotesScope.pinned

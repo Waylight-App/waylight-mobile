@@ -40,6 +40,7 @@ class TransitWidget extends StatelessWidget {
             ? config.stopName
             : l10n.transitTitle,
         load: viewModel.load,
+        interval: const Duration(minutes: 1),
         errorText: (error) =>
             error is NoStopException ? l10n.transitNoStop : null,
         builder: (context, departures) => departures.isEmpty

@@ -35,6 +35,7 @@ class BookmarksWidget extends StatelessWidget {
       builder: (context, viewModel) => WidgetFrame(
         title: widget.title.isNotEmpty ? widget.title : l10n.bookmarksTitle,
         load: viewModel.load,
+        interval: const Duration(minutes: 30),
         builder: (context, groups) => groups.isEmpty
             ? Text(l10n.bookmarksEmpty)
             : Column(

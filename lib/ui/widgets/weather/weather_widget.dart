@@ -38,6 +38,7 @@ class WeatherWidget extends StatelessWidget {
             ? config.label
             : widget.displayTitle,
         load: viewModel.load,
+        interval: const Duration(minutes: 15),
         errorText: (error) =>
             error is NoPlaceException ? context.l10n.weatherNoPlace : null,
         builder: (context, weather) => _WeatherContent(weather: weather),

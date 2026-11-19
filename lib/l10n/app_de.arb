@@ -96,5 +96,9 @@
   "wasteTitle": "Müllabfuhr",
   "wasteNotConfigured": "Richte den Müllkalender in der Weboberfläche ein.",
   "wasteEmpty": "Keine anstehenden Abholungen.",
-  "wasteInDays": "in {days} Tagen"
+  "wasteInDays": "in {days} Tagen",
+  "freshnessJustNow": "gerade aktualisiert",
+  "freshnessMinutesAgo": "vor {minutes} Min. aktualisiert",
+  "freshnessStale": "veraltet – {age}",
+  "freshnessFailed": "Aktualisierung fehlgeschlagen – {age}"
 }

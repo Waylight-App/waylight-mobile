@@ -337,4 +337,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String wasteInDays(int days) {
     return 'in $days days';
   }
+
+  @override
+  String get freshnessJustNow => 'updated just now';
+
+  @override
+  String freshnessMinutesAgo(int minutes) {
+    return 'updated $minutes min ago';
+  }
+
+  @override
+  String freshnessStale(String age) {
+    return 'outdated – $age';
+  }
+
+  @override
+  String freshnessFailed(String age) {
+    return 'refresh failed – $age';
+  }
 }
