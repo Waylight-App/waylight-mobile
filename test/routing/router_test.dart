@@ -15,6 +15,8 @@ import '../testing/fakes/fake_notes_repository.dart';
 import '../testing/fakes/fake_server_repository.dart';
 import '../testing/fakes/fake_session_repository.dart';
 import '../testing/fakes/fake_todos_repository.dart';
+import '../testing/fakes/fake_transit_repository.dart';
+import '../testing/fakes/fake_waste_repository.dart';
 import '../testing/fakes/fake_weather_repository.dart';
 
 void main() {
@@ -33,6 +35,8 @@ void main() {
           todos: FakeTodosRepository(),
           notes: FakeNotesRepository(),
           bookmarks: FakeBookmarksRepository(),
+          transit: FakeTransitRepository(),
+          waste: FakeWasteRepository(),
         )),
         child: WaylightApp(router: createRouter(servers, sessions)),
       ),

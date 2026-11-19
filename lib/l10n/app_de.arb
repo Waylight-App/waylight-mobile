@@ -84,5 +84,17 @@
   "bookmarksTitle": "Lesezeichen",
   "bookmarksEmpty": "Noch keine Lesezeichen.",
   "linkOpenFailed": "Der Link konnte nicht geöffnet werden.",
-  "dashboardOpenInWaylight": "In Waylight öffnen"
+  "dashboardOpenInWaylight": "In Waylight öffnen",
+  "transitTitle": "Abfahrten",
+  "transitNoStop": "Wähle für dieses Widget in der Weboberfläche eine Haltestelle.",
+  "transitEmpty": "Keine Abfahrten in den nächsten Stunden.",
+  "transitNow": "jetzt",
+  "transitInMinutes": "{minutes} Min.",
+  "transitDelay": "+{minutes}",
+  "transitCancelled": "fällt aus",
+  "transitTimeTrack": "{time} · Gleis {track}",
+  "wasteTitle": "Müllabfuhr",
+  "wasteNotConfigured": "Richte den Müllkalender in der Weboberfläche ein.",
+  "wasteEmpty": "Keine anstehenden Abholungen.",
+  "wasteInDays": "in {days} Tagen"
 }
