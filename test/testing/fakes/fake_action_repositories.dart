@@ -1,4 +1,5 @@
 import 'package:waylight_mobile/data/repositories/actions/focus_repository.dart';
+import 'package:waylight_mobile/data/repositories/actions/home_server_actions_repository.dart';
 import 'package:waylight_mobile/data/repositories/actions/parcels_repository.dart';
 import 'package:waylight_mobile/data/repositories/actions/rss_repository.dart';
 import 'package:waylight_mobile/data/repositories/actions/smarthome_repository.dart';
@@ -101,4 +102,41 @@ class FakeFocusRepository with _Calls implements FocusRepository {
     required int minutes,
     required DateTime endedAt,
   }) async => _record('save:$minutes');
+}
+
+/// A [HomeServerActionsRepository] in memory.
+class FakeHomeServerActions with _Calls implements HomeServerActionsRepository {
+  /// The containers that may be restarted.
+  DockerActions docker = const DockerActions();
+
+  @override
+  Future<Result<void>> wake(ServerAddress server, String serviceId) async =>
+      _record('wake:$serviceId');
+
+  @override
+  Future<Result<DockerActions>> dockerActions(ServerAddress server) async =>
+      Result.ok(docker);
+
+  @override
+  Future<Result<void>> restart(ServerAddress server, String container) async =>
+      _record('restart:$container');
+
+  @override
+  Future<Result<List<String>>> logs(
+    ServerAddress server,
+    String container,
+  ) async => const Result.ok(['line 1', 'line 2']);
+
+  @override
+  Future<Result<void>> powerGuest(
+    ServerAddress server,
+    int guestId,
+    String action,
+  ) async => _record('$action:$guestId');
+
+  @override
+  Future<Result<void>> pauseDnsFilter(
+    ServerAddress server,
+    int minutes,
+  ) async => _record('pause:$minutes');
 }

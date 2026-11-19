@@ -1,15 +1,19 @@
 import 'package:intl/intl.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:provider/provider.dart';
+
+import 'package:waylight_mobile/data/repositories/actions/home_server_actions_repository.dart';
 
 import 'package:waylight_mobile/data/repositories/widget_data/queries/network.dart';
 import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/domain/models/network.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
+import 'package:waylight_mobile/ui/widgets/common/admin_actions.dart';
 import 'package:waylight_mobile/ui/widgets/common/simple_widget.dart';
 import 'package:waylight_mobile/ui/widgets/common/widget_rows.dart';
 
 /// The native view of the DNS filter widget (#111): queries, blocked share
-/// and the most blocked domains. Pausing follows with the actions of #108.
+/// and the most blocked domains; admins pause blocking for a while (#108).
 class AdguardWidget extends StatelessWidget {
   /// Creates the view for [widget].
   const AdguardWidget({required this.widget, super.key});
@@ -45,6 +49,7 @@ class AdguardWidget extends StatelessWidget {
                 ? l10n.dnsFilterOn
                 : l10n.dnsFilterPaused,
             subtitle: l10n.dnsFilterQueries(number.format(stats.queries)),
+            onTap: stats.protectionEnabled ? () => _pause(context) : null,
           ),
           MeterRow(
             label: l10n.dnsFilterBlocked(number.format(stats.blocked)),
@@ -56,4 +61,22 @@ class AdguardWidget extends StatelessWidget {
       );
     },
   );
+
+  static Future<void> _pause(BuildContext context) async {
+    final l10n = context.l10n;
+    if (!await isAdmin(context) || !context.mounted) return;
+    final repo = context.read<HomeServerActionsRepository>();
+    await showActions(context, [
+      for (final minutes in const [5, 30, 60])
+        (
+          icon: Icons.pause_circle_outline,
+          label: l10n.dnsFilterPause(minutes),
+          onTap: () => runAction(
+            context,
+            (server) => repo.pauseDnsFilter(server, minutes),
+            done: l10n.dnsFilterPaused,
+          ),
+        ),
+    ]);
+  }
 }

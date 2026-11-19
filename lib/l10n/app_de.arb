@@ -346,5 +346,16 @@
   "focusStart": "Starten",
   "focusStop": "Stoppen",
   "mailUnread": "{count, plural, =0{0 ungelesene Nachrichten} =1{1 ungelesene Nachricht} other{{count} ungelesene Nachrichten}}",
-  "focusToday": "Heute: {minutes} Min. in {sessions} Sitzungen"
+  "focusToday": "Heute: {minutes} Min. in {sessions} Sitzungen",
+  "servicesOpen": "Öffnen",
+  "servicesWake": "Aufwecken",
+  "dockerRestart": "Neu starten",
+  "dockerLogs": "Log anzeigen",
+  "proxmoxStart": "Starten",
+  "proxmoxShutdown": "Herunterfahren",
+  "servicesWakeSent": "Weckruf an {name} gesendet.",
+  "dockerRestartConfirm": "{name} neu starten?",
+  "dockerRestarted": "{name} startet neu.",
+  "proxmoxSent": "An {name} gesendet.",
+  "dnsFilterPause": "{minutes} Minuten pausieren"
 }

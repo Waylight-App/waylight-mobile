@@ -2179,6 +2179,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Today: {minutes} min in {sessions} sessions'**
   String focusToday(int minutes, int sessions);
+
+  /// Opens a service in the browser.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get servicesOpen;
+
+  /// Sends Wake-on-LAN to a service.
+  ///
+  /// In en, this message translates to:
+  /// **'Wake up'**
+  String get servicesWake;
+
+  /// Restarts a container.
+  ///
+  /// In en, this message translates to:
+  /// **'Restart'**
+  String get dockerRestart;
+
+  /// Shows the log of a container.
+  ///
+  /// In en, this message translates to:
+  /// **'Show log'**
+  String get dockerLogs;
+
+  /// Starts a Proxmox guest.
+  ///
+  /// In en, this message translates to:
+  /// **'Start'**
+  String get proxmoxStart;
+
+  /// Shuts a Proxmox guest down.
+  ///
+  /// In en, this message translates to:
+  /// **'Shut down'**
+  String get proxmoxShutdown;
+
+  /// After sending Wake-on-LAN.
+  ///
+  /// In en, this message translates to:
+  /// **'Wake-up sent to {name}.'**
+  String servicesWakeSent(String name);
+
+  /// Confirmation before a restart.
+  ///
+  /// In en, this message translates to:
+  /// **'Restart {name}?'**
+  String dockerRestartConfirm(String name);
+
+  /// After a restart was sent.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} is restarting.'**
+  String dockerRestarted(String name);
+
+  /// After a power action was sent.
+  ///
+  /// In en, this message translates to:
+  /// **'Sent to {name}.'**
+  String proxmoxSent(String name);
+
+  /// Pauses DNS blocking.
+  ///
+  /// In en, this message translates to:
+  /// **'Pause for {minutes} minutes'**
+  String dnsFilterPause(int minutes);
 }
 
 class _AppLocalizationsDelegate

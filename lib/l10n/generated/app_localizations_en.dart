@@ -1180,4 +1180,47 @@ class AppLocalizationsEn extends AppLocalizations {
   String focusToday(int minutes, int sessions) {
     return 'Today: $minutes min in $sessions sessions';
   }
+
+  @override
+  String get servicesOpen => 'Open';
+
+  @override
+  String get servicesWake => 'Wake up';
+
+  @override
+  String get dockerRestart => 'Restart';
+
+  @override
+  String get dockerLogs => 'Show log';
+
+  @override
+  String get proxmoxStart => 'Start';
+
+  @override
+  String get proxmoxShutdown => 'Shut down';
+
+  @override
+  String servicesWakeSent(String name) {
+    return 'Wake-up sent to $name.';
+  }
+
+  @override
+  String dockerRestartConfirm(String name) {
+    return 'Restart $name?';
+  }
+
+  @override
+  String dockerRestarted(String name) {
+    return '$name is restarting.';
+  }
+
+  @override
+  String proxmoxSent(String name) {
+    return 'Sent to $name.';
+  }
+
+  @override
+  String dnsFilterPause(int minutes) {
+    return 'Pause for $minutes minutes';
+  }
 }

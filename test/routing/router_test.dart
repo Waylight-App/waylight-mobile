@@ -60,6 +60,7 @@ void main() {
           parcels: FakeParcelsRepository(),
           smartHome: FakeSmartHomeRepository(),
           focus: FakeFocusRepository(),
+          homeServer: FakeHomeServerActions(),
           preferences: FakePreferencesRepository(),
           offline: OfflineRepository(OfflineStatus()),
           search: FakeSearchRepository(),

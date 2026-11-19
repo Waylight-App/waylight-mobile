@@ -103,6 +103,10 @@ List<MonitoredService>? parseServices(Object? json) {
           _ => null,
         },
         certExpiresSoon: s['certExpiresSoon'] == true,
+        canWake: switch (s['mac']) {
+          final String mac => mac.isNotEmpty,
+          _ => false,
+        },
       );
     }
     return null;
@@ -247,6 +251,7 @@ ProxmoxOverview? parseProxmox(Object? json) {
           name: name,
           kind: kind,
           running: x['status'] == 'running',
+          actions: x['actions'] == true,
         );
       }
       return null;

@@ -1,13 +1,18 @@
 import 'package:material_ui/material_ui.dart';
+import 'package:provider/provider.dart';
+
+import 'package:waylight_mobile/data/repositories/actions/home_server_actions_repository.dart';
 
 import 'package:waylight_mobile/data/repositories/widget_data/queries/home_server.dart';
 import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/domain/models/home_server.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
+import 'package:waylight_mobile/ui/widgets/common/admin_actions.dart';
 import 'package:waylight_mobile/ui/widgets/common/simple_widget.dart';
 import 'package:waylight_mobile/ui/widgets/common/widget_rows.dart';
 
-/// The native view of the Proxmox widget (#138): node load and the guests.
+/// The native view of the Proxmox widget (#138): node load and the guests;
+/// admins start and shut down the guests the owner allowed.
 class ProxmoxWidget extends StatelessWidget {
   /// Creates the view for [widget].
   const ProxmoxWidget({required this.widget, super.key});
@@ -48,9 +53,31 @@ class ProxmoxWidget extends StatelessWidget {
               ),
               title: g.name,
               subtitle: '${g.id} · ${g.kind == 'lxc' ? 'LXC' : 'VM'}',
+              onTap: g.actions ? () => _power(context, g) : null,
             ),
         ],
       );
     },
   );
+
+  static Future<void> _power(BuildContext context, ProxmoxGuest g) async {
+    final l10n = context.l10n;
+    if (!await isAdmin(context) || !context.mounted) return;
+    final action = g.running ? 'shutdown' : 'start';
+    final label = g.running ? l10n.proxmoxShutdown : l10n.proxmoxStart;
+    if (!await confirmAction(
+      context,
+      title: '$label: ${g.name}',
+      action: label,
+    )) {
+      return;
+    }
+    if (!context.mounted) return;
+    final repo = context.read<HomeServerActionsRepository>();
+    await runAction(
+      context,
+      (server) => repo.powerGuest(server, g.id, action),
+      done: l10n.proxmoxSent(g.name),
+    );
+  }
 }
