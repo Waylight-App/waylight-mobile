@@ -11,4 +11,7 @@ abstract final class Routes {
 
   /// Server, account, appearance and about.
   static const settings = '/settings';
+
+  /// Every path the router knows; links to others open the dashboard.
+  static const all = {home, connect, signIn, settings};
 }

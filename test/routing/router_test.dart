@@ -84,17 +84,14 @@ void main() {
     expect(find.byType(ConnectServerScreen), findsOneWidget);
   });
 
-  test('redirects by server and session', () {
-    String? at(
-      String location, {
-      bool connected = true,
-      bool signedIn = true,
-    }) => redirectFor(
-      location: location,
-      connected: connected,
-      signedIn: signedIn,
-    );
+  String? at(String location, {bool connected = true, bool signedIn = true}) =>
+      redirectFor(
+        uri: Uri.parse(location),
+        connected: connected,
+        signedIn: signedIn,
+      );
 
+  test('redirects by server and session', () {
     expect(at(Routes.home, connected: false, signedIn: false), Routes.connect);
     expect(at(Routes.connect, connected: false, signedIn: false), isNull);
     expect(at(Routes.home, signedIn: false), Routes.signIn);
@@ -103,5 +100,24 @@ void main() {
     expect(at(Routes.signIn), Routes.home);
     expect(at(Routes.connect), Routes.home);
     expect(at(Routes.home), isNull);
+  });
+
+  test('opens links from outside', () {
+    expect(at('waylight://settings'), Routes.settings);
+    expect(at('waylight://settings?tab=1'), '/settings?tab=1');
+    expect(at('waylight://nowhere'), Routes.home);
+    expect(at('/nowhere'), Routes.home);
+  });
+
+  test('continues to the link after the sign-in', () {
+    final gate = at('waylight://settings', signedIn: false)!;
+    expect(gate, '/sign-in?from=%2Fsettings');
+
+    expect(at(gate), Routes.settings);
+    expect(at('/sign-in?from=%2F%2Fevil.example.org'), Routes.home);
+    expect(
+      at('waylight://settings', connected: false, signedIn: false),
+      '/connect?from=%2Fsettings',
+    );
   });
 }

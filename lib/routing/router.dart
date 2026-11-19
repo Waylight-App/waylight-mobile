@@ -29,7 +29,7 @@ GoRouter createRouter(
   initialLocation: Routes.home,
   refreshListenable: Listenable.merge([serverRepository, sessionRepository]),
   redirect: (context, state) => redirectFor(
-    location: state.matchedLocation,
+    uri: state.uri,
     connected: serverRepository.current != null,
     signedIn: sessionRepository.signedIn,
   ),
@@ -78,21 +78,52 @@ GoRouter createRouter(
   ],
 );
 
-/// Where the router sends the user at [location]: the connect screen
-/// without a server, the sign-in screen without a session, otherwise away
-/// from both. `null` keeps the location.
+/// The app's scheme for links from outside, e.g. `waylight://settings`
+/// (#47). Android and iOS register it.
+const deepLinkScheme = 'waylight';
+
+/// The route of a link from outside: `waylight://settings?x=1` becomes
+/// `/settings?x=1`, because the target is in the host part there. Other
+/// locations stay as they are.
+@visibleForTesting
+Uri routeOf(Uri uri) {
+  if (uri.scheme != deepLinkScheme) {
+    return uri.path.isEmpty ? uri.replace(path: Routes.home) : uri;
+  }
+  return Uri(
+    path: '/${uri.host}${uri.path}',
+    query: uri.hasQuery ? uri.query : null,
+  );
+}
+
+/// Where the router sends the user for [uri]: the connect screen without a
+/// server, the sign-in screen without a session, otherwise away from both.
+/// The location the user wanted travels along in `?from=` and is opened
+/// after the sign-in. Unknown paths open the dashboard. `null` keeps [uri].
 @visibleForTesting
 String? redirectFor({
-  required String location,
+  required Uri uri,
   required bool connected,
   required bool signedIn,
 }) {
-  final target = !connected
-      ? Routes.connect
-      : !signedIn
-      ? Routes.signIn
-      : null;
-  if (target != null) return location == target ? null : target;
-  final onEntry = location == Routes.connect || location == Routes.signIn;
-  return onEntry ? Routes.home : null;
+  final link = routeOf(uri);
+  if (!Routes.all.contains(link.path)) return Routes.home;
+  final onEntry = link.path == Routes.connect || link.path == Routes.signIn;
+  final from = onEntry ? link.queryParameters['from'] : link.toString();
+
+  if (!connected || !signedIn) {
+    final gate = connected ? Routes.signIn : Routes.connect;
+    if (link.path == gate) return link == uri ? null : link.toString();
+    final keep = from != null && from != Routes.home;
+    return Uri(
+      path: gate,
+      queryParameters: keep ? {'from': from} : null,
+    ).toString();
+  }
+  if (onEntry) return _isLocal(from) ? from : Routes.home;
+  return link == uri ? null : link.toString();
 }
+
+// Only paths inside the app may come from `?from=`.
+bool _isLocal(String? from) =>
+    from != null && from.startsWith('/') && !from.startsWith('//');
