@@ -43,6 +43,23 @@ class FakeRssRepository with _Calls implements RssRepository {
     String id, {
     required bool read,
   }) async => _record('${read ? 'read' : 'unread'}:$id');
+
+  /// The feeds.
+  List<RssFeed> feedList = [];
+
+  @override
+  Future<Result<List<RssFeed>>> feeds(ServerAddress server) async =>
+      Result.ok(feedList);
+
+  @override
+  Future<Result<void>> markAllRead(
+    ServerAddress server, {
+    String feedId = '',
+  }) async => _record('all:$feedId');
+
+  @override
+  Future<Result<void>> refresh(ServerAddress server) async =>
+      _record('refresh');
 }
 
 /// A [ParcelsRepository] in memory.

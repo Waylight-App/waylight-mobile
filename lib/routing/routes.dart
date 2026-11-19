@@ -33,6 +33,15 @@ abstract final class Routes {
   /// The shopping list in full (#103).
   static const shopping = '/shopping';
 
+  /// The feed reader (#106).
+  static const feeds = '/feeds';
+
+  /// The timeline of the instance (#109).
+  static const timeline = '/timeline';
+
+  /// Every chosen smart home entity (#107).
+  static const smartHome = '/smart-home';
+
   /// Every path the router knows; links to others open the dashboard.
   static const all = {
     home,
@@ -46,5 +55,8 @@ abstract final class Routes {
     editTab,
     calendar,
     shopping,
+    feeds,
+    timeline,
+    smartHome,
   };
 }

@@ -735,5 +735,21 @@
   "shoppingOpen": "Open list",
   "@shoppingOpen": {"description": "Opens the shopping list screen."},
   "calendarEventAdded": "Added {title}.",
-  "@calendarEventAdded": {"description": "After a new event was saved.", "placeholders": {"title": {"type": "String", "example": "Dentist"}}}
+  "@calendarEventAdded": {"description": "After a new event was saved.", "placeholders": {"title": {"type": "String", "example": "Dentist"}}},
+  "smartHomeAll": "All devices",
+  "@smartHomeAll": {"description": "Opens the smart home screen."},
+  "rssOpen": "Open reader",
+  "@rssOpen": {"description": "Opens the feed reader."},
+  "rssAllRead": "Mark all read",
+  "@rssAllRead": {"description": "Marks every item read."},
+  "rssUnreadOnly": "Unread",
+  "@rssUnreadOnly": {"description": "Filter: unread items only."},
+  "rssAllFeeds": "All",
+  "@rssAllFeeds": {"description": "Filter: all feeds."},
+  "timelineOpen": "All events",
+  "@timelineOpen": {"description": "Opens the timeline screen."},
+  "timelineAll": "All",
+  "@timelineAll": {"description": "Filter: all events."},
+  "timelineCritical": "Critical",
+  "@timelineCritical": {"description": "Filter: critical events."}
 }

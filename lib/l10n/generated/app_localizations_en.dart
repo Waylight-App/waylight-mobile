@@ -1257,4 +1257,28 @@ class AppLocalizationsEn extends AppLocalizations {
   String calendarEventAdded(String title) {
     return 'Added $title.';
   }
+
+  @override
+  String get smartHomeAll => 'All devices';
+
+  @override
+  String get rssOpen => 'Open reader';
+
+  @override
+  String get rssAllRead => 'Mark all read';
+
+  @override
+  String get rssUnreadOnly => 'Unread';
+
+  @override
+  String get rssAllFeeds => 'All';
+
+  @override
+  String get timelineOpen => 'All events';
+
+  @override
+  String get timelineAll => 'All';
+
+  @override
+  String get timelineCritical => 'Critical';
 }

@@ -367,5 +367,13 @@
   "calendarSave": "Speichern",
   "calendarShowAll": "Terminübersicht",
   "shoppingOpen": "Liste öffnen",
-  "calendarEventAdded": "{title} eingetragen."
+  "calendarEventAdded": "{title} eingetragen.",
+  "smartHomeAll": "Alle Geräte",
+  "rssOpen": "Reader öffnen",
+  "rssAllRead": "Alle als gelesen markieren",
+  "rssUnreadOnly": "Ungelesen",
+  "rssAllFeeds": "Alle",
+  "timelineOpen": "Alle Ereignisse",
+  "timelineAll": "Alle",
+  "timelineCritical": "Kritisch"
 }

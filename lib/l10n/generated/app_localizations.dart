@@ -2305,6 +2305,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Added {title}.'**
   String calendarEventAdded(String title);
+
+  /// Opens the smart home screen.
+  ///
+  /// In en, this message translates to:
+  /// **'All devices'**
+  String get smartHomeAll;
+
+  /// Opens the feed reader.
+  ///
+  /// In en, this message translates to:
+  /// **'Open reader'**
+  String get rssOpen;
+
+  /// Marks every item read.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark all read'**
+  String get rssAllRead;
+
+  /// Filter: unread items only.
+  ///
+  /// In en, this message translates to:
+  /// **'Unread'**
+  String get rssUnreadOnly;
+
+  /// Filter: all feeds.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get rssAllFeeds;
+
+  /// Opens the timeline screen.
+  ///
+  /// In en, this message translates to:
+  /// **'All events'**
+  String get timelineOpen;
+
+  /// Filter: all events.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get timelineAll;
+
+  /// Filter: critical events.
+  ///
+  /// In en, this message translates to:
+  /// **'Critical'**
+  String get timelineCritical;
 }
 
 class _AppLocalizationsDelegate

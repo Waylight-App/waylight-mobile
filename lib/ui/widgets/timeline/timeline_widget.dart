@@ -1,9 +1,10 @@
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:material_ui/material_ui.dart';
-
 import 'package:waylight_mobile/data/repositories/widget_data/queries/home_server.dart';
 import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/domain/models/home_server.dart';
+import 'package:waylight_mobile/routing/routes.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/widgets/common/simple_widget.dart';
 import 'package:waylight_mobile/ui/widgets/common/widget_rows.dart';
@@ -49,6 +50,13 @@ class TimelineWidget extends StatelessWidget {
               subtitle:
                   '${DateFormat.MMMd(locale).add_Hm().format(e.at.toLocal())} · ${e.subject}',
             ),
+          Align(
+            alignment: Alignment.centerRight,
+            child: TextButton(
+              onPressed: () => context.push(Routes.timeline),
+              child: Text(context.l10n.timelineOpen),
+            ),
+          ),
         ],
       );
     },

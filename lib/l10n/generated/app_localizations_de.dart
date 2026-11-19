@@ -1259,4 +1259,28 @@ class AppLocalizationsDe extends AppLocalizations {
   String calendarEventAdded(String title) {
     return '$title eingetragen.';
   }
+
+  @override
+  String get smartHomeAll => 'Alle Geräte';
+
+  @override
+  String get rssOpen => 'Reader öffnen';
+
+  @override
+  String get rssAllRead => 'Alle als gelesen markieren';
+
+  @override
+  String get rssUnreadOnly => 'Ungelesen';
+
+  @override
+  String get rssAllFeeds => 'Alle';
+
+  @override
+  String get timelineOpen => 'Alle Ereignisse';
+
+  @override
+  String get timelineAll => 'Alle';
+
+  @override
+  String get timelineCritical => 'Kritisch';
 }
