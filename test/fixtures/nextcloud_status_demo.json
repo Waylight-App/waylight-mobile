@@ -1,0 +1,22 @@
+{
+  "version": "31.0.4",
+  "maintenance": false,
+  "quota": {
+    "used": 96636764160,
+    "free": 118111600640,
+    "total": 214748364800,
+    "percent": 45
+  },
+  "server": {
+    "freeSpace": 1288490188800,
+    "users": 4,
+    "activeUsers5m": 1,
+    "activeUsers1d": 3,
+    "files": 214806,
+    "appUpdates": 2,
+    "databaseSize": 912261120
+  },
+  "serverHint": "",
+  "updatedAt": "2026-11-19T21:07:38.592643125Z",
+  "error": ""
+}

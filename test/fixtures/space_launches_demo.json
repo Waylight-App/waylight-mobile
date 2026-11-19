@@ -1,0 +1,54 @@
+[
+  {
+    "id": "6a5e1c2f-0000-4000-8000-000000000001",
+    "mission": "Starlink Group 12-7",
+    "missionType": "Communications",
+    "description": "Example mission of the Waylight demo.",
+    "rocket": "Falcon 9 Block 5",
+    "provider": "SpaceX",
+    "pad": "SLC-40",
+    "location": "Cape Canaveral, FL, USA",
+    "net": "2026-11-20T02:09:59Z",
+    "status": "go",
+    "webcastLive": false
+  },
+  {
+    "id": "6a5e1c2f-0000-4000-8000-000000000002",
+    "mission": "Galileo L14",
+    "missionType": "Navigation",
+    "description": "Example mission of the Waylight demo.",
+    "rocket": "Ariane 62",
+    "provider": "Arianespace",
+    "pad": "ELA-4",
+    "location": "Kourou, French Guiana",
+    "net": "2026-11-22T01:09:59Z",
+    "status": "tbc",
+    "webcastLive": false
+  },
+  {
+    "id": "6a5e1c2f-0000-4000-8000-000000000003",
+    "mission": "Ocean Watch",
+    "missionType": "Earth Science",
+    "description": "Example mission of the Waylight demo.",
+    "rocket": "Electron",
+    "provider": "Rocket Lab",
+    "pad": "LC-1B",
+    "location": "Mahia Peninsula, New Zealand",
+    "net": "2026-11-23T21:09:59Z",
+    "status": "go",
+    "webcastLive": false
+  },
+  {
+    "id": "6a5e1c2f-0000-4000-8000-000000000004",
+    "mission": "Flight 16",
+    "missionType": "Test Flight",
+    "description": "Example mission of the Waylight demo.",
+    "rocket": "Starship",
+    "provider": "SpaceX",
+    "pad": "OLP-1",
+    "location": "Starbase, TX, USA",
+    "net": "2026-11-30T21:09:59Z",
+    "status": "tbd",
+    "webcastLive": false
+  }
+]

@@ -146,6 +146,7 @@ class MeterRow extends StatelessWidget {
     required this.label,
     required this.percent,
     this.detail,
+    this.invert = false,
     super.key,
   });
 
@@ -158,10 +159,16 @@ class MeterRow extends StatelessWidget {
   /// Extra text after the percentage, such as "1.2 of 4 TB".
   final String? detail;
 
+  /// Whether a high share is good, such as progress, instead of a warning
+  /// like a full disk.
+  final bool invert;
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final tone = percent >= 90
+    final tone = invert
+        ? Tone.ok
+        : percent >= 90
         ? Tone.critical
         : percent >= 75
         ? Tone.warning

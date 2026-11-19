@@ -902,4 +902,138 @@ class AppLocalizationsEn extends AppLocalizations {
   String dnsFilterBlocked(String count) {
     return 'Blocked: $count';
   }
+
+  @override
+  String get briefingTitle => 'Daily briefing';
+
+  @override
+  String get briefingWarnings => 'Weather warnings';
+
+  @override
+  String get briefingIncidents => 'Since last evening';
+
+  @override
+  String get briefingTodos => 'To-dos';
+
+  @override
+  String get briefingEvents => 'Appointments';
+
+  @override
+  String get arrHealth => 'Warnings';
+
+  @override
+  String get arrUpcoming => 'Upcoming';
+
+  @override
+  String get arrQueue => 'Downloads';
+
+  @override
+  String get mediaTitle => 'Media';
+
+  @override
+  String get mediaPlaying => 'Playing now';
+
+  @override
+  String get mediaRecent => 'Recently added';
+
+  @override
+  String get releasesTitle => 'New releases';
+
+  @override
+  String get gameDealsTitle => 'Game deals';
+
+  @override
+  String get gameDealsFree => 'Free now';
+
+  @override
+  String get gameDealsDeals => 'On sale';
+
+  @override
+  String get gameDealsNext => 'Free soon';
+
+  @override
+  String get spaceTitle => 'Rocket launches';
+
+  @override
+  String get readLaterTitle => 'Read later';
+
+  @override
+  String get listEmpty => 'Nothing here yet.';
+
+  @override
+  String get fuelTitle => 'Fuel prices';
+
+  @override
+  String get fuelEmpty => 'No stations found.';
+
+  @override
+  String get fuelClosed => 'closed';
+
+  @override
+  String get marketsTitle => 'Markets';
+
+  @override
+  String get calendarTitle => 'Calendar';
+
+  @override
+  String get calendarEmpty => 'No appointments ahead.';
+
+  @override
+  String get calendarAllDay => 'all day';
+
+  @override
+  String get phoneListTitle => 'Phone list';
+
+  @override
+  String get phoneListEmpty => 'No entries yet.';
+
+  @override
+  String get studyTitle => 'Study progress';
+
+  @override
+  String get studyAverage => 'Average grade';
+
+  @override
+  String get studyInProgress => 'in progress';
+
+  @override
+  String get appPhotos => 'Photos';
+
+  @override
+  String get appVideos => 'Videos';
+
+  @override
+  String get appUsers => 'Users';
+
+  @override
+  String get appUpdates => 'App updates';
+
+  @override
+  String get appMaintenance => 'Maintenance mode';
+
+  @override
+  String get appStorage => 'Storage';
+
+  @override
+  String get sportsTitle => 'Sports';
+
+  @override
+  String listMore(int count) {
+    return '$count more';
+  }
+
+  @override
+  String studyCredits(String passed, String total) {
+    return '$passed of $total credits';
+  }
+
+  @override
+  String sportsPlayed(int games) {
+    return '$games games';
+  }
+
+  @override
+  String sportsPoints(int points) {
+    return '$points pts';
+  }
 }

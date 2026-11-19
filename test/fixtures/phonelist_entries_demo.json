@@ -1,0 +1,102 @@
+[
+  {
+    "id": "b74d02b81c1affa51ec508aca483c678",
+    "name": "Anna Schr\u00f6der",
+    "role": "Managing director",
+    "phone": "+49 441 555 0100",
+    "dial": "+494415550100",
+    "email": "anna@example.org",
+    "team": "Management",
+    "readOnly": false
+  },
+  {
+    "id": "05206df83960fa8f213a1979f4ef1c7e",
+    "name": "Facility service",
+    "role": "Building and keys",
+    "phone": "+49 441 555 0190",
+    "dial": "+494415550190",
+    "email": "",
+    "team": "Office",
+    "readOnly": false
+  },
+  {
+    "id": "41791a8d1be428c91cada67d873998a8",
+    "name": "Felix Kr\u00fcger",
+    "role": "Sales",
+    "phone": "+49 441 555 0140",
+    "dial": "+494415550140",
+    "email": "felix@example.org",
+    "team": "Sales",
+    "readOnly": false
+  },
+  {
+    "id": "29aeeb5fcadfd69b55cc1435ee8b9369",
+    "name": "Jonas Meyer",
+    "role": "IT administrator",
+    "phone": "+49 441 555 0120",
+    "dial": "+494415550120",
+    "email": "jonas@example.org",
+    "team": "IT",
+    "readOnly": false
+  },
+  {
+    "id": "7ebfb7a945f701bddd0d8c4dd30aba4d",
+    "name": "Lea Wagner",
+    "role": "Office manager",
+    "phone": "+49 441 555 0130",
+    "dial": "+494415550130",
+    "email": "lea@example.org",
+    "team": "Office",
+    "readOnly": false
+  },
+  {
+    "id": "d7032d1b32874932f49e278c7434359c",
+    "name": "Mira Hoffmann",
+    "role": "Developer",
+    "phone": "+49 441 555 0121",
+    "dial": "+494415550121",
+    "email": "mira@example.org",
+    "team": "IT",
+    "readOnly": false
+  },
+  {
+    "id": "e515b61ff196c5c2c526f180bdfad58a",
+    "name": "Nils Peters",
+    "role": "Accounting",
+    "phone": "+49 441 555 0150",
+    "dial": "+494415550150",
+    "email": "finance@example.org",
+    "team": "Finance",
+    "readOnly": false
+  },
+  {
+    "id": "c1662404e63e8ee45f26e78c70158975",
+    "name": "Reception",
+    "role": "Front desk",
+    "phone": "+49 441 555 0000",
+    "dial": "+494415550000",
+    "email": "hello@example.org",
+    "team": "Office",
+    "readOnly": false
+  },
+  {
+    "id": "3328d6f76f9e32edca02221a64f9c5f8",
+    "name": "Sara Becker",
+    "role": "Customer success",
+    "phone": "+49 441 555 0141",
+    "dial": "+494415550141",
+    "email": "sara@example.org",
+    "team": "Sales",
+    "readOnly": false
+  },
+  {
+    "id": "2e7a5a2842e81caa37bf6b81ff427030",
+    "name": "Tobias Brandt",
+    "role": "Help desk",
+    "phone": "+49 441 555 0122",
+    "dial": "+494415550122",
+    "email": "helpdesk@example.org",
+    "team": "IT",
+    "readOnly": false
+  }
+]

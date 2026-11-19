@@ -1675,6 +1675,258 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Blocked: {count}'**
   String dnsFilterBlocked(String count);
+
+  /// Default title of the briefing widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily briefing'**
+  String get briefingTitle;
+
+  /// Briefing section.
+  ///
+  /// In en, this message translates to:
+  /// **'Weather warnings'**
+  String get briefingWarnings;
+
+  /// Briefing section with failures.
+  ///
+  /// In en, this message translates to:
+  /// **'Since last evening'**
+  String get briefingIncidents;
+
+  /// Briefing section.
+  ///
+  /// In en, this message translates to:
+  /// **'To-dos'**
+  String get briefingTodos;
+
+  /// Briefing section.
+  ///
+  /// In en, this message translates to:
+  /// **'Appointments'**
+  String get briefingEvents;
+
+  /// Health warnings of Sonarr/Radarr.
+  ///
+  /// In en, this message translates to:
+  /// **'Warnings'**
+  String get arrHealth;
+
+  /// Upcoming episodes and films.
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming'**
+  String get arrUpcoming;
+
+  /// Download queue.
+  ///
+  /// In en, this message translates to:
+  /// **'Downloads'**
+  String get arrQueue;
+
+  /// Default title of the media widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Media'**
+  String get mediaTitle;
+
+  /// Media playing now.
+  ///
+  /// In en, this message translates to:
+  /// **'Playing now'**
+  String get mediaPlaying;
+
+  /// Recently added media.
+  ///
+  /// In en, this message translates to:
+  /// **'Recently added'**
+  String get mediaRecent;
+
+  /// Default title of the music releases widget.
+  ///
+  /// In en, this message translates to:
+  /// **'New releases'**
+  String get releasesTitle;
+
+  /// Default title of the game deals widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Game deals'**
+  String get gameDealsTitle;
+
+  /// Free games now.
+  ///
+  /// In en, this message translates to:
+  /// **'Free now'**
+  String get gameDealsFree;
+
+  /// Discounted games.
+  ///
+  /// In en, this message translates to:
+  /// **'On sale'**
+  String get gameDealsDeals;
+
+  /// Free games next.
+  ///
+  /// In en, this message translates to:
+  /// **'Free soon'**
+  String get gameDealsNext;
+
+  /// Default title of the space widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Rocket launches'**
+  String get spaceTitle;
+
+  /// Default title of the read later widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Read later'**
+  String get readLaterTitle;
+
+  /// A list widget without entries.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing here yet.'**
+  String get listEmpty;
+
+  /// Default title of the fuel widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Fuel prices'**
+  String get fuelTitle;
+
+  /// Fuel widget without stations.
+  ///
+  /// In en, this message translates to:
+  /// **'No stations found.'**
+  String get fuelEmpty;
+
+  /// A closed station.
+  ///
+  /// In en, this message translates to:
+  /// **'closed'**
+  String get fuelClosed;
+
+  /// Default title of the markets widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Markets'**
+  String get marketsTitle;
+
+  /// Default title of the calendar widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Calendar'**
+  String get calendarTitle;
+
+  /// Calendar widget without events.
+  ///
+  /// In en, this message translates to:
+  /// **'No appointments ahead.'**
+  String get calendarEmpty;
+
+  /// An all-day event.
+  ///
+  /// In en, this message translates to:
+  /// **'all day'**
+  String get calendarAllDay;
+
+  /// Default title of the phone list widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone list'**
+  String get phoneListTitle;
+
+  /// Phone list without entries.
+  ///
+  /// In en, this message translates to:
+  /// **'No entries yet.'**
+  String get phoneListEmpty;
+
+  /// Default title of the study widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Study progress'**
+  String get studyTitle;
+
+  /// Weighted grade average.
+  ///
+  /// In en, this message translates to:
+  /// **'Average grade'**
+  String get studyAverage;
+
+  /// A module in progress.
+  ///
+  /// In en, this message translates to:
+  /// **'in progress'**
+  String get studyInProgress;
+
+  /// Number of photos.
+  ///
+  /// In en, this message translates to:
+  /// **'Photos'**
+  String get appPhotos;
+
+  /// Number of videos.
+  ///
+  /// In en, this message translates to:
+  /// **'Videos'**
+  String get appVideos;
+
+  /// Number of accounts.
+  ///
+  /// In en, this message translates to:
+  /// **'Users'**
+  String get appUsers;
+
+  /// Pending app updates.
+  ///
+  /// In en, this message translates to:
+  /// **'App updates'**
+  String get appUpdates;
+
+  /// Nextcloud in maintenance mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Maintenance mode'**
+  String get appMaintenance;
+
+  /// Used storage.
+  ///
+  /// In en, this message translates to:
+  /// **'Storage'**
+  String get appStorage;
+
+  /// Default title of the sports widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Sports'**
+  String get sportsTitle;
+
+  /// More entries than shown.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} more'**
+  String listMore(int count);
+
+  /// Passed credits.
+  ///
+  /// In en, this message translates to:
+  /// **'{passed} of {total} credits'**
+  String studyCredits(String passed, String total);
+
+  /// Games played.
+  ///
+  /// In en, this message translates to:
+  /// **'{games} games'**
+  String sportsPlayed(int games);
+
+  /// Points in the table.
+  ///
+  /// In en, this message translates to:
+  /// **'{points} pts'**
+  String sportsPoints(int points);
 }
 
 class _AppLocalizationsDelegate

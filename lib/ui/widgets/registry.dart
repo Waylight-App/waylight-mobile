@@ -1,19 +1,27 @@
 import 'package:waylight_mobile/ui/core/widget_registry.dart';
 import 'package:waylight_mobile/ui/widgets/adguard/adguard_widget.dart';
+import 'package:waylight_mobile/ui/widgets/apps/apps_widgets.dart';
 import 'package:waylight_mobile/ui/widgets/backups/backups_widget.dart';
 import 'package:waylight_mobile/ui/widgets/birthdays/birthdays_widget.dart';
 import 'package:waylight_mobile/ui/widgets/bookmarks/bookmarks_widget.dart';
+import 'package:waylight_mobile/ui/widgets/calendar/calendar_widget.dart';
 import 'package:waylight_mobile/ui/widgets/clock/clock_widget.dart';
 import 'package:waylight_mobile/ui/widgets/countdown/countdown_widget.dart';
 import 'package:waylight_mobile/ui/widgets/diskhealth/diskhealth_widget.dart';
 import 'package:waylight_mobile/ui/widgets/docker/docker_widget.dart';
 import 'package:waylight_mobile/ui/widgets/electricity/electricity_widget.dart';
 import 'package:waylight_mobile/ui/widgets/fritzbox/fritzbox_widget.dart';
+import 'package:waylight_mobile/ui/widgets/fuel/fuel_widget.dart';
 import 'package:waylight_mobile/ui/widgets/holidays/holidays_widget.dart';
+import 'package:waylight_mobile/ui/widgets/lists/list_widgets.dart';
+import 'package:waylight_mobile/ui/widgets/markets/markets_widget.dart';
 import 'package:waylight_mobile/ui/widgets/notes/notes_widget.dart';
+import 'package:waylight_mobile/ui/widgets/phonelist/phonelist_widget.dart';
 import 'package:waylight_mobile/ui/widgets/proxmox/proxmox_widget.dart';
 import 'package:waylight_mobile/ui/widgets/services/services_widget.dart';
 import 'package:waylight_mobile/ui/widgets/speedtest/speedtest_widget.dart';
+import 'package:waylight_mobile/ui/widgets/sports/sports_widget.dart';
+import 'package:waylight_mobile/ui/widgets/study/study_widget.dart';
 import 'package:waylight_mobile/ui/widgets/system/system_widget.dart';
 import 'package:waylight_mobile/ui/widgets/timeline/timeline_widget.dart';
 import 'package:waylight_mobile/ui/widgets/todos/todos_widget.dart';
@@ -26,9 +34,12 @@ import 'package:waylight_mobile/ui/widgets/wireguard/wireguard_widget.dart';
 /// folder in `ui/widgets/` is done (docs/adding-a-feature.md).
 const nativeWidgets = WidgetRegistry({
   'adguard': AdguardWidget.forPlacement,
+  'arr': ListWidget.arr,
   'backup-status': BackupsWidget.forPlacement,
   'birthdays': BirthdaysWidget.forPlacement,
   'bookmarks': BookmarksWidget.forPlacement,
+  'briefing': ListWidget.briefing,
+  'calendar': CalendarWidget.forPlacement,
   'clock': ClockWidget.forPlacement,
   'countdown': CountdownWidget.forPlacement,
   'diskhealth': DiskHealthWidget.forPlacement,
@@ -36,12 +47,24 @@ const nativeWidgets = WidgetRegistry({
   'electricity': ElectricityWidget.forPlacement,
   'fritzbox': FritzboxWidget.forPlacement,
   'fritzbox-calls': CallsWidget.forPlacement,
+  'fuel': FuelWidget.forPlacement,
+  'gamedeals': ListWidget.gameDeals,
   'holidays': HolidaysWidget.forPlacement,
+  'immich': AppOverviewWidget.immich,
+  'markets': MarketsWidget.forPlacement,
+  'media': ListWidget.media,
+  'nextcloud': AppOverviewWidget.nextcloud,
   'notes': NotesWidget.forPlacement,
+  'phonelist': PhoneListWidget.forPlacement,
   'proxmox': ProxmoxWidget.forPlacement,
+  'readlater': ListWidget.readLater,
+  'releases': ListWidget.releases,
   'services': ServicesWidget.forPlacement,
+  'space': ListWidget.space,
   'speedtest': SpeedtestWidget.forPlacement,
+  'sports': SportsWidget.forPlacement,
   'status-overview': StatusOverviewWidget.forPlacement,
+  'study': StudyWidget.forPlacement,
   'system': SystemWidget.forPlacement,
   'timeline': TimelineWidget.forPlacement,
   'todos': TodosWidget.forPlacement,
