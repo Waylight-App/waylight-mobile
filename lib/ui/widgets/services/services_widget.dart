@@ -76,7 +76,6 @@ Future<void> _actions(BuildContext context, MonitoredService s) async {
   final url = s.url;
   final admin = s.canWake && await isAdmin(context);
   if (!context.mounted) return;
-  final actions = context.read<HomeServerActionsRepository>();
   await showActions(context, [
     if (url != null)
       (
@@ -90,7 +89,8 @@ Future<void> _actions(BuildContext context, MonitoredService s) async {
         label: l10n.servicesWake,
         onTap: () => runAction(
           context,
-          (server) => actions.wake(server, s.id),
+          (server) =>
+              context.read<HomeServerActionsRepository>().wake(server, s.id),
           done: l10n.servicesWakeSent(s.name),
         ),
       ),

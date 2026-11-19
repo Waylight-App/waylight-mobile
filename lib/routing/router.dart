@@ -1,12 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:waylight_mobile/data/repositories/actions/smarthome_repository.dart';
 import 'package:waylight_mobile/data/repositories/lock/app_lock_repository.dart';
 import 'package:waylight_mobile/data/repositories/server/server_repository.dart';
 import 'package:waylight_mobile/data/repositories/session/session_repository.dart';
 import 'package:waylight_mobile/data/repositories/widget_data/queries/home_server.dart';
-import 'package:waylight_mobile/domain/models/actions.dart';
 import 'package:waylight_mobile/routing/routes.dart';
 import 'package:waylight_mobile/ui/auth_callback/view_models/auth_callback_view_model.dart';
 import 'package:waylight_mobile/ui/auth_callback/widgets/auth_callback_screen.dart';
@@ -29,7 +27,6 @@ import 'package:waylight_mobile/ui/sign_in/view_models/sign_in_view_model.dart';
 import 'package:waylight_mobile/ui/sign_in/widgets/sign_in_screen.dart';
 import 'package:waylight_mobile/ui/widgets/calendar/calendar_screen.dart';
 import 'package:waylight_mobile/ui/widgets/calendar/calendar_view_model.dart';
-import 'package:waylight_mobile/ui/widgets/common/items_view_model.dart';
 import 'package:waylight_mobile/ui/widgets/common/remote_widget.dart';
 import 'package:waylight_mobile/ui/widgets/notes/note_editor_screen.dart';
 import 'package:waylight_mobile/ui/widgets/notes/note_editor_view_model.dart';
@@ -170,17 +167,7 @@ GoRouter createRouter(
     ),
     GoRoute(
       path: Routes.smartHome,
-      builder: (context, state) => ViewModelHost(
-        create: (context) {
-          final home = context.read<SmartHomeRepository>();
-          return ItemsViewModel<SmartEntity>(
-            serverRepository: context.read(),
-            fetch: home.entities,
-            id: (e) => e.id,
-          );
-        },
-        builder: (context, viewModel) => SmartHomeScreen(viewModel: viewModel),
-      ),
+      builder: (context, state) => SmartHomeScreen.route(),
     ),
     GoRoute(
       path: Routes.note,

@@ -5,6 +5,7 @@ import 'package:waylight_mobile/data/repositories/actions/smarthome_repository.d
 import 'package:waylight_mobile/domain/models/actions.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
+import 'package:waylight_mobile/ui/core/widgets/view_model_host.dart';
 import 'package:waylight_mobile/ui/widgets/common/error_snack_listener.dart';
 import 'package:waylight_mobile/ui/widgets/common/items_view_model.dart';
 import 'package:waylight_mobile/ui/widgets/smarthome/smart_entity_tile.dart';
@@ -17,6 +18,19 @@ class SmartHomeScreen extends StatelessWidget {
 
   /// Loads the entities and switches them.
   final ItemsViewModel<SmartEntity> viewModel;
+
+  /// The screen with its view model, for the router.
+  static Widget route() => ViewModelHost<ItemsViewModel<SmartEntity>>(
+    create: (context) {
+      final home = context.read<SmartHomeRepository>();
+      return ItemsViewModel<SmartEntity>(
+        serverRepository: context.read(),
+        fetch: home.entities,
+        id: (e) => e.id,
+      );
+    },
+    builder: (context, viewModel) => SmartHomeScreen(viewModel: viewModel),
+  );
 
   @override
   Widget build(BuildContext context) {

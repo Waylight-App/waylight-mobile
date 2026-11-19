@@ -139,7 +139,8 @@ class _LogsDialog extends StatelessWidget {
               reverse: true,
               child: SelectableText(
                 value.join('\n'),
-                style: const TextStyle(fontFamily: 'monospace', fontSize: 12),
+                style: Theme.of(context).textTheme.bodySmall
+                    ?.copyWith(fontFamily: 'monospace'),
               ),
             ),
             Error(:final error) => Text(context.l10n.errorMessage(error)),
