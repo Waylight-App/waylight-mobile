@@ -21,7 +21,9 @@ import 'package:waylight_mobile/ui/pair/view_models/pair_view_model.dart';
 import 'package:waylight_mobile/ui/pair/widgets/pair_screen.dart';
 import 'package:waylight_mobile/ui/search/view_models/search_view_model.dart';
 import 'package:waylight_mobile/ui/search/widgets/search_screen.dart';
+import 'package:waylight_mobile/ui/settings/view_models/security_view_model.dart';
 import 'package:waylight_mobile/ui/settings/view_models/settings_view_model.dart';
+import 'package:waylight_mobile/ui/settings/widgets/security_screen.dart';
 import 'package:waylight_mobile/ui/settings/widgets/settings_screen.dart';
 import 'package:waylight_mobile/ui/sign_in/view_models/sign_in_view_model.dart';
 import 'package:waylight_mobile/ui/sign_in/widgets/sign_in_screen.dart';
@@ -30,9 +32,11 @@ import 'package:waylight_mobile/ui/widgets/calendar/calendar_view_model.dart';
 import 'package:waylight_mobile/ui/widgets/common/remote_widget.dart';
 import 'package:waylight_mobile/ui/widgets/notes/note_editor_screen.dart';
 import 'package:waylight_mobile/ui/widgets/notes/note_editor_view_model.dart';
+import 'package:waylight_mobile/ui/widgets/readlater/article_screen.dart';
 import 'package:waylight_mobile/ui/widgets/registry.dart';
 import 'package:waylight_mobile/ui/widgets/rss/rss_reader_view_model.dart';
 import 'package:waylight_mobile/ui/widgets/rss/rss_screen.dart';
+import 'package:waylight_mobile/ui/widgets/services/service_details_screen.dart';
 import 'package:waylight_mobile/ui/widgets/shopping/shopping_screen.dart';
 import 'package:waylight_mobile/ui/widgets/shopping/shopping_view_model.dart';
 import 'package:waylight_mobile/ui/widgets/smarthome/smarthome_screen.dart';
@@ -66,6 +70,7 @@ GoRouter createRouter(
       path: Routes.home,
       builder: (context, state) => ViewModelHost(
         create: (context) => DashboardViewModel(
+          pushRepository: context.read(),
           initialTabId: state.uri.queryParameters['tab'] ?? '',
           initialWidgetKind: state.uri.queryParameters['widget'] ?? '',
           serverRepository: context.read(),
@@ -83,6 +88,7 @@ GoRouter createRouter(
           serverRepository: context.read(),
           sessionRepository: context.read(),
           preferencesRepository: context.read(),
+          pushRepository: context.read(),
           lockRepository: context.read(),
         ),
         builder: (context, viewModel) => SettingsScreen(viewModel: viewModel),
@@ -178,6 +184,34 @@ GoRouter createRouter(
           notesRepository: context.read(),
         ),
         builder: (context, viewModel) => NoteEditorScreen(viewModel: viewModel),
+      ),
+    ),
+    GoRoute(
+      path: Routes.article,
+      builder: (context, state) => ViewModelHost(
+        create: (context) => ArticleViewModel(
+          articleId: state.uri.queryParameters['id'] ?? '',
+          serverRepository: context.read(),
+          readLater: context.read(),
+        ),
+        builder: (context, viewModel) => ArticleScreen(viewModel: viewModel),
+      ),
+    ),
+    GoRoute(
+      path: Routes.service,
+      builder: (context, state) => ServiceDetailsScreen(
+        id: state.uri.queryParameters['id'] ?? '',
+        name: state.uri.queryParameters['name'] ?? '',
+      ),
+    ),
+    GoRoute(
+      path: Routes.security,
+      builder: (context, state) => ViewModelHost(
+        create: (context) => SecurityViewModel(
+          serverRepository: context.read(),
+          security: context.read(),
+        ),
+        builder: (context, viewModel) => SecurityScreen(viewModel: viewModel),
       ),
     ),
     GoRoute(

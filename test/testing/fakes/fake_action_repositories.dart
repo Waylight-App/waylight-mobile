@@ -1,11 +1,17 @@
+import 'package:waylight_mobile/data/repositories/account/account_security_repository.dart';
+import 'package:waylight_mobile/data/repositories/actions/drop_repository.dart';
 import 'package:waylight_mobile/data/repositories/actions/focus_repository.dart';
 import 'package:waylight_mobile/data/repositories/actions/home_server_actions_repository.dart';
 import 'package:waylight_mobile/data/repositories/actions/parcels_repository.dart';
+import 'package:waylight_mobile/data/repositories/actions/read_later_repository.dart';
 import 'package:waylight_mobile/data/repositories/actions/rss_repository.dart';
 import 'package:waylight_mobile/data/repositories/actions/smarthome_repository.dart';
 import 'package:waylight_mobile/data/repositories/calendar/calendar_repository.dart';
+import 'package:waylight_mobile/data/repositories/push/push_repository.dart';
+import 'package:waylight_mobile/domain/models/account_security.dart';
 import 'package:waylight_mobile/domain/models/actions.dart';
 import 'package:waylight_mobile/domain/models/information.dart';
+import 'package:waylight_mobile/domain/models/media.dart';
 import 'package:waylight_mobile/domain/models/server_address.dart';
 import 'package:waylight_mobile/utils/result.dart';
 
@@ -188,4 +194,152 @@ class FakeCalendarRepository with _Calls implements CalendarRepository {
     created.add(event);
     return _record('create:${event.summary}');
   }
+}
+
+/// A [ReadLaterRepository] in memory.
+class FakeReadLaterRepository with _Calls implements ReadLaterRepository {
+  /// The articles.
+  List<Article> list = [];
+
+  @override
+  Future<Result<List<Article>>> articles(ServerAddress server) async =>
+      Result.ok(list);
+
+  @override
+  Future<Result<Article>> article(ServerAddress server, String id) async =>
+      Result.ok(list.firstWhere((a) => a.id == id));
+
+  @override
+  Future<Result<void>> setStatus(
+    ServerAddress server,
+    String id,
+    ArticleStatus status,
+  ) async => _record('${status.name}:$id');
+
+  @override
+  Future<Result<Article>> save(ServerAddress server, Uri url) async {
+    if (_record('save:$url') case Error(:final error)) {
+      return Result.error(error);
+    }
+    return Result.ok(Article(id: 'new', url: url, title: '$url'));
+  }
+
+  @override
+  Future<Result<void>> remove(ServerAddress server, String id) async =>
+      _record('remove:$id');
+}
+
+/// A [DropRepository] in memory.
+class FakeDropRepository with _Calls implements DropRepository {
+  /// The items.
+  List<Drop> list = [];
+
+  @override
+  Future<Result<List<Drop>>> drops(ServerAddress server) async =>
+      Result.ok(list);
+
+  @override
+  Future<Result<Drop>> sendText(
+    ServerAddress server,
+    String text, {
+    int hours = 24,
+  }) async {
+    if (_record('send:$text') case Error(:final error)) {
+      return Result.error(error);
+    }
+    return Result.ok(Drop(id: 'new', isFile: false, text: text));
+  }
+
+  @override
+  Future<Result<void>> remove(ServerAddress server, String id) async =>
+      _record('remove:$id');
+}
+
+/// An [AccountSecurityRepository] in memory.
+class FakeAccountSecurity with _Calls implements AccountSecurityRepository {
+  /// The sessions.
+  List<AccountSession> list = [];
+
+  /// Whether two-factor sign-in is on.
+  bool totp = false;
+
+  @override
+  Future<Result<List<AccountSession>>> sessions(ServerAddress server) async =>
+      Result.ok(list);
+
+  @override
+  Future<Result<void>> revoke(ServerAddress server, String id) async =>
+      _record('revoke:$id');
+
+  @override
+  Future<Result<void>> revokeOthers(ServerAddress server) async =>
+      _record('revokeOthers');
+
+  @override
+  Future<Result<void>> changePassword(
+    ServerAddress server, {
+    required String current,
+    required String next,
+  }) async => _record('password:$next');
+
+  @override
+  Future<Result<bool>> totpEnabled(ServerAddress server) async =>
+      Result.ok(totp);
+
+  @override
+  Future<Result<TotpSetup>> startTotp(ServerAddress server) async => Result.ok(
+    TotpSetup(
+      secret: 'JBSWY3DPEHPK3PXP',
+      uri: Uri.parse('otpauth://totp/Waylight?secret=JBSWY3DPEHPK3PXP'),
+    ),
+  );
+
+  @override
+  Future<Result<List<String>>> confirmTotp(
+    ServerAddress server,
+    String code,
+  ) async {
+    if (_record('confirm:$code') case Error(:final error)) {
+      return Result.error(error);
+    }
+    totp = true;
+    return const Result.ok(['aaaa-bbbb', 'cccc-dddd']);
+  }
+
+  @override
+  Future<Result<void>> disableTotp(
+    ServerAddress server, {
+    required String password,
+    required String code,
+  }) async => _record('disable:$code');
+}
+
+/// A [PushRepository] in memory.
+class FakePushRepository with _Calls implements PushRepository {
+  /// Whether the build has push.
+  bool isAvailable = true;
+
+  bool _on = false;
+
+  @override
+  Future<bool> available() async => isAvailable;
+
+  @override
+  Future<bool> isOn() async => _on;
+
+  @override
+  Future<Result<void>> enable(ServerAddress server) async {
+    final r = _record('enable');
+    if (r is Ok<void>) _on = true;
+    return r;
+  }
+
+  @override
+  Future<Result<void>> disable(ServerAddress server) async {
+    _on = false;
+    return _record('disable');
+  }
+
+  @override
+  Future<void> refresh(ServerAddress server) async => _record('refresh');
 }

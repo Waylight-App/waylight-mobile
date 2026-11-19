@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
 import 'package:waylight_mobile/domain/models/push.dart';
@@ -28,16 +29,22 @@ abstract interface class PushDevice {
 
 /// A [PushDevice] over the method channel `app.waylight/push`.
 final class MethodChannelPushDevice implements PushDevice {
-  /// Creates the adapter for the push service of this platform.
+  /// Creates the adapter; the push service follows the platform unless a
+  /// test names one.
   const MethodChannelPushDevice({
-    required this.platform,
     this._channel = const MethodChannel('app.waylight/push'),
+    this._platform,
   });
 
   final MethodChannel _channel;
+  final PushPlatform? _platform;
 
   @override
-  final PushPlatform platform;
+  PushPlatform get platform =>
+      _platform ??
+      (defaultTargetPlatform == TargetPlatform.iOS
+          ? PushPlatform.apns
+          : PushPlatform.fcm);
 
   @override
   Future<bool> available() async {

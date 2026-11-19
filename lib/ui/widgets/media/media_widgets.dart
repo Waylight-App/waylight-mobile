@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
+import 'package:waylight_mobile/data/repositories/actions/drop_repository.dart';
 import 'package:waylight_mobile/data/repositories/actions/focus_repository.dart';
 import 'package:waylight_mobile/data/repositories/server/server_repository.dart';
 import 'package:waylight_mobile/data/repositories/widget_data/queries/media.dart';
@@ -13,6 +14,8 @@ import 'package:waylight_mobile/ui/core/link_opener.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
 import 'package:waylight_mobile/ui/core/widgets/section_card.dart';
+import 'package:waylight_mobile/ui/widgets/common/items_view_model.dart';
+import 'package:waylight_mobile/ui/widgets/common/items_widget.dart';
 import 'package:waylight_mobile/ui/widgets/common/server_image.dart';
 import 'package:waylight_mobile/ui/widgets/common/simple_widget.dart';
 import 'package:waylight_mobile/ui/widgets/common/widget_rows.dart';
@@ -327,8 +330,8 @@ class MailWidget extends StatelessWidget {
   }
 }
 
-/// The drop zone (#121): the latest texts and files; texts can be selected
-/// and copied. Sending from the phone follows with #105.
+/// The drop zone (#121, #105): the latest texts and files; texts can be
+/// selected and copied, new texts sent, items deleted.
 class DropWidget extends StatelessWidget {
   /// Creates the view for [widget].
   const DropWidget({required this.widget, super.key});
@@ -341,34 +344,115 @@ class DropWidget extends StatelessWidget {
       DropWidget(widget: widget, key: ValueKey(widget.id));
 
   @override
-  Widget build(BuildContext context) => SimpleWidget<List<Drop>>(
-    placement: widget,
-    defaultTitle: context.l10n.dropTitle,
-    query: dropQuery,
+  Widget build(BuildContext context) => ItemsWidget<Drop>(
+    title: widget.title.isNotEmpty ? widget.title : context.l10n.dropTitle,
     interval: const Duration(minutes: 1),
-    builder: (context, drops) {
+    create: (context) {
+      final repo = context.read<DropRepository>();
+      return ItemsViewModel(
+        serverRepository: context.read(),
+        fetch: repo.drops,
+        id: (d) => d.id,
+      );
+    },
+    builder: (context, vm) {
       final l10n = context.l10n;
-      if (drops.isEmpty) return Text(l10n.dropEmpty);
+      final repo = context.read<DropRepository>();
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          for (final d in drops)
-            d.isFile
-                ? InfoRow(
-                    leading: const Text('📄', semanticsLabel: ''),
-                    title: d.fileName,
-                    trailing: formatBytes(d.size),
-                  )
-                : Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: Dimens.gapTiny,
-                    ),
-                    child: SelectableText(d.text),
+          if (vm.items.isEmpty) Text(l10n.dropEmpty),
+          for (final d in vm.items)
+            Row(
+              children: [
+                Expanded(
+                  child: d.isFile
+                      ? InfoRow(
+                          leading: const Text('📄', semanticsLabel: ''),
+                          title: d.fileName,
+                          trailing: formatBytes(d.size),
+                        )
+                      : Padding(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: Dimens.gapTiny,
+                          ),
+                          child: SelectableText(d.text),
+                        ),
+                ),
+                if (vm.canEdit)
+                  IconButton(
+                    tooltip: l10n.noteDelete,
+                    icon: const Icon(Icons.delete_outline),
+                    onPressed: () =>
+                        vm.remove(d, (server) => repo.remove(server, d.id)),
                   ),
+              ],
+            ),
+          if (vm.canEdit)
+            Align(
+              alignment: Alignment.centerRight,
+              child: TextButton.icon(
+                icon: const Icon(Icons.send),
+                label: Text(l10n.dropSend),
+                onPressed: () async {
+                  final text = await showDialog<String>(
+                    context: context,
+                    builder: (context) => const _DropTextDialog(),
+                  );
+                  if (text == null) return;
+                  await vm.add((server) => repo.sendText(server, text));
+                },
+              ),
+            ),
         ],
       );
     },
   );
+}
+
+/// Asks for a text to drop; returns it, or `null` when cancelled or empty.
+class _DropTextDialog extends StatefulWidget {
+  const _DropTextDialog();
+
+  @override
+  State<_DropTextDialog> createState() => _DropTextDialogState();
+}
+
+class _DropTextDialogState extends State<_DropTextDialog> {
+  final _text = TextEditingController();
+
+  @override
+  void dispose() {
+    _text.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    return AlertDialog(
+      title: Text(l10n.dropSend),
+      content: TextField(
+        controller: _text,
+        autofocus: true,
+        minLines: 2,
+        maxLines: 6,
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: Text(l10n.parcelsCancel),
+        ),
+        FilledButton(
+          onPressed: () {
+            final text = _text.text.trim();
+            Navigator.pop(context, text.isEmpty ? null : text);
+          },
+          child: Text(l10n.dropSend),
+        ),
+      ],
+    );
+  }
 }
 
 /// The focus timer (#123): today's focus time and a timer whose finished

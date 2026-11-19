@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-
 import 'package:waylight_mobile/data/repositories/lock/app_lock_repository.dart';
 import 'package:waylight_mobile/data/repositories/preferences/preferences_repository.dart';
+import 'package:waylight_mobile/data/repositories/push/push_repository.dart';
 import 'package:waylight_mobile/data/repositories/server/server_repository.dart';
 import 'package:waylight_mobile/data/repositories/session/session_repository.dart';
 import 'package:waylight_mobile/domain/models/appearance.dart';
@@ -27,8 +27,10 @@ class SettingsViewModel extends ChangeNotifier {
     required this._sessionRepository,
     required this._preferencesRepository,
     AppLockRepository? lockRepository,
+    PushRepository? pushRepository,
     AppVersionReader appVersion = _platformVersion,
-  }) : _lock = lockRepository {
+  }) : _lock = lockRepository,
+       _push = pushRepository {
     account = Command0(_serverRepository.status)..execute().ignore();
     serverVersion = Command0(_serverRepository.version)..execute().ignore();
     this.appVersion = Command0(() async => Result.ok(await appVersion()))
@@ -42,6 +44,42 @@ class SettingsViewModel extends ChangeNotifier {
       _lockAvailable = available;
       notifyListeners();
     }).ignore();
+    _loadPush().ignore();
+    setPush = Command1(_setPush);
+  }
+
+  final PushRepository? _push;
+  bool _pushAvailable = false;
+  bool _pushOn = false;
+
+  /// Whether this build and server can send notifications to the phone
+  /// (#59; not in the F-Droid build).
+  bool get pushAvailable => _pushAvailable;
+
+  /// Whether notifications are on for this phone.
+  bool get pushOn => _pushOn;
+
+  /// Turns notifications on (asks for the permission) or off.
+  late final Command1<void, bool> setPush;
+
+  Future<void> _loadPush() async {
+    final push = _push;
+    if (push == null) return;
+    _pushAvailable = await push.available();
+    _pushOn = await push.isOn();
+    notifyListeners();
+  }
+
+  Future<Result<void>> _setPush(bool on) async {
+    final push = _push;
+    final server = _serverRepository.current;
+    if (push == null || server == null) {
+      return const Result.error(NotConnectedException());
+    }
+    final result = on ? await push.enable(server) : await push.disable(server);
+    _pushOn = await push.isOn();
+    notifyListeners();
+    return result;
   }
 
   final ServerRepository _serverRepository;

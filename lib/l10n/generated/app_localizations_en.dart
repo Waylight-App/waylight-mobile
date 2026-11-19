@@ -1312,4 +1312,139 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noteUnpin => 'Unpin';
+
+  @override
+  String get readLaterUnread => 'Unread';
+
+  @override
+  String get readLaterSave => 'Save link';
+
+  @override
+  String get readLaterOriginal => 'Open original';
+
+  @override
+  String get readLaterArchive => 'Archive';
+
+  @override
+  String get readLaterNoCopy =>
+      'There is no reader copy of this page; open the original.';
+
+  @override
+  String get dropSend => 'Send text';
+
+  @override
+  String get serviceDetails => 'Uptime and outages';
+
+  @override
+  String get serviceUptime => 'Uptime';
+
+  @override
+  String get serviceDay => 'Last 24 hours';
+
+  @override
+  String get serviceWeek => 'Last 7 days';
+
+  @override
+  String get serviceMonth => 'Last 30 days';
+
+  @override
+  String get serviceQuarter => 'Last 90 days';
+
+  @override
+  String get serviceIncidents => 'Outages';
+
+  @override
+  String get serviceNoIncidents => 'No outages recorded.';
+
+  @override
+  String serviceDownSince(String time) {
+    return 'Down since $time';
+  }
+
+  @override
+  String get securityTitle => 'Password and sign-in';
+
+  @override
+  String get securityPassword => 'Password';
+
+  @override
+  String get securityChangePassword => 'Change password';
+
+  @override
+  String get securityCurrentPassword => 'Current password';
+
+  @override
+  String get securityNewPassword => 'New password';
+
+  @override
+  String get securityPasswordChanged =>
+      'Password changed. Other devices are signed out.';
+
+  @override
+  String get securityTotp => 'Two-factor sign-in';
+
+  @override
+  String get securityTotpOn =>
+      'On: a code from your authenticator app is asked at sign-in.';
+
+  @override
+  String get securityTotpIsOff => 'Off.';
+
+  @override
+  String get securityTotpSetUp => 'Set up';
+
+  @override
+  String get securityTotpOff => 'Turn off';
+
+  @override
+  String get securityTotpHint =>
+      'Add this key to your authenticator app, or open the app directly, then enter the code it shows.';
+
+  @override
+  String get securityOpenAuthenticator => 'Open authenticator app';
+
+  @override
+  String get securityCode => 'Code';
+
+  @override
+  String get securityConfirm => 'Confirm';
+
+  @override
+  String get securityRecoveryCodes => 'Recovery codes';
+
+  @override
+  String get securityCodesSaved => 'I saved them';
+
+  @override
+  String get securitySessions => 'Signed-in devices';
+
+  @override
+  String get securityThisDevice => 'This device';
+
+  @override
+  String get securitySignOutSession => 'Sign out';
+
+  @override
+  String get securitySignOutOthers => 'Sign out all other devices';
+
+  @override
+  String get securitySessionEnded => 'Signed out.';
+
+  @override
+  String get settingsNotifications => 'Notifications';
+
+  @override
+  String get settingsPushSwitch => 'Notifications on this phone';
+
+  @override
+  String get settingsPushHint =>
+      'Messages of Waylight’s notification rules arrive end-to-end encrypted. Turn on the channel “Waylight app” in the web interface too.';
+
+  @override
+  String get settingsPushDenied =>
+      'Notifications are blocked for this app in the system settings.';
+
+  @override
+  String get settingsPushNotInBuild =>
+      'This version of the app has no push notifications.';
 }

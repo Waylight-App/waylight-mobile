@@ -8,6 +8,7 @@ import 'package:waylight_mobile/ui/settings/view_models/settings_view_model.dart
 import 'package:waylight_mobile/ui/settings/widgets/settings_screen.dart';
 import 'package:waylight_mobile/utils/result.dart';
 
+import '../../testing/fakes/fake_action_repositories.dart';
 import '../../testing/fakes/fake_link_opener.dart';
 import '../../testing/fakes/fake_preferences_repository.dart';
 import '../../testing/fakes/fake_server_repository.dart';
@@ -145,5 +146,54 @@ void main() {
 
     expect(servers.current, isNull);
     expect(sessions.signOutCalls, 0);
+  });
+
+  testWidgets('turns notifications on and off', (tester) async {
+    tester.view.physicalSize = const Size(800, 2400);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+    final push = FakePushRepository();
+    await tester.pumpScreen(
+      LinkOpenerScope(
+        opener: opener,
+        child: SettingsScreen(
+          viewModel: SettingsViewModel(
+            serverRepository: servers,
+            sessionRepository: sessions,
+            preferencesRepository: preferences,
+            pushRepository: push,
+            appVersion: () async => '0.3.0 (7)',
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byKey(const ValueKey('settings.push')));
+    await tester.pumpAndSettle();
+    expect(push.calls, ['enable']);
+    expect(await push.isOn(), isTrue);
+
+    await tester.tap(find.byKey(const ValueKey('settings.push')));
+    await tester.pumpAndSettle();
+    expect(push.calls.last, 'disable');
+  });
+
+  testWidgets('builds without push show no notification switch', (
+    tester,
+  ) async {
+    await tester.pumpScreen(
+      SettingsScreen(
+        viewModel: SettingsViewModel(
+          serverRepository: servers,
+          sessionRepository: sessions,
+          preferencesRepository: preferences,
+          pushRepository: FakePushRepository()..isAvailable = false,
+          appVersion: () async => '0.3.0 (7)',
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(find.byKey(const ValueKey('settings.push')), findsNothing);
   });
 }

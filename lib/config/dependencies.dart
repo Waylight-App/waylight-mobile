@@ -4,9 +4,12 @@ import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
+import 'package:waylight_mobile/data/repositories/account/account_security_repository.dart';
+import 'package:waylight_mobile/data/repositories/actions/drop_repository.dart';
 import 'package:waylight_mobile/data/repositories/actions/focus_repository.dart';
 import 'package:waylight_mobile/data/repositories/actions/home_server_actions_repository.dart';
 import 'package:waylight_mobile/data/repositories/actions/parcels_repository.dart';
+import 'package:waylight_mobile/data/repositories/actions/read_later_repository.dart';
 import 'package:waylight_mobile/data/repositories/actions/rss_repository.dart';
 import 'package:waylight_mobile/data/repositories/actions/smarthome_repository.dart';
 import 'package:waylight_mobile/data/repositories/bookmarks/bookmarks_repository.dart';
@@ -22,6 +25,8 @@ import 'package:waylight_mobile/data/repositories/notes/notes_repository_remote.
 import 'package:waylight_mobile/data/repositories/offline/offline_repository.dart';
 import 'package:waylight_mobile/data/repositories/preferences/preferences_repository.dart';
 import 'package:waylight_mobile/data/repositories/preferences/preferences_repository_local.dart';
+import 'package:waylight_mobile/data/repositories/push/push_repository.dart';
+import 'package:waylight_mobile/data/repositories/push/push_repository_remote.dart';
 import 'package:waylight_mobile/data/repositories/search/search_repository.dart';
 import 'package:waylight_mobile/data/repositories/search/search_repository_remote.dart';
 import 'package:waylight_mobile/data/repositories/server/server_repository.dart';
@@ -48,6 +53,7 @@ import 'package:waylight_mobile/data/services/api/bookmarks_api.dart';
 import 'package:waylight_mobile/data/services/api/dashboard_api.dart';
 import 'package:waylight_mobile/data/services/api/module_api.dart';
 import 'package:waylight_mobile/data/services/api/notes_api.dart';
+import 'package:waylight_mobile/data/services/api/notifications_api.dart';
 import 'package:waylight_mobile/data/services/api/offline_status.dart';
 import 'package:waylight_mobile/data/services/api/platform_api.dart';
 import 'package:waylight_mobile/data/services/api/search_api.dart';
@@ -58,6 +64,7 @@ import 'package:waylight_mobile/data/services/api/weather_api.dart';
 import 'package:waylight_mobile/data/services/cache/response_cache.dart';
 import 'package:waylight_mobile/data/services/platform/device_auth.dart';
 import 'package:waylight_mobile/data/services/platform/device_name.dart';
+import 'package:waylight_mobile/data/services/push/push_device.dart';
 import 'package:waylight_mobile/data/services/storage/key_value_store.dart';
 
 /// The repositories of the app. Server and session are needed by the
@@ -81,6 +88,10 @@ typedef Repositories = ({
   FocusRepository focus,
   HomeServerActionsRepository homeServer,
   CalendarRepository calendar,
+  ReadLaterRepository readLater,
+  DropRepository drop,
+  AccountSecurityRepository security,
+  PushRepository push,
   PreferencesRepository preferences,
   OfflineRepository offline,
   SearchRepository search,
@@ -111,6 +122,10 @@ List<SingleChildWidget> providers(Repositories repositories) => [
   Provider<FocusRepository>.value(value: repositories.focus),
   Provider<HomeServerActionsRepository>.value(value: repositories.homeServer),
   Provider<CalendarRepository>.value(value: repositories.calendar),
+  Provider<ReadLaterRepository>.value(value: repositories.readLater),
+  Provider<DropRepository>.value(value: repositories.drop),
+  Provider<AccountSecurityRepository>.value(value: repositories.security),
+  Provider<PushRepository>.value(value: repositories.push),
   Provider<SearchRepository>.value(value: repositories.search),
   ChangeNotifierProvider<AppLockRepository>.value(value: repositories.lock),
   ChangeNotifierProvider<PreferencesRepository>.value(
@@ -172,6 +187,15 @@ Repositories createRepositories() {
     focus: FocusRepositoryRemote(api: modules),
     homeServer: HomeServerActionsRepositoryRemote(api: modules),
     calendar: CalendarRepositoryRemote(api: modules),
+    readLater: ReadLaterRepositoryRemote(api: modules),
+    drop: DropRepositoryRemote(api: modules),
+    security: AccountSecurityRepositoryRemote(api: modules),
+    push: PushRepositoryRemote(
+      api: NotificationsApi(client),
+      device: const MethodChannelPushDevice(),
+      deviceName: deviceName(),
+      store: store,
+    ),
     preferences: PreferencesRepositoryLocal(store: store),
     offline: OfflineRepository(offline),
     search: SearchRepositoryRemote(api: SearchApi(client)),

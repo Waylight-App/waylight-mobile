@@ -14,6 +14,7 @@ import 'package:waylight_mobile/domain/models/push.dart';
 import 'package:waylight_mobile/utils/result.dart';
 
 import '../../../testing/fakes/fake_server_repository.dart';
+import '../../../testing/fakes/in_memory_key_value_store.dart';
 
 final class _Device implements PushDevice {
   _Device({this.isAvailable = true, this.tokenValue = 'fcm-token'});
@@ -40,9 +41,11 @@ final class _Device implements PushDevice {
 
 void main() {
   late List<http.Request> requests;
+  late InMemoryKeyValueStore store;
 
   PushRepositoryRemote repository(PushDevice device) {
     requests = [];
+    store = InMemoryKeyValueStore();
     final client = ApiClient(
       client: MockClient((request) async {
         requests.add(request);
@@ -55,6 +58,7 @@ void main() {
       api: NotificationsApi(client),
       device: device,
       deviceName: 'Android',
+      store: store,
     );
   }
 
@@ -70,6 +74,10 @@ void main() {
     expect(body['token'], 'fcm-token');
     expect(body['name'], 'Android');
     expect(base64Decode(body['publicKey']! as String)[0], 7);
+    expect(await repo.isOn(), isTrue);
+
+    await repo.refresh(testServer());
+    expect(requests, hasLength(2), reason: 'registers again while on');
   });
 
   test('unregisters and forgets the key', () async {
@@ -79,6 +87,10 @@ void main() {
     expect(await repo.disable(testServer()), isA<Ok<void>>());
     expect(requests.single.method, 'DELETE');
     expect(device.forgotten, isTrue);
+    expect(await repo.isOn(), isFalse);
+
+    await repo.refresh(testServer());
+    expect(requests, hasLength(1), reason: 'nothing while off');
   });
 
   test('reports a denied permission and a build without push', () async {

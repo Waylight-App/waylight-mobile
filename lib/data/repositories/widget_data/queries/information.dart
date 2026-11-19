@@ -65,12 +65,6 @@ const launchesQuery = WidgetQuery<List<FeedSection>>(
   parseLaunches,
 );
 
-/// Saved articles.
-const readLaterQuery = WidgetQuery<List<FeedSection>>(
-  '/api/readlater',
-  parseReadLater,
-);
-
 String _s(Object? v) => v is String ? v : '';
 
 Uri? _url(Object? v) => v is String && v.isNotEmpty ? Uri.tryParse(v) : null;
@@ -378,38 +372,6 @@ List<FeedSection>? parseLaunches(Object? json) {
     return null;
   });
   return items == null ? null : [FeedSection(title: '', items: items)];
-}
-
-/// Maps `GET /api/readlater`: unread articles first.
-List<FeedSection>? parseReadLater(Object? json) {
-  final items = listOf<(bool, FeedItem)>(json, (e) {
-    if (e case {'title': final String title, 'url': final String url}) {
-      return (
-        e['status'] == 'unread',
-        FeedItem(
-          title: title.isEmpty ? url : title,
-          detail: [
-            _s(e['site']),
-            if (e['readingMinutes'] case final int m when m > 0) '$m min',
-          ].where((s) => s.isNotEmpty).join(' · '),
-          url: Uri.tryParse(url),
-        ),
-      );
-    }
-    return null;
-  });
-  if (items == null) return null;
-  return [
-    FeedSection(
-      title: '',
-      items: [
-        for (final (unread, item) in items)
-          if (unread) item,
-        for (final (unread, item) in items)
-          if (!unread) item,
-      ],
-    ),
-  ];
 }
 
 /// `GET /api/immich/overview`.

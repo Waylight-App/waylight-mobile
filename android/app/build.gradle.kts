@@ -89,4 +89,8 @@ dependencies {
     // F-Droid build.
     "storeImplementation"("com.google.firebase:firebase-messaging:26.0.2")
     "storeImplementation"("com.google.crypto.tink:tink-android:1.24.0")
+    // JVM unit tests of the native push code; org.json is only a stub in
+    // the Android SDK outside a device.
+    testImplementation("junit:junit:4.13.2")
+    testImplementation("org.json:json:20260814")
 }

@@ -319,3 +319,53 @@ final class TimelineEntry {
   /// What happened.
   final String message;
 }
+
+/// The uptime of a service in percent (`GET /api/services/uptime`).
+final class ServiceUptime {
+  /// Creates the uptime.
+  const ServiceUptime({
+    required this.serviceId,
+    this.day,
+    this.week,
+    this.month,
+    this.quarter,
+  });
+
+  /// The service.
+  final String serviceId;
+
+  /// Uptime of the last day, week, month and quarter, if measured.
+  final double? day;
+
+  /// Uptime of the last week.
+  final double? week;
+
+  /// Uptime of the last month.
+  final double? month;
+
+  /// Uptime of the last quarter.
+  final double? quarter;
+}
+
+/// An outage of a service (`GET /api/services/incidents`).
+final class Incident {
+  /// Creates the incident.
+  const Incident({
+    required this.serviceId,
+    required this.start,
+    this.end,
+    this.cause = '',
+  });
+
+  /// The service.
+  final String serviceId;
+
+  /// When it went down.
+  final DateTime start;
+
+  /// When it came back; `null` while it lasts.
+  final DateTime? end;
+
+  /// Why, as the check saw it.
+  final String cause;
+}

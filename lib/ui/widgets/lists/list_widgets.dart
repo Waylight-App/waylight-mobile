@@ -79,10 +79,6 @@ class ListWidget extends StatelessWidget {
   static Widget space(BuildContext context, WidgetPlacement widget) =>
       _for(widget, launchesQuery, (l) => l.spaceTitle);
 
-  /// Saved articles.
-  static Widget readLater(BuildContext context, WidgetPlacement widget) =>
-      _for(widget, readLaterQuery, (l) => l.readLaterTitle);
-
   @override
   Widget build(BuildContext context) => SimpleWidget<List<FeedSection>>(
     placement: widget,

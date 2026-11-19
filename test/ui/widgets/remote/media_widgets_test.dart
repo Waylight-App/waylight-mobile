@@ -7,6 +7,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
+import 'package:waylight_mobile/data/repositories/actions/drop_repository.dart';
 import 'package:waylight_mobile/data/repositories/actions/focus_repository.dart';
 import 'package:waylight_mobile/data/repositories/server/server_repository.dart';
 import 'package:waylight_mobile/data/repositories/widget_data/queries/media.dart';
@@ -72,6 +73,10 @@ void main() {
           ),
           Provider<WidgetDataRepository>.value(value: data),
           Provider<FocusRepository>.value(value: focus),
+          Provider<DropRepository>.value(
+            value: FakeDropRepository()
+              ..list = parseDrops(fixture('drop_demo'))!,
+          ),
         ],
         child: LinkOpenerScope(
           opener: FakeLinkOpener(),

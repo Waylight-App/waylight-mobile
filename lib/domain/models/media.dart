@@ -135,3 +135,66 @@ final class FocusDay {
   /// Finished sessions.
   final int sessions;
 }
+
+/// A saved article (`GET /api/readlater`).
+final class Article {
+  /// Creates the article.
+  const Article({
+    required this.id,
+    required this.url,
+    required this.title,
+    this.site = '',
+    this.excerpt = '',
+    this.readingMinutes = 0,
+    this.status = ArticleStatus.unread,
+    this.content = '',
+  });
+
+  /// The server's id.
+  final String id;
+
+  /// The original address.
+  final Uri url;
+
+  /// The title.
+  final String title;
+
+  /// The site's name.
+  final String site;
+
+  /// The first lines.
+  final String excerpt;
+
+  /// How long it takes to read.
+  final int readingMinutes;
+
+  /// Unread, read or archived.
+  final ArticleStatus status;
+
+  /// The reader copy as simple HTML; empty in lists.
+  final String content;
+
+  /// The same article with another status.
+  Article withStatus(ArticleStatus value) => Article(
+    id: id,
+    url: url,
+    title: title,
+    site: site,
+    excerpt: excerpt,
+    readingMinutes: readingMinutes,
+    status: value,
+    content: content,
+  );
+}
+
+/// Where a saved article stands.
+enum ArticleStatus {
+  /// Not read yet.
+  unread,
+
+  /// Read.
+  read,
+
+  /// Put away.
+  archived,
+}

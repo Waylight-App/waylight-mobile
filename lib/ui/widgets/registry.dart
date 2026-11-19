@@ -21,6 +21,7 @@ import 'package:waylight_mobile/ui/widgets/notes/notes_widget.dart';
 import 'package:waylight_mobile/ui/widgets/parcels/parcels_widget.dart';
 import 'package:waylight_mobile/ui/widgets/phonelist/phonelist_widget.dart';
 import 'package:waylight_mobile/ui/widgets/proxmox/proxmox_widget.dart';
+import 'package:waylight_mobile/ui/widgets/readlater/read_later_widget.dart';
 import 'package:waylight_mobile/ui/widgets/rss/rss_widget.dart';
 import 'package:waylight_mobile/ui/widgets/services/services_widget.dart';
 import 'package:waylight_mobile/ui/widgets/shopping/shopping_widget.dart';
@@ -71,7 +72,7 @@ const nativeWidgets = WidgetRegistry({
   'photo-frame': PhotoFrameWidget.forPlacement,
   'proxmox': ProxmoxWidget.forPlacement,
   'radar': RadarWidget.forPlacement,
-  'readlater': ListWidget.readLater,
+  'readlater': ReadLaterWidget.forPlacement,
   'releases': ListWidget.releases,
   'rss': RssWidget.forPlacement,
   'services': ServicesWidget.forPlacement,

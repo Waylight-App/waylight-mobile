@@ -1314,4 +1314,139 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get noteUnpin => 'Lösen';
+
+  @override
+  String get readLaterUnread => 'Ungelesen';
+
+  @override
+  String get readLaterSave => 'Link speichern';
+
+  @override
+  String get readLaterOriginal => 'Original öffnen';
+
+  @override
+  String get readLaterArchive => 'Archivieren';
+
+  @override
+  String get readLaterNoCopy =>
+      'Von dieser Seite gibt es keine Lesekopie; öffne das Original.';
+
+  @override
+  String get dropSend => 'Text senden';
+
+  @override
+  String get serviceDetails => 'Verfügbarkeit und Ausfälle';
+
+  @override
+  String get serviceUptime => 'Verfügbarkeit';
+
+  @override
+  String get serviceDay => 'Letzte 24 Stunden';
+
+  @override
+  String get serviceWeek => 'Letzte 7 Tage';
+
+  @override
+  String get serviceMonth => 'Letzte 30 Tage';
+
+  @override
+  String get serviceQuarter => 'Letzte 90 Tage';
+
+  @override
+  String get serviceIncidents => 'Ausfälle';
+
+  @override
+  String get serviceNoIncidents => 'Keine Ausfälle erfasst.';
+
+  @override
+  String serviceDownSince(String time) {
+    return 'Ausgefallen seit $time';
+  }
+
+  @override
+  String get securityTitle => 'Passwort und Anmeldung';
+
+  @override
+  String get securityPassword => 'Passwort';
+
+  @override
+  String get securityChangePassword => 'Passwort ändern';
+
+  @override
+  String get securityCurrentPassword => 'Aktuelles Passwort';
+
+  @override
+  String get securityNewPassword => 'Neues Passwort';
+
+  @override
+  String get securityPasswordChanged =>
+      'Passwort geändert. Andere Geräte sind abgemeldet.';
+
+  @override
+  String get securityTotp => 'Zwei-Faktor-Anmeldung';
+
+  @override
+  String get securityTotpOn =>
+      'An: Bei der Anmeldung wird ein Code deiner Authenticator-App abgefragt.';
+
+  @override
+  String get securityTotpIsOff => 'Aus.';
+
+  @override
+  String get securityTotpSetUp => 'Einrichten';
+
+  @override
+  String get securityTotpOff => 'Ausschalten';
+
+  @override
+  String get securityTotpHint =>
+      'Füge diesen Schlüssel in deiner Authenticator-App hinzu oder öffne die App direkt und gib dann den angezeigten Code ein.';
+
+  @override
+  String get securityOpenAuthenticator => 'Authenticator-App öffnen';
+
+  @override
+  String get securityCode => 'Code';
+
+  @override
+  String get securityConfirm => 'Bestätigen';
+
+  @override
+  String get securityRecoveryCodes => 'Wiederherstellungscodes';
+
+  @override
+  String get securityCodesSaved => 'Ich habe sie gespeichert';
+
+  @override
+  String get securitySessions => 'Angemeldete Geräte';
+
+  @override
+  String get securityThisDevice => 'Dieses Gerät';
+
+  @override
+  String get securitySignOutSession => 'Abmelden';
+
+  @override
+  String get securitySignOutOthers => 'Alle anderen Geräte abmelden';
+
+  @override
+  String get securitySessionEnded => 'Abgemeldet.';
+
+  @override
+  String get settingsNotifications => 'Benachrichtigungen';
+
+  @override
+  String get settingsPushSwitch => 'Benachrichtigungen auf diesem Handy';
+
+  @override
+  String get settingsPushHint =>
+      'Nachrichten aus den Benachrichtigungsregeln von Waylight kommen Ende-zu-Ende-verschlüsselt an. Schalte im Web auch den Kanal „Waylight-App“ ein.';
+
+  @override
+  String get settingsPushDenied =>
+      'Benachrichtigungen sind für diese App in den Systemeinstellungen gesperrt.';
+
+  @override
+  String get settingsPushNotInBuild =>
+      'Diese Version der App hat keine Push-Benachrichtigungen.';
 }

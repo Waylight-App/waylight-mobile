@@ -2413,6 +2413,258 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unpin'**
   String get noteUnpin;
+
+  /// Spoken label of an unread article.
+  ///
+  /// In en, this message translates to:
+  /// **'Unread'**
+  String get readLaterUnread;
+
+  /// Saves a link to read later.
+  ///
+  /// In en, this message translates to:
+  /// **'Save link'**
+  String get readLaterSave;
+
+  /// Opens the article's page.
+  ///
+  /// In en, this message translates to:
+  /// **'Open original'**
+  String get readLaterOriginal;
+
+  /// Archives an article.
+  ///
+  /// In en, this message translates to:
+  /// **'Archive'**
+  String get readLaterArchive;
+
+  /// Article without a reader copy.
+  ///
+  /// In en, this message translates to:
+  /// **'There is no reader copy of this page; open the original.'**
+  String get readLaterNoCopy;
+
+  /// Sends a text to the drop zone.
+  ///
+  /// In en, this message translates to:
+  /// **'Send text'**
+  String get dropSend;
+
+  /// Opens the service details.
+  ///
+  /// In en, this message translates to:
+  /// **'Uptime and outages'**
+  String get serviceDetails;
+
+  /// Heading of the uptime card.
+  ///
+  /// In en, this message translates to:
+  /// **'Uptime'**
+  String get serviceUptime;
+
+  /// Uptime period.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 24 hours'**
+  String get serviceDay;
+
+  /// Uptime period.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 7 days'**
+  String get serviceWeek;
+
+  /// Uptime period.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 30 days'**
+  String get serviceMonth;
+
+  /// Uptime period.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 90 days'**
+  String get serviceQuarter;
+
+  /// Heading of the outages card.
+  ///
+  /// In en, this message translates to:
+  /// **'Outages'**
+  String get serviceIncidents;
+
+  /// Service without outages.
+  ///
+  /// In en, this message translates to:
+  /// **'No outages recorded.'**
+  String get serviceNoIncidents;
+
+  /// An ongoing outage.
+  ///
+  /// In en, this message translates to:
+  /// **'Down since {time}'**
+  String serviceDownSince(String time);
+
+  /// Account security screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Password and sign-in'**
+  String get securityTitle;
+
+  /// Section heading.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get securityPassword;
+
+  /// Button and dialog title.
+  ///
+  /// In en, this message translates to:
+  /// **'Change password'**
+  String get securityChangePassword;
+
+  /// Field.
+  ///
+  /// In en, this message translates to:
+  /// **'Current password'**
+  String get securityCurrentPassword;
+
+  /// Field.
+  ///
+  /// In en, this message translates to:
+  /// **'New password'**
+  String get securityNewPassword;
+
+  /// After changing the password.
+  ///
+  /// In en, this message translates to:
+  /// **'Password changed. Other devices are signed out.'**
+  String get securityPasswordChanged;
+
+  /// Section heading.
+  ///
+  /// In en, this message translates to:
+  /// **'Two-factor sign-in'**
+  String get securityTotp;
+
+  /// Two-factor is on.
+  ///
+  /// In en, this message translates to:
+  /// **'On: a code from your authenticator app is asked at sign-in.'**
+  String get securityTotpOn;
+
+  /// Two-factor is off.
+  ///
+  /// In en, this message translates to:
+  /// **'Off.'**
+  String get securityTotpIsOff;
+
+  /// Starts the two-factor setup.
+  ///
+  /// In en, this message translates to:
+  /// **'Set up'**
+  String get securityTotpSetUp;
+
+  /// Turns two-factor off.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn off'**
+  String get securityTotpOff;
+
+  /// Setup instructions.
+  ///
+  /// In en, this message translates to:
+  /// **'Add this key to your authenticator app, or open the app directly, then enter the code it shows.'**
+  String get securityTotpHint;
+
+  /// Opens the otpauth link.
+  ///
+  /// In en, this message translates to:
+  /// **'Open authenticator app'**
+  String get securityOpenAuthenticator;
+
+  /// Field for a one-time code.
+  ///
+  /// In en, this message translates to:
+  /// **'Code'**
+  String get securityCode;
+
+  /// Confirms the setup.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get securityConfirm;
+
+  /// Dialog with one-time recovery codes.
+  ///
+  /// In en, this message translates to:
+  /// **'Recovery codes'**
+  String get securityRecoveryCodes;
+
+  /// Closes the recovery codes.
+  ///
+  /// In en, this message translates to:
+  /// **'I saved them'**
+  String get securityCodesSaved;
+
+  /// Section heading.
+  ///
+  /// In en, this message translates to:
+  /// **'Signed-in devices'**
+  String get securitySessions;
+
+  /// The app's own session.
+  ///
+  /// In en, this message translates to:
+  /// **'This device'**
+  String get securityThisDevice;
+
+  /// Signs out one session.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign out'**
+  String get securitySignOutSession;
+
+  /// Signs out every other session.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign out all other devices'**
+  String get securitySignOutOthers;
+
+  /// After revoking a session.
+  ///
+  /// In en, this message translates to:
+  /// **'Signed out.'**
+  String get securitySessionEnded;
+
+  /// Section heading.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get settingsNotifications;
+
+  /// Turns push notifications on.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications on this phone'**
+  String get settingsPushSwitch;
+
+  /// Explains push notifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Messages of Waylight’s notification rules arrive end-to-end encrypted. Turn on the channel “Waylight app” in the web interface too.'**
+  String get settingsPushHint;
+
+  /// Permission denied.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications are blocked for this app in the system settings.'**
+  String get settingsPushDenied;
+
+  /// F-Droid build or no Firebase.
+  ///
+  /// In en, this message translates to:
+  /// **'This version of the app has no push notifications.'**
+  String get settingsPushNotInBuild;
 }
 
 class _AppLocalizationsDelegate

@@ -1,0 +1,14 @@
+{
+  "id": "b5fc332d2861911595d4b934e40bfc9e",
+  "url": "https://example.org/homelab/backups-3-2-1",
+  "title": "The 3-2-1 backup rule, explained for a homelab",
+  "site": "Homelab Notes",
+  "excerpt": "Three copies, two media, one offsite: what that means for a small server at home.",
+  "content": "<p>Three copies of your data, on two different media, with one copy offsite. The rule is old, but it still answers the question most homelab owners ask too late: what happens when the disk dies?</p><p>Start with what you cannot replace: photos, documents, the configuration of your services. Everything else can be downloaded again.</p>",
+  "readingMinutes": 9,
+  "status": "unread",
+  "savedAt": "2026-11-19T10:37:30.888258646Z",
+  "bytes": 336,
+  "error": "",
+  "pending": false
+}
