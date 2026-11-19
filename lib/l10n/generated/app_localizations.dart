@@ -871,6 +871,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This is the public demo. Its data is reset every hour.'**
   String get dashboardDemo;
+
+  /// Error: the server refused a change because of a newer version (409).
+  ///
+  /// In en, this message translates to:
+  /// **'Someone else changed this in the meantime. It was loaded again.'**
+  String get errorConflict;
+
+  /// Field to add a to-do.
+  ///
+  /// In en, this message translates to:
+  /// **'New to-do'**
+  String get todosAddLabel;
+
+  /// Button that adds the to-do.
+  ///
+  /// In en, this message translates to:
+  /// **'Add'**
+  String get todosAdd;
+
+  /// Button that deletes all ticked-off to-dos.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear completed'**
+  String get todosClearCompleted;
+
+  /// Title field in the to-do sheet.
+  ///
+  /// In en, this message translates to:
+  /// **'Title'**
+  String get todosTitleLabel;
+
+  /// Validation of the title.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a title.'**
+  String get todosTitleRequired;
+
+  /// Due date button without a date.
+  ///
+  /// In en, this message translates to:
+  /// **'No due date'**
+  String get todosNoDueDate;
+
+  /// Tooltip of the button that removes the date.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove due date'**
+  String get todosRemoveDueDate;
+
+  /// Button that deletes the to-do.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get todosDelete;
+
+  /// Button that saves the to-do.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get todosSave;
 }
 
 class _AppLocalizationsDelegate

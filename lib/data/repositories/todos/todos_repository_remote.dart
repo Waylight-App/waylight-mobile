@@ -18,4 +18,32 @@ class TodosRepositoryRemote implements TodosRepository {
     bool openOnly = true,
     String source = '',
   }) => _api.todos(server, openOnly: openOnly, source: source);
+
+  @override
+  Future<Result<Todo>> create(
+    ServerAddress server, {
+    required String title,
+    DateTime? due,
+    String source = '',
+  }) => _api.create(server, title: title, due: due, source: source);
+
+  @override
+  Future<Result<Todo>> update(
+    ServerAddress server,
+    Todo todo, {
+    String source = '',
+  }) => _api.update(server, todo, source: source);
+
+  @override
+  Future<Result<void>> delete(
+    ServerAddress server,
+    String id, {
+    String source = '',
+  }) => _api.delete(server, id, source: source);
+
+  @override
+  Future<Result<void>> clearCompleted(
+    ServerAddress server, {
+    String source = '',
+  }) => _api.clearCompleted(server, source: source);
 }

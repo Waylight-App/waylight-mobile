@@ -2,15 +2,19 @@ import 'package:intl/intl.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
+import 'package:waylight_mobile/domain/models/api_exception.dart';
 import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/domain/models/todo.dart';
+import 'package:waylight_mobile/ui/core/error_messages.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
 import 'package:waylight_mobile/ui/core/widgets/view_model_host.dart';
 import 'package:waylight_mobile/ui/core/widgets/widget_frame.dart';
+import 'package:waylight_mobile/ui/widgets/todos/todo_sheet.dart';
 import 'package:waylight_mobile/ui/widgets/todos/todos_view_model.dart';
 
-/// The native view of the to-do widget (#64).
+/// The native view of the to-do widget (#64, #20): add, tick off, edit and
+/// delete, unless the account is read-only.
 class TodosWidget extends StatelessWidget {
   /// Creates the view for [widget].
   const TodosWidget({required this.widget, super.key});
@@ -33,65 +37,160 @@ class TodosWidget extends StatelessWidget {
       builder: (context, viewModel) => WidgetFrame(
         title: widget.title.isNotEmpty ? widget.title : context.l10n.todosTitle,
         load: viewModel.load,
-        builder: (context, todos) => todos.isEmpty
-            ? Text(context.l10n.todosEmpty)
-            : Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  for (final todo in todos)
-                    _TodoRow(todo: todo, today: viewModel.today),
-                ],
+        builder: (context, _) => _TodoList(viewModel: viewModel),
+      ),
+    );
+  }
+}
+
+class _TodoList extends StatefulWidget {
+  const _TodoList({required this.viewModel});
+
+  final TodosViewModel viewModel;
+
+  @override
+  State<_TodoList> createState() => _TodoListState();
+}
+
+class _TodoListState extends State<_TodoList> {
+  final _title = TextEditingController();
+  String? _titleError;
+
+  @override
+  void initState() {
+    super.initState();
+    widget.viewModel.addListener(_showRefusal);
+  }
+
+  @override
+  void dispose() {
+    widget.viewModel.removeListener(_showRefusal);
+    _title.dispose();
+    super.dispose();
+  }
+
+  // A refused change was undone; say why.
+  void _showRefusal() {
+    final error = widget.viewModel.takeLastError();
+    if (error == null || !mounted) return;
+    ScaffoldMessenger.maybeOf(
+      context,
+    )?.showSnackBar(SnackBar(content: Text(context.l10n.errorMessage(error))));
+  }
+
+  Future<void> _add() async {
+    final text = _title.text;
+    if (text.trim().isEmpty) return;
+    _title.clear();
+    final error = await widget.viewModel.add(text);
+    if (!mounted) return;
+    setState(() {
+      _titleError = switch (error) {
+        ApiException(failure: ApiFailure.invalid, :final message?) => message,
+        _ => null,
+      };
+      if (_titleError != null) _title.text = text;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final viewModel = widget.viewModel;
+    return ListenableBuilder(
+      listenable: viewModel,
+      builder: (context, _) => Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          if (viewModel.todos.isEmpty) Text(l10n.todosEmpty),
+          for (final todo in viewModel.todos)
+            _TodoRow(
+              todo: todo,
+              today: viewModel.today,
+              onToggle: viewModel.canEdit
+                  ? () => viewModel.toggle(todo).ignore()
+                  : null,
+              onEdit: viewModel.canEdit
+                  ? () => editTodo(context, viewModel, todo)
+                  : null,
+            ),
+          if (viewModel.canEdit) ...[
+            const SizedBox(height: Dimens.gapSmall),
+            TextField(
+              key: const ValueKey('todos.new'),
+              controller: _title,
+              textInputAction: TextInputAction.done,
+              onSubmitted: (_) => _add(),
+              decoration: InputDecoration(
+                labelText: l10n.todosAddLabel,
+                errorText: _titleError,
+                suffixIcon: IconButton(
+                  tooltip: l10n.todosAdd,
+                  icon: const Icon(Icons.add),
+                  onPressed: _add,
+                ),
               ),
+            ),
+            if (viewModel.hasCompleted)
+              Align(
+                alignment: AlignmentDirectional.centerEnd,
+                child: TextButton(
+                  onPressed: () => viewModel.clearCompleted().ignore(),
+                  child: Text(l10n.todosClearCompleted),
+                ),
+              ),
+          ],
+        ],
       ),
     );
   }
 }
 
 class _TodoRow extends StatelessWidget {
-  const _TodoRow({required this.todo, required this.today});
+  const _TodoRow({
+    required this.todo,
+    required this.today,
+    this.onToggle,
+    this.onEdit,
+  });
 
   final Todo todo;
   final DateTime today;
+  final VoidCallback? onToggle;
+  final VoidCallback? onEdit;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final due = dueLabel(context, todo, today);
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: Dimens.gapTiny),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Icon(
-            todo.done ? Icons.check_box : Icons.check_box_outline_blank,
-            size: Dimens.iconSmall,
-            color: theme.colorScheme.onSurfaceVariant,
-            semanticLabel: todo.done ? context.l10n.todosDone : null,
-          ),
-          const SizedBox(width: Dimens.gapSmall),
-          Expanded(
-            child: Text(
-              todo.title,
-              style: todo.done
-                  ? TextStyle(
-                      decoration: TextDecoration.lineThrough,
-                      color: theme.colorScheme.onSurfaceVariant,
-                    )
-                  : null,
-            ),
-          ),
-          if (due != null) ...[
-            const SizedBox(width: Dimens.gapSmall),
-            Text(
-              due,
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: todo.overdue && !todo.done
-                    ? theme.colorScheme.error
-                    : theme.colorScheme.onSurfaceVariant,
+    return MergeSemantics(
+      child: ListTile(
+        contentPadding: EdgeInsets.zero,
+        minTileHeight: Dimens.tapTarget,
+        leading: Checkbox(
+          value: todo.done,
+          onChanged: onToggle == null ? null : (_) => onToggle!(),
+        ),
+        title: Text(
+          todo.title,
+          style: todo.done
+              ? TextStyle(
+                  decoration: TextDecoration.lineThrough,
+                  color: theme.colorScheme.onSurfaceVariant,
+                )
+              : null,
+        ),
+        trailing: due == null
+            ? null
+            : Text(
+                due,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: todo.overdue && !todo.done
+                      ? theme.colorScheme.error
+                      : theme.colorScheme.onSurfaceVariant,
+                ),
               ),
-            ),
-          ],
-        ],
+        onTap: onEdit,
       ),
     );
   }

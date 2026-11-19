@@ -69,6 +69,23 @@ class ApiClient {
   }) async =>
       _bodyOf(await postJsonResponse(uri, body: body, headers: headers));
 
+  /// Sends a PUT request with [body] encoded as JSON.
+  Future<Result<Object?>> putJson(Uri uri, {Object? body}) async => _bodyOf(
+    await _send(
+      'PUT',
+      uri,
+      headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+      body: jsonEncode(body),
+    ),
+  );
+
+  /// Sends a DELETE request.
+  Future<Result<void>> delete(Uri uri) async =>
+      switch (await _send('DELETE', uri, headers: const {})) {
+        Ok() => const Result.ok(null),
+        Error(:final error) => Result.error(error),
+      };
+
   /// Like [postJson], but returns status and headers as well.
   Future<Result<ApiResponse>> postJsonResponse(
     Uri uri, {
@@ -166,6 +183,7 @@ class ApiClient {
     401 => ApiFailure.unauthorized,
     403 => ApiFailure.forbidden,
     404 => ApiFailure.notFound,
+    409 => ApiFailure.conflict,
     422 => ApiFailure.invalid,
     429 => ApiFailure.tooManyRequests,
     _ => ApiFailure.server,

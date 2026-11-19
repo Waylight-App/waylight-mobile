@@ -14,6 +14,7 @@ extension ErrorMessages on AppLocalizations {
       ApiFailure.unauthorized => errorUnauthorized,
       ApiFailure.forbidden => errorForbidden,
       ApiFailure.notFound => errorNotFound,
+      ApiFailure.conflict => errorConflict,
       ApiFailure.invalid => errorInvalid,
       ApiFailure.tooManyRequests => errorTooManyRequests,
       ApiFailure.server => errorServer,

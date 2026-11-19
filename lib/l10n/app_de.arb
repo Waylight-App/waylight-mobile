@@ -128,5 +128,15 @@
   "pairEnterManually": "Adresse stattdessen eingeben",
   "connectQrHint": "Oder scanne den QR-Code unter Einstellungen → Mobile App in Waylight mit der Kamera deines Handys.",
   "connectTryDemo": "Öffentliche Demo ausprobieren",
-  "dashboardDemo": "Das ist die öffentliche Demo. Ihre Daten werden stündlich zurückgesetzt."
+  "dashboardDemo": "Das ist die öffentliche Demo. Ihre Daten werden stündlich zurückgesetzt.",
+  "errorConflict": "Jemand anderes hat das inzwischen geändert. Es wurde neu geladen.",
+  "todosAddLabel": "Neues To-do",
+  "todosAdd": "Hinzufügen",
+  "todosClearCompleted": "Erledigte entfernen",
+  "todosTitleLabel": "Titel",
+  "todosTitleRequired": "Gib einen Titel ein.",
+  "todosNoDueDate": "Kein Fälligkeitsdatum",
+  "todosRemoveDueDate": "Fälligkeitsdatum entfernen",
+  "todosDelete": "Löschen",
+  "todosSave": "Speichern"
 }

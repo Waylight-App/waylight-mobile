@@ -12,6 +12,9 @@ enum ApiFailure {
   /// The resource does not exist or its module is disabled (HTTP 404).
   notFound,
 
+  /// Someone else changed the resource in the meantime (HTTP 409).
+  conflict,
+
   /// The server rejected the input (HTTP 422); see [ApiException.field].
   invalid,
 
