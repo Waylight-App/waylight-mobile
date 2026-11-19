@@ -2635,6 +2635,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Signed out.'**
   String get securitySessionEnded;
+
+  /// Section heading.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get settingsNotifications;
+
+  /// Turns push notifications on.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications on this phone'**
+  String get settingsPushSwitch;
+
+  /// Explains push notifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Messages of Waylight’s notification rules arrive end-to-end encrypted. Turn on the channel “Waylight app” in the web interface too.'**
+  String get settingsPushHint;
+
+  /// Permission denied.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications are blocked for this app in the system settings.'**
+  String get settingsPushDenied;
+
+  /// F-Droid build or no Firebase.
+  ///
+  /// In en, this message translates to:
+  /// **'This version of the app has no push notifications.'**
+  String get settingsPushNotInBuild;
 }
 
 class _AppLocalizationsDelegate

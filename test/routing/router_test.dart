@@ -65,6 +65,7 @@ void main() {
           readLater: FakeReadLaterRepository(),
           drop: FakeDropRepository(),
           security: FakeAccountSecurity(),
+          push: FakePushRepository(),
           preferences: FakePreferencesRepository(),
           offline: OfflineRepository(OfflineStatus()),
           search: FakeSearchRepository(),

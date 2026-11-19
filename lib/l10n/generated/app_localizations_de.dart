@@ -1431,4 +1431,22 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get securitySessionEnded => 'Abgemeldet.';
+
+  @override
+  String get settingsNotifications => 'Benachrichtigungen';
+
+  @override
+  String get settingsPushSwitch => 'Benachrichtigungen auf diesem Handy';
+
+  @override
+  String get settingsPushHint =>
+      'Nachrichten aus den Benachrichtigungsregeln von Waylight kommen Ende-zu-Ende-verschlüsselt an. Schalte im Web auch den Kanal „Waylight-App“ ein.';
+
+  @override
+  String get settingsPushDenied =>
+      'Benachrichtigungen sind für diese App in den Systemeinstellungen gesperrt.';
+
+  @override
+  String get settingsPushNotInBuild =>
+      'Diese Version der App hat keine Push-Benachrichtigungen.';
 }

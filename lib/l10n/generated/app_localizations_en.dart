@@ -1429,4 +1429,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get securitySessionEnded => 'Signed out.';
+
+  @override
+  String get settingsNotifications => 'Notifications';
+
+  @override
+  String get settingsPushSwitch => 'Notifications on this phone';
+
+  @override
+  String get settingsPushHint =>
+      'Messages of Waylight’s notification rules arrive end-to-end encrypted. Turn on the channel “Waylight app” in the web interface too.';
+
+  @override
+  String get settingsPushDenied =>
+      'Notifications are blocked for this app in the system settings.';
+
+  @override
+  String get settingsPushNotInBuild =>
+      'This version of the app has no push notifications.';
 }

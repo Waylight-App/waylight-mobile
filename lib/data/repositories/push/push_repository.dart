@@ -30,4 +30,11 @@ abstract interface class PushRepository {
 
   /// Unregisters the phone and forgets its key.
   Future<Result<void>> disable(ServerAddress server);
+
+  /// Whether the person turned notifications on for this phone.
+  Future<bool> isOn();
+
+  /// Registers again when notifications are on, e.g. after the push
+  /// service changed the token; does nothing otherwise.
+  Future<void> refresh(ServerAddress server);
 }

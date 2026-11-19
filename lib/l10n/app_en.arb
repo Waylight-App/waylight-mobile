@@ -845,5 +845,15 @@
   "securitySignOutOthers": "Sign out all other devices",
   "@securitySignOutOthers": {"description": "Signs out every other session."},
   "securitySessionEnded": "Signed out.",
-  "@securitySessionEnded": {"description": "After revoking a session."}
+  "@securitySessionEnded": {"description": "After revoking a session."},
+  "settingsNotifications": "Notifications",
+  "@settingsNotifications": {"description": "Section heading."},
+  "settingsPushSwitch": "Notifications on this phone",
+  "@settingsPushSwitch": {"description": "Turns push notifications on."},
+  "settingsPushHint": "Messages of Waylight’s notification rules arrive end-to-end encrypted. Turn on the channel “Waylight app” in the web interface too.",
+  "@settingsPushHint": {"description": "Explains push notifications."},
+  "settingsPushDenied": "Notifications are blocked for this app in the system settings.",
+  "@settingsPushDenied": {"description": "Permission denied."},
+  "settingsPushNotInBuild": "This version of the app has no push notifications.",
+  "@settingsPushNotInBuild": {"description": "F-Droid build or no Firebase."}
 }

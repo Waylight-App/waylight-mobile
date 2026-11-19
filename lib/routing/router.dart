@@ -70,6 +70,7 @@ GoRouter createRouter(
       path: Routes.home,
       builder: (context, state) => ViewModelHost(
         create: (context) => DashboardViewModel(
+          pushRepository: context.read(),
           initialTabId: state.uri.queryParameters['tab'] ?? '',
           initialWidgetKind: state.uri.queryParameters['widget'] ?? '',
           serverRepository: context.read(),
@@ -87,6 +88,7 @@ GoRouter createRouter(
           serverRepository: context.read(),
           sessionRepository: context.read(),
           preferencesRepository: context.read(),
+          pushRepository: context.read(),
           lockRepository: context.read(),
         ),
         builder: (context, viewModel) => SettingsScreen(viewModel: viewModel),

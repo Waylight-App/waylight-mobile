@@ -1,9 +1,10 @@
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
-
 import 'package:waylight_mobile/data/repositories/lock/app_lock_repository.dart';
+import 'package:waylight_mobile/data/repositories/push/push_repository.dart';
 import 'package:waylight_mobile/domain/models/appearance.dart';
 import 'package:waylight_mobile/routing/routes.dart';
+import 'package:waylight_mobile/ui/core/error_messages.dart';
 import 'package:waylight_mobile/ui/core/link_opener.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
@@ -173,6 +174,37 @@ class SettingsScreen extends StatelessWidget {
                 ],
               ),
             ),
+            if (viewModel.pushAvailable) ...[
+              const SizedBox(height: Dimens.gap),
+              SectionCard(
+                title: l10n.settingsNotifications,
+                child: ListenableBuilder(
+                  listenable: viewModel.setPush,
+                  builder: (context, _) => Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      SwitchListTile(
+                        key: const ValueKey('settings.push'),
+                        contentPadding: EdgeInsets.zero,
+                        title: Text(l10n.settingsPushSwitch),
+                        subtitle: Text(l10n.settingsPushHint),
+                        value: viewModel.pushOn,
+                        onChanged: viewModel.setPush.running
+                            ? null
+                            : (on) => viewModel.setPush.execute(on).ignore(),
+                      ),
+                      if (viewModel.setPush.result case Error(:final error))
+                        Text(
+                          pushErrorText(l10n, error),
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.error,
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
             if (viewModel.lockAvailable) ...[
               const SizedBox(height: Dimens.gap),
               SectionCard(
@@ -317,3 +349,11 @@ class _LinkTile extends StatelessWidget {
     onTap: () => openLink(context, url, context.l10n.linkOpenFailed),
   );
 }
+
+/// Why notifications could not be turned on.
+String pushErrorText(AppLocalizations l10n, Exception error) => switch (error) {
+  PushUnavailable(reason: PushUnavailableReason.permissionDenied) =>
+    l10n.settingsPushDenied,
+  PushUnavailable() => l10n.settingsPushNotInBuild,
+  _ => l10n.errorMessage(error),
+};

@@ -7,6 +7,7 @@ import 'package:waylight_mobile/data/repositories/actions/read_later_repository.
 import 'package:waylight_mobile/data/repositories/actions/rss_repository.dart';
 import 'package:waylight_mobile/data/repositories/actions/smarthome_repository.dart';
 import 'package:waylight_mobile/data/repositories/calendar/calendar_repository.dart';
+import 'package:waylight_mobile/data/repositories/push/push_repository.dart';
 import 'package:waylight_mobile/domain/models/account_security.dart';
 import 'package:waylight_mobile/domain/models/actions.dart';
 import 'package:waylight_mobile/domain/models/information.dart';
@@ -311,4 +312,34 @@ class FakeAccountSecurity with _Calls implements AccountSecurityRepository {
     required String password,
     required String code,
   }) async => _record('disable:$code');
+}
+
+/// A [PushRepository] in memory.
+class FakePushRepository with _Calls implements PushRepository {
+  /// Whether the build has push.
+  bool isAvailable = true;
+
+  bool _on = false;
+
+  @override
+  Future<bool> available() async => isAvailable;
+
+  @override
+  Future<bool> isOn() async => _on;
+
+  @override
+  Future<Result<void>> enable(ServerAddress server) async {
+    final r = _record('enable');
+    if (r is Ok<void>) _on = true;
+    return r;
+  }
+
+  @override
+  Future<Result<void>> disable(ServerAddress server) async {
+    _on = false;
+    return _record('disable');
+  }
+
+  @override
+  Future<void> refresh(ServerAddress server) async => _record('refresh');
 }

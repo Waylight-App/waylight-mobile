@@ -422,5 +422,10 @@
   "securityThisDevice": "Dieses Gerät",
   "securitySignOutSession": "Abmelden",
   "securitySignOutOthers": "Alle anderen Geräte abmelden",
-  "securitySessionEnded": "Abgemeldet."
+  "securitySessionEnded": "Abgemeldet.",
+  "settingsNotifications": "Benachrichtigungen",
+  "settingsPushSwitch": "Benachrichtigungen auf diesem Handy",
+  "settingsPushHint": "Nachrichten aus den Benachrichtigungsregeln von Waylight kommen Ende-zu-Ende-verschlüsselt an. Schalte im Web auch den Kanal „Waylight-App“ ein.",
+  "settingsPushDenied": "Benachrichtigungen sind für diese App in den Systemeinstellungen gesperrt.",
+  "settingsPushNotInBuild": "Diese Version der App hat keine Push-Benachrichtigungen."
 }
