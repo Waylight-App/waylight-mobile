@@ -3,9 +3,9 @@ import 'package:material_ui/material_ui.dart';
 
 import 'package:waylight_mobile/domain/models/api_exception.dart';
 import 'package:waylight_mobile/domain/models/dashboard.dart';
+import 'package:waylight_mobile/ui/core/widget_registry.dart';
 import 'package:waylight_mobile/ui/dashboard/view_models/dashboard_view_model.dart';
 import 'package:waylight_mobile/ui/dashboard/widgets/dashboard_screen.dart';
-import 'package:waylight_mobile/ui/dashboard/widgets/widget_card.dart';
 import 'package:waylight_mobile/utils/result.dart';
 
 import '../../testing/fakes/fake_dashboard_repository.dart';
@@ -17,6 +17,7 @@ void main() {
   late FakeServerRepository servers;
   late FakeSessionRepository sessions;
   late FakeDashboardRepository dashboards;
+  var registry = const WidgetRegistry({});
 
   const twoTabs = Dashboard(
     defaultTabId: 't2',
@@ -44,7 +45,9 @@ void main() {
   );
 
   Future<void> pump(WidgetTester tester) async {
-    await tester.pumpScreen(DashboardScreen(viewModel: create()));
+    await tester.pumpScreen(
+      DashboardScreen(viewModel: create(), registry: registry),
+    );
     await tester.pumpAndSettle();
   }
 
@@ -140,18 +143,14 @@ void main() {
     handle.dispose();
   });
 
-  test('names widgets by title, else by kind', () {
-    expect(
-      WidgetCard.titleOf(
-        const WidgetPlacement(id: 'w', kind: 'status-overview'),
-      ),
-      'Status overview',
-    );
-    expect(
-      WidgetCard.titleOf(
-        const WidgetPlacement(id: 'w', kind: 'clock', title: 'Kitchen'),
-      ),
-      'Kitchen',
-    );
+  testWidgets('uses the native view of a registered kind', (tester) async {
+    registry = WidgetRegistry({
+      'docker': (context, widget) => Text('native ${widget.id}'),
+    });
+    await pump(tester);
+
+    expect(find.text('native w3'), findsOneWidget);
+    expect(find.text('Status overview'), findsOneWidget);
+    registry = const WidgetRegistry({});
   });
 }

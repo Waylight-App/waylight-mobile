@@ -12,8 +12,8 @@ import 'package:material_ui/material_ui.dart';
 /// GoRoute(
 ///   path: Routes.home,
 ///   builder: (context, state) => ViewModelHost(
-///     create: (context) => HomeViewModel(serverRepository: context.read()),
-///     builder: (context, viewModel) => HomeScreen(viewModel: viewModel),
+///     create: (context) => ConnectServerViewModel(serverRepository: context.read()),
+///     builder: (context, viewModel) => ConnectServerScreen(viewModel: viewModel),
 ///   ),
 /// )
 /// ```

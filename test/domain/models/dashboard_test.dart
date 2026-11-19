@@ -34,4 +34,19 @@ void main() {
     expect(const Dashboard(tabs: tabs, defaultTabId: 'x').initialIndex, 0);
     expect(const Dashboard(tabs: tabs).initialIndex, 0);
   });
+
+  test('names widgets by title, else by kind', () {
+    expect(
+      const WidgetPlacement(id: 'w', kind: 'status-overview').displayTitle,
+      'Status overview',
+    );
+    expect(
+      const WidgetPlacement(
+        id: 'w',
+        kind: 'clock',
+        title: 'Kitchen',
+      ).displayTitle,
+      'Kitchen',
+    );
+  });
 }
