@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Home screen widgets (#42); Amber colours of the app. -->
+<resources>
+    <color name="home_widget_background">#FFF3D6</color>
+    <color name="home_widget_text">#1A1206</color>
+    <color name="home_widget_muted">#6B5A3A</color>
+    <string name="home_widget_open_app">Open Waylight once to show your data here.</string>
+    <string name="home_widget_todos">Waylight: to-dos today</string>
+    <string name="home_widget_departures">Waylight: next departures</string>
+</resources>

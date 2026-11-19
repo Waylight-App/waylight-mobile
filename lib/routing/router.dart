@@ -16,6 +16,7 @@ import 'package:waylight_mobile/ui/dashboard/view_models/dashboard_view_model.da
 import 'package:waylight_mobile/ui/dashboard/widgets/dashboard_screen.dart';
 import 'package:waylight_mobile/ui/edit_tab/view_models/edit_tab_view_model.dart';
 import 'package:waylight_mobile/ui/edit_tab/widgets/edit_tab_screen.dart';
+import 'package:waylight_mobile/ui/home_widgets/home_widget_texts.dart';
 import 'package:waylight_mobile/ui/lock/view_models/lock_view_model.dart';
 import 'package:waylight_mobile/ui/lock/widgets/lock_screen.dart';
 import 'package:waylight_mobile/ui/pair/view_models/pair_view_model.dart';
@@ -26,6 +27,8 @@ import 'package:waylight_mobile/ui/settings/view_models/security_view_model.dart
 import 'package:waylight_mobile/ui/settings/view_models/settings_view_model.dart';
 import 'package:waylight_mobile/ui/settings/widgets/security_screen.dart';
 import 'package:waylight_mobile/ui/settings/widgets/settings_screen.dart';
+import 'package:waylight_mobile/ui/share/view_models/share_view_model.dart';
+import 'package:waylight_mobile/ui/share/widgets/share_screen.dart';
 import 'package:waylight_mobile/ui/sign_in/view_models/sign_in_view_model.dart';
 import 'package:waylight_mobile/ui/sign_in/widgets/sign_in_screen.dart';
 import 'package:waylight_mobile/ui/widgets/calendar/calendar_screen.dart';
@@ -73,6 +76,8 @@ GoRouter createRouter(
         create: (context) => DashboardViewModel(
           pushRepository: context.read(),
           themeRepository: context.read(),
+          homeWidgetsRepository: context.read(),
+          homeWidgetFormatter: HomeWidgetTexts(context.l10n),
           initialTabId: state.uri.queryParameters['tab'] ?? '',
           initialWidgetKind: state.uri.queryParameters['widget'] ?? '',
           serverRepository: context.read(),
@@ -215,6 +220,22 @@ GoRouter createRouter(
           security: context.read(),
         ),
         builder: (context, viewModel) => SecurityScreen(viewModel: viewModel),
+      ),
+    ),
+    GoRoute(
+      path: Routes.share,
+      builder: (context, state) => ViewModelHost(
+        create: (context) => ShareViewModel(
+          text: state.uri.queryParameters['text'] ?? '',
+          serverRepository: context.read(),
+          data: context.read(),
+          todos: context.read(),
+          notes: context.read(),
+          readLater: context.read(),
+          bookmarks: context.read(),
+          drop: context.read(),
+        ),
+        builder: (context, viewModel) => ShareScreen(viewModel: viewModel),
       ),
     ),
     GoRoute(

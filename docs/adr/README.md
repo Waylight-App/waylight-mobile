@@ -18,3 +18,4 @@ status *Proposed*, and discuss it in the pull request.
 | [0006](0006-plain-http-in-the-home-network.md) | Plain HTTP only for addresses in the home network | Accepted |
 | [0007](0007-offline-copy.md) | Offline copy of the dashboard: files in the private directory, limited, deleted on sign-out | Accepted |
 | [0008](0008-push-notifications.md) | Push notifications in native code; Firebase only in the store flavour | Accepted |
+| [0009](0009-home-screen-widgets.md) | Home screen widgets draw cards the app formats; refresh through WorkManager and a headless engine | Accepted |
