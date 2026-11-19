@@ -13,6 +13,8 @@ import 'package:waylight_mobile/data/repositories/notes/notes_repository_remote.
 import 'package:waylight_mobile/data/repositories/offline/offline_repository.dart';
 import 'package:waylight_mobile/data/repositories/preferences/preferences_repository.dart';
 import 'package:waylight_mobile/data/repositories/preferences/preferences_repository_local.dart';
+import 'package:waylight_mobile/data/repositories/search/search_repository.dart';
+import 'package:waylight_mobile/data/repositories/search/search_repository_remote.dart';
 import 'package:waylight_mobile/data/repositories/server/server_repository.dart';
 import 'package:waylight_mobile/data/repositories/server/server_repository_remote.dart';
 import 'package:waylight_mobile/data/repositories/session/session_repository.dart';
@@ -33,6 +35,7 @@ import 'package:waylight_mobile/data/services/api/dashboard_api.dart';
 import 'package:waylight_mobile/data/services/api/notes_api.dart';
 import 'package:waylight_mobile/data/services/api/offline_status.dart';
 import 'package:waylight_mobile/data/services/api/platform_api.dart';
+import 'package:waylight_mobile/data/services/api/search_api.dart';
 import 'package:waylight_mobile/data/services/api/todos_api.dart';
 import 'package:waylight_mobile/data/services/api/transit_api.dart';
 import 'package:waylight_mobile/data/services/api/waste_api.dart';
@@ -55,6 +58,7 @@ typedef Repositories = ({
   WasteRepository waste,
   PreferencesRepository preferences,
   OfflineRepository offline,
+  SearchRepository search,
 });
 
 /// The services and repositories of the app: the composition root.
@@ -71,6 +75,7 @@ List<SingleChildWidget> providers(Repositories repositories) => [
   Provider<BookmarksRepository>.value(value: repositories.bookmarks),
   Provider<TransitRepository>.value(value: repositories.transit),
   Provider<WasteRepository>.value(value: repositories.waste),
+  Provider<SearchRepository>.value(value: repositories.search),
   ChangeNotifierProvider<PreferencesRepository>.value(
     value: repositories.preferences,
   ),
@@ -114,5 +119,6 @@ Repositories createRepositories() {
     waste: WasteRepositoryRemote(api: WasteApi(client)),
     preferences: PreferencesRepositoryLocal(store: store),
     offline: OfflineRepository(offline),
+    search: SearchRepositoryRemote(api: SearchApi(client)),
   );
 }

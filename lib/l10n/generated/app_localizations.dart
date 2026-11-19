@@ -967,6 +967,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Back to the sign-in'**
   String get authCallbackBack;
+
+  /// Search field and button.
+  ///
+  /// In en, this message translates to:
+  /// **'Search'**
+  String get searchHint;
+
+  /// Hint below the empty search field.
+  ///
+  /// In en, this message translates to:
+  /// **'Type a keyword, a widget, \"t\" and a to-do, or anything to search the web.'**
+  String get searchIntro;
+
+  /// Last result: the web search.
+  ///
+  /// In en, this message translates to:
+  /// **'Search the web for \"{query}\"'**
+  String searchWeb(String query);
+
+  /// Quick capture result.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to-do \"{title}\"'**
+  String searchAddTodo(String title);
+
+  /// Snack bar after quick capture.
+  ///
+  /// In en, this message translates to:
+  /// **'To-do \"{title}\" added.'**
+  String searchTodoAdded(String title);
+
+  /// Subtitle of a widget result.
+  ///
+  /// In en, this message translates to:
+  /// **'On the tab {tab}'**
+  String searchOnTab(String tab);
 }
 
 class _AppLocalizationsDelegate

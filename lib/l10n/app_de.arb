@@ -144,5 +144,11 @@
   "authCallbackTitle": "Anmeldung wird abgeschlossen",
   "authCallbackCancelled": "Die Anmeldung im Browser wurde abgebrochen.",
   "authCallbackUnexpected": "Diese Anmeldung wurde nicht in dieser App gestartet oder hat zu lange gedauert. Bitte starte sie erneut.",
-  "authCallbackBack": "Zurück zur Anmeldung"
+  "authCallbackBack": "Zurück zur Anmeldung",
+  "searchHint": "Suchen",
+  "searchIntro": "Tippe ein Schlüsselwort, ein Widget, „t“ und ein To-do oder etwas für die Websuche.",
+  "searchWeb": "Im Web nach „{query}“ suchen",
+  "searchAddTodo": "To-do „{title}“ anlegen",
+  "searchTodoAdded": "To-do „{title}“ angelegt.",
+  "searchOnTab": "Im Tab {tab}"
 }

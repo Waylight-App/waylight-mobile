@@ -498,4 +498,31 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get authCallbackBack => 'Zurück zur Anmeldung';
+
+  @override
+  String get searchHint => 'Suchen';
+
+  @override
+  String get searchIntro =>
+      'Tippe ein Schlüsselwort, ein Widget, „t“ und ein To-do oder etwas für die Websuche.';
+
+  @override
+  String searchWeb(String query) {
+    return 'Im Web nach „$query“ suchen';
+  }
+
+  @override
+  String searchAddTodo(String title) {
+    return 'To-do „$title“ anlegen';
+  }
+
+  @override
+  String searchTodoAdded(String title) {
+    return 'To-do „$title“ angelegt.';
+  }
+
+  @override
+  String searchOnTab(String tab) {
+    return 'Im Tab $tab';
+  }
 }

@@ -289,5 +289,17 @@
   "authCallbackUnexpected": "This sign-in was not started in this app, or it took too long. Please start it again.",
   "@authCallbackUnexpected": {"description": "Answer without a matching started sign-in."},
   "authCallbackBack": "Back to the sign-in",
-  "@authCallbackBack": {"description": "Button back to the sign-in screen."}
+  "@authCallbackBack": {"description": "Button back to the sign-in screen."},
+  "searchHint": "Search",
+  "@searchHint": {"description": "Search field and button."},
+  "searchIntro": "Type a keyword, a widget, \"t\" and a to-do, or anything to search the web.",
+  "@searchIntro": {"description": "Hint below the empty search field."},
+  "searchWeb": "Search the web for \"{query}\"",
+  "@searchWeb": {"description": "Last result: the web search.", "placeholders": {"query": {"type": "String", "example": "Milk"}}},
+  "searchAddTodo": "Add to-do \"{title}\"",
+  "@searchAddTodo": {"description": "Quick capture result.", "placeholders": {"title": {"type": "String", "example": "Milk"}}},
+  "searchTodoAdded": "To-do \"{title}\" added.",
+  "@searchTodoAdded": {"description": "Snack bar after quick capture.", "placeholders": {"title": {"type": "String", "example": "Milk"}}},
+  "searchOnTab": "On the tab {tab}",
+  "@searchOnTab": {"description": "Subtitle of a widget result.", "placeholders": {"tab": {"type": "String", "example": "Home"}}}
 }
