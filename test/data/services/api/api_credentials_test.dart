@@ -6,7 +6,7 @@ import 'package:waylight_mobile/domain/models/session.dart';
 import '../../../testing/fakes/fake_server_repository.dart';
 
 void main() {
-  final session = Session(
+  final session = BrowserSession(
     server: testServer('https://home.example.org/waylight'),
     cookie: 'waylight_session=s3cret',
     csrfToken: 'csrf',
@@ -56,5 +56,21 @@ void main() {
   test('does not reveal the secrets in toString', () {
     expect(session.toString(), isNot(contains('s3cret')));
     expect(session.toString(), isNot(contains('csrf')));
+  });
+
+  test('sends an app session as bearer token without CSRF token', () {
+    final credentials = ApiCredentials()
+      ..session = AppSession(
+        server: testServer('https://home.example.org/waylight'),
+        token: 'wa_secret',
+      );
+
+    expect(credentials.headersFor('POST', onServer), {
+      'authorization': 'Bearer wa_secret',
+    });
+    expect(
+      credentials.headersFor('GET', Uri.parse('https://evil.example.org/x')),
+      isEmpty,
+    );
   });
 }

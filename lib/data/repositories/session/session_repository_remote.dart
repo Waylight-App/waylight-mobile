@@ -6,6 +6,7 @@ import 'package:waylight_mobile/data/repositories/session/session_repository.dar
 import 'package:waylight_mobile/data/services/api/api_credentials.dart';
 import 'package:waylight_mobile/data/services/api/auth_api.dart';
 import 'package:waylight_mobile/data/services/storage/key_value_store.dart';
+import 'package:waylight_mobile/domain/models/api_exception.dart';
 import 'package:waylight_mobile/domain/models/server_address.dart';
 import 'package:waylight_mobile/domain/models/session.dart';
 import 'package:waylight_mobile/domain/models/sign_in_result.dart';
@@ -20,12 +21,16 @@ class SessionRepositoryRemote extends SessionRepository {
     required this._authApi,
     required this._credentials,
     required this._store,
+    required this.deviceName,
   }) {
     _credentials.onRejected = _onRejected;
   }
 
   /// The key under which the session is stored.
   static const storageKey = 'session';
+
+  /// The name the server lists app sessions of this device under.
+  final String deviceName;
 
   final AuthApi _authApi;
   final ApiCredentials _credentials;
@@ -63,12 +68,25 @@ class SessionRepositoryRemote extends SessionRepository {
     required String password,
     String code = '',
   }) async {
-    final result = await _authApi.login(
+    final name = username.trim();
+    final cleanCode = code.replaceAll(' ', '');
+    // An app session where the server offers one (phase 2); older servers
+    // answer 404 and get the browser session of phase 1 (ADR 0004).
+    var result = await _authApi.createAppSession(
       server,
-      username: username.trim(),
+      device: deviceName,
+      username: name,
       password: password,
-      code: code.replaceAll(' ', ''),
+      code: cleanCode,
     );
+    if (result case Error(error: ApiException(failure: ApiFailure.notFound))) {
+      result = await _authApi.login(
+        server,
+        username: name,
+        password: password,
+        code: cleanCode,
+      );
+    }
     switch (result) {
       case Ok(value: LoginNeedsCode(:final authenticatorApp)):
         return Result.ok(CodeRequired(authenticatorApp: authenticatorApp));
@@ -124,8 +142,14 @@ class SessionRepositoryRemote extends SessionRepository {
 
   static String _encode(Session s) => jsonEncode({
     'server': s.server.toString(),
-    'cookie': s.cookie,
-    'csrfToken': s.csrfToken,
+    ...switch (s) {
+      AppSession(:final token) => {'kind': 'app', 'token': token},
+      BrowserSession(:final cookie, :final csrfToken) => {
+        'kind': 'browser',
+        'cookie': cookie,
+        'csrfToken': csrfToken,
+      },
+    },
   });
 
   static Session? _decode(String? raw) {
@@ -136,15 +160,24 @@ class SessionRepositoryRemote extends SessionRepository {
     } on FormatException {
       return null;
     }
-    if (json case {
-      'server': final String server,
-      'cookie': final String cookie,
-      'csrfToken': final String csrf,
-    }) {
-      if (ServerAddress.parse(server) case Ok(:final value)) {
-        return Session(server: value, cookie: cookie, csrfToken: csrf);
-      }
-    }
-    return null;
+    if (json is! Map<String, Object?>) return null;
+    final server = switch (json['server']) {
+      final String s => switch (ServerAddress.parse(s)) {
+        Ok(:final value) => value,
+        Error() => null,
+      },
+      _ => null,
+    };
+    if (server == null) return null;
+    // Sessions stored before app sessions have no kind: browser sessions.
+    return switch (json) {
+      {'kind': 'app', 'token': final String token} => AppSession(
+        server: server,
+        token: token,
+      ),
+      {'cookie': final String cookie, 'csrfToken': final String csrf} =>
+        BrowserSession(server: server, cookie: cookie, csrfToken: csrf),
+      _ => null,
+    };
   }
 }

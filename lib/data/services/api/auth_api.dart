@@ -90,13 +90,51 @@ class AuthApi {
     }
     return Result.ok(
       LoginSession(
-        Session(
+        BrowserSession(
           server: server,
           cookie: '${cookie.group(1)}=${cookie.group(2)}',
           csrfToken: csrf,
         ),
       ),
     );
+  }
+
+  /// Creates an app session (`POST /api/auth/app-sessions`, server #559)
+  /// for [device]. Servers without app sessions answer with
+  /// `ApiFailure.notFound`; then [login] is the way in.
+  Future<Result<LoginResponse>> createAppSession(
+    ServerAddress server, {
+    required String device,
+    required String username,
+    required String password,
+    String code = '',
+  }) async {
+    final result = await _client.postJsonResponse(
+      server.resolve('/api/auth/app-sessions'),
+      body: {
+        'device': device,
+        if (username.isNotEmpty) 'username': username,
+        'password': password,
+        if (code.isNotEmpty) 'code': code,
+      },
+    );
+    switch (result) {
+      case Ok(value: final response) when response.statusCode == 202:
+        return _parse(server, response);
+      case Ok(value: ApiResponse(body: {'token': final String token}))
+          when token.isNotEmpty:
+        return Result.ok(
+          LoginSession(AppSession(server: server, token: token)),
+        );
+      case Ok():
+        return const Result.error(ApiException(ApiFailure.server));
+      case Error(
+        error: ApiException(failure: ApiFailure.invalid, field: 'totpCode'),
+      ):
+        return const Result.ok(LoginNeedsCode(authenticatorApp: true));
+      case Error(:final error):
+        return Result.error(error);
+    }
   }
 
   /// Ends the session the client currently sends (`POST /api/auth/logout`).

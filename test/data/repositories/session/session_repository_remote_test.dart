@@ -8,6 +8,7 @@ import 'package:waylight_mobile/data/repositories/session/session_repository_rem
 import 'package:waylight_mobile/data/services/api/api_client.dart';
 import 'package:waylight_mobile/data/services/api/api_credentials.dart';
 import 'package:waylight_mobile/data/services/api/auth_api.dart';
+import 'package:waylight_mobile/domain/models/session.dart';
 import 'package:waylight_mobile/domain/models/sign_in_result.dart';
 import 'package:waylight_mobile/utils/result.dart';
 
@@ -25,13 +26,19 @@ void main() {
     authApi: AuthApi(client),
     credentials: credentials,
     store: store,
+    deviceName: 'Pixel',
   );
 
-  http.Response signedInAnswer(http.Request request) => http.Response(
-    '{"csrfToken":"csrf"}',
-    200,
-    headers: {'set-cookie': 'waylight_session=tok; Path=/; HttpOnly'},
-  );
+  // A server without app sessions (phase 1): 404 for app sessions, a
+  // cookie for the login.
+  http.Response signedInAnswer(http.Request request) =>
+      request.url.path == '/api/auth/app-sessions'
+      ? http.Response('{"error":{"code":"not_found"}}', 404)
+      : http.Response(
+          '{"csrfToken":"csrf"}',
+          200,
+          headers: {'set-cookie': 'waylight_session=tok; Path=/; HttpOnly'},
+        );
 
   setUp(() {
     store = InMemoryKeyValueStore();
@@ -57,7 +64,10 @@ void main() {
     expect((result as Ok<SignInResult>).value, isA<SignedIn>());
     expect(repository.signedIn, isTrue);
     expect(notified, 1);
-    expect(credentials.session?.cookie, 'waylight_session=tok');
+    expect(
+      (credentials.session! as BrowserSession).cookie,
+      'waylight_session=tok',
+    );
     expect(
       jsonDecode(store.values[SessionRepositoryRemote.storageKey]!),
       containsPair('csrfToken', 'csrf'),
@@ -142,6 +152,72 @@ void main() {
       code: '123 456',
     );
 
-    expect(jsonDecode(requests.single.body), containsPair('code', '123456'));
+    expect(jsonDecode(requests.last.body), containsPair('code', '123456'));
+  });
+
+  group('app sessions', () {
+    setUp(() {
+      answer = (request) => request.url.path == '/api/auth/app-sessions'
+          ? http.Response('{"token":"wa_t","device":"Pixel"}', 201)
+          : http.Response('', 204);
+    });
+
+    test(
+      'are created with the device name where the server offers them',
+      () async {
+        final repository = createRepository();
+
+        final result = await repository.signIn(testServer(), password: 'pw');
+
+        expect((result as Ok<SignInResult>).value, isA<SignedIn>());
+        expect(requests.single.url.path, '/api/auth/app-sessions');
+        expect(
+          jsonDecode(requests.single.body),
+          containsPair('device', 'Pixel'),
+        );
+        expect(
+          credentials.session,
+          AppSession(server: testServer(), token: 'wa_t'),
+        );
+      },
+    );
+
+    test('survive a restart and go out as bearer token', () async {
+      await createRepository().signIn(testServer(), password: 'pw');
+      credentials.session = null;
+
+      final restored = createRepository();
+      await restored.restore(testServer());
+      await client.getJson(testServer().resolve('/api/dashboard'));
+
+      expect(restored.signedIn, isTrue);
+      expect(requests.last.headers['authorization'], 'Bearer wa_t');
+      expect(requests.last.headers['cookie'], isNull);
+    });
+
+    test('a revoked app session signs out with an explanation', () async {
+      final repository = createRepository();
+      await repository.signIn(testServer(), password: 'pw');
+      answer = (_) => http.Response('', 401);
+
+      await client.getJson(testServer().resolve('/api/dashboard'));
+      await Future<void>.delayed(Duration.zero);
+
+      expect(repository.signedIn, isFalse);
+      expect(repository.expired, isTrue);
+    });
+  });
+
+  test('restores browser sessions stored before app sessions', () async {
+    store.values[SessionRepositoryRemote.storageKey] = jsonEncode({
+      'server': testServer().toString(),
+      'cookie': 'waylight_session=old',
+      'csrfToken': 'csrf',
+    });
+    final repository = createRepository();
+
+    await repository.restore(testServer());
+
+    expect(credentials.session, isA<BrowserSession>());
   });
 }

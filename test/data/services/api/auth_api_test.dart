@@ -7,6 +7,7 @@ import 'package:http/testing.dart';
 import 'package:waylight_mobile/data/services/api/api_client.dart';
 import 'package:waylight_mobile/data/services/api/auth_api.dart';
 import 'package:waylight_mobile/domain/models/api_exception.dart';
+import 'package:waylight_mobile/domain/models/session.dart';
 import 'package:waylight_mobile/utils/result.dart';
 
 import '../../../testing/fakes/fake_server_repository.dart';
@@ -54,7 +55,8 @@ void main() {
     );
 
     final session =
-        ((result as Ok<LoginResponse>).value as LoginSession).session;
+        ((result as Ok<LoginResponse>).value as LoginSession).session
+            as BrowserSession;
     expect(session.cookie, '__Host-waylight_session=abc123');
     expect(session.csrfToken, 'csrf');
     expect(session.server, testServer());
@@ -103,5 +105,53 @@ void main() {
       ((result as Error<LoginResponse>).error as ApiException).failure,
       ApiFailure.unauthorized,
     );
+  });
+
+  group('app sessions', () {
+    test('return the bearer token', () async {
+      final result =
+          await apiAnswering(201, {
+            'token': 'wa_x',
+            'device': 'Pixel',
+          }).createAppSession(
+            testServer(),
+            device: 'Pixel',
+            username: '',
+            password: 'pw',
+          );
+
+      final session =
+          ((result as Ok<LoginResponse>).value as LoginSession).session;
+      expect(session, isA<AppSession>());
+      expect(jsonDecode(sent.body), {'device': 'Pixel', 'password': 'pw'});
+    });
+
+    test('ask for a code like the login', () async {
+      final result =
+          await apiAnswering(202, {
+            'secondFactor': {'totp': true},
+          }).createAppSession(
+            testServer(),
+            device: 'Pixel',
+            username: '',
+            password: 'pw',
+          );
+
+      expect((result as Ok<LoginResponse>).value, isA<LoginNeedsCode>());
+    });
+
+    test('are missing on older servers', () async {
+      final result = await apiAnswering(404, null).createAppSession(
+        testServer(),
+        device: 'Pixel',
+        username: '',
+        password: 'pw',
+      );
+
+      expect(
+        ((result as Error<LoginResponse>).error as ApiException).failure,
+        ApiFailure.notFound,
+      );
+    });
   });
 }

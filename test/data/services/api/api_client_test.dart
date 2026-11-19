@@ -122,7 +122,7 @@ void main() {
 
     setUp(() {
       credentials = ApiCredentials()
-        ..session = Session(
+        ..session = BrowserSession(
           server: testServer(),
           cookie: 'waylight_session=s',
           csrfToken: 'csrf',
