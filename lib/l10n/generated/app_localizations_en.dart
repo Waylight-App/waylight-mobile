@@ -550,4 +550,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String settingsLockMinutes(int minutes) {
     return '$minutes min';
   }
+
+  @override
+  String get shortcutAddTodo => 'Add to-do';
+
+  @override
+  String get shortcutDepartures => 'Departures';
 }

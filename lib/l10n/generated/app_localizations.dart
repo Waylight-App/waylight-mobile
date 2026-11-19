@@ -1051,6 +1051,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{minutes} min'**
   String settingsLockMinutes(int minutes);
+
+  /// Shortcut on the launcher icon.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to-do'**
+  String get shortcutAddTodo;
+
+  /// Shortcut on the launcher icon.
+  ///
+  /// In en, this message translates to:
+  /// **'Departures'**
+  String get shortcutDepartures;
 }
 
 class _AppLocalizationsDelegate

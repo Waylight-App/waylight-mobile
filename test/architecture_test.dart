@@ -57,6 +57,7 @@ const _layers = <_Layer>[
       'material_ui/',
       'flutter/widgets.dart',
       'url_launcher/',
+      'quick_actions/',
     ],
   ),
   _Layer(

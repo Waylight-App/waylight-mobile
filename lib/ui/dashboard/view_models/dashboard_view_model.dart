@@ -14,6 +14,7 @@ class DashboardViewModel extends ChangeNotifier {
     required this._serverRepository,
     required this._dashboardRepository,
     this.initialTabId = '',
+    this.initialWidgetKind = '',
     OfflineRepository? offlineRepository,
   }) : _offline = offlineRepository {
     _offline?.addListener(notifyListeners);
@@ -31,6 +32,26 @@ class DashboardViewModel extends ChangeNotifier {
   /// The tab to open instead of the server's default, e.g. from the search;
   /// empty for the default.
   final String initialTabId;
+
+  /// A widget kind whose tab opens first, e.g. `transit` from a shortcut
+  /// (#50); empty for none.
+  final String initialWidgetKind;
+
+  /// The tab to open first in [dashboard].
+  int initialIndexIn(Dashboard dashboard) {
+    if (initialWidgetKind.isNotEmpty) {
+      final i = dashboard.tabs.indexWhere(
+        (t) => t.widgets.any((w) => w.kind == initialWidgetKind),
+      );
+      if (i >= 0) return i;
+    }
+    return Dashboard(
+      tabs: dashboard.tabs,
+      defaultTabId: initialTabId.isEmpty
+          ? dashboard.defaultTabId
+          : initialTabId,
+    ).initialIndex;
+  }
 
   bool _demo = false;
 

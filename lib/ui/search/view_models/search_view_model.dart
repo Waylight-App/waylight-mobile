@@ -22,7 +22,8 @@ class SearchViewModel extends ChangeNotifier {
     required this._dashboardRepository,
     required this._todosRepository,
     this.debounce = const Duration(milliseconds: 250),
-  }) {
+    this.initialQuery = '',
+  }) : _query = initialQuery {
     _load().ignore();
     capture = Command1(_capture);
   }
@@ -37,7 +38,10 @@ class SearchViewModel extends ChangeNotifier {
 
   SearchSettings _settings = const SearchSettings();
   Dashboard? _dashboard;
-  String _query = '';
+  String _query;
+
+  /// The text the field starts with, e.g. `t ` from a shortcut (#50).
+  final String initialQuery;
   List<SearchResult> _results = const [];
   Timer? _timer;
 

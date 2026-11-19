@@ -158,5 +158,7 @@
   "settingsLockSwitch": "Mit Fingerabdruck, Gesicht oder Geräte-PIN sperren",
   "settingsLockAfter": "Sperren nach",
   "settingsLockNow": "Sofort",
-  "settingsLockMinutes": "{minutes} Min."
+  "settingsLockMinutes": "{minutes} Min.",
+  "shortcutAddTodo": "To-do hinzufügen",
+  "shortcutDepartures": "Abfahrten"
 }

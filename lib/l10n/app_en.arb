@@ -317,5 +317,9 @@
   "settingsLockNow": "At once",
   "@settingsLockNow": {"description": "Lock timeout: at once."},
   "settingsLockMinutes": "{minutes} min",
-  "@settingsLockMinutes": {"description": "Lock timeout in minutes.", "placeholders": {"minutes": {"type": "int", "example": "5"}}}
+  "@settingsLockMinutes": {"description": "Lock timeout in minutes.", "placeholders": {"minutes": {"type": "int", "example": "5"}}},
+  "shortcutAddTodo": "Add to-do",
+  "@shortcutAddTodo": {"description": "Shortcut on the launcher icon."},
+  "shortcutDepartures": "Departures",
+  "@shortcutDepartures": {"description": "Shortcut on the launcher icon."}
 }
