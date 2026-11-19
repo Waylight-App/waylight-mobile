@@ -1,9 +1,11 @@
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:material_ui/material_ui.dart';
 
 import 'package:waylight_mobile/data/repositories/widget_data/queries/information.dart';
 import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/domain/models/information.dart';
+import 'package:waylight_mobile/routing/routes.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
 import 'package:waylight_mobile/ui/widgets/common/simple_widget.dart';
@@ -38,7 +40,21 @@ class CalendarWidget extends StatelessWidget {
       final at = (now ?? DateTime.now)();
       final upcoming = events.where((e) => e.end.isAfter(at)).toList()
         ..sort((a, b) => a.start.compareTo(b.start));
-      if (upcoming.isEmpty) return Text(l10n.calendarEmpty);
+      if (upcoming.isEmpty) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(l10n.calendarEmpty),
+            Align(
+              alignment: Alignment.centerRight,
+              child: TextButton(
+                onPressed: () => context.push(Routes.calendar),
+                child: Text(l10n.calendarShowAll),
+              ),
+            ),
+          ],
+        );
+      }
       final today = DateTime(at.year, at.month, at.day);
       final time = DateFormat.Hm(
         Localizations.localeOf(context).toLanguageTag(),
@@ -76,7 +92,16 @@ class CalendarWidget extends StatelessWidget {
       }
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: children,
+        children: [
+          ...children,
+          Align(
+            alignment: Alignment.centerRight,
+            child: TextButton(
+              onPressed: () => context.push(Routes.calendar),
+              child: Text(l10n.calendarShowAll),
+            ),
+          ),
+        ],
       );
     },
   );

@@ -24,7 +24,11 @@ import 'package:waylight_mobile/ui/settings/view_models/settings_view_model.dart
 import 'package:waylight_mobile/ui/settings/widgets/settings_screen.dart';
 import 'package:waylight_mobile/ui/sign_in/view_models/sign_in_view_model.dart';
 import 'package:waylight_mobile/ui/sign_in/widgets/sign_in_screen.dart';
+import 'package:waylight_mobile/ui/widgets/calendar/calendar_screen.dart';
+import 'package:waylight_mobile/ui/widgets/calendar/calendar_view_model.dart';
 import 'package:waylight_mobile/ui/widgets/registry.dart';
+import 'package:waylight_mobile/ui/widgets/shopping/shopping_screen.dart';
+import 'package:waylight_mobile/ui/widgets/shopping/shopping_view_model.dart';
 
 /// Creates the router of the app.
 ///
@@ -110,6 +114,26 @@ GoRouter createRouter(
           todosRepository: context.read(),
         ),
         builder: (context, viewModel) => SearchScreen(viewModel: viewModel),
+      ),
+    ),
+    GoRoute(
+      path: Routes.calendar,
+      builder: (context, state) => ViewModelHost(
+        create: (context) => CalendarViewModel(
+          serverRepository: context.read(),
+          calendarRepository: context.read(),
+        ),
+        builder: (context, viewModel) => CalendarScreen(viewModel: viewModel),
+      ),
+    ),
+    GoRoute(
+      path: Routes.shopping,
+      builder: (context, state) => ViewModelHost(
+        create: (context) => ShoppingViewModel(
+          serverRepository: context.read(),
+          shoppingRepository: context.read(),
+        ),
+        builder: (context, viewModel) => ShoppingScreen(viewModel: viewModel),
       ),
     ),
     GoRoute(

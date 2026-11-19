@@ -11,6 +11,7 @@ import 'package:waylight_mobile/data/repositories/actions/rss_repository.dart';
 import 'package:waylight_mobile/data/repositories/actions/smarthome_repository.dart';
 import 'package:waylight_mobile/data/repositories/bookmarks/bookmarks_repository.dart';
 import 'package:waylight_mobile/data/repositories/bookmarks/bookmarks_repository_remote.dart';
+import 'package:waylight_mobile/data/repositories/calendar/calendar_repository.dart';
 import 'package:waylight_mobile/data/repositories/dashboard/dashboard_repository.dart';
 import 'package:waylight_mobile/data/repositories/dashboard/dashboard_repository_remote.dart';
 import 'package:waylight_mobile/data/repositories/habits/habits_repository.dart';
@@ -79,6 +80,7 @@ typedef Repositories = ({
   SmartHomeRepository smartHome,
   FocusRepository focus,
   HomeServerActionsRepository homeServer,
+  CalendarRepository calendar,
   PreferencesRepository preferences,
   OfflineRepository offline,
   SearchRepository search,
@@ -108,6 +110,7 @@ List<SingleChildWidget> providers(Repositories repositories) => [
   Provider<SmartHomeRepository>.value(value: repositories.smartHome),
   Provider<FocusRepository>.value(value: repositories.focus),
   Provider<HomeServerActionsRepository>.value(value: repositories.homeServer),
+  Provider<CalendarRepository>.value(value: repositories.calendar),
   Provider<SearchRepository>.value(value: repositories.search),
   ChangeNotifierProvider<AppLockRepository>.value(value: repositories.lock),
   ChangeNotifierProvider<PreferencesRepository>.value(
@@ -168,6 +171,7 @@ Repositories createRepositories() {
     smartHome: SmartHomeRepositoryRemote(api: modules),
     focus: FocusRepositoryRemote(api: modules),
     homeServer: HomeServerActionsRepositoryRemote(api: modules),
+    calendar: CalendarRepositoryRemote(api: modules),
     preferences: PreferencesRepositoryLocal(store: store),
     offline: OfflineRepository(offline),
     search: SearchRepositoryRemote(api: SearchApi(client)),

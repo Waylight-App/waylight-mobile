@@ -2263,6 +2263,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'until {time}'**
   String weatherWarningUntil(String time);
+
+  /// New event of the calendar.
+  ///
+  /// In en, this message translates to:
+  /// **'New event'**
+  String get calendarNewEvent;
+
+  /// Title of a new event.
+  ///
+  /// In en, this message translates to:
+  /// **'Title'**
+  String get calendarEventTitle;
+
+  /// Location of a new event.
+  ///
+  /// In en, this message translates to:
+  /// **'Location (optional)'**
+  String get calendarEventLocation;
+
+  /// Saves a new event.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get calendarSave;
+
+  /// Opens the calendar screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Show agenda'**
+  String get calendarShowAll;
+
+  /// Opens the shopping list screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Open list'**
+  String get shoppingOpen;
+
+  /// After a new event was saved.
+  ///
+  /// In en, this message translates to:
+  /// **'Added {title}.'**
+  String calendarEventAdded(String title);
 }
 
 class _AppLocalizationsDelegate

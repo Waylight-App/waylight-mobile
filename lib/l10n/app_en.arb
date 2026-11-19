@@ -721,5 +721,19 @@
   "weatherUv": "UV index today",
   "@weatherUv": {"description": "Today's UV index."},
   "weatherWarningUntil": "until {time}",
-  "@weatherWarningUntil": {"description": "End of a warning.", "placeholders": {"time": {"type": "String", "example": "02:42"}}}
+  "@weatherWarningUntil": {"description": "End of a warning.", "placeholders": {"time": {"type": "String", "example": "02:42"}}},
+  "calendarNewEvent": "New event",
+  "@calendarNewEvent": {"description": "New event of the calendar."},
+  "calendarEventTitle": "Title",
+  "@calendarEventTitle": {"description": "Title of a new event."},
+  "calendarEventLocation": "Location (optional)",
+  "@calendarEventLocation": {"description": "Location of a new event."},
+  "calendarSave": "Save",
+  "@calendarSave": {"description": "Saves a new event."},
+  "calendarShowAll": "Show agenda",
+  "@calendarShowAll": {"description": "Opens the calendar screen."},
+  "shoppingOpen": "Open list",
+  "@shoppingOpen": {"description": "Opens the shopping list screen."},
+  "calendarEventAdded": "Added {title}.",
+  "@calendarEventAdded": {"description": "After a new event was saved.", "placeholders": {"title": {"type": "String", "example": "Dentist"}}}
 }

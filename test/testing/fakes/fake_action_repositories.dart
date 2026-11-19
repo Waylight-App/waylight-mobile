@@ -3,7 +3,9 @@ import 'package:waylight_mobile/data/repositories/actions/home_server_actions_re
 import 'package:waylight_mobile/data/repositories/actions/parcels_repository.dart';
 import 'package:waylight_mobile/data/repositories/actions/rss_repository.dart';
 import 'package:waylight_mobile/data/repositories/actions/smarthome_repository.dart';
+import 'package:waylight_mobile/data/repositories/calendar/calendar_repository.dart';
 import 'package:waylight_mobile/domain/models/actions.dart';
+import 'package:waylight_mobile/domain/models/information.dart';
 import 'package:waylight_mobile/domain/models/server_address.dart';
 import 'package:waylight_mobile/utils/result.dart';
 
@@ -139,4 +141,34 @@ class FakeHomeServerActions with _Calls implements HomeServerActionsRepository {
     ServerAddress server,
     int minutes,
   ) async => _record('pause:$minutes');
+}
+
+/// A [CalendarRepository] in memory.
+class FakeCalendarRepository with _Calls implements CalendarRepository {
+  /// The agenda.
+  List<CalendarEvent> events = [];
+
+  /// The writable calendars.
+  List<WritableCalendar> calendars = const [
+    WritableCalendar(id: 'c1', name: 'Family'),
+  ];
+
+  /// The events created.
+  final List<NewEvent> created = [];
+
+  @override
+  Future<Result<List<CalendarEvent>>> agenda(
+    ServerAddress server,
+    int days,
+  ) async => Result.ok(events);
+
+  @override
+  Future<Result<List<WritableCalendar>>> writable(ServerAddress server) async =>
+      Result.ok(calendars);
+
+  @override
+  Future<Result<void>> create(ServerAddress server, NewEvent event) async {
+    created.add(event);
+    return _record('create:${event.summary}');
+  }
 }

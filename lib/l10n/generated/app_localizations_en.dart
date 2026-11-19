@@ -1234,4 +1234,27 @@ class AppLocalizationsEn extends AppLocalizations {
   String weatherWarningUntil(String time) {
     return 'until $time';
   }
+
+  @override
+  String get calendarNewEvent => 'New event';
+
+  @override
+  String get calendarEventTitle => 'Title';
+
+  @override
+  String get calendarEventLocation => 'Location (optional)';
+
+  @override
+  String get calendarSave => 'Save';
+
+  @override
+  String get calendarShowAll => 'Show agenda';
+
+  @override
+  String get shoppingOpen => 'Open list';
+
+  @override
+  String calendarEventAdded(String title) {
+    return 'Added $title.';
+  }
 }

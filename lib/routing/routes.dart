@@ -27,6 +27,12 @@ abstract final class Routes {
   /// Edits the phone layout of a tab: `/edit-tab?tab=<id>` (#53).
   static const editTab = '/edit-tab';
 
+  /// The agenda of the next weeks and new events (#100).
+  static const calendar = '/calendar';
+
+  /// The shopping list in full (#103).
+  static const shopping = '/shopping';
+
   /// Every path the router knows; links to others open the dashboard.
   static const all = {
     home,
@@ -38,5 +44,7 @@ abstract final class Routes {
     search,
     locked,
     editTab,
+    calendar,
+    shopping,
   };
 }

@@ -360,5 +360,12 @@
   "dnsFilterPause": "{minutes} Minuten pausieren",
   "weatherWarning": "Wetterwarnung",
   "weatherUv": "UV-Index heute",
-  "weatherWarningUntil": "bis {time}"
+  "weatherWarningUntil": "bis {time}",
+  "calendarNewEvent": "Neuer Termin",
+  "calendarEventTitle": "Titel",
+  "calendarEventLocation": "Ort (optional)",
+  "calendarSave": "Speichern",
+  "calendarShowAll": "Terminübersicht",
+  "shoppingOpen": "Liste öffnen",
+  "calendarEventAdded": "{title} eingetragen."
 }
