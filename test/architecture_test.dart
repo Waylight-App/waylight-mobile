@@ -40,7 +40,6 @@ const _layers = <_Layer>[
       'flutter_secure_storage/',
       'local_auth/',
       'crypto/',
-      'cryptography/',
       'logging/',
     ],
   ),

@@ -17,3 +17,4 @@ status *Proposed*, and discuss it in the pull request.
 | [0005](0005-design-system.md) | Design system in code: theme tokens and shared components | Accepted |
 | [0006](0006-plain-http-in-the-home-network.md) | Plain HTTP only for addresses in the home network | Accepted |
 | [0007](0007-offline-copy.md) | Offline copy of the dashboard: files in the private directory, limited, deleted on sign-out | Accepted |
+| [0008](0008-push-notifications.md) | Push notifications in native code; Firebase only in the store flavour | Accepted |
