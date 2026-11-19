@@ -715,5 +715,11 @@
   "proxmoxSent": "Sent to {name}.",
   "@proxmoxSent": {"description": "After a power action was sent.", "placeholders": {"name": {"type": "String", "example": "home-assistant"}}},
   "dnsFilterPause": "Pause for {minutes} minutes",
-  "@dnsFilterPause": {"description": "Pauses DNS blocking.", "placeholders": {"minutes": {"type": "int", "example": "5"}}}
+  "@dnsFilterPause": {"description": "Pauses DNS blocking.", "placeholders": {"minutes": {"type": "int", "example": "5"}}},
+  "weatherWarning": "Weather warning",
+  "@weatherWarning": {"description": "Spoken label of a warning."},
+  "weatherUv": "UV index today",
+  "@weatherUv": {"description": "Today's UV index."},
+  "weatherWarningUntil": "until {time}",
+  "@weatherWarningUntil": {"description": "End of a warning.", "placeholders": {"time": {"type": "String", "example": "02:42"}}}
 }

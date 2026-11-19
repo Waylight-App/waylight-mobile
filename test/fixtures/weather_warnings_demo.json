@@ -1,0 +1,12 @@
+[
+  {
+    "id": "demo.warning.1",
+    "event": "STARKWIND",
+    "headline": "Amtliche WARNUNG vor STARKEN WINDB\u00d6EN",
+    "description": "Es treten Windb\u00f6en mit Geschwindigkeiten um 55 km/h aus westlicher Richtung auf.",
+    "instruction": "",
+    "severity": "minor",
+    "onset": "2026-11-19T20:42:57Z",
+    "expires": "2026-11-20T02:42:57Z"
+  }
+]

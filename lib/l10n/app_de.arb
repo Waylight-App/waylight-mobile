@@ -357,5 +357,8 @@
   "dockerRestartConfirm": "{name} neu starten?",
   "dockerRestarted": "{name} startet neu.",
   "proxmoxSent": "An {name} gesendet.",
-  "dnsFilterPause": "{minutes} Minuten pausieren"
+  "dnsFilterPause": "{minutes} Minuten pausieren",
+  "weatherWarning": "Wetterwarnung",
+  "weatherUv": "UV-Index heute",
+  "weatherWarningUntil": "bis {time}"
 }

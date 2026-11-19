@@ -2245,6 +2245,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Pause for {minutes} minutes'**
   String dnsFilterPause(int minutes);
+
+  /// Spoken label of a warning.
+  ///
+  /// In en, this message translates to:
+  /// **'Weather warning'**
+  String get weatherWarning;
+
+  /// Today's UV index.
+  ///
+  /// In en, this message translates to:
+  /// **'UV index today'**
+  String get weatherUv;
+
+  /// End of a warning.
+  ///
+  /// In en, this message translates to:
+  /// **'until {time}'**
+  String weatherWarningUntil(String time);
 }
 
 class _AppLocalizationsDelegate

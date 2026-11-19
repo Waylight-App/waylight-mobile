@@ -1223,4 +1223,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String dnsFilterPause(int minutes) {
     return 'Pause for $minutes minutes';
   }
+
+  @override
+  String get weatherWarning => 'Weather warning';
+
+  @override
+  String get weatherUv => 'UV index today';
+
+  @override
+  String weatherWarningUntil(String time) {
+    return 'until $time';
+  }
 }
