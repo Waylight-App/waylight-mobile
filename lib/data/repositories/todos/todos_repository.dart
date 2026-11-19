@@ -10,4 +10,32 @@ abstract interface class TodosRepository {
     bool openOnly = true,
     String source = '',
   });
+
+  /// Creates a to-do.
+  Future<Result<Todo>> create(
+    ServerAddress server, {
+    required String title,
+    DateTime? due,
+    String source = '',
+  });
+
+  /// Stores the changes of [todo].
+  Future<Result<Todo>> update(
+    ServerAddress server,
+    Todo todo, {
+    String source = '',
+  });
+
+  /// Deletes a to-do.
+  Future<Result<void>> delete(
+    ServerAddress server,
+    String id, {
+    String source = '',
+  });
+
+  /// Deletes all ticked-off to-dos.
+  Future<Result<void>> clearCompleted(
+    ServerAddress server, {
+    String source = '',
+  });
 }

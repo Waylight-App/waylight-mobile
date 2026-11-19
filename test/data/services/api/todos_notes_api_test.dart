@@ -89,4 +89,48 @@ void main() {
     expect(note.preview, 'Wi-Fi: see router');
     expect(const Note(id: 'n', title: 't', body: '# Only a title').preview, '');
   });
+
+  test('creates, updates and deletes to-dos', () async {
+    final sent = <http.Request>[];
+    final api = TodosApi(
+      ApiClient(
+        client: MockClient((request) async {
+          sent.add(request);
+          return http.Response.bytes(
+            utf8.encode(
+              '{"id":"1","title":"Milk","due":"2026-11-20","done":true,"version":4}',
+            ),
+            request.method == 'DELETE' ? 204 : 200,
+          );
+        }),
+      ),
+    );
+
+    final created = await api.create(
+      testServer(),
+      title: 'Milk',
+      due: DateTime(2026, 11, 20),
+    );
+    final updated = await api.update(
+      testServer(),
+      const Todo(id: '1', title: 'Milk', done: true, version: 3),
+      source: 'nc',
+    );
+    await api.delete(testServer(), '1');
+    await api.clearCompleted(testServer());
+
+    expect((created as Ok<Todo>).value.version, 4);
+    expect((updated as Ok<Todo>).value.done, isTrue);
+    expect(jsonDecode(sent[0].body), {'title': 'Milk', 'due': '2026-11-20'});
+    expect(sent[1].method, 'PUT');
+    expect(sent[1].url.queryParameters, {'source': 'nc'});
+    expect(jsonDecode(sent[1].body), {
+      'title': 'Milk',
+      'due': '',
+      'done': true,
+      'version': 3,
+    });
+    expect(sent[2].method, 'DELETE');
+    expect(sent[3].url.path, '/api/todos/clear-completed');
+  });
 }

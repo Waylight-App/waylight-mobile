@@ -445,4 +445,35 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get dashboardDemo =>
       'Das ist die öffentliche Demo. Ihre Daten werden stündlich zurückgesetzt.';
+
+  @override
+  String get errorConflict =>
+      'Jemand anderes hat das inzwischen geändert. Es wurde neu geladen.';
+
+  @override
+  String get todosAddLabel => 'Neues To-do';
+
+  @override
+  String get todosAdd => 'Hinzufügen';
+
+  @override
+  String get todosClearCompleted => 'Erledigte entfernen';
+
+  @override
+  String get todosTitleLabel => 'Titel';
+
+  @override
+  String get todosTitleRequired => 'Gib einen Titel ein.';
+
+  @override
+  String get todosNoDueDate => 'Kein Fälligkeitsdatum';
+
+  @override
+  String get todosRemoveDueDate => 'Fälligkeitsdatum entfernen';
+
+  @override
+  String get todosDelete => 'Löschen';
+
+  @override
+  String get todosSave => 'Speichern';
 }

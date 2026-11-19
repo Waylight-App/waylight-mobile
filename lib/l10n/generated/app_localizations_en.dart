@@ -443,4 +443,35 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get dashboardDemo =>
       'This is the public demo. Its data is reset every hour.';
+
+  @override
+  String get errorConflict =>
+      'Someone else changed this in the meantime. It was loaded again.';
+
+  @override
+  String get todosAddLabel => 'New to-do';
+
+  @override
+  String get todosAdd => 'Add';
+
+  @override
+  String get todosClearCompleted => 'Clear completed';
+
+  @override
+  String get todosTitleLabel => 'Title';
+
+  @override
+  String get todosTitleRequired => 'Enter a title.';
+
+  @override
+  String get todosNoDueDate => 'No due date';
+
+  @override
+  String get todosRemoveDueDate => 'Remove due date';
+
+  @override
+  String get todosDelete => 'Delete';
+
+  @override
+  String get todosSave => 'Save';
 }

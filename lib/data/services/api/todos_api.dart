@@ -37,6 +37,76 @@ class TodosApi {
         return Result.error(error);
     }
   }
+
+  /// Creates a to-do (`POST /api/todos`).
+  Future<Result<Todo>> create(
+    ServerAddress server, {
+    required String title,
+    DateTime? due,
+    String source = '',
+  }) async => _one(
+    await _client.postJson(
+      _uri(server, '/api/todos', source),
+      body: {'title': title, 'due': _date(due)},
+    ),
+  );
+
+  /// Stores title, due date and completion of [todo] (`PUT
+  /// /api/todos/{id}`), refused with `ApiFailure.conflict` when the stored
+  /// version is newer.
+  Future<Result<Todo>> update(
+    ServerAddress server,
+    Todo todo, {
+    String source = '',
+  }) async => _one(
+    await _client.putJson(
+      _uri(server, '/api/todos/${Uri.encodeComponent(todo.id)}', source),
+      body: {
+        'title': todo.title,
+        'due': _date(todo.due),
+        'done': todo.done,
+        if (todo.version > 0) 'version': todo.version,
+      },
+    ),
+  );
+
+  /// Deletes a to-do.
+  Future<Result<void>> delete(
+    ServerAddress server,
+    String id, {
+    String source = '',
+  }) => _client.delete(
+    _uri(server, '/api/todos/${Uri.encodeComponent(id)}', source),
+  );
+
+  /// Deletes all ticked-off to-dos.
+  Future<Result<void>> clearCompleted(
+    ServerAddress server, {
+    String source = '',
+  }) async => switch (await _client.postJson(
+    _uri(server, '/api/todos/clear-completed', source),
+  )) {
+    Ok() => const Result.ok(null),
+    Error(:final error) => Result.error(error),
+  };
+
+  static Uri _uri(ServerAddress server, String path, String source) => server
+      .resolve(path)
+      .replace(queryParameters: source.isEmpty ? null : {'source': source});
+
+  static String _date(DateTime? d) => d == null
+      ? ''
+      : '${d.year.toString().padLeft(4, '0')}-'
+            '${d.month.toString().padLeft(2, '0')}-'
+            '${d.day.toString().padLeft(2, '0')}';
+
+  static Result<Todo> _one(Result<Object?> result) => switch (result) {
+    Ok(:final value) => switch (parseTodos([value])) {
+      [final todo] => Result.ok(todo),
+      _ => const Result.error(ApiException(ApiFailure.server)),
+    },
+    Error(:final error) => Result.error(error),
+  };
 }
 
 /// Maps the JSON of `GET /api/todos`; `null` if it does not match.
@@ -55,6 +125,10 @@ List<Todo>? parseTodos(Object? json) {
           },
           done: item['done'] == true,
           overdue: item['overdue'] == true,
+          version: switch (item['version']) {
+            final int v => v,
+            _ => 0,
+          },
         ),
       );
     } else {
