@@ -73,23 +73,39 @@ void main() {
       'waylight_session=tok',
     );
     expect(
-      jsonDecode(store.values[SessionRepositoryRemote.storageKey]!),
+      jsonDecode(store.values[SessionRepositoryRemote.keyFor(testServer())]!),
       containsPair('csrfToken', 'csrf'),
     );
   });
 
-  test('restores the session of the same server only', () async {
+  test('keeps one session per server', () async {
     await createRepository().signIn(testServer(), password: 'pw');
 
-    final same = createRepository();
-    await same.restore(testServer());
-    expect(same.signedIn, isTrue);
-
     final other = createRepository();
-    credentials.session = null;
     await other.restore(testServer('https://other.example.org'));
     expect(other.signedIn, isFalse);
+    expect(store.values.keys, [SessionRepositoryRemote.keyFor(testServer())]);
+
+    final back = createRepository();
+    await back.restore(testServer());
+    expect(back.signedIn, isTrue);
+
+    await back.discard(testServer());
     expect(store.values, isEmpty);
+  });
+
+  test('moves a session stored before several servers to its key', () async {
+    store.values[SessionRepositoryRemote.storageKey] = jsonEncode({
+      'server': testServer().toString(),
+      'kind': 'app',
+      'token': 'wa_old',
+    });
+    final repository = createRepository();
+
+    await repository.restore(testServer());
+
+    expect(repository.signedIn, isTrue);
+    expect(store.values.keys, [SessionRepositoryRemote.keyFor(testServer())]);
   });
 
   test('ignores a corrupt stored session', () async {

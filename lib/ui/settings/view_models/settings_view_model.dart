@@ -6,6 +6,7 @@ import 'package:waylight_mobile/data/repositories/preferences/preferences_reposi
 import 'package:waylight_mobile/data/repositories/server/server_repository.dart';
 import 'package:waylight_mobile/data/repositories/session/session_repository.dart';
 import 'package:waylight_mobile/domain/models/appearance.dart';
+import 'package:waylight_mobile/domain/models/server_address.dart';
 import 'package:waylight_mobile/domain/models/server_status.dart';
 import 'package:waylight_mobile/utils/command.dart';
 import 'package:waylight_mobile/utils/result.dart';
@@ -35,6 +36,7 @@ class SettingsViewModel extends ChangeNotifier {
     signOut = Command0(_sessionRepository.signOut);
     disconnect = Command0(_disconnect);
     _preferencesRepository.addListener(notifyListeners);
+    _serverRepository.addListener(notifyListeners);
     _lock?.addListener(notifyListeners);
     _lock?.available().then((available) {
       _lockAvailable = available;
@@ -80,6 +82,28 @@ class SettingsViewModel extends ChangeNotifier {
   /// Signs out and forgets the server.
   late final Command0<void> disconnect;
 
+  /// The servers used on this device (#51).
+  List<ServerAddress> get servers => _serverRepository.known;
+
+  /// Switches to [server] with the session stored for it, if any.
+  Future<void> switchTo(ServerAddress server) async {
+    await _serverRepository.switchTo(server);
+    await _sessionRepository.restore(server);
+  }
+
+  /// Leaves the current server, keeping its session, to add another one.
+  Future<void> addServer() => _serverRepository.leave();
+
+  /// Removes [server] and the session stored for it.
+  Future<void> removeServer(ServerAddress server) async {
+    if (server == _serverRepository.current) {
+      await _sessionRepository.signOut();
+    } else {
+      await _sessionRepository.discard(server);
+    }
+    await _serverRepository.forget(server);
+  }
+
   /// The address of the connected server.
   String get server => _serverRepository.current?.toString() ?? '';
 
@@ -105,6 +129,7 @@ class SettingsViewModel extends ChangeNotifier {
   @override
   void dispose() {
     _preferencesRepository.removeListener(notifyListeners);
+    _serverRepository.removeListener(notifyListeners);
     _lock?.removeListener(notifyListeners);
     for (final c in [account, serverVersion, appVersion, signOut, disconnect]) {
       c.dispose();

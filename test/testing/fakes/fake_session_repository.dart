@@ -85,6 +85,12 @@ class FakeSessionRepository extends SessionRepository {
     return finishResult;
   }
 
+  /// The servers whose stored session was discarded.
+  final List<ServerAddress> discarded = [];
+
+  @override
+  Future<void> discard(ServerAddress server) async => discarded.add(server);
+
   @override
   Future<Result<void>> signOut() async {
     signOutCalls++;

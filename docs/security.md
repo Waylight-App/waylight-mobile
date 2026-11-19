@@ -61,6 +61,9 @@ session of a browser (phase 1). For both:
   cookie and on POST, PUT, PATCH and DELETE the CSRF token, only to requests
   under the address of the session's own server. Connecting another server cannot
   leak the session to it.
+- **Several servers.** Each server keeps its own session
+  (`session@<address>` in the secure storage, #51); switching servers uses
+  the session stored for it, removing a server deletes it.
 - **When it ends.** A 401 from any request that carried the session ends it
   on the device, and the sign-in screen says that the session has ended.
   *Sign out* asks the server to end the session and forgets it on the device

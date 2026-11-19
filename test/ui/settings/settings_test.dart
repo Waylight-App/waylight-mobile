@@ -120,4 +120,30 @@ void main() {
     expect(roleLabel(l10nEn, 'owner'), l10nEn.settingsRoleOwner);
     expect(roleLabel(l10nEn, 'unknown'), l10nEn.settingsAccount);
   });
+
+  testWidgets('switches to and removes other servers', (tester) async {
+    final other = testServer('https://other.example.org');
+    servers.known = [testServer(), other];
+    await pump(tester);
+
+    expect(find.text('https://other.example.org'), findsOneWidget);
+    await tester.tap(find.text('https://other.example.org'));
+    await tester.pumpAndSettle();
+    expect(servers.current, other);
+
+    await tester.tap(find.byTooltip(l10nEn.settingsRemoveServer));
+    await tester.pumpAndSettle();
+    expect(servers.known, [other]);
+    expect(sessions.discarded, [testServer()]);
+  });
+
+  testWidgets('adds a server without signing out', (tester) async {
+    await pump(tester);
+
+    await tester.tap(find.byKey(const ValueKey('settings.addServer')));
+    await tester.pumpAndSettle();
+
+    expect(servers.current, isNull);
+    expect(sessions.signOutCalls, 0);
+  });
 }

@@ -54,14 +54,34 @@ class SessionRepositoryRemote extends SessionRepository {
   bool get expired => _expired;
 
   @override
+  Future<void> discard(ServerAddress server) async {
+    try {
+      await _store.delete(keyFor(server));
+    } on Exception catch (e) {
+      _log.warning('Could not delete a stored session.', e);
+    }
+  }
+
+  /// The key of the session of [server]; each server keeps its own (#51).
+  static String keyFor(ServerAddress server) => '$storageKey@$server';
+
+  @override
   Future<Result<void>> restore(ServerAddress? server) async {
     try {
-      final session = _decode(await _store.read(storageKey));
-      if (session != null && session.server == server) {
-        _use(session);
-      } else if (session != null) {
-        await _store.delete(storageKey);
+      if (server == null) {
+        _use(null);
+        return const Result.ok(null);
       }
+      var session = _decode(await _store.read(keyFor(server)));
+      // A session stored before several servers moves to its server's key.
+      final legacy = _decode(await _store.read(storageKey));
+      if (legacy != null) {
+        await _store.write(keyFor(legacy.server), _encode(legacy));
+        await _store.delete(storageKey);
+        if (legacy.server == server) session ??= legacy;
+      }
+      _expired = false;
+      _use(session?.server == server ? session : null);
       return const Result.ok(null);
     } on Exception catch (e) {
       _log.severe('Could not read the stored session.', e);
@@ -196,7 +216,7 @@ class SessionRepositoryRemote extends SessionRepository {
 
   Future<Result<void>> _keep(Session session) async {
     try {
-      await _store.write(storageKey, _encode(session));
+      await _store.write(keyFor(session.server), _encode(session));
     } on Exception catch (e) {
       _log.severe('Could not store the session.', e);
       return Result.error(e);
@@ -225,6 +245,7 @@ class SessionRepositoryRemote extends SessionRepository {
   }
 
   Future<Result<void>> _forget({required bool expired}) async {
+    final server = _credentials.session?.server;
     _expired = expired;
     _use(null);
     // The offline copy belongs to the account; nothing of it stays (#23).
@@ -233,7 +254,7 @@ class SessionRepositoryRemote extends SessionRepository {
       await forget();
     }
     try {
-      await _store.delete(storageKey);
+      if (server != null) await _store.delete(keyFor(server));
       return const Result.ok(null);
     } on Exception catch (e) {
       _log.severe('Could not delete the stored session.', e);

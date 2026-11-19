@@ -47,6 +47,29 @@ class SettingsScreen extends StatelessWidget {
                     label: l10n.settingsVersion,
                     command: viewModel.serverVersion,
                   ),
+                  for (final server in viewModel.servers)
+                    if (server.toString() != viewModel.server)
+                      ListTile(
+                        contentPadding: EdgeInsets.zero,
+                        minTileHeight: Dimens.tapTarget,
+                        leading: const Icon(Icons.dns_outlined),
+                        title: Text(server.toString()),
+                        subtitle: Text(l10n.settingsSwitchServer),
+                        onTap: () => viewModel.switchTo(server).ignore(),
+                        trailing: IconButton(
+                          tooltip: l10n.settingsRemoveServer,
+                          icon: const Icon(Icons.delete_outline),
+                          onPressed: () =>
+                              viewModel.removeServer(server).ignore(),
+                        ),
+                      ),
+                  const SizedBox(height: Dimens.gapSmall),
+                  OutlinedButton.icon(
+                    key: const ValueKey('settings.addServer'),
+                    onPressed: () => viewModel.addServer().ignore(),
+                    icon: const Icon(Icons.add),
+                    label: Text(l10n.settingsAddServer),
+                  ),
                   const SizedBox(height: Dimens.gapSmall),
                   CommandButton(
                     key: const ValueKey('settings.disconnect'),

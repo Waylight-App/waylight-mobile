@@ -614,4 +614,13 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get editTabNotEditable =>
       'Dieser Tab ist mit dir geteilt und kann hier nicht geändert werden.';
+
+  @override
+  String get settingsSwitchServer => 'Zu diesem Server wechseln';
+
+  @override
+  String get settingsRemoveServer => 'Server entfernen';
+
+  @override
+  String get settingsAddServer => 'Weiteren Server hinzufügen';
 }

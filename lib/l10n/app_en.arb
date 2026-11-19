@@ -351,5 +351,11 @@
   "editTabDown": "Move down",
   "@editTabDown": {"description": "Tooltip of the down button."},
   "editTabNotEditable": "This tab is shared with you and cannot be changed here.",
-  "@editTabNotEditable": {"description": "Team tab or unknown tab."}
+  "@editTabNotEditable": {"description": "Team tab or unknown tab."},
+  "settingsSwitchServer": "Switch to this server",
+  "@settingsSwitchServer": {"description": "Servers in the settings."},
+  "settingsRemoveServer": "Remove server",
+  "@settingsRemoveServer": {"description": "Servers in the settings."},
+  "settingsAddServer": "Add another server",
+  "@settingsAddServer": {"description": "Servers in the settings."}
 }

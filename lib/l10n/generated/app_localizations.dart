@@ -1153,6 +1153,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This tab is shared with you and cannot be changed here.'**
   String get editTabNotEditable;
+
+  /// Servers in the settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch to this server'**
+  String get settingsSwitchServer;
+
+  /// Servers in the settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove server'**
+  String get settingsRemoveServer;
+
+  /// Servers in the settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Add another server'**
+  String get settingsAddServer;
 }
 
 class _AppLocalizationsDelegate
