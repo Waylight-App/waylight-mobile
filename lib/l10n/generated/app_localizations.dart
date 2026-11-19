@@ -937,6 +937,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Offline · showing the data from {time}'**
   String dashboardOffline(String time);
+
+  /// Button that starts the sign-in in the browser.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in in the browser (passkey, Microsoft, SSO)'**
+  String get signInBrowser;
+
+  /// Title while the browser sign-in is finished.
+  ///
+  /// In en, this message translates to:
+  /// **'Finishing the sign-in'**
+  String get authCallbackTitle;
+
+  /// The person cancelled in the browser.
+  ///
+  /// In en, this message translates to:
+  /// **'The sign-in in the browser was cancelled.'**
+  String get authCallbackCancelled;
+
+  /// Answer without a matching started sign-in.
+  ///
+  /// In en, this message translates to:
+  /// **'This sign-in was not started in this app, or it took too long. Please start it again.'**
+  String get authCallbackUnexpected;
+
+  /// Button back to the sign-in screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to the sign-in'**
+  String get authCallbackBack;
 }
 
 class _AppLocalizationsDelegate

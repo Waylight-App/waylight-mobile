@@ -22,6 +22,29 @@ class SignInViewModel extends ChangeNotifier {
     signIn = Command1(_signIn);
     useAnotherServer = Command0(_serverRepository.disconnect);
     _loadDemo().ignore();
+    _loadBrowserSignIn().ignore();
+    browserSignIn = Command0(_browserSignIn);
+  }
+
+  bool _browserAvailable = false;
+
+  /// Whether the server can hand a sign-in in the browser to the app.
+  bool get browserAvailable => _browserAvailable;
+
+  /// Prepares the sign-in in the browser; the result is the page to open.
+  late final Command0<Uri> browserSignIn;
+
+  Future<void> _loadBrowserSignIn() async {
+    final server = _serverRepository.current;
+    if (server == null) return;
+    _browserAvailable = await _sessionRepository.supportsBrowserSignIn(server);
+    notifyListeners();
+  }
+
+  Future<Result<Uri>> _browserSignIn() async {
+    final server = _serverRepository.current;
+    if (server == null) return const Result.error(NotConnectedException());
+    return _sessionRepository.startBrowserSignIn(server);
   }
 
   String _demoPassword = '';
@@ -78,6 +101,7 @@ class SignInViewModel extends ChangeNotifier {
   void dispose() {
     signIn.dispose();
     useAnotherServer.dispose();
+    browserSignIn.dispose();
     super.dispose();
   }
 }

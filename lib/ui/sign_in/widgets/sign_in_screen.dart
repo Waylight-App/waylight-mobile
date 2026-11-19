@@ -2,6 +2,7 @@ import 'package:material_ui/material_ui.dart';
 
 import 'package:waylight_mobile/domain/models/api_exception.dart';
 import 'package:waylight_mobile/ui/core/error_messages.dart';
+import 'package:waylight_mobile/ui/core/link_opener.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
 import 'package:waylight_mobile/ui/core/widgets/command_button.dart';
@@ -59,6 +60,15 @@ class _SignInScreenState extends State<SignInScreen> {
     if (widget.viewModel.signIn.error) {
       _password.clear();
       _code.clear();
+    }
+  }
+
+  Future<void> _openBrowser(BuildContext context) async {
+    final failed = context.l10n.linkOpenFailed;
+    await widget.viewModel.browserSignIn.execute();
+    if (widget.viewModel.browserSignIn.result case Ok(:final value)
+        when context.mounted) {
+      await openLink(context, value, failed);
     }
   }
 
@@ -170,6 +180,21 @@ class _SignInScreenState extends State<SignInScreen> {
                 ),
               );
             },
+          ),
+          ListenableBuilder(
+            listenable: viewModel,
+            builder: (context, _) => viewModel.browserAvailable
+                ? Padding(
+                    padding: const EdgeInsets.only(top: Dimens.gap),
+                    child: CommandButton(
+                      key: const ValueKey('signIn.browser'),
+                      command: viewModel.browserSignIn,
+                      onPressed: () => _openBrowser(context),
+                      label: l10n.signInBrowser,
+                      variant: CommandButtonVariant.outlined,
+                    ),
+                  )
+                : const SizedBox.shrink(),
           ),
           const SizedBox(height: Dimens.gapLarge),
           CommandButton(

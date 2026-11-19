@@ -479,4 +479,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String dashboardOffline(String time) {
     return 'Offline · showing the data from $time';
   }
+
+  @override
+  String get signInBrowser =>
+      'Sign in in the browser (passkey, Microsoft, SSO)';
+
+  @override
+  String get authCallbackTitle => 'Finishing the sign-in';
+
+  @override
+  String get authCallbackCancelled =>
+      'The sign-in in the browser was cancelled.';
+
+  @override
+  String get authCallbackUnexpected =>
+      'This sign-in was not started in this app, or it took too long. Please start it again.';
+
+  @override
+  String get authCallbackBack => 'Back to the sign-in';
 }

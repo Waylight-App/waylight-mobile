@@ -58,6 +58,8 @@ session of a browser (phase 1). For both:
   *Sign out* asks the server to end the session and forgets it on the device
   even when the server cannot be reached; it can then be ended in the
   session list of the web interface. *Use another server* signs out first.
-- **Second factor.** Accounts with an authenticator app enter its code or a
-  recovery code. Accounts with passkeys only can sign in with a recovery
-  code until the app can sign in through the browser (#45).
+- **Second factor and single sign-on.** Accounts with an authenticator app
+  enter its code or a recovery code. Passkeys, Microsoft and single sign-on
+  work through *Sign in in the browser*: the server hands the sign-in back
+  to the app with a code that only redeems with the app's PKCE verifier,
+  and the app ignores answers to sign-ins it did not start.

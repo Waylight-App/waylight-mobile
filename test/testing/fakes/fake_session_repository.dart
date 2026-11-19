@@ -59,6 +59,32 @@ class FakeSessionRepository extends SessionRepository {
     return pairResult;
   }
 
+  /// Whether the server offers the browser sign-in.
+  bool browserSupported = false;
+
+  /// What [finishBrowserSignIn] returns.
+  Result<void> finishResult = const Result.ok(null);
+
+  @override
+  Future<bool> supportsBrowserSignIn(ServerAddress server) async =>
+      browserSupported;
+
+  @override
+  Future<Result<Uri>> startBrowserSignIn(ServerAddress server) async =>
+      Result.ok(server.resolve('/app-sign-in'));
+
+  @override
+  Future<Result<void>> finishBrowserSignIn({
+    required String code,
+    required String state,
+  }) async {
+    if (finishResult case Ok()) {
+      signedIn = true;
+      notifyListeners();
+    }
+    return finishResult;
+  }
+
   @override
   Future<Result<void>> signOut() async {
     signOutCalls++;

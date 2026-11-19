@@ -109,6 +109,10 @@ void main() {
     expect(at('waylight://settings'), Routes.settings);
     expect(at('waylight://settings?tab=1'), '/settings?tab=1');
     expect(at('waylight://nowhere'), Routes.home);
+    expect(
+      at('waylight://auth?code=c&state=s', signedIn: false),
+      '/auth?code=c&state=s',
+    );
     expect(at('/nowhere'), Routes.home);
   });
 

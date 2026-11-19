@@ -1,10 +1,10 @@
 import 'dart:convert';
 
 import 'package:logging/logging.dart';
-
 import 'package:waylight_mobile/data/repositories/session/session_repository.dart';
 import 'package:waylight_mobile/data/services/api/api_credentials.dart';
 import 'package:waylight_mobile/data/services/api/auth_api.dart';
+import 'package:waylight_mobile/data/services/auth/pkce.dart';
 import 'package:waylight_mobile/data/services/cache/response_cache.dart';
 import 'package:waylight_mobile/data/services/storage/key_value_store.dart';
 import 'package:waylight_mobile/domain/models/api_exception.dart';
@@ -116,6 +116,77 @@ class SessionRepositoryRemote extends SessionRepository {
       case Error(:final error):
         return Result.error(error);
     }
+  }
+
+  /// The key of a browser sign-in that waits for the server's answer.
+  static const pendingKey = 'session.browserSignIn';
+
+  @override
+  Future<bool> supportsBrowserSignIn(ServerAddress server) =>
+      _authApi.supportsAppSessions(server);
+
+  @override
+  Future<Result<Uri>> startBrowserSignIn(ServerAddress server) async {
+    final pkce = Pkce.generate();
+    final state = Pkce.randomToken(16);
+    try {
+      // Kept in the secure storage: the system may end the app while the
+      // browser is open.
+      await _store.write(
+        pendingKey,
+        jsonEncode({
+          'server': server.toString(),
+          'verifier': pkce.verifier,
+          'state': state,
+        }),
+      );
+    } on Exception catch (e) {
+      return Result.error(e);
+    }
+    return Result.ok(
+      server
+          .resolve('/app-sign-in')
+          .replace(
+            queryParameters: {'challenge': pkce.challenge, 'state': state},
+          ),
+    );
+  }
+
+  @override
+  Future<Result<void>> finishBrowserSignIn({
+    required String code,
+    required String state,
+  }) async {
+    final Object? pending;
+    try {
+      final raw = await _store.read(pendingKey);
+      await _store.delete(pendingKey);
+      pending = raw == null ? null : jsonDecode(raw);
+    } on Exception catch (e) {
+      return Result.error(e);
+    }
+    // Only an answer to the sign-in this app started is accepted.
+    if (pending
+        case {
+          'server': final String address,
+          'verifier': final String verifier,
+          'state': final String expected,
+        }
+        when expected == state && code.isNotEmpty) {
+      if (ServerAddress.parse(address) case Ok(value: final server)) {
+        final result = await _authApi.redeemPairingCode(
+          server,
+          device: deviceName,
+          code: code,
+          verifier: verifier,
+        );
+        return switch (result) {
+          Ok(value: final session) => _keep(session),
+          Error(:final error) => Result.error(error),
+        };
+      }
+    }
+    return const Result.error(UnexpectedSignIn());
   }
 
   Future<Result<void>> _keep(Session session) async {
