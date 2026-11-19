@@ -21,7 +21,9 @@ import 'package:waylight_mobile/ui/pair/view_models/pair_view_model.dart';
 import 'package:waylight_mobile/ui/pair/widgets/pair_screen.dart';
 import 'package:waylight_mobile/ui/search/view_models/search_view_model.dart';
 import 'package:waylight_mobile/ui/search/widgets/search_screen.dart';
+import 'package:waylight_mobile/ui/settings/view_models/security_view_model.dart';
 import 'package:waylight_mobile/ui/settings/view_models/settings_view_model.dart';
+import 'package:waylight_mobile/ui/settings/widgets/security_screen.dart';
 import 'package:waylight_mobile/ui/settings/widgets/settings_screen.dart';
 import 'package:waylight_mobile/ui/sign_in/view_models/sign_in_view_model.dart';
 import 'package:waylight_mobile/ui/sign_in/widgets/sign_in_screen.dart';
@@ -198,6 +200,16 @@ GoRouter createRouter(
       builder: (context, state) => ServiceDetailsScreen(
         id: state.uri.queryParameters['id'] ?? '',
         name: state.uri.queryParameters['name'] ?? '',
+      ),
+    ),
+    GoRoute(
+      path: Routes.security,
+      builder: (context, state) => ViewModelHost(
+        create: (context) => SecurityViewModel(
+          serverRepository: context.read(),
+          security: context.read(),
+        ),
+        builder: (context, viewModel) => SecurityScreen(viewModel: viewModel),
       ),
     ),
     GoRoute(

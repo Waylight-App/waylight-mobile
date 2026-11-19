@@ -1362,4 +1362,73 @@ class AppLocalizationsDe extends AppLocalizations {
   String serviceDownSince(String time) {
     return 'Ausgefallen seit $time';
   }
+
+  @override
+  String get securityTitle => 'Passwort und Anmeldung';
+
+  @override
+  String get securityPassword => 'Passwort';
+
+  @override
+  String get securityChangePassword => 'Passwort ändern';
+
+  @override
+  String get securityCurrentPassword => 'Aktuelles Passwort';
+
+  @override
+  String get securityNewPassword => 'Neues Passwort';
+
+  @override
+  String get securityPasswordChanged =>
+      'Passwort geändert. Andere Geräte sind abgemeldet.';
+
+  @override
+  String get securityTotp => 'Zwei-Faktor-Anmeldung';
+
+  @override
+  String get securityTotpOn =>
+      'An: Bei der Anmeldung wird ein Code deiner Authenticator-App abgefragt.';
+
+  @override
+  String get securityTotpIsOff => 'Aus.';
+
+  @override
+  String get securityTotpSetUp => 'Einrichten';
+
+  @override
+  String get securityTotpOff => 'Ausschalten';
+
+  @override
+  String get securityTotpHint =>
+      'Füge diesen Schlüssel in deiner Authenticator-App hinzu oder öffne die App direkt und gib dann den angezeigten Code ein.';
+
+  @override
+  String get securityOpenAuthenticator => 'Authenticator-App öffnen';
+
+  @override
+  String get securityCode => 'Code';
+
+  @override
+  String get securityConfirm => 'Bestätigen';
+
+  @override
+  String get securityRecoveryCodes => 'Wiederherstellungscodes';
+
+  @override
+  String get securityCodesSaved => 'Ich habe sie gespeichert';
+
+  @override
+  String get securitySessions => 'Angemeldete Geräte';
+
+  @override
+  String get securityThisDevice => 'Dieses Gerät';
+
+  @override
+  String get securitySignOutSession => 'Abmelden';
+
+  @override
+  String get securitySignOutOthers => 'Alle anderen Geräte abmelden';
+
+  @override
+  String get securitySessionEnded => 'Abgemeldet.';
 }

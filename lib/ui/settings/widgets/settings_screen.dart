@@ -1,7 +1,9 @@
+import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 
 import 'package:waylight_mobile/data/repositories/lock/app_lock_repository.dart';
 import 'package:waylight_mobile/domain/models/appearance.dart';
+import 'package:waylight_mobile/routing/routes.dart';
 import 'package:waylight_mobile/ui/core/link_opener.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
@@ -98,6 +100,13 @@ class SettingsScreen extends StatelessWidget {
                       ),
                       _ => const SizedBox.shrink(),
                     },
+                  ),
+                  ListTile(
+                    contentPadding: EdgeInsets.zero,
+                    leading: const Icon(Icons.security),
+                    title: Text(l10n.securityTitle),
+                    trailing: const Icon(Icons.chevron_right),
+                    onTap: () => context.push(Routes.security),
                   ),
                   const SizedBox(height: Dimens.gapSmall),
                   CommandButton(

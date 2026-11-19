@@ -1360,4 +1360,73 @@ class AppLocalizationsEn extends AppLocalizations {
   String serviceDownSince(String time) {
     return 'Down since $time';
   }
+
+  @override
+  String get securityTitle => 'Password and sign-in';
+
+  @override
+  String get securityPassword => 'Password';
+
+  @override
+  String get securityChangePassword => 'Change password';
+
+  @override
+  String get securityCurrentPassword => 'Current password';
+
+  @override
+  String get securityNewPassword => 'New password';
+
+  @override
+  String get securityPasswordChanged =>
+      'Password changed. Other devices are signed out.';
+
+  @override
+  String get securityTotp => 'Two-factor sign-in';
+
+  @override
+  String get securityTotpOn =>
+      'On: a code from your authenticator app is asked at sign-in.';
+
+  @override
+  String get securityTotpIsOff => 'Off.';
+
+  @override
+  String get securityTotpSetUp => 'Set up';
+
+  @override
+  String get securityTotpOff => 'Turn off';
+
+  @override
+  String get securityTotpHint =>
+      'Add this key to your authenticator app, or open the app directly, then enter the code it shows.';
+
+  @override
+  String get securityOpenAuthenticator => 'Open authenticator app';
+
+  @override
+  String get securityCode => 'Code';
+
+  @override
+  String get securityConfirm => 'Confirm';
+
+  @override
+  String get securityRecoveryCodes => 'Recovery codes';
+
+  @override
+  String get securityCodesSaved => 'I saved them';
+
+  @override
+  String get securitySessions => 'Signed-in devices';
+
+  @override
+  String get securityThisDevice => 'This device';
+
+  @override
+  String get securitySignOutSession => 'Sign out';
+
+  @override
+  String get securitySignOutOthers => 'Sign out all other devices';
+
+  @override
+  String get securitySessionEnded => 'Signed out.';
 }

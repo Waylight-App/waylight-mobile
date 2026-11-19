@@ -64,6 +64,7 @@ void main() {
           calendar: FakeCalendarRepository(),
           readLater: FakeReadLaterRepository(),
           drop: FakeDropRepository(),
+          security: FakeAccountSecurity(),
           preferences: FakePreferencesRepository(),
           offline: OfflineRepository(OfflineStatus()),
           search: FakeSearchRepository(),

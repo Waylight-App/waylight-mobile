@@ -51,6 +51,9 @@ abstract final class Routes {
   /// Uptime and outages of a service: `/service?id=<id>&name=<name>` (#108).
   static const service = '/service';
 
+  /// Password, two-factor sign-in and sessions (#110).
+  static const security = '/settings/security';
+
   /// Every path the router knows; links to others open the dashboard.
   static const all = {
     home,
@@ -70,5 +73,6 @@ abstract final class Routes {
     note,
     article,
     service,
+    security,
   };
 }

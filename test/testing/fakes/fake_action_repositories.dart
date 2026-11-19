@@ -1,3 +1,4 @@
+import 'package:waylight_mobile/data/repositories/account/account_security_repository.dart';
 import 'package:waylight_mobile/data/repositories/actions/drop_repository.dart';
 import 'package:waylight_mobile/data/repositories/actions/focus_repository.dart';
 import 'package:waylight_mobile/data/repositories/actions/home_server_actions_repository.dart';
@@ -6,6 +7,7 @@ import 'package:waylight_mobile/data/repositories/actions/read_later_repository.
 import 'package:waylight_mobile/data/repositories/actions/rss_repository.dart';
 import 'package:waylight_mobile/data/repositories/actions/smarthome_repository.dart';
 import 'package:waylight_mobile/data/repositories/calendar/calendar_repository.dart';
+import 'package:waylight_mobile/domain/models/account_security.dart';
 import 'package:waylight_mobile/domain/models/actions.dart';
 import 'package:waylight_mobile/domain/models/information.dart';
 import 'package:waylight_mobile/domain/models/media.dart';
@@ -250,4 +252,63 @@ class FakeDropRepository with _Calls implements DropRepository {
   @override
   Future<Result<void>> remove(ServerAddress server, String id) async =>
       _record('remove:$id');
+}
+
+/// An [AccountSecurityRepository] in memory.
+class FakeAccountSecurity with _Calls implements AccountSecurityRepository {
+  /// The sessions.
+  List<AccountSession> list = [];
+
+  /// Whether two-factor sign-in is on.
+  bool totp = false;
+
+  @override
+  Future<Result<List<AccountSession>>> sessions(ServerAddress server) async =>
+      Result.ok(list);
+
+  @override
+  Future<Result<void>> revoke(ServerAddress server, String id) async =>
+      _record('revoke:$id');
+
+  @override
+  Future<Result<void>> revokeOthers(ServerAddress server) async =>
+      _record('revokeOthers');
+
+  @override
+  Future<Result<void>> changePassword(
+    ServerAddress server, {
+    required String current,
+    required String next,
+  }) async => _record('password:$next');
+
+  @override
+  Future<Result<bool>> totpEnabled(ServerAddress server) async =>
+      Result.ok(totp);
+
+  @override
+  Future<Result<TotpSetup>> startTotp(ServerAddress server) async => Result.ok(
+    TotpSetup(
+      secret: 'JBSWY3DPEHPK3PXP',
+      uri: Uri.parse('otpauth://totp/Waylight?secret=JBSWY3DPEHPK3PXP'),
+    ),
+  );
+
+  @override
+  Future<Result<List<String>>> confirmTotp(
+    ServerAddress server,
+    String code,
+  ) async {
+    if (_record('confirm:$code') case Error(:final error)) {
+      return Result.error(error);
+    }
+    totp = true;
+    return const Result.ok(['aaaa-bbbb', 'cccc-dddd']);
+  }
+
+  @override
+  Future<Result<void>> disableTotp(
+    ServerAddress server, {
+    required String password,
+    required String code,
+  }) async => _record('disable:$code');
 }
