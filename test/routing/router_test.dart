@@ -12,14 +12,17 @@ import 'package:waylight_mobile/ui/connect_server/widgets/connect_server_screen.
 import 'package:waylight_mobile/ui/dashboard/widgets/dashboard_screen.dart';
 import 'package:waylight_mobile/ui/sign_in/widgets/sign_in_screen.dart';
 
+import '../testing/fakes/fake_action_repositories.dart';
 import '../testing/fakes/fake_bookmarks_repository.dart';
 import '../testing/fakes/fake_dashboard_repository.dart';
 import '../testing/fakes/fake_device_auth.dart';
+import '../testing/fakes/fake_habits_repository.dart';
 import '../testing/fakes/fake_notes_repository.dart';
 import '../testing/fakes/fake_preferences_repository.dart';
 import '../testing/fakes/fake_search_repository.dart';
 import '../testing/fakes/fake_server_repository.dart';
 import '../testing/fakes/fake_session_repository.dart';
+import '../testing/fakes/fake_shopping_repository.dart';
 import '../testing/fakes/fake_todos_repository.dart';
 import '../testing/fakes/fake_transit_repository.dart';
 import '../testing/fakes/fake_waste_repository.dart';
@@ -51,6 +54,12 @@ void main() {
           transit: FakeTransitRepository(),
           waste: FakeWasteRepository(),
           widgetData: FakeWidgetDataRepository(),
+          shopping: FakeShoppingRepository(),
+          habits: FakeHabitsRepository(),
+          rss: FakeRssRepository(),
+          parcels: FakeParcelsRepository(),
+          smartHome: FakeSmartHomeRepository(),
+          focus: FakeFocusRepository(),
           preferences: FakePreferencesRepository(),
           offline: OfflineRepository(OfflineStatus()),
           search: FakeSearchRepository(),

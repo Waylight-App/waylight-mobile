@@ -1927,6 +1927,258 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{points} pts'**
   String sportsPoints(int points);
+
+  /// Default title of the shopping widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Shopping list'**
+  String get shoppingTitle;
+
+  /// Shopping widget without a list.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a shopping list in the web interface first.'**
+  String get shoppingNotConfigured;
+
+  /// Shopping list without items.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing to buy.'**
+  String get shoppingEmpty;
+
+  /// Field and button to add an item.
+  ///
+  /// In en, this message translates to:
+  /// **'Add item'**
+  String get shoppingAdd;
+
+  /// Default title of the habits widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Habits'**
+  String get habitsTitle;
+
+  /// Habits widget without habits due.
+  ///
+  /// In en, this message translates to:
+  /// **'No habits due today.'**
+  String get habitsEmpty;
+
+  /// Button that removes ticked-off items.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove {count} in the basket'**
+  String shoppingClear(int count);
+
+  /// Current and best streak.
+  ///
+  /// In en, this message translates to:
+  /// **'{current} days in a row · best {best}'**
+  String habitsStreak(int current, int best);
+
+  /// Default title of the feed widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Feeds'**
+  String get rssTitle;
+
+  /// Feed widget without unread items.
+  ///
+  /// In en, this message translates to:
+  /// **'All caught up.'**
+  String get rssCaughtUp;
+
+  /// Button on a feed item.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as read'**
+  String get rssMarkRead;
+
+  /// Button on a read feed item.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as unread'**
+  String get rssMarkUnread;
+
+  /// Default title of the parcels widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Parcels'**
+  String get parcelsTitle;
+
+  /// Parcels widget without parcels.
+  ///
+  /// In en, this message translates to:
+  /// **'No parcels on their way.'**
+  String get parcelsEmpty;
+
+  /// Button and dialog title.
+  ///
+  /// In en, this message translates to:
+  /// **'Add parcel'**
+  String get parcelsAdd;
+
+  /// Field for the tracking number.
+  ///
+  /// In en, this message translates to:
+  /// **'Tracking number'**
+  String get parcelsNumber;
+
+  /// Field for a description.
+  ///
+  /// In en, this message translates to:
+  /// **'What is it? (optional)'**
+  String get parcelsLabel;
+
+  /// Closes the dialog.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get parcelsCancel;
+
+  /// Opens the tracking page.
+  ///
+  /// In en, this message translates to:
+  /// **'Track at the carrier'**
+  String get parcelsTrack;
+
+  /// Deletes the parcel.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop tracking'**
+  String get parcelsDelete;
+
+  /// Parcel not handed over yet.
+  ///
+  /// In en, this message translates to:
+  /// **'announced'**
+  String get parcelsAnnounced;
+
+  /// Parcel in transit.
+  ///
+  /// In en, this message translates to:
+  /// **'on its way'**
+  String get parcelsOnTheWay;
+
+  /// Delivered parcel.
+  ///
+  /// In en, this message translates to:
+  /// **'delivered'**
+  String get parcelsDelivered;
+
+  /// Parcel with an unusual state.
+  ///
+  /// In en, this message translates to:
+  /// **'check'**
+  String get parcelsCheck;
+
+  /// Default title of the smart home widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Smart home'**
+  String get smartHomeTitle;
+
+  /// Smart home widget without entities.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose entities in the web interface.'**
+  String get smartHomeEmpty;
+
+  /// Runs a scene or presses a button.
+  ///
+  /// In en, this message translates to:
+  /// **'Run'**
+  String get smartHomeRun;
+
+  /// Expected delivery date.
+  ///
+  /// In en, this message translates to:
+  /// **'expected {date}'**
+  String parcelsExpected(String date);
+
+  /// Default title of the photo frame.
+  ///
+  /// In en, this message translates to:
+  /// **'Photos'**
+  String get photoFrameTitle;
+
+  /// Photo frame without photos.
+  ///
+  /// In en, this message translates to:
+  /// **'No photos in this album yet.'**
+  String get photoFrameEmpty;
+
+  /// Default title of the radar widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Rain radar'**
+  String get radarTitle;
+
+  /// Radar widget without a place.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a place in the web interface.'**
+  String get radarNoPlace;
+
+  /// NASA astronomy picture of the day.
+  ///
+  /// In en, this message translates to:
+  /// **'Picture of the day'**
+  String get apodTitle;
+
+  /// JSON widget without an endpoint.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose an endpoint in the web interface.'**
+  String get apiWidgetNoEndpoint;
+
+  /// Default title of the mail widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Mail'**
+  String get mailTitle;
+
+  /// Default title of the drop zone.
+  ///
+  /// In en, this message translates to:
+  /// **'Drop zone'**
+  String get dropTitle;
+
+  /// Drop zone without items.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing dropped yet.'**
+  String get dropEmpty;
+
+  /// Default title of the focus timer.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus'**
+  String get focusTitle;
+
+  /// Starts a focus session.
+  ///
+  /// In en, this message translates to:
+  /// **'Start'**
+  String get focusStart;
+
+  /// Stops a focus session.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop'**
+  String get focusStop;
+
+  /// Unread count.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =0{0 unread messages} =1{1 unread message} other{{count} unread messages}}'**
+  String mailUnread(int count);
+
+  /// Focus time today.
+  ///
+  /// In en, this message translates to:
+  /// **'Today: {minutes} min in {sessions} sessions'**
+  String focusToday(int minutes, int sessions);
 }
 
 class _AppLocalizationsDelegate

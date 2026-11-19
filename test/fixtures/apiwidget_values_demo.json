@@ -1,0 +1,41 @@
+{
+  "name": "Balcony solar",
+  "values": [
+    {
+      "label": "Power now",
+      "unit": "W",
+      "text": "0",
+      "number": 0,
+      "status": "ok",
+      "error": ""
+    },
+    {
+      "label": "Today",
+      "unit": "kWh",
+      "text": "2.40",
+      "number": 2.4,
+      "status": "ok",
+      "error": ""
+    },
+    {
+      "label": "Total",
+      "unit": "kWh",
+      "text": "1834.6",
+      "number": 1834.6,
+      "status": "ok",
+      "error": ""
+    },
+    {
+      "label": "Inverter",
+      "unit": "\u00b0C",
+      "text": "21.0",
+      "number": 21,
+      "status": "ok",
+      "error": ""
+    }
+  ],
+  "fetchedAt": "2026-11-19T21:32:42.273653758Z",
+  "error": "",
+  "errorKey": "",
+  "errorParams": null
+}

@@ -1038,4 +1038,148 @@ class AppLocalizationsDe extends AppLocalizations {
   String sportsPoints(int points) {
     return '$points Pkt.';
   }
+
+  @override
+  String get shoppingTitle => 'Einkaufsliste';
+
+  @override
+  String get shoppingNotConfigured =>
+      'Lege zuerst im Web eine Einkaufsliste an.';
+
+  @override
+  String get shoppingEmpty => 'Nichts zu kaufen.';
+
+  @override
+  String get shoppingAdd => 'Artikel hinzufügen';
+
+  @override
+  String get habitsTitle => 'Gewohnheiten';
+
+  @override
+  String get habitsEmpty => 'Heute keine Gewohnheiten fällig.';
+
+  @override
+  String shoppingClear(int count) {
+    return '$count im Korb entfernen';
+  }
+
+  @override
+  String habitsStreak(int current, int best) {
+    return '$current Tage in Folge · Rekord $best';
+  }
+
+  @override
+  String get rssTitle => 'Feeds';
+
+  @override
+  String get rssCaughtUp => 'Alles gelesen.';
+
+  @override
+  String get rssMarkRead => 'Als gelesen markieren';
+
+  @override
+  String get rssMarkUnread => 'Als ungelesen markieren';
+
+  @override
+  String get parcelsTitle => 'Pakete';
+
+  @override
+  String get parcelsEmpty => 'Keine Pakete unterwegs.';
+
+  @override
+  String get parcelsAdd => 'Paket hinzufügen';
+
+  @override
+  String get parcelsNumber => 'Sendungsnummer';
+
+  @override
+  String get parcelsLabel => 'Was ist es? (optional)';
+
+  @override
+  String get parcelsCancel => 'Abbrechen';
+
+  @override
+  String get parcelsTrack => 'Beim Paketdienst verfolgen';
+
+  @override
+  String get parcelsDelete => 'Nicht mehr verfolgen';
+
+  @override
+  String get parcelsAnnounced => 'angekündigt';
+
+  @override
+  String get parcelsOnTheWay => 'unterwegs';
+
+  @override
+  String get parcelsDelivered => 'zugestellt';
+
+  @override
+  String get parcelsCheck => 'prüfen';
+
+  @override
+  String get smartHomeTitle => 'Smart Home';
+
+  @override
+  String get smartHomeEmpty => 'Wähle im Web Entitäten aus.';
+
+  @override
+  String get smartHomeRun => 'Ausführen';
+
+  @override
+  String parcelsExpected(String date) {
+    return 'erwartet $date';
+  }
+
+  @override
+  String get photoFrameTitle => 'Fotos';
+
+  @override
+  String get photoFrameEmpty => 'Noch keine Fotos in diesem Album.';
+
+  @override
+  String get radarTitle => 'Regenradar';
+
+  @override
+  String get radarNoPlace => 'Wähle im Web einen Ort.';
+
+  @override
+  String get apodTitle => 'Bild des Tages';
+
+  @override
+  String get apiWidgetNoEndpoint => 'Wähle im Web einen Endpunkt.';
+
+  @override
+  String get mailTitle => 'Mail';
+
+  @override
+  String get dropTitle => 'Ablage';
+
+  @override
+  String get dropEmpty => 'Noch nichts abgelegt.';
+
+  @override
+  String get focusTitle => 'Fokus';
+
+  @override
+  String get focusStart => 'Starten';
+
+  @override
+  String get focusStop => 'Stoppen';
+
+  @override
+  String mailUnread(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ungelesene Nachrichten',
+      one: '1 ungelesene Nachricht',
+      zero: '0 ungelesene Nachrichten',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String focusToday(int minutes, int sessions) {
+    return 'Heute: $minutes Min. in $sessions Sitzungen';
+  }
 }

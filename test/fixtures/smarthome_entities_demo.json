@@ -1,0 +1,50 @@
+[
+  {
+    "id": "sensor.balcony_solar_power",
+    "name": "Balcony solar",
+    "state": "412",
+    "unit": "W",
+    "lastChanged": "2026-11-19T21:25:46Z",
+    "action": ""
+  },
+  {
+    "id": "switch.coffee_machine",
+    "name": "Coffee machine",
+    "state": "off",
+    "unit": "",
+    "lastChanged": "2026-11-19T20:06:46Z",
+    "action": ""
+  },
+  {
+    "id": "light.desk_lamp",
+    "name": "Desk lamp",
+    "state": "on",
+    "unit": "",
+    "lastChanged": "2026-11-19T21:14:46Z",
+    "action": ""
+  },
+  {
+    "id": "binary_sensor.front_door",
+    "name": "Front door",
+    "state": "off",
+    "unit": "",
+    "lastChanged": "2026-11-19T19:06:46Z",
+    "action": ""
+  },
+  {
+    "id": "sensor.living_room_temperature",
+    "name": "Living room",
+    "state": "21.4",
+    "unit": "\u00b0C",
+    "lastChanged": "2026-11-19T21:22:46Z",
+    "action": ""
+  },
+  {
+    "id": "sensor.washing_machine_power",
+    "name": "Washing machine",
+    "state": "1.2",
+    "unit": "W",
+    "lastChanged": "2026-11-19T20:51:46Z",
+    "action": ""
+  }
+]

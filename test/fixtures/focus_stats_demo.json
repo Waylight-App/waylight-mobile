@@ -1,0 +1,39 @@
+{
+  "days": [
+    {
+      "date": "2026-11-13",
+      "sessions": 3,
+      "minutes": 75
+    },
+    {
+      "date": "2026-11-14",
+      "sessions": 1,
+      "minutes": 25
+    },
+    {
+      "date": "2026-11-15",
+      "sessions": 5,
+      "minutes": 125
+    },
+    {
+      "date": "2026-11-16",
+      "sessions": 2,
+      "minutes": 50
+    },
+    {
+      "date": "2026-11-17",
+      "sessions": 4,
+      "minutes": 100
+    },
+    {
+      "date": "2026-11-18",
+      "sessions": 3,
+      "minutes": 75
+    },
+    {
+      "date": "2026-11-19",
+      "sessions": 0,
+      "minutes": 0
+    }
+  ]
+}

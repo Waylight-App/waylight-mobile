@@ -101,6 +101,38 @@ void main() {
       expect(offline.showingDataFrom, isNull);
     });
 
+    test('keeps any answer when asked to, as widget data does', () async {
+      final system = Uri.parse('https://h.example.org/api/system');
+      await client().getJson(system);
+      expect(cache.entries, isEmpty, reason: 'not kept unless asked');
+
+      await client().getJson(system, keepOffline: true);
+      reachable = false;
+      final result = await client().getJson(system, keepOffline: true);
+      expect(result, isA<Ok<Object?>>());
+    });
+
+    test('reads raw bytes and maps errors like JSON calls', () async {
+      final api = ApiClient(
+        client: MockClient(
+          (request) async => request.url.path.endsWith('missing')
+              ? http.Response('', 404)
+              : http.Response.bytes([1, 2, 3], 200),
+        ),
+      );
+      final image = await api.getBytes(
+        Uri.parse('https://h.example.org/api/photos/1/image'),
+      );
+      expect((image as Ok).value, [1, 2, 3]);
+      final missing = await api.getBytes(
+        Uri.parse('https://h.example.org/missing'),
+      );
+      expect(
+        ((missing as Error).error as ApiException).failure,
+        ApiFailure.notFound,
+      );
+    });
+
     test('never keeps sign-in answers', () async {
       await client().getJson(login);
 

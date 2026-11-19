@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:waylight_mobile/domain/models/server_address.dart';
 import 'package:waylight_mobile/utils/result.dart';
 
@@ -28,4 +30,11 @@ final class WidgetQuery<T> {
 abstract interface class WidgetDataRepository {
   /// Runs [query] against [server].
   Future<Result<T>> read<T>(ServerAddress server, WidgetQuery<T> query);
+
+  /// Loads an image of a module, such as a photo or the rain radar.
+  Future<Result<Uint8List>> image(
+    ServerAddress server,
+    String path, {
+    Map<String, String> query = const {},
+  });
 }
