@@ -1471,4 +1471,18 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get bookmarkNoFolder => 'Kein Ordner';
+
+  @override
+  String get shareTitle => 'In Waylight speichern';
+
+  @override
+  String get shareTodo => 'Als Aufgabe';
+
+  @override
+  String get shareNote => 'Als Notiz';
+
+  @override
+  String shareSaved(String target) {
+    return 'Gespeichert: $target';
+  }
 }

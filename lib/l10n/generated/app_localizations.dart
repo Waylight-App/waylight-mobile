@@ -2707,6 +2707,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No folder'**
   String get bookmarkNoFolder;
+
+  /// Title of the share screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Save to Waylight'**
+  String get shareTitle;
+
+  /// Share target.
+  ///
+  /// In en, this message translates to:
+  /// **'As a to-do'**
+  String get shareTodo;
+
+  /// Share target.
+  ///
+  /// In en, this message translates to:
+  /// **'As a note'**
+  String get shareNote;
+
+  /// After saving shared content.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved: {target}'**
+  String shareSaved(String target);
 }
 
 class _AppLocalizationsDelegate

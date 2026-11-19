@@ -1469,4 +1469,18 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get bookmarkNoFolder => 'No folder';
+
+  @override
+  String get shareTitle => 'Save to Waylight';
+
+  @override
+  String get shareTodo => 'As a to-do';
+
+  @override
+  String get shareNote => 'As a note';
+
+  @override
+  String shareSaved(String target) {
+    return 'Saved: $target';
+  }
 }

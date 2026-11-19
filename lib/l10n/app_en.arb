@@ -869,5 +869,13 @@
   "bookmarkFolder": "Folder",
   "@bookmarkFolder": {"description": "Field."},
   "bookmarkNoFolder": "No folder",
-  "@bookmarkNoFolder": {"description": "Choice."}
+  "@bookmarkNoFolder": {"description": "Choice."},
+  "shareTitle": "Save to Waylight",
+  "@shareTitle": {"description": "Title of the share screen."},
+  "shareTodo": "As a to-do",
+  "@shareTodo": {"description": "Share target."},
+  "shareNote": "As a note",
+  "@shareNote": {"description": "Share target."},
+  "shareSaved": "Saved: {target}",
+  "@shareSaved": {"description": "After saving shared content.", "placeholders": {"target": {"type": "String", "example": "As a to-do"}}}
 }

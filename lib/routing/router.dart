@@ -25,6 +25,8 @@ import 'package:waylight_mobile/ui/settings/view_models/security_view_model.dart
 import 'package:waylight_mobile/ui/settings/view_models/settings_view_model.dart';
 import 'package:waylight_mobile/ui/settings/widgets/security_screen.dart';
 import 'package:waylight_mobile/ui/settings/widgets/settings_screen.dart';
+import 'package:waylight_mobile/ui/share/view_models/share_view_model.dart';
+import 'package:waylight_mobile/ui/share/widgets/share_screen.dart';
 import 'package:waylight_mobile/ui/sign_in/view_models/sign_in_view_model.dart';
 import 'package:waylight_mobile/ui/sign_in/widgets/sign_in_screen.dart';
 import 'package:waylight_mobile/ui/widgets/calendar/calendar_screen.dart';
@@ -213,6 +215,22 @@ GoRouter createRouter(
           security: context.read(),
         ),
         builder: (context, viewModel) => SecurityScreen(viewModel: viewModel),
+      ),
+    ),
+    GoRoute(
+      path: Routes.share,
+      builder: (context, state) => ViewModelHost(
+        create: (context) => ShareViewModel(
+          text: state.uri.queryParameters['text'] ?? '',
+          serverRepository: context.read(),
+          data: context.read(),
+          todos: context.read(),
+          notes: context.read(),
+          readLater: context.read(),
+          bookmarks: context.read(),
+          drop: context.read(),
+        ),
+        builder: (context, viewModel) => ShareScreen(viewModel: viewModel),
       ),
     ),
     GoRoute(

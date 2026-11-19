@@ -29,6 +29,13 @@
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+            <!-- Text and links shared from other apps (#21); the activity turns
+                 them into a waylight://share link. -->
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
             <!-- Links into the app, e.g. waylight://settings (#47). -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
