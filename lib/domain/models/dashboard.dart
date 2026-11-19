@@ -24,6 +24,8 @@ final class DashboardTab {
     required this.id,
     required this.name,
     required this.widgets,
+    this.layout = const [],
+    this.mine = true,
   });
 
   /// The server's id of the tab.
@@ -34,6 +36,39 @@ final class DashboardTab {
 
   /// The visible widgets, top to bottom.
   final List<WidgetPlacement> widgets;
+
+  /// The phone layout with hidden widgets too, in display order (#53).
+  final List<PhoneLayoutItem> layout;
+
+  /// Whether the tab belongs to the account; team tabs shared with it are
+  /// read-only.
+  final bool mine;
+}
+
+/// A widget's place in the phone layout of a tab (#53).
+final class PhoneLayoutItem {
+  /// Creates the item.
+  const PhoneLayoutItem({
+    required this.widget,
+    this.hidden = false,
+    this.rows = 1,
+  });
+
+  /// The widget.
+  final WidgetPlacement widget;
+
+  /// Whether it is hidden on phones.
+  final bool hidden;
+
+  /// The minimum height in grid rows, kept as the web interface set it.
+  final int rows;
+
+  /// A copy with [hidden] changed.
+  PhoneLayoutItem copyWith({bool? hidden}) => PhoneLayoutItem(
+    widget: widget,
+    hidden: hidden ?? this.hidden,
+    rows: rows,
+  );
 }
 
 /// A widget on a tab: what it is and how it is configured.

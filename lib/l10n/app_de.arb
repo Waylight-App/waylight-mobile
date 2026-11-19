@@ -169,5 +169,11 @@
   "todosKeepMine": "Meins behalten",
   "todosKeepServer": "Server-Version behalten",
   "todosDiscard": "Verwerfen",
-  "todosDeletedTodo": "Gelöschtes To-do"
+  "todosDeletedTodo": "Gelöschtes To-do",
+  "editTabTitle": "Tab bearbeiten",
+  "editTabReset": "Zurücksetzen",
+  "editTabHidden": "Auf Handys ausgeblendet",
+  "editTabUp": "Nach oben",
+  "editTabDown": "Nach unten",
+  "editTabNotEditable": "Dieser Tab ist mit dir geteilt und kann hier nicht geändert werden."
 }

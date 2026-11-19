@@ -1117,6 +1117,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Deleted to-do'**
   String get todosDeletedTodo;
+
+  /// Title of the tab editor.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit tab'**
+  String get editTabTitle;
+
+  /// Lets the phone layout follow the desktop grid again.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset'**
+  String get editTabReset;
+
+  /// Subtitle of a hidden widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Hidden on phones'**
+  String get editTabHidden;
+
+  /// Tooltip of the up button.
+  ///
+  /// In en, this message translates to:
+  /// **'Move up'**
+  String get editTabUp;
+
+  /// Tooltip of the down button.
+  ///
+  /// In en, this message translates to:
+  /// **'Move down'**
+  String get editTabDown;
+
+  /// Team tab or unknown tab.
+  ///
+  /// In en, this message translates to:
+  /// **'This tab is shared with you and cannot be changed here.'**
+  String get editTabNotEditable;
 }
 
 class _AppLocalizationsDelegate

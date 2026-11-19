@@ -24,6 +24,9 @@ abstract final class Routes {
   /// Waits for biometrics or the device PIN (#46).
   static const locked = '/locked';
 
+  /// Edits the phone layout of a tab: `/edit-tab?tab=<id>` (#53).
+  static const editTab = '/edit-tab';
+
   /// Every path the router knows; links to others open the dashboard.
   static const all = {
     home,
@@ -34,5 +37,6 @@ abstract final class Routes {
     auth,
     search,
     locked,
+    editTab,
   };
 }

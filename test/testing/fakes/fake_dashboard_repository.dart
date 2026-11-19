@@ -16,4 +16,26 @@ class FakeDashboardRepository implements DashboardRepository {
     calls++;
     return result;
   }
+
+  /// The layouts stored with [saveLayout], by tab.
+  final Map<String, List<PhoneLayoutItem>> saved = {};
+
+  /// The tabs reset with [resetLayout].
+  final List<String> reset = [];
+
+  @override
+  Future<Result<void>> saveLayout(
+    ServerAddress server,
+    String tabId,
+    List<PhoneLayoutItem> layout,
+  ) async {
+    saved[tabId] = layout;
+    return const Result.ok(null);
+  }
+
+  @override
+  Future<Result<void>> resetLayout(ServerAddress server, String tabId) async {
+    reset.add(tabId);
+    return const Result.ok(null);
+  }
 }

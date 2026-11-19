@@ -83,6 +83,35 @@ class DashboardScreen extends StatelessWidget {
             appBar: AppBar(
               title: const Wordmark(),
               actions: [
+                if (tabs.isNotEmpty)
+                  Builder(
+                    builder: (context) {
+                      final controller = DefaultTabController.of(context);
+                      return ListenableBuilder(
+                        listenable: controller,
+                        builder: (context, _) {
+                          final tab = tabs[controller.index];
+                          if (!tab.mine) return const SizedBox.shrink();
+                          return IconButton(
+                            key: const ValueKey('dashboard.edit'),
+                            tooltip: l10n.editTabTitle,
+                            icon: const Icon(Icons.edit_outlined),
+                            onPressed: () async {
+                              final saved = await context.push<bool>(
+                                Uri(
+                                  path: Routes.editTab,
+                                  queryParameters: {'tab': tab.id},
+                                ).toString(),
+                              );
+                              if (saved ?? false) {
+                                viewModel.load.execute().ignore();
+                              }
+                            },
+                          );
+                        },
+                      );
+                    },
+                  ),
                 IconButton(
                   key: const ValueKey('dashboard.search'),
                   tooltip: l10n.searchHint,

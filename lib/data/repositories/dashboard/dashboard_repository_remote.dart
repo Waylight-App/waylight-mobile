@@ -15,4 +15,15 @@ class DashboardRepositoryRemote implements DashboardRepository {
   @override
   Future<Result<Dashboard>> dashboard(ServerAddress server) =>
       _api.dashboard(server);
+
+  @override
+  Future<Result<void>> saveLayout(
+    ServerAddress server,
+    String tabId,
+    List<PhoneLayoutItem> layout,
+  ) => _api.saveLayout(server, tabId, layout);
+
+  @override
+  Future<Result<void>> resetLayout(ServerAddress server, String tabId) =>
+      _api.resetLayout(server, tabId);
 }
