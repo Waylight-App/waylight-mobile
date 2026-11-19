@@ -5,6 +5,7 @@ import 'package:waylight_mobile/app.dart';
 import 'package:waylight_mobile/config/dependencies.dart';
 import 'package:waylight_mobile/config/logging.dart';
 import 'package:waylight_mobile/routing/router.dart';
+import 'package:waylight_mobile/routing/shortcuts.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,6 +38,7 @@ Future<void> main() async {
         builder: (context, _) => WaylightApp(
           router: router,
           appearance: repositories.preferences.appearance,
+          onShortcut: (shortcut) => router.go(shortcutLocation(shortcut)),
         ),
       ),
     ),

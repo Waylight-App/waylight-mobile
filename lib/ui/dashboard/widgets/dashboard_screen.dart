@@ -78,12 +78,7 @@ class DashboardScreen extends StatelessWidget {
           length: tabs.length,
           initialIndex: dashboard == null
               ? 0
-              : Dashboard(
-                  tabs: dashboard.tabs,
-                  defaultTabId: viewModel.initialTabId.isEmpty
-                      ? dashboard.defaultTabId
-                      : viewModel.initialTabId,
-                ).initialIndex,
+              : viewModel.initialIndexIn(dashboard),
           child: Scaffold(
             appBar: AppBar(
               title: const Wordmark(),

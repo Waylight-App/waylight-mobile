@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 
 import 'package:waylight_mobile/domain/models/appearance.dart';
+import 'package:waylight_mobile/ui/core/app_shortcuts.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/app_theme.dart';
 
@@ -11,8 +12,14 @@ class WaylightApp extends StatelessWidget {
   const WaylightApp({
     required this.router,
     this.appearance = const Appearance(),
+    this.onShortcut = _ignore,
     super.key,
   });
+
+  static void _ignore(AppShortcut _) {}
+
+  /// Opens the place of a shortcut on the launcher icon (#50).
+  final void Function(AppShortcut shortcut) onShortcut;
 
   /// The router that decides which screen is shown.
   final GoRouter router;
@@ -39,6 +46,10 @@ class WaylightApp extends StatelessWidget {
       localizationsDelegates: appLocalizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       routerConfig: router,
+      builder: (context, child) => AppShortcuts(
+        onShortcut: onShortcut,
+        child: child ?? const SizedBox(),
+      ),
     );
   }
 }

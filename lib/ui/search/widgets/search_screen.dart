@@ -46,12 +46,13 @@ class SearchScreen extends StatelessWidget {
     final l10n = context.l10n;
     return Scaffold(
       appBar: AppBar(
-        title: TextField(
+        title: TextFormField(
           key: const ValueKey('search.field'),
+          initialValue: viewModel.initialQuery,
           autofocus: true,
           textInputAction: TextInputAction.search,
           onChanged: viewModel.onQueryChanged,
-          onSubmitted: (_) =>
+          onFieldSubmitted: (_) =>
               openLink(context, viewModel.webSearchUri, l10n.linkOpenFailed),
           decoration: InputDecoration(
             hintText: l10n.searchHint,

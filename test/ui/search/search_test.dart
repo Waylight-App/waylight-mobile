@@ -171,4 +171,17 @@ void main() {
       );
     });
   });
+
+  test('starts with the text of a shortcut', () {
+    final viewModel = SearchViewModel(
+      serverRepository: FakeServerRepository(current: testServer()),
+      searchRepository: FakeSearchRepository(),
+      dashboardRepository: FakeDashboardRepository(),
+      todosRepository: FakeTodosRepository(),
+      initialQuery: 't ',
+    );
+
+    expect(viewModel.query, 't ');
+    viewModel.dispose();
+  });
 }

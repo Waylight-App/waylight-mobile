@@ -53,6 +53,7 @@ GoRouter createRouter(
       builder: (context, state) => ViewModelHost(
         create: (context) => DashboardViewModel(
           initialTabId: state.uri.queryParameters['tab'] ?? '',
+          initialWidgetKind: state.uri.queryParameters['widget'] ?? '',
           serverRepository: context.read(),
           dashboardRepository: context.read(),
           offlineRepository: context.read(),
@@ -100,6 +101,7 @@ GoRouter createRouter(
       path: Routes.search,
       builder: (context, state) => ViewModelHost(
         create: (context) => SearchViewModel(
+          initialQuery: state.uri.queryParameters['q'] ?? '',
           serverRepository: context.read(),
           searchRepository: context.read(),
           dashboardRepository: context.read(),
