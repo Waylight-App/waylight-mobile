@@ -6,6 +6,8 @@ import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
 
 import 'package:waylight_mobile/data/services/api/api_credentials.dart';
+import 'package:waylight_mobile/data/services/api/offline_status.dart';
+import 'package:waylight_mobile/data/services/cache/response_cache.dart';
 import 'package:waylight_mobile/domain/models/api_exception.dart';
 import 'package:waylight_mobile/utils/result.dart';
 
@@ -41,8 +43,31 @@ class ApiClient {
   ApiClient({
     required this._client,
     ApiCredentials? credentials,
+    this._cache,
+    OfflineStatus? offline,
+    this._now = DateTime.now,
     this.timeout = const Duration(seconds: 10),
-  }) : _credentials = credentials ?? ApiCredentials();
+  }) : _credentials = credentials ?? ApiCredentials(),
+       _offline = offline ?? OfflineStatus();
+
+  /// The read endpoints whose last answer is kept for offline use (#23,
+  /// ADR 0007). Sign-in, settings, exports and logs are never kept.
+  static const cachedPaths = {
+    '/api/dashboard',
+    '/api/weather',
+    '/api/todos',
+    '/api/notes',
+    '/api/bookmarks',
+    '/api/transit/departures',
+    '/api/waste/upcoming',
+  };
+
+  /// How old a stored answer may be to be shown.
+  static const maxCacheAge = Duration(days: 7);
+
+  final ResponseCache? _cache;
+  final OfflineStatus _offline;
+  final DateTime Function() _now;
 
   final http.Client _client;
   final ApiCredentials _credentials;
@@ -55,11 +80,34 @@ class ApiClient {
     HttpHeaders.acceptHeader: 'application/json',
   };
 
-  /// Sends a GET request and returns the decoded JSON body.
+  /// Sends a GET request and returns the decoded JSON body. For the
+  /// [cachedPaths], the answer is kept and served when the server cannot be
+  /// reached.
   Future<Result<Object?>> getJson(
     Uri uri, {
     Map<String, String> headers = const {},
-  }) async => _bodyOf(await _send('GET', uri, headers: headers));
+  }) async {
+    final result = await _send('GET', uri, headers: headers);
+    final cache = _cache;
+    if (cache == null || !_cachable(uri)) return _bodyOf(result);
+    switch (result) {
+      case Ok(:final value):
+        await cache.write(uri, jsonEncode(value.body), _now());
+      case Error(error: ApiException(failure: ApiFailure.unreachable)):
+        final stored = await cache.read(uri);
+        if (stored != null &&
+            _now().difference(stored.storedAt) < maxCacheAge) {
+          _offline.servedStored(stored.storedAt);
+          return Result.ok(_decode(stored.body));
+        }
+      case Error():
+        break;
+    }
+    return _bodyOf(result);
+  }
+
+  bool _cachable(Uri uri) =>
+      cachedPaths.any((p) => uri.path == p || uri.path.endsWith(p));
 
   /// Sends a POST request with [body] encoded as JSON.
   Future<Result<Object?>> postJson(
@@ -135,6 +183,7 @@ class ApiClient {
       return const Result.error(ApiException(ApiFailure.unreachable));
     }
 
+    _offline.reachedServer();
     // JSON is always UTF-8 (RFC 8259); Response.body would fall back to
     // Latin-1 when the content type names no charset.
     final decoded = _decode(

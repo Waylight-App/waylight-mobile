@@ -94,7 +94,13 @@ const _layers = <_Layer>[
   _Layer(
     'config/',
     mayImport: ['data/', 'utils/'],
-    packages: [..._flutterBase, 'http/', 'provider/', 'logging/'],
+    packages: [
+      ..._flutterBase,
+      'http/',
+      'provider/',
+      'logging/',
+      'path_provider/',
+    ],
   ),
   _Layer(
     'main.dart',

@@ -16,3 +16,4 @@ status *Proposed*, and discuss it in the pull request.
 | [0004](0004-authentication.md) | Sign-in of the app: session endpoints first, app sessions from the server later | Accepted |
 | [0005](0005-design-system.md) | Design system in code: theme tokens and shared components | Accepted |
 | [0006](0006-plain-http-in-the-home-network.md) | Plain HTTP only for addresses in the home network | Accepted |
+| [0007](0007-offline-copy.md) | Offline copy of the dashboard: files in the private directory, limited, deleted on sign-out | Accepted |

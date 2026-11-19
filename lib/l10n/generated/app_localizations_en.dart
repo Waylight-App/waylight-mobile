@@ -474,4 +474,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get todosSave => 'Save';
+
+  @override
+  String dashboardOffline(String time) {
+    return 'Offline · showing the data from $time';
+  }
 }
