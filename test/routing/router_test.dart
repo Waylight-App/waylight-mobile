@@ -5,6 +5,7 @@ import 'package:waylight_mobile/app.dart';
 import 'package:waylight_mobile/config/dependencies.dart';
 import 'package:waylight_mobile/data/repositories/lock/app_lock_repository.dart';
 import 'package:waylight_mobile/data/repositories/offline/offline_repository.dart';
+import 'package:waylight_mobile/data/repositories/todos/todos_repository_outbox.dart';
 import 'package:waylight_mobile/data/services/api/offline_status.dart';
 import 'package:waylight_mobile/routing/router.dart';
 import 'package:waylight_mobile/routing/routes.dart';
@@ -39,7 +40,12 @@ void main() {
           session: sessions,
           dashboard: FakeDashboardRepository(),
           weather: FakeWeatherRepository(),
-          todos: FakeTodosRepository(),
+          todos: TodosRepositoryOutbox(
+            remote: FakeTodosRepository(),
+            store: InMemoryKeyValueStore(),
+            offline: OfflineStatus(),
+            server: () => null,
+          ),
           notes: FakeNotesRepository(),
           bookmarks: FakeBookmarksRepository(),
           transit: FakeTransitRepository(),

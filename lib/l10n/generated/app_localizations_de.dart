@@ -558,4 +558,41 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get shortcutDepartures => 'Abfahrten';
+
+  @override
+  String get todosPending => 'Noch nicht auf dem Server gespeichert';
+
+  @override
+  String todosConflicts(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count Änderungen konnten nicht gespeichert werden.',
+      one: '1 Änderung konnte nicht gespeichert werden.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get todosConflictsDecide => 'Entscheiden';
+
+  @override
+  String get todosConflictChanged => 'Inzwischen anderswo geändert.';
+
+  @override
+  String todosConflictRejected(String message) {
+    return 'Vom Server abgelehnt: $message';
+  }
+
+  @override
+  String get todosKeepMine => 'Meins behalten';
+
+  @override
+  String get todosKeepServer => 'Server-Version behalten';
+
+  @override
+  String get todosDiscard => 'Verwerfen';
+
+  @override
+  String get todosDeletedTodo => 'Gelöschtes To-do';
 }

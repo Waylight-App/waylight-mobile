@@ -1,15 +1,17 @@
 import 'package:intl/intl.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
-
+import 'package:waylight_mobile/data/repositories/todos/todos_repository_outbox.dart';
 import 'package:waylight_mobile/domain/models/api_exception.dart';
 import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/domain/models/todo.dart';
 import 'package:waylight_mobile/ui/core/error_messages.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
+import 'package:waylight_mobile/ui/core/widgets/message_banner.dart';
 import 'package:waylight_mobile/ui/core/widgets/view_model_host.dart';
 import 'package:waylight_mobile/ui/core/widgets/widget_frame.dart';
+import 'package:waylight_mobile/ui/widgets/todos/conflicts_sheet.dart';
 import 'package:waylight_mobile/ui/widgets/todos/todo_sheet.dart';
 import 'package:waylight_mobile/ui/widgets/todos/todos_view_model.dart';
 
@@ -33,6 +35,7 @@ class TodosWidget extends StatelessWidget {
         config: TodosConfig.fromJson(widget.config),
         serverRepository: context.read(),
         todosRepository: context.read(),
+        outbox: context.read<TodoOutbox?>(),
       ),
       builder: (context, viewModel) => WidgetFrame(
         title: widget.title.isNotEmpty ? widget.title : context.l10n.todosTitle,
@@ -102,11 +105,25 @@ class _TodoListState extends State<_TodoList> {
       builder: (context, _) => Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          if (viewModel.conflicts.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.only(bottom: Dimens.gapSmall),
+              child: MessageBanner(
+                key: const ValueKey('todos.conflicts'),
+                kind: MessageKind.warning,
+                message: l10n.todosConflicts(viewModel.conflicts.length),
+                action: TextButton(
+                  onPressed: () => showConflicts(context, viewModel),
+                  child: Text(l10n.todosConflictsDecide),
+                ),
+              ),
+            ),
           if (viewModel.todos.isEmpty) Text(l10n.todosEmpty),
           for (final todo in viewModel.todos)
             _TodoRow(
               todo: todo,
               today: viewModel.today,
+              pending: viewModel.isPending(todo),
               onToggle: viewModel.canEdit
                   ? () => viewModel.toggle(todo).ignore()
                   : null,
@@ -150,12 +167,14 @@ class _TodoRow extends StatelessWidget {
   const _TodoRow({
     required this.todo,
     required this.today,
+    this.pending = false,
     this.onToggle,
     this.onEdit,
   });
 
   final Todo todo;
   final DateTime today;
+  final bool pending;
   final VoidCallback? onToggle;
   final VoidCallback? onEdit;
 
@@ -180,6 +199,23 @@ class _TodoRow extends StatelessWidget {
                 )
               : null,
         ),
+        // A change made offline that the server does not have yet (#24).
+        subtitle: pending
+            ? Row(
+                children: [
+                  Icon(
+                    Icons.cloud_upload_outlined,
+                    size: Dimens.iconSmall,
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                  const SizedBox(width: Dimens.gapTiny),
+                  Text(
+                    context.l10n.todosPending,
+                    style: theme.textTheme.bodySmall,
+                  ),
+                ],
+              )
+            : null,
         trailing: due == null
             ? null
             : Text(

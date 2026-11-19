@@ -18,6 +18,7 @@ Future<void> main() async {
   await repositories.session.restore(repositories.server.current);
   await repositories.preferences.restore();
   await repositories.lock.restore();
+  await repositories.todos.restore();
   // The app lock counts the time in the background (#46).
   AppLifecycleListener(
     onHide: repositories.lock.onHidden,
