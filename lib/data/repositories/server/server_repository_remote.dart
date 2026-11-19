@@ -71,10 +71,21 @@ class ServerRepositoryRemote extends ServerRepository {
     final result = await _platformApi.authStatus(server);
     return switch (result) {
       Ok(:final value) => Result.ok(
-        ServerStatus(setupRequired: value.setupRequired),
+        ServerStatus(
+          setupRequired: value.setupRequired,
+          username: value.username,
+          role: value.role,
+        ),
       ),
       Error(:final error) => Result.error(error),
     };
+  }
+
+  @override
+  Future<Result<String>> version() async {
+    final server = _current;
+    if (server == null) return const Result.error(NotConnectedException());
+    return _platformApi.version(server);
   }
 
   @override

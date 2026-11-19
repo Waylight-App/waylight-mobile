@@ -73,6 +73,7 @@ const _layers = <_Layer>[
       'flutter/widgets.dart',
       'intl/',
       'timezone/',
+      'package_info_plus/',
       'go_router/',
       'provider/',
       'logging/',
@@ -87,7 +88,7 @@ const _layers = <_Layer>[
   _Layer('l10n/', packages: ['flutter/', 'flutter_localizations/', 'intl/']),
   _Layer(
     'app.dart',
-    mayImport: ['l10n/', 'ui/core/'],
+    mayImport: ['l10n/', 'ui/core/', 'domain/models/'],
     packages: ['material_ui/', 'go_router/'],
   ),
   _Layer(

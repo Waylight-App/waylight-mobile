@@ -5,6 +5,8 @@ final class AuthStatusApiModel {
   const AuthStatusApiModel({
     required this.setupRequired,
     required this.authenticated,
+    this.username = '',
+    this.role = '',
   });
 
   /// Parses the response body; `null` if it does not match the schema, which
@@ -17,6 +19,14 @@ final class AuthStatusApiModel {
       AuthStatusApiModel(
         setupRequired: setupRequired,
         authenticated: authenticated,
+        username: switch (json['username']) {
+          final String u => u,
+          _ => '',
+        },
+        role: switch (json['role']) {
+          final String r => r,
+          _ => '',
+        },
       ),
     _ => null,
   };
@@ -26,4 +36,10 @@ final class AuthStatusApiModel {
 
   /// Whether the request carried a valid session.
   final bool authenticated;
+
+  /// The signed-in account's name; empty for the owner.
+  final String username;
+
+  /// The signed-in account's role; empty when signed out.
+  final String role;
 }

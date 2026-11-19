@@ -1,6 +1,8 @@
+import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 
 import 'package:waylight_mobile/domain/models/dashboard.dart';
+import 'package:waylight_mobile/routing/routes.dart';
 import 'package:waylight_mobile/ui/core/error_messages.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/refresh.dart';
@@ -77,7 +79,14 @@ class DashboardScreen extends StatelessWidget {
           child: Scaffold(
             appBar: AppBar(
               title: const Wordmark(),
-              actions: [_AccountMenu(viewModel: viewModel)],
+              actions: [
+                IconButton(
+                  key: const ValueKey('dashboard.settings'),
+                  tooltip: l10n.settingsTitle,
+                  icon: const Icon(Icons.settings_outlined),
+                  onPressed: () => context.push(Routes.settings),
+                ),
+              ],
               bottom: tabs.length < 2
                   ? null
                   : TabBar(
@@ -138,38 +147,4 @@ class _Hint extends StatelessWidget {
   Widget build(BuildContext context) => FormPage(
     children: [MessageBanner(kind: MessageKind.info, message: text)],
   );
-}
-
-enum _AccountAction { signOut, disconnect }
-
-/// Sign out and server change, until the settings screen (#14) takes them.
-class _AccountMenu extends StatelessWidget {
-  const _AccountMenu({required this.viewModel});
-
-  final DashboardViewModel viewModel;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = context.l10n;
-    return PopupMenuButton<_AccountAction>(
-      key: const ValueKey('dashboard.menu'),
-      tooltip: l10n.dashboardMenu,
-      onSelected: (action) => switch (action) {
-        _AccountAction.signOut => viewModel.signOut.execute().ignore(),
-        _AccountAction.disconnect => viewModel.disconnect.execute().ignore(),
-      },
-      itemBuilder: (context) => [
-        PopupMenuItem(
-          key: const ValueKey('dashboard.signOut'),
-          value: _AccountAction.signOut,
-          child: Text(l10n.homeSignOut),
-        ),
-        PopupMenuItem(
-          key: const ValueKey('dashboard.disconnect'),
-          value: _AccountAction.disconnect,
-          child: Text(l10n.homeDisconnect),
-        ),
-      ],
-    );
-  }
 }

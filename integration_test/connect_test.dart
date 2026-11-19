@@ -19,8 +19,8 @@ const _serverTimeout = Duration(seconds: 30);
 
 final _address = find.byKey(const ValueKey('connect.address'));
 final _submit = find.byKey(const ValueKey('connect.submit'));
-final _menu = find.byKey(const ValueKey('dashboard.menu'));
-final _disconnect = find.byKey(const ValueKey('dashboard.disconnect'));
+final _settings = find.byKey(const ValueKey('dashboard.settings'));
+final _disconnect = find.byKey(const ValueKey('settings.disconnect'));
 final _otherServer = find.byKey(const ValueKey('signIn.otherServer'));
 final _password = find.byKey(const ValueKey('signIn.password'));
 final _signIn = find.byKey(const ValueKey('signIn.submit'));
@@ -40,8 +40,8 @@ void main() {
     await tester.pumpAndSettle();
 
     // A server and session kept from an earlier run skip the first screens.
-    if (_menu.evaluate().isNotEmpty) {
-      await tester.tap(_menu);
+    if (_settings.evaluate().isNotEmpty) {
+      await tester.tap(_settings);
       await tester.pumpAndSettle();
       await tester.tap(_disconnect);
       await _pumpUntilFound(tester, _address);

@@ -37,6 +37,12 @@ class FakeServerRepository extends ServerRepository {
   @override
   Future<Result<ServerStatus>> status() async => statusResult;
 
+  /// What [version] returns.
+  Result<String> versionResult = const Result.ok('1.2.3');
+
+  @override
+  Future<Result<String>> version() async => versionResult;
+
   @override
   Future<Result<void>> disconnect() async {
     _current = null;

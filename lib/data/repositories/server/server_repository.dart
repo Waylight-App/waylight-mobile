@@ -32,6 +32,9 @@ abstract class ServerRepository extends ChangeNotifier {
   /// Asks the [current] server for its [ServerStatus].
   Future<Result<ServerStatus>> status();
 
+  /// The version the [current] server runs, if the account may see it.
+  Future<Result<String>> version();
+
   /// Forgets the saved server.
   Future<Result<void>> disconnect();
 }

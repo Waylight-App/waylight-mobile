@@ -148,9 +148,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dashboardEmptyTab => 'This tab has no widgets yet.';
 
   @override
-  String get dashboardMenu => 'Account';
-
-  @override
   String get connectErrorInsecure =>
       'Plain http:// only works for addresses in your home network. Use https:// for this server.';
 
@@ -355,4 +352,70 @@ class AppLocalizationsEn extends AppLocalizations {
   String freshnessFailed(String age) {
     return 'refresh failed – $age';
   }
+
+  @override
+  String get settingsTitle => 'Settings';
+
+  @override
+  String get settingsServer => 'Server';
+
+  @override
+  String get settingsAddress => 'Address';
+
+  @override
+  String get settingsVersion => 'Version';
+
+  @override
+  String get settingsAccount => 'Account';
+
+  @override
+  String get settingsOwnerAccount => 'Owner account';
+
+  @override
+  String get settingsRoleOwner => 'Owner';
+
+  @override
+  String get settingsRoleAdmin => 'Admin';
+
+  @override
+  String get settingsRoleMember => 'Member';
+
+  @override
+  String get settingsRoleGuest => 'Guest';
+
+  @override
+  String get settingsAppearance => 'Appearance';
+
+  @override
+  String get settingsTheme => 'Theme';
+
+  @override
+  String get settingsLanguage => 'Language';
+
+  @override
+  String get settingsSystem => 'System';
+
+  @override
+  String get settingsLight => 'Light';
+
+  @override
+  String get settingsDark => 'Dark';
+
+  @override
+  String get settingsAbout => 'About';
+
+  @override
+  String get settingsAppVersion => 'App version';
+
+  @override
+  String get settingsLicence => 'Licence';
+
+  @override
+  String get settingsSource => 'Source code';
+
+  @override
+  String get settingsPrivacy => 'Privacy';
+
+  @override
+  String get settingsLicences => 'Open-source licences';
 }
