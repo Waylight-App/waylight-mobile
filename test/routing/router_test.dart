@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
-
 import 'package:waylight_mobile/app.dart';
 import 'package:waylight_mobile/config/dependencies.dart';
 import 'package:waylight_mobile/data/repositories/lock/app_lock_repository.dart';
@@ -25,6 +24,7 @@ import '../testing/fakes/fake_todos_repository.dart';
 import '../testing/fakes/fake_transit_repository.dart';
 import '../testing/fakes/fake_waste_repository.dart';
 import '../testing/fakes/fake_weather_repository.dart';
+import '../testing/fakes/fake_widget_data_repository.dart';
 import '../testing/fakes/in_memory_key_value_store.dart';
 
 void main() {
@@ -50,6 +50,7 @@ void main() {
           bookmarks: FakeBookmarksRepository(),
           transit: FakeTransitRepository(),
           waste: FakeWasteRepository(),
+          widgetData: FakeWidgetDataRepository(),
           preferences: FakePreferencesRepository(),
           offline: OfflineRepository(OfflineStatus()),
           search: FakeSearchRepository(),

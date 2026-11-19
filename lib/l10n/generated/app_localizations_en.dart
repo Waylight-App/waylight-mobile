@@ -621,4 +621,111 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsAddServer => 'Add another server';
+
+  @override
+  String get systemTitle => 'System';
+
+  @override
+  String get systemCpu => 'CPU';
+
+  @override
+  String get systemMemory => 'Memory';
+
+  @override
+  String get systemSwap => 'Swap';
+
+  @override
+  String get servicesTitle => 'Services';
+
+  @override
+  String get servicesEmpty => 'No services yet.';
+
+  @override
+  String get servicesOnline => 'Online';
+
+  @override
+  String get servicesOffline => 'Offline';
+
+  @override
+  String get servicesUnknown => 'Unchecked';
+
+  @override
+  String get statusOverviewTitle => 'Status';
+
+  @override
+  String get backupsTitle => 'Backups';
+
+  @override
+  String get backupsEmpty => 'No backups or jobs report yet.';
+
+  @override
+  String get backupsOk => 'OK';
+
+  @override
+  String get backupsOverdue => 'Overdue';
+
+  @override
+  String get backupsFailed => 'Failed';
+
+  @override
+  String get backupsWaiting => 'Waiting';
+
+  @override
+  String get countdownTitle => 'Countdowns';
+
+  @override
+  String get countdownEmpty => 'No countdowns ahead.';
+
+  @override
+  String get birthdaysTitle => 'Birthdays';
+
+  @override
+  String get birthdaysEmpty => 'No birthdays yet.';
+
+  @override
+  String get electricityTitle => 'Electricity prices';
+
+  @override
+  String get electricityTomorrowLater =>
+      'Tomorrow\'s prices follow around 1 pm.';
+
+  @override
+  String systemUptime(int days, int hours) {
+    return 'up $days d $hours h';
+  }
+
+  @override
+  String systemLoad(String load) {
+    return 'load $load';
+  }
+
+  @override
+  String systemDiskOf(String used, String total) {
+    return '$used of $total';
+  }
+
+  @override
+  String systemFullIn(int days) {
+    return 'full in $days days';
+  }
+
+  @override
+  String backupsLastSuccess(String date) {
+    return 'last success $date';
+  }
+
+  @override
+  String birthdaysTurns(int age) {
+    return 'turns $age';
+  }
+
+  @override
+  String electricityNow(String price) {
+    return 'Now $price';
+  }
+
+  @override
+  String electricityCheapest(String hours) {
+    return 'Cheapest hours: $hours';
+  }
 }
