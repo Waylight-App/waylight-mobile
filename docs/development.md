@@ -32,6 +32,18 @@ The emulator reaches a server on your computer at `http://10.0.2.2:8090`
 private addresses, so plain HTTP works
 ([ADR 0006](adr/0006-plain-http-in-the-home-network.md)).
 
+## Links into the app
+
+The app opens `waylight://<route>` links, e.g. `waylight://settings`
+(`lib/routing/router.dart`, #47). Unknown routes open the dashboard; when
+signed out, the app asks to sign in and continues to the link. Try one on
+the emulator or simulator:
+
+```sh
+adb shell am start -a android.intent.action.VIEW -d "waylight://settings"
+xcrun simctl openurl booted "waylight://settings"
+```
+
 ## Everyday commands
 
 | Command | What it does |

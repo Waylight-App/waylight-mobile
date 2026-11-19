@@ -72,5 +72,17 @@
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
 	</dict>
+	<!-- Links into the app, e.g. waylight://settings (#47). -->
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>app.waylight.mobile</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>waylight</string>
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>
