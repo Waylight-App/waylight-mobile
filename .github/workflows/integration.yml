@@ -2,10 +2,11 @@ name: Integration
 
 # End-to-end tests on an Android emulator against a real Waylight server
 # (docs/testing.md#integration-tests). They take minutes and depend on the
-# server, so they run nightly and on demand, not on every pull request.
+# server, so they run weekly (Mondays) and on demand, not on every pull
+# request; each run costs about 30 minutes of the Actions quota.
 on:
   schedule:
-    - cron: "30 2 * * *"
+    - cron: "30 2 * * 1"
   workflow_dispatch:
     inputs:
       url:
