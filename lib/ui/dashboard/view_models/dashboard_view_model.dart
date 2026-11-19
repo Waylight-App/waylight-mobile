@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-
+import 'package:waylight_mobile/data/repositories/appearance/theme_repository.dart';
 import 'package:waylight_mobile/data/repositories/dashboard/dashboard_repository.dart';
 import 'package:waylight_mobile/data/repositories/offline/offline_repository.dart';
 import 'package:waylight_mobile/data/repositories/push/push_repository.dart';
@@ -18,8 +18,10 @@ class DashboardViewModel extends ChangeNotifier {
     this.initialWidgetKind = '',
     OfflineRepository? offlineRepository,
     PushRepository? pushRepository,
+    ThemeRepository? themeRepository,
   }) : _offline = offlineRepository,
-       _push = pushRepository {
+       _push = pushRepository,
+       _theme = themeRepository {
     _offline?.addListener(notifyListeners);
     load = Command0(_load)..execute().ignore();
     _loadDemo().ignore();
@@ -29,6 +31,7 @@ class DashboardViewModel extends ChangeNotifier {
   final DashboardRepository _dashboardRepository;
   final OfflineRepository? _offline;
   final PushRepository? _push;
+  final ThemeRepository? _theme;
   bool _pushRefreshed = false;
 
   /// When the server cannot be reached: the time of the stored data shown.
@@ -86,10 +89,12 @@ class DashboardViewModel extends ChangeNotifier {
       return Future.value(const Result.error(NotConnectedException()));
     }
     // Once per start: register the push token again in case the push
-    // service replaced it while the app was closed (#59).
+    // service replaced it while the app was closed (#59), and follow a
+    // theme changed in the web interface (#157).
     if (!_pushRefreshed) {
       _pushRefreshed = true;
       _push?.refresh(server).ignore();
+      _theme?.refresh(server).ignore();
     }
     return _dashboardRepository.dashboard(server);
   }

@@ -10,4 +10,16 @@ class FakeSearchRepository implements SearchRepository {
 
   @override
   Future<Result<SearchSettings>> settings(ServerAddress server) async => result;
+
+  /// The wiki pages every query finds.
+  List<WikiHit> wikiHits = const [];
+
+  /// The wiki queries asked.
+  final List<String> wikiQueries = [];
+
+  @override
+  Future<Result<List<WikiHit>>> wiki(ServerAddress server, String query) async {
+    wikiQueries.add(query);
+    return Result.ok(wikiHits);
+  }
 }

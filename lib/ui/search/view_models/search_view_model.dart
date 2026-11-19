@@ -77,6 +77,32 @@ class SearchViewModel extends ChangeNotifier {
   void _update() {
     _results = searchResults(_query, _settings, _dashboard);
     notifyListeners();
+    _searchWiki(_query).ignore();
+  }
+
+  int _wikiRound = 0;
+
+  /// Adds the pages of the connected wikis after the local results (#156);
+  /// an answer to an older query is dropped, and a server without wikis
+  /// adds nothing.
+  Future<void> _searchWiki(String query) async {
+    final round = ++_wikiRound;
+    final server = _serverRepository.current;
+    final q = query.trim();
+    if (server == null || q.length < 2) return;
+    final hits = await _searchRepository.wiki(server, q);
+    if (round != _wikiRound) return;
+    if (hits case Ok(:final value) when value.isNotEmpty) {
+      _results = [
+        ..._results,
+        for (final h in value)
+          OpenAddress(
+            label: h.wiki.isEmpty ? h.title : '${h.title} · ${h.wiki}',
+            uri: h.url,
+          ),
+      ];
+      notifyListeners();
+    }
   }
 
   Future<Result<void>> _capture(String title) async {

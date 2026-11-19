@@ -22,4 +22,29 @@ class FakeBookmarksRepository implements BookmarksRepository {
     calls.add((folder, tag));
     return result;
   }
+
+  /// The changes asked for, as `create:<title>`, `update:<id>` or `delete:<id>`.
+  final List<String> changes = [];
+
+  @override
+  Future<Result<void>> create(ServerAddress server, BookmarkDraft draft) async {
+    changes.add('create:${draft.title}');
+    return const Result.ok(null);
+  }
+
+  @override
+  Future<Result<void>> update(
+    ServerAddress server,
+    String id,
+    BookmarkDraft draft,
+  ) async {
+    changes.add('update:$id');
+    return const Result.ok(null);
+  }
+
+  @override
+  Future<Result<void>> delete(ServerAddress server, String id) async {
+    changes.add('delete:$id');
+    return const Result.ok(null);
+  }
 }

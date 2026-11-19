@@ -1,10 +1,15 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:http/http.dart' as http;
+import 'package:http/testing.dart';
 import 'package:provider/provider.dart';
 import 'package:waylight_mobile/app.dart';
 import 'package:waylight_mobile/config/dependencies.dart';
+import 'package:waylight_mobile/data/repositories/appearance/theme_repository.dart';
 import 'package:waylight_mobile/data/repositories/lock/app_lock_repository.dart';
 import 'package:waylight_mobile/data/repositories/offline/offline_repository.dart';
 import 'package:waylight_mobile/data/repositories/todos/todos_repository_outbox.dart';
+import 'package:waylight_mobile/data/services/api/api_client.dart';
+import 'package:waylight_mobile/data/services/api/module_api.dart';
 import 'package:waylight_mobile/data/services/api/offline_status.dart';
 import 'package:waylight_mobile/routing/router.dart';
 import 'package:waylight_mobile/routing/routes.dart';
@@ -66,6 +71,15 @@ void main() {
           drop: FakeDropRepository(),
           security: FakeAccountSecurity(),
           push: FakePushRepository(),
+          theme: ThemeRepository(
+            api: ModuleApi(
+              ApiClient(
+                client: MockClient((_) async => http.Response('{}', 200)),
+              ),
+            ),
+            store: InMemoryKeyValueStore(),
+          ),
+          summary: FakeSummaryRepository(),
           preferences: FakePreferencesRepository(),
           offline: OfflineRepository(OfflineStatus()),
           search: FakeSearchRepository(),

@@ -12,6 +12,8 @@ import 'package:waylight_mobile/data/repositories/actions/parcels_repository.dar
 import 'package:waylight_mobile/data/repositories/actions/read_later_repository.dart';
 import 'package:waylight_mobile/data/repositories/actions/rss_repository.dart';
 import 'package:waylight_mobile/data/repositories/actions/smarthome_repository.dart';
+import 'package:waylight_mobile/data/repositories/actions/summary_repository.dart';
+import 'package:waylight_mobile/data/repositories/appearance/theme_repository.dart';
 import 'package:waylight_mobile/data/repositories/bookmarks/bookmarks_repository.dart';
 import 'package:waylight_mobile/data/repositories/bookmarks/bookmarks_repository_remote.dart';
 import 'package:waylight_mobile/data/repositories/calendar/calendar_repository.dart';
@@ -92,6 +94,8 @@ typedef Repositories = ({
   DropRepository drop,
   AccountSecurityRepository security,
   PushRepository push,
+  ThemeRepository theme,
+  SummaryRepository summary,
   PreferencesRepository preferences,
   OfflineRepository offline,
   SearchRepository search,
@@ -126,6 +130,8 @@ List<SingleChildWidget> providers(Repositories repositories) => [
   Provider<DropRepository>.value(value: repositories.drop),
   Provider<AccountSecurityRepository>.value(value: repositories.security),
   Provider<PushRepository>.value(value: repositories.push),
+  ChangeNotifierProvider<ThemeRepository>.value(value: repositories.theme),
+  Provider<SummaryRepository>.value(value: repositories.summary),
   Provider<SearchRepository>.value(value: repositories.search),
   ChangeNotifierProvider<AppLockRepository>.value(value: repositories.lock),
   ChangeNotifierProvider<PreferencesRepository>.value(
@@ -151,6 +157,7 @@ Repositories createRepositories() {
   );
   const store = SecureKeyValueStore();
   final modules = ModuleApi(client);
+  final theme = ThemeRepository(api: modules, store: store);
   final server = ServerRepositoryRemote(
     platformApi: PlatformApi(client),
     store: store,
@@ -169,7 +176,7 @@ Repositories createRepositories() {
       store: store,
       deviceName: deviceName(),
       cache: cache,
-      onForget: [todos.clear],
+      onForget: [todos.clear, theme.clear],
     ),
     dashboard: DashboardRepositoryRemote(api: DashboardApi(client)),
     weather: WeatherRepositoryRemote(api: WeatherApi(client)),
@@ -196,6 +203,8 @@ Repositories createRepositories() {
       deviceName: deviceName(),
       store: store,
     ),
+    theme: theme,
+    summary: SummaryRepositoryRemote(api: modules),
     preferences: PreferencesRepositoryLocal(store: store),
     offline: OfflineRepository(offline),
     search: SearchRepositoryRemote(api: SearchApi(client)),

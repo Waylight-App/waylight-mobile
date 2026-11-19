@@ -1447,4 +1447,26 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get settingsPushNotInBuild =>
       'This version of the app has no push notifications.';
+
+  @override
+  String get summaryAction => 'Summarise';
+
+  @override
+  String get summaryTitle => 'Summary';
+
+  @override
+  String get summaryByAi =>
+      'Written by the server\'s local AI; it can be wrong.';
+
+  @override
+  String get bookmarkAdd => 'Add bookmark';
+
+  @override
+  String get bookmarkEdit => 'Edit bookmark';
+
+  @override
+  String get bookmarkFolder => 'Folder';
+
+  @override
+  String get bookmarkNoFolder => 'No folder';
 }

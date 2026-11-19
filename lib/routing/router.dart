@@ -71,6 +71,7 @@ GoRouter createRouter(
       builder: (context, state) => ViewModelHost(
         create: (context) => DashboardViewModel(
           pushRepository: context.read(),
+          themeRepository: context.read(),
           initialTabId: state.uri.queryParameters['tab'] ?? '',
           initialWidgetKind: state.uri.queryParameters['widget'] ?? '',
           serverRepository: context.read(),

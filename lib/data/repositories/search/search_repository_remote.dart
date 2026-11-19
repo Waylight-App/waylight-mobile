@@ -14,4 +14,8 @@ class SearchRepositoryRemote implements SearchRepository {
   @override
   Future<Result<SearchSettings>> settings(ServerAddress server) =>
       _api.settings(server);
+
+  @override
+  Future<Result<List<WikiHit>>> wiki(ServerAddress server, String query) =>
+      _api.wiki(server, query);
 }

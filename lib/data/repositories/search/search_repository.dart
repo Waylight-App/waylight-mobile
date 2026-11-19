@@ -6,4 +6,7 @@ import 'package:waylight_mobile/utils/result.dart';
 abstract interface class SearchRepository {
   /// The keywords, shortcuts and web search of [server].
   Future<Result<SearchSettings>> settings(ServerAddress server);
+
+  /// Pages of the connected wikis that match [query] (#156).
+  Future<Result<List<WikiHit>>> wiki(ServerAddress server, String query);
 }

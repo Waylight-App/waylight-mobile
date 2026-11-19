@@ -76,3 +76,22 @@ enum BookmarkSort {
   static int _byTitle(Bookmark a, Bookmark b) =>
       a.title.toLowerCase().compareTo(b.title.toLowerCase());
 }
+
+/// The fields of a bookmark the user edits (#102).
+final class BookmarkDraft {
+  /// Creates the draft.
+  const BookmarkDraft({
+    required this.title,
+    required this.url,
+    this.folderId = '',
+  });
+
+  /// The title.
+  final String title;
+
+  /// The address; only http and https are accepted.
+  final Uri url;
+
+  /// The folder; empty for none.
+  final String folderId;
+}

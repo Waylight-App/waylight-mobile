@@ -64,6 +64,31 @@ class BookmarksViewModel extends ChangeNotifier {
   /// Loads the links, grouped by folder in the folders' order.
   late final Command0<List<BookmarkGroup>> load;
 
+  List<BookmarkFolder> _folders = const [];
+
+  /// The folders a bookmark can go to.
+  List<BookmarkFolder> get folders => _folders;
+
+  /// Creates a bookmark, or saves it over [id], and reloads.
+  Future<Result<void>> save(BookmarkDraft draft, {String id = ''}) async {
+    final server = _serverRepository.current;
+    if (server == null) return const Result.error(NotConnectedException());
+    final result = id.isEmpty
+        ? await _bookmarksRepository.create(server, draft)
+        : await _bookmarksRepository.update(server, id, draft);
+    if (result is Ok<void>) await load.execute();
+    return result;
+  }
+
+  /// Deletes a bookmark and reloads.
+  Future<Result<void>> delete(Bookmark bookmark) async {
+    final server = _serverRepository.current;
+    if (server == null) return const Result.error(NotConnectedException());
+    final result = await _bookmarksRepository.delete(server, bookmark.id);
+    if (result is Ok<void>) await load.execute();
+    return result;
+  }
+
   Future<Result<List<BookmarkGroup>>> _load() async {
     final server = _serverRepository.current;
     if (server == null) return const Result.error(NotConnectedException());
@@ -72,10 +97,13 @@ class BookmarksViewModel extends ChangeNotifier {
       folder: config.folderId,
       tag: config.tag,
     );
-    return switch (result) {
-      Ok(:final value) => Result.ok(group(value, config.sort)),
-      Error(:final error) => Result.error(error),
-    };
+    switch (result) {
+      case Ok(:final value):
+        _folders = value.folders;
+        return Result.ok(group(value, config.sort));
+      case Error(:final error):
+        return Result.error(error);
+    }
   }
 
   /// Groups [bookmarks] by folder in the folders' order; links without a

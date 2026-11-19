@@ -427,5 +427,12 @@
   "settingsPushSwitch": "Benachrichtigungen auf diesem Handy",
   "settingsPushHint": "Nachrichten aus den Benachrichtigungsregeln von Waylight kommen Ende-zu-Ende-verschlüsselt an. Schalte im Web auch den Kanal „Waylight-App“ ein.",
   "settingsPushDenied": "Benachrichtigungen sind für diese App in den Systemeinstellungen gesperrt.",
-  "settingsPushNotInBuild": "Diese Version der App hat keine Push-Benachrichtigungen."
+  "settingsPushNotInBuild": "Diese Version der App hat keine Push-Benachrichtigungen.",
+  "summaryAction": "Zusammenfassen",
+  "summaryTitle": "Zusammenfassung",
+  "summaryByAi": "Von der lokalen KI des Servers geschrieben; sie kann sich irren.",
+  "bookmarkAdd": "Lesezeichen hinzufügen",
+  "bookmarkEdit": "Lesezeichen bearbeiten",
+  "bookmarkFolder": "Ordner",
+  "bookmarkNoFolder": "Kein Ordner"
 }

@@ -10,4 +10,17 @@ abstract interface class BookmarksRepository {
     String folder = '',
     String tag = '',
   });
+
+  /// Creates a bookmark.
+  Future<Result<void>> create(ServerAddress server, BookmarkDraft draft);
+
+  /// Saves [draft] over the bookmark [id].
+  Future<Result<void>> update(
+    ServerAddress server,
+    String id,
+    BookmarkDraft draft,
+  );
+
+  /// Deletes a bookmark.
+  Future<Result<void>> delete(ServerAddress server, String id);
 }

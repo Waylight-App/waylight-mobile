@@ -855,5 +855,19 @@
   "settingsPushDenied": "Notifications are blocked for this app in the system settings.",
   "@settingsPushDenied": {"description": "Permission denied."},
   "settingsPushNotInBuild": "This version of the app has no push notifications.",
-  "@settingsPushNotInBuild": {"description": "F-Droid build or no Firebase."}
+  "@settingsPushNotInBuild": {"description": "F-Droid build or no Firebase."},
+  "summaryAction": "Summarise",
+  "@summaryAction": {"description": "Asks the local AI for a summary."},
+  "summaryTitle": "Summary",
+  "@summaryTitle": {"description": "Heading of the summary sheet."},
+  "summaryByAi": "Written by the server's local AI; it can be wrong.",
+  "@summaryByAi": {"description": "Notice below an AI summary."},
+  "bookmarkAdd": "Add bookmark",
+  "@bookmarkAdd": {"description": "Button and dialog title."},
+  "bookmarkEdit": "Edit bookmark",
+  "@bookmarkEdit": {"description": "Dialog title."},
+  "bookmarkFolder": "Folder",
+  "@bookmarkFolder": {"description": "Field."},
+  "bookmarkNoFolder": "No folder",
+  "@bookmarkNoFolder": {"description": "Choice."}
 }

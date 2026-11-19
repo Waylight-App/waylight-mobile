@@ -184,4 +184,57 @@ void main() {
     expect(viewModel.query, 't ');
     viewModel.dispose();
   });
+
+  test('reads the pages of the wiki search', () {
+    final hits = parseWikiHits({
+      'pages': [
+        {
+          'title': 'Backups',
+          'url': 'https://wiki.example.org/books/ops/backups',
+          'wiki': 'BookStack',
+          'excerpt': 'restic …',
+        },
+        {'title': 'Broken', 'url': 'not a url'},
+      ],
+      'failed': <Object?>[],
+    })!;
+    expect(hits.single.title, 'Backups');
+    expect(hits.single.wiki, 'BookStack');
+  });
+
+  testWidgets('adds wiki pages after the other results', (tester) async {
+    final search = FakeSearchRepository()
+      ..result = Result.ok(settings)
+      ..wikiHits = [
+        WikiHit(
+          title: 'Backups',
+          url: Uri.parse('https://wiki.example.org/books/ops/backups'),
+          wiki: 'BookStack',
+        ),
+      ];
+    final opener = FakeLinkOpener();
+    final viewModel = SearchViewModel(
+      serverRepository: FakeServerRepository(current: testServer()),
+      searchRepository: search,
+      dashboardRepository: FakeDashboardRepository(),
+      todosRepository: FakeTodosRepository(),
+      debounce: Duration.zero,
+    );
+    addTearDown(viewModel.dispose);
+    await tester.pumpScreen(
+      LinkOpenerScope(
+        opener: opener,
+        child: SearchScreen(viewModel: viewModel),
+      ),
+    );
+    await tester.enterText(
+      find.byKey(const ValueKey('search.field')),
+      'backup',
+    );
+    await tester.pumpAndSettle();
+    expect(search.wikiQueries.last, 'backup');
+    await tester.tap(find.text('Backups · BookStack'));
+    await tester.pump();
+    expect(opener.opened.single.host, 'wiki.example.org');
+  });
 }

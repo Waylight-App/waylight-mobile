@@ -1,5 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 
+import 'package:waylight_mobile/domain/models/appearance.dart';
+
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
 import 'package:waylight_mobile/ui/core/themes/status_colors.dart';
 
@@ -29,26 +31,53 @@ abstract final class AppTheme {
   static const String wordmarkFont = 'Fraunces';
 
   /// The theme in light mode.
-  static ThemeData get light => _theme(Brightness.light, StatusColors.light);
+  static ThemeData get light => lightFor(null);
 
   /// The theme in dark mode.
-  static ThemeData get dark => _theme(Brightness.dark, StatusColors.dark);
+  static ThemeData get dark => darkFor(null);
 
-  static ThemeData _theme(Brightness brightness, StatusColors status) {
+  /// The light theme in the account's [palette] (#157), or Amber.
+  static ThemeData lightFor(ThemePalette? palette) =>
+      _theme(Brightness.light, StatusColors.light, palette);
+
+  /// The dark theme in the account's [palette] (#157), or Amber.
+  static ThemeData darkFor(ThemePalette? palette) =>
+      _theme(Brightness.dark, StatusColors.dark, palette);
+
+  static ThemeData _theme(
+    Brightness brightness,
+    StatusColors status,
+    ThemePalette? palette,
+  ) {
+    final accent = palette == null ? seed : Color(palette.accent);
+    final onAccent = palette == null ? onSeed : Color(palette.onAccent);
     // fidelity keeps the chroma of the seed instead of muting it
     // (tonalSpot). primary is used for text and icons, so it takes the
     // readable accent text of the web theme; Amber itself stays the surface
     // of filled buttons, with dark text on it in both modes.
     final scheme = ColorScheme.fromSeed(
-      seedColor: seed,
+      seedColor: accent,
       brightness: brightness,
       dynamicSchemeVariant: DynamicSchemeVariant.fidelity,
     );
     final light = brightness == Brightness.light;
-    final colors = scheme.copyWith(
+    final mode = palette == null
+        ? null
+        : (light ? palette.light : palette.dark);
+    var colors = scheme.copyWith(
       primary: light ? accentTextLight : accentTextDark,
       onPrimary: light ? const Color(0xFFFFFFFF) : onSeed,
     );
+    if (mode != null) {
+      // The web theme's own colours; the seed above fills in the rest.
+      colors = colors.copyWith(
+        primary: Color(mode.accentText),
+        onPrimary: light ? const Color(0xFFFFFFFF) : onAccent,
+        surface: Color(mode.background),
+        surfaceContainer: Color(mode.surface),
+        onSurface: Color(mode.text),
+      );
+    }
     const buttonSize = Size(64, Dimens.tapTarget);
     return ThemeData(
       colorScheme: colors,
@@ -60,12 +89,12 @@ abstract final class AppTheme {
           backgroundColor: WidgetStateProperty.resolveWith(
             (states) => states.contains(WidgetState.disabled)
                 ? colors.onSurface.withValues(alpha: 0.12)
-                : seed,
+                : accent,
           ),
           foregroundColor: WidgetStateProperty.resolveWith(
             (states) => states.contains(WidgetState.disabled)
                 ? colors.onSurface.withValues(alpha: 0.38)
-                : onSeed,
+                : onAccent,
           ),
         ),
       ),
