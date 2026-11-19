@@ -931,6 +931,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Save'**
   String get todosSave;
+
+  /// Banner while stored data is shown.
+  ///
+  /// In en, this message translates to:
+  /// **'Offline · showing the data from {time}'**
+  String dashboardOffline(String time);
 }
 
 class _AppLocalizationsDelegate

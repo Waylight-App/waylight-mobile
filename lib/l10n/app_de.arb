@@ -138,5 +138,6 @@
   "todosNoDueDate": "Kein Fälligkeitsdatum",
   "todosRemoveDueDate": "Fälligkeitsdatum entfernen",
   "todosDelete": "Löschen",
-  "todosSave": "Speichern"
+  "todosSave": "Speichern",
+  "dashboardOffline": "Offline · Daten von {time}"
 }

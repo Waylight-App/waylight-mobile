@@ -277,5 +277,7 @@
   "todosDelete": "Delete",
   "@todosDelete": {"description": "Button that deletes the to-do."},
   "todosSave": "Save",
-  "@todosSave": {"description": "Button that saves the to-do."}
+  "@todosSave": {"description": "Button that saves the to-do."},
+  "dashboardOffline": "Offline · showing the data from {time}",
+  "@dashboardOffline": {"description": "Banner while stored data is shown.", "placeholders": {"time": {"type": "String", "example": "07:58"}}}
 }

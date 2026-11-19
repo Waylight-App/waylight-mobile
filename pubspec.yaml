@@ -30,6 +30,9 @@ dependencies:
   # The app's version and build number for the settings; the platform
   # knows them, Dart does not.
   package_info_plus: ^10.2.2
+  # The app's private directory for the offline copy of the dashboard
+  # (ADR 0007); Flutter team.
+  path_provider: ^2.1.6
   provider: ^6.1.5+1
   # IANA time zones for the clock widget; pure Dart from the Dart team, no
   # platform code. The SDK only knows local time and UTC.
