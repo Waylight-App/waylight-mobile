@@ -2731,6 +2731,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Saved: {target}'**
   String shareSaved(String target);
+
+  /// Home screen widget title.
+  ///
+  /// In en, this message translates to:
+  /// **'To-dos today'**
+  String get homeWidgetTodos;
+
+  /// Home screen widget, no to-dos.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing due today'**
+  String get homeWidgetTodosEmpty;
+
+  /// Home screen widget title.
+  ///
+  /// In en, this message translates to:
+  /// **'Departures'**
+  String get homeWidgetDepartures;
+
+  /// Home screen widget without a stop.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a transit widget with a stop to the dashboard'**
+  String get homeWidgetNoStop;
+
+  /// Home screen widget, nothing leaves.
+  ///
+  /// In en, this message translates to:
+  /// **'No departures'**
+  String get homeWidgetNoDepartures;
+
+  /// A cancelled departure.
+  ///
+  /// In en, this message translates to:
+  /// **'cancelled'**
+  String get homeWidgetCancelled;
+
+  /// Age of a home screen widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Updated {time}'**
+  String homeWidgetUpdated(String time);
 }
 
 class _AppLocalizationsDelegate

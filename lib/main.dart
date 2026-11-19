@@ -6,6 +6,7 @@ import 'package:waylight_mobile/config/dependencies.dart';
 import 'package:waylight_mobile/config/logging.dart';
 import 'package:waylight_mobile/routing/router.dart';
 import 'package:waylight_mobile/routing/shortcuts.dart';
+import 'package:waylight_mobile/ui/home_widgets/background_refresh.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -48,5 +49,21 @@ Future<void> main() async {
         ),
       ),
     ),
+  );
+}
+
+/// Refreshes the home screen widgets in a headless engine that Android's
+/// WorkManager starts while the app is closed (#48, ADR 0009).
+@pragma('vm:entry-point')
+Future<void> backgroundRefresh() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  setupLogging();
+  final repositories = createRepositories();
+  await refreshHomeWidgetsInBackground(
+    server: repositories.server,
+    session: repositories.session,
+    preferences: repositories.preferences,
+    homeWidgets: repositories.homeWidgets,
+    systemLocale: WidgetsBinding.instance.platformDispatcher.locale,
   );
 }

@@ -1,10 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:waylight_mobile/data/repositories/appearance/theme_repository.dart';
 import 'package:waylight_mobile/data/repositories/dashboard/dashboard_repository.dart';
+import 'package:waylight_mobile/data/repositories/home_widgets/home_widgets_repository.dart';
 import 'package:waylight_mobile/data/repositories/offline/offline_repository.dart';
 import 'package:waylight_mobile/data/repositories/push/push_repository.dart';
 import 'package:waylight_mobile/data/repositories/server/server_repository.dart';
 import 'package:waylight_mobile/domain/models/dashboard.dart';
+import 'package:waylight_mobile/domain/models/home_snapshot.dart';
 import 'package:waylight_mobile/utils/command.dart';
 import 'package:waylight_mobile/utils/result.dart';
 
@@ -19,9 +21,12 @@ class DashboardViewModel extends ChangeNotifier {
     OfflineRepository? offlineRepository,
     PushRepository? pushRepository,
     ThemeRepository? themeRepository,
+    HomeWidgetsRepository? homeWidgetsRepository,
+    this._homeWidgetFormatter,
   }) : _offline = offlineRepository,
        _push = pushRepository,
-       _theme = themeRepository {
+       _theme = themeRepository,
+       _homeWidgets = homeWidgetsRepository {
     _offline?.addListener(notifyListeners);
     load = Command0(_load)..execute().ignore();
     _loadDemo().ignore();
@@ -32,6 +37,8 @@ class DashboardViewModel extends ChangeNotifier {
   final OfflineRepository? _offline;
   final PushRepository? _push;
   final ThemeRepository? _theme;
+  final HomeWidgetsRepository? _homeWidgets;
+  final HomeWidgetFormatter? _homeWidgetFormatter;
   bool _pushRefreshed = false;
 
   /// When the server cannot be reached: the time of the stored data shown.
@@ -83,10 +90,10 @@ class DashboardViewModel extends ChangeNotifier {
       ?.resolve('/')
       .replace(queryParameters: {'tab': tabId});
 
-  Future<Result<Dashboard>> _load() {
+  Future<Result<Dashboard>> _load() async {
     final server = _serverRepository.current;
     if (server == null) {
-      return Future.value(const Result.error(NotConnectedException()));
+      return const Result.error(NotConnectedException());
     }
     // Once per start: register the push token again in case the push
     // service replaced it while the app was closed (#59), and follow a
@@ -95,8 +102,18 @@ class DashboardViewModel extends ChangeNotifier {
       _pushRefreshed = true;
       _push?.refresh(server).ignore();
       _theme?.refresh(server).ignore();
+      _homeWidgets?.schedule().ignore();
     }
-    return _dashboardRepository.dashboard(server);
+    final result = await _dashboardRepository.dashboard(server);
+    // The home screen widgets follow every load of the dashboard (#42).
+    if ((result, _homeWidgets, _homeWidgetFormatter) case (
+      Ok(:final value),
+      final widgets?,
+      final format?,
+    )) {
+      widgets.refresh(server, format: format, dashboard: value).ignore();
+    }
+    return result;
   }
 
   @override

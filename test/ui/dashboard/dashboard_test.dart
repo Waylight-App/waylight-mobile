@@ -1,19 +1,24 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
-
+import 'package:waylight_mobile/data/repositories/home_widgets/home_widgets_repository.dart';
 import 'package:waylight_mobile/data/repositories/offline/offline_repository.dart';
 import 'package:waylight_mobile/data/services/api/offline_status.dart';
 import 'package:waylight_mobile/domain/models/api_exception.dart';
 import 'package:waylight_mobile/domain/models/dashboard.dart';
+import 'package:waylight_mobile/domain/models/home_snapshot.dart';
 import 'package:waylight_mobile/ui/core/link_opener.dart';
 import 'package:waylight_mobile/ui/core/widget_registry.dart';
 import 'package:waylight_mobile/ui/dashboard/view_models/dashboard_view_model.dart';
 import 'package:waylight_mobile/ui/dashboard/widgets/dashboard_screen.dart';
+import 'package:waylight_mobile/ui/home_widgets/home_widget_texts.dart';
 import 'package:waylight_mobile/utils/result.dart';
 
 import '../../testing/fakes/fake_dashboard_repository.dart';
+import '../../testing/fakes/fake_home_widget_store.dart';
 import '../../testing/fakes/fake_link_opener.dart';
 import '../../testing/fakes/fake_server_repository.dart';
+import '../../testing/fakes/fake_todos_repository.dart';
+import '../../testing/fakes/fake_transit_repository.dart';
 import '../../testing/pump_app.dart';
 
 void main() {
@@ -199,4 +204,24 @@ void main() {
       expect(lefts, hasLength(columns));
     });
   }
+
+  test('every load refreshes the home screen widgets', () async {
+    final store = FakeHomeWidgetStore();
+    final vm = DashboardViewModel(
+      serverRepository: servers,
+      dashboardRepository: dashboards,
+      homeWidgetsRepository: HomeWidgetsRepository(
+        dashboard: dashboards,
+        todos: FakeTodosRepository(),
+        transit: FakeTransitRepository(),
+        store: store,
+      ),
+      homeWidgetFormatter: HomeWidgetTexts(l10nEn),
+    );
+    addTearDown(vm.dispose);
+    await vm.load.execute();
+    await pumpEventQueue();
+    expect(store.scheduled, isTrue);
+    expect(store.cards.keys, containsAll(HomeWidgetKind.values));
+  });
 }

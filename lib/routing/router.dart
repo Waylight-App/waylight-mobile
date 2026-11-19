@@ -10,11 +10,13 @@ import 'package:waylight_mobile/ui/auth_callback/view_models/auth_callback_view_
 import 'package:waylight_mobile/ui/auth_callback/widgets/auth_callback_screen.dart';
 import 'package:waylight_mobile/ui/connect_server/view_models/connect_server_view_model.dart';
 import 'package:waylight_mobile/ui/connect_server/widgets/connect_server_screen.dart';
+import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/widgets/view_model_host.dart';
 import 'package:waylight_mobile/ui/dashboard/view_models/dashboard_view_model.dart';
 import 'package:waylight_mobile/ui/dashboard/widgets/dashboard_screen.dart';
 import 'package:waylight_mobile/ui/edit_tab/view_models/edit_tab_view_model.dart';
 import 'package:waylight_mobile/ui/edit_tab/widgets/edit_tab_screen.dart';
+import 'package:waylight_mobile/ui/home_widgets/home_widget_texts.dart';
 import 'package:waylight_mobile/ui/lock/view_models/lock_view_model.dart';
 import 'package:waylight_mobile/ui/lock/widgets/lock_screen.dart';
 import 'package:waylight_mobile/ui/pair/view_models/pair_view_model.dart';
@@ -74,6 +76,8 @@ GoRouter createRouter(
         create: (context) => DashboardViewModel(
           pushRepository: context.read(),
           themeRepository: context.read(),
+          homeWidgetsRepository: context.read(),
+          homeWidgetFormatter: HomeWidgetTexts(context.l10n),
           initialTabId: state.uri.queryParameters['tab'] ?? '',
           initialWidgetKind: state.uri.queryParameters['widget'] ?? '',
           serverRepository: context.read(),

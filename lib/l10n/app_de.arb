@@ -438,5 +438,12 @@
   "shareTitle": "In Waylight speichern",
   "shareTodo": "Als Aufgabe",
   "shareNote": "Als Notiz",
-  "shareSaved": "Gespeichert: {target}"
+  "shareSaved": "Gespeichert: {target}",
+  "homeWidgetTodos": "Aufgaben heute",
+  "homeWidgetTodosEmpty": "Heute nichts fällig",
+  "homeWidgetDepartures": "Abfahrten",
+  "homeWidgetNoStop": "Füge dem Dashboard ein ÖPNV-Widget mit Haltestelle hinzu",
+  "homeWidgetNoDepartures": "Keine Abfahrten",
+  "homeWidgetCancelled": "fällt aus",
+  "homeWidgetUpdated": "Stand {time}"
 }

@@ -1485,4 +1485,28 @@ class AppLocalizationsDe extends AppLocalizations {
   String shareSaved(String target) {
     return 'Gespeichert: $target';
   }
+
+  @override
+  String get homeWidgetTodos => 'Aufgaben heute';
+
+  @override
+  String get homeWidgetTodosEmpty => 'Heute nichts fällig';
+
+  @override
+  String get homeWidgetDepartures => 'Abfahrten';
+
+  @override
+  String get homeWidgetNoStop =>
+      'Füge dem Dashboard ein ÖPNV-Widget mit Haltestelle hinzu';
+
+  @override
+  String get homeWidgetNoDepartures => 'Keine Abfahrten';
+
+  @override
+  String get homeWidgetCancelled => 'fällt aus';
+
+  @override
+  String homeWidgetUpdated(String time) {
+    return 'Stand $time';
+  }
 }

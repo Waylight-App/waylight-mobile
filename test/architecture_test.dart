@@ -107,7 +107,14 @@ const _layers = <_Layer>[
   ),
   _Layer(
     'main.dart',
-    mayImport: ['app.dart', 'config/', 'routing/'],
+    // The background refresh of the home screen widgets is a second entry
+    // point next to the app (ADR 0009).
+    mayImport: [
+      'app.dart',
+      'config/',
+      'routing/',
+      'ui/home_widgets/background_refresh.dart',
+    ],
     packages: ['material_ui/', 'provider/'],
   ),
 ];

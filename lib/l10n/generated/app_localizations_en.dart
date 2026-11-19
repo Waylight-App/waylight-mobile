@@ -1483,4 +1483,28 @@ class AppLocalizationsEn extends AppLocalizations {
   String shareSaved(String target) {
     return 'Saved: $target';
   }
+
+  @override
+  String get homeWidgetTodos => 'To-dos today';
+
+  @override
+  String get homeWidgetTodosEmpty => 'Nothing due today';
+
+  @override
+  String get homeWidgetDepartures => 'Departures';
+
+  @override
+  String get homeWidgetNoStop =>
+      'Add a transit widget with a stop to the dashboard';
+
+  @override
+  String get homeWidgetNoDepartures => 'No departures';
+
+  @override
+  String get homeWidgetCancelled => 'cancelled';
+
+  @override
+  String homeWidgetUpdated(String time) {
+    return 'Updated $time';
+  }
 }

@@ -3,6 +3,7 @@ package app.waylight.waylight_mobile
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import app.waylight.waylight_mobile.home.HomeWidgetChannel
 import app.waylight.waylight_mobile.push.PushChannel
 import io.flutter.embedding.android.FlutterFragmentActivity
 import io.flutter.embedding.engine.FlutterEngine
@@ -26,6 +27,7 @@ class MainActivity : FlutterFragmentActivity() {
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
         push.register(flutterEngine)
+        HomeWidgetChannel.register(this, flutterEngine.dartExecutor.binaryMessenger)
     }
 
     override fun onRequestPermissionsResult(

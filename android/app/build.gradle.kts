@@ -84,6 +84,9 @@ flutter {
 }
 
 dependencies {
+    // Refresh of the home screen widgets while the app is closed (ADR 0009):
+    // the platform's scheduler, which respects Doze and battery limits.
+    implementation("androidx.work:work-runtime:2.10.0")
     // Store flavour only (ADR 0008): Firebase Messaging receives the push
     // messages, Tink provides X25519 below Android 13. Neither is part of the
     // F-Droid build.
