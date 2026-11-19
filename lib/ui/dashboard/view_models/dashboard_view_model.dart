@@ -13,6 +13,7 @@ class DashboardViewModel extends ChangeNotifier {
   DashboardViewModel({
     required this._serverRepository,
     required this._dashboardRepository,
+    this.initialTabId = '',
     OfflineRepository? offlineRepository,
   }) : _offline = offlineRepository {
     _offline?.addListener(notifyListeners);
@@ -26,6 +27,10 @@ class DashboardViewModel extends ChangeNotifier {
 
   /// When the server cannot be reached: the time of the stored data shown.
   DateTime? get offlineSince => _offline?.showingDataFrom;
+
+  /// The tab to open instead of the server's default, e.g. from the search;
+  /// empty for the default.
+  final String initialTabId;
 
   bool _demo = false;
 

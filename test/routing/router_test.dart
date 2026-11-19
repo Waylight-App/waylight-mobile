@@ -15,6 +15,7 @@ import '../testing/fakes/fake_bookmarks_repository.dart';
 import '../testing/fakes/fake_dashboard_repository.dart';
 import '../testing/fakes/fake_notes_repository.dart';
 import '../testing/fakes/fake_preferences_repository.dart';
+import '../testing/fakes/fake_search_repository.dart';
 import '../testing/fakes/fake_server_repository.dart';
 import '../testing/fakes/fake_session_repository.dart';
 import '../testing/fakes/fake_todos_repository.dart';
@@ -42,6 +43,7 @@ void main() {
           waste: FakeWasteRepository(),
           preferences: FakePreferencesRepository(),
           offline: OfflineRepository(OfflineStatus()),
+          search: FakeSearchRepository(),
         )),
         child: WaylightApp(router: createRouter(servers, sessions)),
       ),

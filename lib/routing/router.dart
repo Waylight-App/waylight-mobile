@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-
 import 'package:waylight_mobile/data/repositories/server/server_repository.dart';
 import 'package:waylight_mobile/data/repositories/session/session_repository.dart';
 import 'package:waylight_mobile/routing/routes.dart';
@@ -14,6 +13,8 @@ import 'package:waylight_mobile/ui/dashboard/view_models/dashboard_view_model.da
 import 'package:waylight_mobile/ui/dashboard/widgets/dashboard_screen.dart';
 import 'package:waylight_mobile/ui/pair/view_models/pair_view_model.dart';
 import 'package:waylight_mobile/ui/pair/widgets/pair_screen.dart';
+import 'package:waylight_mobile/ui/search/view_models/search_view_model.dart';
+import 'package:waylight_mobile/ui/search/widgets/search_screen.dart';
 import 'package:waylight_mobile/ui/settings/view_models/settings_view_model.dart';
 import 'package:waylight_mobile/ui/settings/widgets/settings_screen.dart';
 import 'package:waylight_mobile/ui/sign_in/view_models/sign_in_view_model.dart';
@@ -42,6 +43,7 @@ GoRouter createRouter(
       path: Routes.home,
       builder: (context, state) => ViewModelHost(
         create: (context) => DashboardViewModel(
+          initialTabId: state.uri.queryParameters['tab'] ?? '',
           serverRepository: context.read(),
           dashboardRepository: context.read(),
           offlineRepository: context.read(),
@@ -82,6 +84,18 @@ GoRouter createRouter(
         ),
         builder: (context, viewModel) =>
             AuthCallbackScreen(viewModel: viewModel),
+      ),
+    ),
+    GoRoute(
+      path: Routes.search,
+      builder: (context, state) => ViewModelHost(
+        create: (context) => SearchViewModel(
+          serverRepository: context.read(),
+          searchRepository: context.read(),
+          dashboardRepository: context.read(),
+          todosRepository: context.read(),
+        ),
+        builder: (context, viewModel) => SearchScreen(viewModel: viewModel),
       ),
     ),
     GoRoute(

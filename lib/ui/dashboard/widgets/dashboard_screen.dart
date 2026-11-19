@@ -76,11 +76,24 @@ class DashboardScreen extends StatelessWidget {
         return DefaultTabController(
           key: ValueKey(tabs.map((t) => t.id).join()),
           length: tabs.length,
-          initialIndex: dashboard?.initialIndex ?? 0,
+          initialIndex: dashboard == null
+              ? 0
+              : Dashboard(
+                  tabs: dashboard.tabs,
+                  defaultTabId: viewModel.initialTabId.isEmpty
+                      ? dashboard.defaultTabId
+                      : viewModel.initialTabId,
+                ).initialIndex,
           child: Scaffold(
             appBar: AppBar(
               title: const Wordmark(),
               actions: [
+                IconButton(
+                  key: const ValueKey('dashboard.search'),
+                  tooltip: l10n.searchHint,
+                  icon: const Icon(Icons.search),
+                  onPressed: () => context.push(Routes.search),
+                ),
                 IconButton(
                   key: const ValueKey('dashboard.settings'),
                   tooltip: l10n.settingsTitle,

@@ -18,6 +18,9 @@ abstract final class Routes {
   /// The answer of a sign-in in the browser: `waylight://auth?code=…` (#45).
   static const auth = '/auth';
 
+  /// The search (#22).
+  static const search = '/search';
+
   /// Every path the router knows; links to others open the dashboard.
-  static const all = {home, connect, signIn, settings, pair, auth};
+  static const all = {home, connect, signIn, settings, pair, auth, search};
 }

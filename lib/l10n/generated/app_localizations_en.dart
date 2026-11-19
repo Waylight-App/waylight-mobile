@@ -497,4 +497,31 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get authCallbackBack => 'Back to the sign-in';
+
+  @override
+  String get searchHint => 'Search';
+
+  @override
+  String get searchIntro =>
+      'Type a keyword, a widget, \"t\" and a to-do, or anything to search the web.';
+
+  @override
+  String searchWeb(String query) {
+    return 'Search the web for \"$query\"';
+  }
+
+  @override
+  String searchAddTodo(String title) {
+    return 'Add to-do \"$title\"';
+  }
+
+  @override
+  String searchTodoAdded(String title) {
+    return 'To-do \"$title\" added.';
+  }
+
+  @override
+  String searchOnTab(String tab) {
+    return 'On the tab $tab';
+  }
 }
