@@ -29,11 +29,14 @@ import 'package:waylight_mobile/data/repositories/waste/waste_repository.dart';
 import 'package:waylight_mobile/data/repositories/waste/waste_repository_remote.dart';
 import 'package:waylight_mobile/data/repositories/weather/weather_repository.dart';
 import 'package:waylight_mobile/data/repositories/weather/weather_repository_remote.dart';
+import 'package:waylight_mobile/data/repositories/widget_data/widget_data_repository.dart';
+import 'package:waylight_mobile/data/repositories/widget_data/widget_data_repository_remote.dart';
 import 'package:waylight_mobile/data/services/api/api_client.dart';
 import 'package:waylight_mobile/data/services/api/api_credentials.dart';
 import 'package:waylight_mobile/data/services/api/auth_api.dart';
 import 'package:waylight_mobile/data/services/api/bookmarks_api.dart';
 import 'package:waylight_mobile/data/services/api/dashboard_api.dart';
+import 'package:waylight_mobile/data/services/api/module_api.dart';
 import 'package:waylight_mobile/data/services/api/notes_api.dart';
 import 'package:waylight_mobile/data/services/api/offline_status.dart';
 import 'package:waylight_mobile/data/services/api/platform_api.dart';
@@ -59,6 +62,7 @@ typedef Repositories = ({
   BookmarksRepository bookmarks,
   TransitRepository transit,
   WasteRepository waste,
+  WidgetDataRepository widgetData,
   PreferencesRepository preferences,
   OfflineRepository offline,
   SearchRepository search,
@@ -80,6 +84,7 @@ List<SingleChildWidget> providers(Repositories repositories) => [
   Provider<BookmarksRepository>.value(value: repositories.bookmarks),
   Provider<TransitRepository>.value(value: repositories.transit),
   Provider<WasteRepository>.value(value: repositories.waste),
+  Provider<WidgetDataRepository>.value(value: repositories.widgetData),
   Provider<SearchRepository>.value(value: repositories.search),
   ChangeNotifierProvider<AppLockRepository>.value(value: repositories.lock),
   ChangeNotifierProvider<PreferencesRepository>.value(
@@ -131,6 +136,7 @@ Repositories createRepositories() {
     bookmarks: BookmarksRepositoryRemote(api: BookmarksApi(client)),
     transit: TransitRepositoryRemote(api: TransitApi(client)),
     waste: WasteRepositoryRemote(api: WasteApi(client)),
+    widgetData: WidgetDataRepositoryRemote(api: ModuleApi(client)),
     preferences: PreferencesRepositoryLocal(store: store),
     offline: OfflineRepository(offline),
     search: SearchRepositoryRemote(api: SearchApi(client)),

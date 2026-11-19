@@ -623,4 +623,111 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get settingsAddServer => 'Weiteren Server hinzufügen';
+
+  @override
+  String get systemTitle => 'System';
+
+  @override
+  String get systemCpu => 'CPU';
+
+  @override
+  String get systemMemory => 'Arbeitsspeicher';
+
+  @override
+  String get systemSwap => 'Swap';
+
+  @override
+  String get servicesTitle => 'Dienste';
+
+  @override
+  String get servicesEmpty => 'Noch keine Dienste.';
+
+  @override
+  String get servicesOnline => 'Online';
+
+  @override
+  String get servicesOffline => 'Offline';
+
+  @override
+  String get servicesUnknown => 'Ungeprüft';
+
+  @override
+  String get statusOverviewTitle => 'Status';
+
+  @override
+  String get backupsTitle => 'Backups';
+
+  @override
+  String get backupsEmpty => 'Noch keine Backups oder Jobs gemeldet.';
+
+  @override
+  String get backupsOk => 'OK';
+
+  @override
+  String get backupsOverdue => 'Überfällig';
+
+  @override
+  String get backupsFailed => 'Fehlgeschlagen';
+
+  @override
+  String get backupsWaiting => 'Wartet';
+
+  @override
+  String get countdownTitle => 'Countdowns';
+
+  @override
+  String get countdownEmpty => 'Keine anstehenden Countdowns.';
+
+  @override
+  String get birthdaysTitle => 'Geburtstage';
+
+  @override
+  String get birthdaysEmpty => 'Noch keine Geburtstage.';
+
+  @override
+  String get electricityTitle => 'Strompreise';
+
+  @override
+  String get electricityTomorrowLater =>
+      'Die Preise für morgen folgen gegen 13 Uhr.';
+
+  @override
+  String systemUptime(int days, int hours) {
+    return 'läuft seit $days T $hours Std.';
+  }
+
+  @override
+  String systemLoad(String load) {
+    return 'Last $load';
+  }
+
+  @override
+  String systemDiskOf(String used, String total) {
+    return '$used von $total';
+  }
+
+  @override
+  String systemFullIn(int days) {
+    return 'voll in $days Tagen';
+  }
+
+  @override
+  String backupsLastSuccess(String date) {
+    return 'zuletzt erfolgreich $date';
+  }
+
+  @override
+  String birthdaysTurns(int age) {
+    return 'wird $age';
+  }
+
+  @override
+  String electricityNow(String price) {
+    return 'Jetzt $price';
+  }
+
+  @override
+  String electricityCheapest(String hours) {
+    return 'Günstigste Stunden: $hours';
+  }
 }

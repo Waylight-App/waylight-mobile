@@ -1171,6 +1171,186 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Add another server'**
   String get settingsAddServer;
+
+  /// Default title of the system widget.
+  ///
+  /// In en, this message translates to:
+  /// **'System'**
+  String get systemTitle;
+
+  /// CPU usage in the system widget.
+  ///
+  /// In en, this message translates to:
+  /// **'CPU'**
+  String get systemCpu;
+
+  /// Memory usage in the system widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Memory'**
+  String get systemMemory;
+
+  /// Swap usage in the system widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Swap'**
+  String get systemSwap;
+
+  /// Default title of the services widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Services'**
+  String get servicesTitle;
+
+  /// Services widget without services.
+  ///
+  /// In en, this message translates to:
+  /// **'No services yet.'**
+  String get servicesEmpty;
+
+  /// A service that answers.
+  ///
+  /// In en, this message translates to:
+  /// **'Online'**
+  String get servicesOnline;
+
+  /// A service that does not answer.
+  ///
+  /// In en, this message translates to:
+  /// **'Offline'**
+  String get servicesOffline;
+
+  /// A service not checked yet.
+  ///
+  /// In en, this message translates to:
+  /// **'Unchecked'**
+  String get servicesUnknown;
+
+  /// Default title of the status overview.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get statusOverviewTitle;
+
+  /// Default title of the backup monitoring widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Backups'**
+  String get backupsTitle;
+
+  /// Backup widget without sources.
+  ///
+  /// In en, this message translates to:
+  /// **'No backups or jobs report yet.'**
+  String get backupsEmpty;
+
+  /// A backup that ran in time.
+  ///
+  /// In en, this message translates to:
+  /// **'OK'**
+  String get backupsOk;
+
+  /// A backup without a run in the expected time.
+  ///
+  /// In en, this message translates to:
+  /// **'Overdue'**
+  String get backupsOverdue;
+
+  /// A backup whose last run failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed'**
+  String get backupsFailed;
+
+  /// A backup that has not reported yet.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting'**
+  String get backupsWaiting;
+
+  /// Default title of the countdown widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Countdowns'**
+  String get countdownTitle;
+
+  /// Countdown widget without future dates.
+  ///
+  /// In en, this message translates to:
+  /// **'No countdowns ahead.'**
+  String get countdownEmpty;
+
+  /// Default title of the birthdays widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Birthdays'**
+  String get birthdaysTitle;
+
+  /// Birthday widget without entries.
+  ///
+  /// In en, this message translates to:
+  /// **'No birthdays yet.'**
+  String get birthdaysEmpty;
+
+  /// Default title of the electricity widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Electricity prices'**
+  String get electricityTitle;
+
+  /// Shown while only today's prices are known.
+  ///
+  /// In en, this message translates to:
+  /// **'Tomorrow\'s prices follow around 1 pm.'**
+  String get electricityTomorrowLater;
+
+  /// Uptime of the host.
+  ///
+  /// In en, this message translates to:
+  /// **'up {days} d {hours} h'**
+  String systemUptime(int days, int hours);
+
+  /// Load average of the last minute.
+  ///
+  /// In en, this message translates to:
+  /// **'load {load}'**
+  String systemLoad(String load);
+
+  /// Used and total size of a disk.
+  ///
+  /// In en, this message translates to:
+  /// **'{used} of {total}'**
+  String systemDiskOf(String used, String total);
+
+  /// Forecast when a disk is full.
+  ///
+  /// In en, this message translates to:
+  /// **'full in {days} days'**
+  String systemFullIn(int days);
+
+  /// Date of the last successful run.
+  ///
+  /// In en, this message translates to:
+  /// **'last success {date}'**
+  String backupsLastSuccess(String date);
+
+  /// Age on the next birthday.
+  ///
+  /// In en, this message translates to:
+  /// **'turns {age}'**
+  String birthdaysTurns(int age);
+
+  /// Current electricity price.
+  ///
+  /// In en, this message translates to:
+  /// **'Now {price}'**
+  String electricityNow(String price);
+
+  /// Spoken list of the cheapest hours.
+  ///
+  /// In en, this message translates to:
+  /// **'Cheapest hours: {hours}'**
+  String electricityCheapest(String hours);
 }
 
 class _AppLocalizationsDelegate

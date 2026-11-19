@@ -86,3 +86,21 @@ German text to `app_de.arb`, then `make gen` and commit the generated files.
 
 Update the README feature list or `docs/` if users or developers need to
 know, run `make ci`, push and open a pull request with `Closes #12`.
+
+## A read-only dashboard widget
+
+Widgets that only show data skip steps 2 to 4:
+
+1. The domain model in `lib/domain/models/`.
+2. A `WidgetQuery` (endpoint plus parser) in
+   `lib/data/repositories/widget_data/queries/`, next to the other queries of
+   the area. Parse defensively: return `null` when the JSON does not match.
+3. The view in `lib/ui/widgets/<kind>/`, built on `RemoteWidget` with the rows
+   and meters of `lib/ui/widgets/common/`; register it in
+   `lib/ui/widgets/registry.dart` under the server's widget kind.
+4. Texts, a fixture recorded from the demo in `test/fixtures/`, a parser test
+   and a widget test with `FakeWidgetDataRepository`.
+
+Widgets with actions (tick off, switch, restart) keep their own repository and
+view model as described above.
+

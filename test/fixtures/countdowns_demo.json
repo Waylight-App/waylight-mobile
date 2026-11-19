@@ -1,0 +1,34 @@
+[
+  {
+    "id": "723bc103aee5659d1723496dfbe4bfef",
+    "title": "Car inspection",
+    "emoji": "\ud83d\ude97",
+    "date": "2026-11-23",
+    "time": "08:30",
+    "createdAt": "2026-11-19T13:37:30.8810862Z"
+  },
+  {
+    "id": "e5f63d2e012dcd173d85423d3efb267c",
+    "title": "Anna's birthday party",
+    "emoji": "\ud83c\udf82",
+    "date": "2026-11-28",
+    "time": "18:00",
+    "createdAt": "2026-11-19T13:37:30.88119924Z"
+  },
+  {
+    "id": "fb6d814d6d0b2deb7c41bef70c126e6c",
+    "title": "Concert at the Elbphilharmonie",
+    "emoji": "\ud83c\udfbb",
+    "date": "2026-12-12",
+    "time": "20:00",
+    "createdAt": "2026-11-19T13:37:30.88130692Z"
+  },
+  {
+    "id": "d366b59a551bb6319ed660e5d5aa05d5",
+    "title": "Summer holiday on Norderney",
+    "emoji": "\ud83c\udfd6\ufe0f",
+    "date": "2027-01-04",
+    "time": "",
+    "createdAt": "2026-11-19T13:37:30.88138848Z"
+  }
+]

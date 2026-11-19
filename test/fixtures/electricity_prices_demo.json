@@ -1,0 +1,247 @@
+{
+  "zone": "DE-LU",
+  "hours": [
+    {
+      "start": "2026-11-19T00:00:00+01:00",
+      "centPerKWh": 7.8,
+      "cheapest": false
+    },
+    {
+      "start": "2026-11-19T01:00:00+01:00",
+      "centPerKWh": 7.2,
+      "cheapest": false
+    },
+    {
+      "start": "2026-11-19T02:00:00+01:00",
+      "centPerKWh": 6.8,
+      "cheapest": false
+    },
+    {
+      "start": "2026-11-19T03:00:00+01:00",
+      "centPerKWh": 6.6,
+      "cheapest": false
+    },
+    {
+      "start": "2026-11-19T04:00:00+01:00",
+      "centPerKWh": 6.7,
+      "cheapest": false
+    },
+    {
+      "start": "2026-11-19T05:00:00+01:00",
+      "centPerKWh": 7.4,
+      "cheapest": false
+    },
+    {
+      "start": "2026-11-19T06:00:00+01:00",
+      "centPerKWh": 9.2,
+      "cheapest": false
+    },
+    {
+      "start": "2026-11-19T07:00:00+01:00",
+      "centPerKWh": 11.8,
+      "cheapest": false
+    },
+    {
+      "start": "2026-11-19T08:00:00+01:00",
+      "centPerKWh": 12.4,
+      "cheapest": false
+    },
+    {
+      "start": "2026-11-19T09:00:00+01:00",
+      "centPerKWh": 10.5,
+      "cheapest": false
+    },
+    {
+      "start": "2026-11-19T10:00:00+01:00",
+      "centPerKWh": 8.4,
+      "cheapest": false
+    },
+    {
+      "start": "2026-11-19T11:00:00+01:00",
+      "centPerKWh": 6.1,
+      "cheapest": false
+    },
+    {
+      "start": "2026-11-19T12:00:00+01:00",
+      "centPerKWh": 4.8,
+      "cheapest": true
+    },
+    {
+      "start": "2026-11-19T13:00:00+01:00",
+      "centPerKWh": 4.5,
+      "cheapest": true
+    },
+    {
+      "start": "2026-11-19T14:00:00+01:00",
+      "centPerKWh": 5.2,
+      "cheapest": true
+    },
+    {
+      "start": "2026-11-19T15:00:00+01:00",
+      "centPerKWh": 7,
+      "cheapest": false
+    },
+    {
+      "start": "2026-11-19T16:00:00+01:00",
+      "centPerKWh": 9.6,
+      "cheapest": false
+    },
+    {
+      "start": "2026-11-19T17:00:00+01:00",
+      "centPerKWh": 13.8,
+      "cheapest": false
+    },
+    {
+      "start": "2026-11-19T18:00:00+01:00",
+      "centPerKWh": 15.2,
+      "cheapest": false
+    },
+    {
+      "start": "2026-11-19T19:00:00+01:00",
+      "centPerKWh": 14.1,
+      "cheapest": false
+    },
+    {
+      "start": "2026-11-19T20:00:00+01:00",
+      "centPerKWh": 11.8,
+      "cheapest": false
+    },
+    {
+      "start": "2026-11-19T21:00:00+01:00",
+      "centPerKWh": 10.2,
+      "cheapest": false
+    },
+    {
+      "start": "2026-11-19T22:00:00+01:00",
+      "centPerKWh": 9.4,
+      "cheapest": false
+    },
+    {
+      "start": "2026-11-19T23:00:00+01:00",
+      "centPerKWh": 8.6,
+      "cheapest": false
+    },
+    {
+      "start": "2026-11-20T00:00:00+01:00",
+      "centPerKWh": 8.4,
+      "cheapest": false
+    },
+    {
+      "start": "2026-11-20T01:00:00+01:00",
+      "centPerKWh": 7.8,
+      "cheapest": false
+    },
+    {
+      "start": "2026-11-20T02:00:00+01:00",
+      "centPerKWh": 7.4,
+      "cheapest": false
+    },
+    {
+      "start": "2026-11-20T03:00:00+01:00",
+      "centPerKWh": 7.2,
+      "cheapest": false
+    },
+    {
+      "start": "2026-11-20T04:00:00+01:00",
+      "centPerKWh": 7.3,
+      "cheapest": false
+    },
+    {
+      "start": "2026-11-20T05:00:00+01:00",
+      "centPerKWh": 8,
+      "cheapest": false
+    },
+    {
+      "start": "2026-11-20T06:00:00+01:00",
+      "centPerKWh": 9.8,
+      "cheapest": false
+    },
+    {
+      "start": "2026-11-20T07:00:00+01:00",
+      "centPerKWh": 12.4,
+      "cheapest": false
+    },
+    {
+      "start": "2026-11-20T08:00:00+01:00",
+      "centPerKWh": 13,
+      "cheapest": false
+    },
+    {
+      "start": "2026-11-20T09:00:00+01:00",
+      "centPerKWh": 11.1,
+      "cheapest": false
+    },
+    {
+      "start": "2026-11-20T10:00:00+01:00",
+      "centPerKWh": 9,
+      "cheapest": false
+    },
+    {
+      "start": "2026-11-20T11:00:00+01:00",
+      "centPerKWh": 6.7,
+      "cheapest": false
+    },
+    {
+      "start": "2026-11-20T12:00:00+01:00",
+      "centPerKWh": 5.4,
+      "cheapest": true
+    },
+    {
+      "start": "2026-11-20T13:00:00+01:00",
+      "centPerKWh": 5.1,
+      "cheapest": true
+    },
+    {
+      "start": "2026-11-20T14:00:00+01:00",
+      "centPerKWh": 5.8,
+      "cheapest": true
+    },
+    {
+      "start": "2026-11-20T15:00:00+01:00",
+      "centPerKWh": 7.6,
+      "cheapest": false
+    },
+    {
+      "start": "2026-11-20T16:00:00+01:00",
+      "centPerKWh": 10.2,
+      "cheapest": false
+    },
+    {
+      "start": "2026-11-20T17:00:00+01:00",
+      "centPerKWh": 14.4,
+      "cheapest": false
+    },
+    {
+      "start": "2026-11-20T18:00:00+01:00",
+      "centPerKWh": 15.8,
+      "cheapest": false
+    },
+    {
+      "start": "2026-11-20T19:00:00+01:00",
+      "centPerKWh": 14.7,
+      "cheapest": false
+    },
+    {
+      "start": "2026-11-20T20:00:00+01:00",
+      "centPerKWh": 12.4,
+      "cheapest": false
+    },
+    {
+      "start": "2026-11-20T21:00:00+01:00",
+      "centPerKWh": 10.8,
+      "cheapest": false
+    },
+    {
+      "start": "2026-11-20T22:00:00+01:00",
+      "centPerKWh": 10,
+      "cheapest": false
+    },
+    {
+      "start": "2026-11-20T23:00:00+01:00",
+      "centPerKWh": 9.2,
+      "cheapest": false
+    }
+  ],
+  "fetchedAt": "2026-11-19T20:58:45Z",
+  "stale": false
+}

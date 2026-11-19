@@ -1,0 +1,66 @@
+[
+  {
+    "id": "0d0cd2abcbe7630771f94e55a581ca5b",
+    "name": "Grandma Hilde",
+    "month": 11,
+    "day": 21,
+    "year": 1946,
+    "source": "manual",
+    "next": "2026-11-21",
+    "inDays": 2,
+    "age": 80
+  },
+  {
+    "id": "d6a29fbe328732417324c016fd920d50",
+    "name": "Anna Schr\u00f6der",
+    "month": 11,
+    "day": 28,
+    "year": 1991,
+    "source": "manual",
+    "next": "2026-11-28",
+    "inDays": 9,
+    "age": 35
+  },
+  {
+    "id": "fd9eae6b87d6d0fb61aecb684baaa354",
+    "name": "Jonas Meyer",
+    "month": 12,
+    "day": 6,
+    "year": 1988,
+    "source": "manual",
+    "next": "2026-12-06",
+    "inDays": 17,
+    "age": 38
+  },
+  {
+    "id": "53f8f1fc2e6c0e34f2e571f80eb3f8c1",
+    "name": "Lea (neighbour)",
+    "month": 12,
+    "day": 20,
+    "source": "manual",
+    "next": "2026-12-20",
+    "inDays": 31
+  },
+  {
+    "id": "849681f16bc36ea90293e5e04486293d",
+    "name": "Paul",
+    "month": 1,
+    "day": 12,
+    "year": 2019,
+    "source": "manual",
+    "next": "2027-01-12",
+    "inDays": 54,
+    "age": 8
+  },
+  {
+    "id": "91801878de9358d460d75d90d6df8fd8",
+    "name": "Dad",
+    "month": 2,
+    "day": 3,
+    "year": 1962,
+    "source": "manual",
+    "next": "2027-02-03",
+    "inDays": 76,
+    "age": 65
+  }
+]

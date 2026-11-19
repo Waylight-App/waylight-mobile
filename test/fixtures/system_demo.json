@@ -1,0 +1,53 @@
+{
+  "hostname": "homeserver",
+  "cpuPercent": 0,
+  "cpuCount": 8,
+  "load": [
+    1.4860946400147546,
+    1.4888757120118037,
+    1.2916567840088526
+  ],
+  "memory": {
+    "total": 34359738368,
+    "used": 11975421454,
+    "percent": 34.9
+  },
+  "swap": {
+    "total": 8589934592,
+    "used": 536870912,
+    "percent": 6.3
+  },
+  "disks": [
+    {
+      "label": "System",
+      "usage": {
+        "total": 511101108224,
+        "used": 148176371712,
+        "percent": 29
+      },
+      "forecast": {
+        "status": "insufficient",
+        "daysUntilFull": 0,
+        "bytesPerDay": 0,
+        "confidence": 0
+      }
+    },
+    {
+      "label": "Data",
+      "usage": {
+        "total": 7999376588800,
+        "used": 5561982648320,
+        "percent": 69.5
+      },
+      "forecast": {
+        "status": "insufficient",
+        "daysUntilFull": 0,
+        "bytesPerDay": 0,
+        "confidence": 0
+      }
+    }
+  ],
+  "uptimeSeconds": 2005200,
+  "temperature": 44,
+  "takenAt": "2026-11-19T20:58:43.594802085Z"
+}
