@@ -57,6 +57,15 @@ final class WidgetPlacement {
 
   /// The widget's configuration as the server stores it.
   final Map<String, Object?> config;
+
+  /// The title to show: the user's, else the kind in words, e.g.
+  /// `status-overview` → "Status overview".
+  String get displayTitle {
+    if (title.isNotEmpty) return title;
+    final words = kind.replaceAll(RegExp('[-_]+'), ' ').trim();
+    if (words.isEmpty) return kind;
+    return words[0].toUpperCase() + words.substring(1);
+  }
 }
 
 /// A widget's place in the desktop grid, for [phoneOrder].

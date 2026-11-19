@@ -4,6 +4,7 @@ import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/ui/core/error_messages.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
+import 'package:waylight_mobile/ui/core/widget_registry.dart';
 import 'package:waylight_mobile/ui/core/widgets/form_page.dart';
 import 'package:waylight_mobile/ui/core/widgets/message_banner.dart';
 import 'package:waylight_mobile/ui/core/widgets/wordmark.dart';
@@ -15,10 +16,17 @@ import 'package:waylight_mobile/utils/result.dart';
 /// dashboard.png).
 class DashboardScreen extends StatelessWidget {
   /// Creates the screen for [viewModel].
-  const DashboardScreen({required this.viewModel, super.key});
+  const DashboardScreen({
+    required this.viewModel,
+    required this.registry,
+    super.key,
+  });
 
   /// The state and actions of this screen.
   final DashboardViewModel viewModel;
+
+  /// The native views by widget kind; other kinds get a [WidgetCard].
+  final WidgetRegistry registry;
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +58,9 @@ class DashboardScreen extends StatelessWidget {
           ),
           _ when tabs.isEmpty => _Hint(l10n.dashboardNoTabs),
           _ => TabBarView(
-            children: [for (final tab in tabs) _TabPage(tab: tab)],
+            children: [
+              for (final tab in tabs) _TabPage(tab: tab, registry: registry),
+            ],
           ),
         };
         // The key makes a reloaded dashboard with other tabs start fresh.
@@ -79,9 +89,10 @@ class DashboardScreen extends StatelessWidget {
 }
 
 class _TabPage extends StatelessWidget {
-  const _TabPage({required this.tab});
+  const _TabPage({required this.tab, required this.registry});
 
   final DashboardTab tab;
+  final WidgetRegistry registry;
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +103,15 @@ class _TabPage extends StatelessWidget {
       padding: const EdgeInsets.all(Dimens.gap),
       itemCount: tab.widgets.length,
       separatorBuilder: (_, _) => const SizedBox(height: Dimens.gap),
-      itemBuilder: (context, i) => WidgetCard(widget: tab.widgets[i]),
+      // Built lazily: a widget's view model, and with it its request, only
+      // starts when the widget scrolls into view.
+      itemBuilder: (context, i) {
+        final widget = tab.widgets[i];
+        final builder = registry.builderFor(widget.kind);
+        return builder == null
+            ? WidgetCard(widget: widget)
+            : builder(context, widget);
+      },
     );
   }
 }

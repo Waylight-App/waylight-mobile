@@ -12,6 +12,7 @@ import 'package:waylight_mobile/ui/dashboard/view_models/dashboard_view_model.da
 import 'package:waylight_mobile/ui/dashboard/widgets/dashboard_screen.dart';
 import 'package:waylight_mobile/ui/sign_in/view_models/sign_in_view_model.dart';
 import 'package:waylight_mobile/ui/sign_in/widgets/sign_in_screen.dart';
+import 'package:waylight_mobile/ui/widgets/registry.dart';
 
 /// Creates the router of the app.
 ///
@@ -39,7 +40,8 @@ GoRouter createRouter(
           sessionRepository: context.read(),
           dashboardRepository: context.read(),
         ),
-        builder: (context, viewModel) => DashboardScreen(viewModel: viewModel),
+        builder: (context, viewModel) =>
+            DashboardScreen(viewModel: viewModel, registry: nativeWidgets),
       ),
     ),
     GoRoute(

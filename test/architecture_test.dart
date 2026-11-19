@@ -65,6 +65,8 @@ const _layers = <_Layer>[
       ..._flutterBase,
       'material_ui/',
       'flutter/widgets.dart',
+      'intl/',
+      'timezone/',
       'go_router/',
       'provider/',
       'logging/',
