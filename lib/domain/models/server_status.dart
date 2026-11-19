@@ -5,6 +5,8 @@ final class ServerStatus {
     required this.setupRequired,
     this.username = '',
     this.role = '',
+    this.demo = false,
+    this.demoPassword = '',
   });
 
   /// Whether the server has no account yet and must be set up in a browser
@@ -18,15 +20,24 @@ final class ServerStatus {
   /// signed out.
   final String role;
 
+  /// Whether this is a public demo whose data is reset regularly.
+  final bool demo;
+
+  /// The public password of the demo; empty elsewhere.
+  final String demoPassword;
+
   @override
   bool operator ==(Object other) =>
       other is ServerStatus &&
       other.setupRequired == setupRequired &&
       other.username == username &&
-      other.role == role;
+      other.role == role &&
+      other.demo == demo &&
+      other.demoPassword == demoPassword;
 
   @override
-  int get hashCode => Object.hash(setupRequired, username, role);
+  int get hashCode =>
+      Object.hash(setupRequired, username, role, demo, demoPassword);
 
   @override
   String toString() =>

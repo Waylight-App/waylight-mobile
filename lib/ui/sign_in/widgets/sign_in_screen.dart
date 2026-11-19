@@ -33,11 +33,21 @@ class _SignInScreenState extends State<SignInScreen> {
   void initState() {
     super.initState();
     widget.viewModel.signIn.addListener(_clearSecretsOnError);
+    widget.viewModel.addListener(_fillDemoPassword);
+    // The password may have arrived before this screen listened.
+    _fillDemoPassword();
+  }
+
+  // The demo's password is public; filling it in is all the demo needs.
+  void _fillDemoPassword() {
+    final demo = widget.viewModel.demoPassword;
+    if (demo.isNotEmpty && _password.text.isEmpty) _password.text = demo;
   }
 
   @override
   void dispose() {
     widget.viewModel.signIn.removeListener(_clearSecretsOnError);
+    widget.viewModel.removeListener(_fillDemoPassword);
     _username.dispose();
     _password.dispose();
     _code.dispose();

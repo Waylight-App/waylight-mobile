@@ -75,6 +75,8 @@ class ServerRepositoryRemote extends ServerRepository {
           setupRequired: value.setupRequired,
           username: value.username,
           role: value.role,
+          demo: value.demo,
+          demoPassword: value.demoPassword,
         ),
       ),
       Error(:final error) => Result.error(error),

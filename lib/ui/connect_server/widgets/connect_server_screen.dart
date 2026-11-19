@@ -105,6 +105,16 @@ class _ConnectServerScreenState extends State<ConnectServerScreen> {
           ),
           const SizedBox(height: Dimens.gap),
           Text(l10n.connectQrHint, style: theme.textTheme.bodyMedium),
+          const SizedBox(height: Dimens.gapSmall),
+          Align(
+            alignment: AlignmentDirectional.centerStart,
+            child: TextButton.icon(
+              key: const ValueKey('connect.demo'),
+              onPressed: () => viewModel.tryDemo().ignore(),
+              icon: const Icon(Icons.play_circle_outline),
+              label: Text(l10n.connectTryDemo),
+            ),
+          ),
           const SizedBox(height: Dimens.gapLarge),
           Text(
             l10n.connectPrivacy,

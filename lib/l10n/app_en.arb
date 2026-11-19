@@ -253,5 +253,9 @@
   "pairEnterManually": "Enter the address instead",
   "@pairEnterManually": {"description": "Button to the connect screen after a failed pairing."},
   "connectQrHint": "Or scan the QR code under Settings → Mobile app in Waylight with your phone's camera.",
-  "@connectQrHint": {"description": "Hint on the connect screen."}
+  "@connectQrHint": {"description": "Hint on the connect screen."},
+  "connectTryDemo": "Try the public demo",
+  "@connectTryDemo": {"description": "Button that connects the public demo."},
+  "dashboardDemo": "This is the public demo. Its data is reset every hour.",
+  "@dashboardDemo": {"description": "Banner on the dashboard of the demo."}
 }
