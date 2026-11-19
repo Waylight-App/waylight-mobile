@@ -1471,4 +1471,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get bookmarkNoFolder => 'Kein Ordner';
+
+  @override
+  String get searchOpenWidget => 'Widget öffnen';
 }

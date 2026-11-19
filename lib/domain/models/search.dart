@@ -216,3 +216,118 @@ final class WikiHit {
   /// The wiki's name.
   final String wiki;
 }
+
+/// The shape of a smart search answer from the server (#82, server ADR 0026).
+enum AnswerKind {
+  /// A value such as "42 %", with a detail and an optional meter.
+  metric,
+
+  /// The state of one thing.
+  status,
+
+  /// Rows, e.g. the services that are down.
+  list,
+
+  /// A sentence, e.g. asking back which container is meant.
+  text,
+
+  /// Actions to confirm; the app shows them as text for now.
+  actions,
+}
+
+/// How good or bad a status or a row is; the server decides.
+enum AnswerState {
+  /// Fine.
+  ok,
+
+  /// Needs attention.
+  warning,
+
+  /// Broken.
+  error,
+
+  /// Off or not checked.
+  off,
+}
+
+/// One row of a list answer.
+final class AnswerItem {
+  /// Creates the row.
+  const AnswerItem({
+    required this.label,
+    required this.value,
+    this.state,
+    this.percent,
+  });
+
+  /// The name, e.g. "NAS".
+  final String label;
+
+  /// The value, e.g. "timeout".
+  final String value;
+
+  /// The state, if the row has one.
+  final AnswerState? state;
+
+  /// 0–100 for a meter.
+  final double? percent;
+}
+
+/// One answer of the smart search, already in the app's language.
+final class SearchAnswer {
+  /// Creates the answer.
+  const SearchAnswer({
+    required this.kind,
+    required this.intent,
+    required this.title,
+    this.widgetKind = '',
+    this.at,
+    this.value = '',
+    this.detail = '',
+    this.percent,
+    this.state,
+    this.text = '',
+    this.suggestions = const [],
+    this.items = const [],
+    this.empty = '',
+  });
+
+  /// The shape.
+  final AnswerKind kind;
+
+  /// The question it answers, e.g. "system.cpu".
+  final String intent;
+
+  /// The heading.
+  final String title;
+
+  /// The widget with the details.
+  final String widgetKind;
+
+  /// When the data was measured.
+  final DateTime? at;
+
+  /// The value of a metric.
+  final String value;
+
+  /// More about a metric or status.
+  final String detail;
+
+  /// 0–100 for the meter of a metric.
+  final double? percent;
+
+  /// The state of a status.
+  final AnswerState? state;
+
+  /// The sentence of a text or status.
+  final String text;
+
+  /// Names to pick when the search asks back.
+  final List<String> suggestions;
+
+  /// The rows of a list.
+  final List<AnswerItem> items;
+
+  /// Shown for a list without rows.
+  final String empty;
+}

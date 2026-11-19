@@ -869,5 +869,7 @@
   "bookmarkFolder": "Folder",
   "@bookmarkFolder": {"description": "Field."},
   "bookmarkNoFolder": "No folder",
-  "@bookmarkNoFolder": {"description": "Choice."}
+  "@bookmarkNoFolder": {"description": "Choice."},
+  "searchOpenWidget": "Open widget",
+  "@searchOpenWidget": {"description": "Button below a search answer."}
 }

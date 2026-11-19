@@ -1469,4 +1469,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get bookmarkNoFolder => 'No folder';
+
+  @override
+  String get searchOpenWidget => 'Open widget';
 }

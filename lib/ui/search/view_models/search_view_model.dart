@@ -23,10 +23,14 @@ class SearchViewModel extends ChangeNotifier {
     required this._todosRepository,
     this.debounce = const Duration(milliseconds: 250),
     this.initialQuery = '',
+    this.language = 'en',
   }) : _query = initialQuery {
     _load().ignore();
     capture = Command1(_capture);
   }
+
+  /// The language of the answers, e.g. "de".
+  final String language;
 
   final ServerRepository _serverRepository;
   final SearchRepository _searchRepository;
@@ -78,6 +82,43 @@ class SearchViewModel extends ChangeNotifier {
     _results = searchResults(_query, _settings, _dashboard);
     notifyListeners();
     _searchWiki(_query).ignore();
+    _searchAnswers(_query).ignore();
+  }
+
+  List<SearchAnswer> _answers = const [];
+
+  /// The answers of the server's smart search for the current query (#82).
+  List<SearchAnswer> get answers => _answers;
+
+  int _answerRound = 0;
+
+  /// Asks the server's smart search; an answer to an older query is
+  /// dropped, and a failure shows no answers.
+  Future<void> _searchAnswers(String query) async {
+    final round = ++_answerRound;
+    final server = _serverRepository.current;
+    final q = query.trim();
+    if (server == null || q.isEmpty) {
+      if (_answers.isNotEmpty) {
+        _answers = const [];
+        notifyListeners();
+      }
+      return;
+    }
+    final result = await _searchRepository.answers(server, q, language);
+    if (round != _answerRound) return;
+    _answers = switch (result) {
+      Ok(:final value) => value,
+      Error() => const [],
+    };
+    notifyListeners();
+  }
+
+  /// Puts [text] into the search, e.g. a name the answer suggested.
+  void searchFor(String text) {
+    _timer?.cancel();
+    _query = text;
+    _update();
   }
 
   int _wikiRound = 0;

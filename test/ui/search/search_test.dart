@@ -237,4 +237,108 @@ void main() {
     await tester.pump();
     expect(opener.opened.single.host, 'wiki.example.org');
   });
+
+  group('answers of the smart search (#82)', () {
+    // As the server sends them (server ADR 0026).
+    final json = {
+      'answers': [
+        {
+          'kind': 'metric',
+          'intent': 'system.memory',
+          'title': 'Arbeitsspeicher',
+          'widgetKind': 'system',
+          'at': '2026-11-20T09:00:00Z',
+          'value': '25 %',
+          'detail': '2.0 GiB von 8.0 GiB',
+          'percent': 25,
+        },
+        {
+          'kind': 'list',
+          'intent': 'services.overview',
+          'title': 'Dienste: 1 von 2 online',
+          'empty': 'Alle Dienste sind online.',
+          'items': [
+            {'label': 'NAS', 'value': 'timeout', 'state': 'error'},
+          ],
+        },
+        {
+          'kind': 'text',
+          'intent': 'docker.status',
+          'title': 'Welcher?',
+          'text': 'Welchen meinst du?',
+          'suggestions': ['jellyfin', 'pihole'],
+        },
+        {'kind': 'chart', 'intent': 'x', 'title': 'from a newer server'},
+      ],
+    };
+
+    test('reads the answers and skips unknown kinds', () {
+      final answers = parseSearchAnswers(json)!;
+      expect(answers.map((a) => a.kind), [
+        AnswerKind.metric,
+        AnswerKind.list,
+        AnswerKind.text,
+      ]);
+      expect(answers[0].percent, 25);
+      expect(answers[0].at, DateTime.utc(2026, 11, 20, 9).toLocal());
+      expect(answers[1].items.single.state, AnswerState.error);
+      expect(answers[2].suggestions, ['jellyfin', 'pihole']);
+      expect(parseSearchAnswers({'nope': 1}), isNull);
+    });
+
+    testWidgets(
+      'shows the answers above the results and searches a suggestion',
+      (tester) async {
+        final search = FakeSearchRepository()
+          ..result = Result.ok(settings)
+          ..answerList = parseSearchAnswers(json)!;
+        final viewModel = SearchViewModel(
+          serverRepository: FakeServerRepository(current: testServer()),
+          searchRepository: search,
+          dashboardRepository: FakeDashboardRepository(),
+          todosRepository: FakeTodosRepository(),
+          debounce: Duration.zero,
+          language: 'de',
+        );
+        addTearDown(viewModel.dispose);
+        await tester.pumpScreen(SearchScreen(viewModel: viewModel));
+        await tester.enterText(
+          find.byKey(const ValueKey('search.field')),
+          'ram',
+        );
+        await tester.pumpAndSettle();
+
+        expect(search.answerQueries.last, 'ram/de');
+        expect(find.text('Arbeitsspeicher'), findsOneWidget);
+        expect(find.text('2.0 GiB von 8.0 GiB'), findsOneWidget);
+        expect(find.text('NAS'), findsOneWidget);
+        expect(find.text(l10nEn.searchOpenWidget), findsOneWidget);
+
+        await tester.tap(find.text('jellyfin'));
+        await tester.pumpAndSettle();
+        expect(search.answerQueries.last, 'jellyfin/de');
+        expect(find.widgetWithText(TextFormField, 'jellyfin'), findsOneWidget);
+      },
+    );
+
+    test('drops the answers when the query is cleared', () async {
+      final search = FakeSearchRepository()
+        ..result = Result.ok(settings)
+        ..answerList = parseSearchAnswers(json)!;
+      final viewModel = SearchViewModel(
+        serverRepository: FakeServerRepository(current: testServer()),
+        searchRepository: search,
+        dashboardRepository: FakeDashboardRepository(),
+        todosRepository: FakeTodosRepository(),
+        debounce: Duration.zero,
+      );
+      addTearDown(viewModel.dispose);
+      viewModel.searchFor('cpu');
+      await pumpEventQueue();
+      expect(viewModel.answers, hasLength(3));
+      viewModel.searchFor('');
+      await pumpEventQueue();
+      expect(viewModel.answers, isEmpty);
+    });
+  });
 }

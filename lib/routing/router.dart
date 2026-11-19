@@ -10,6 +10,7 @@ import 'package:waylight_mobile/ui/auth_callback/view_models/auth_callback_view_
 import 'package:waylight_mobile/ui/auth_callback/widgets/auth_callback_screen.dart';
 import 'package:waylight_mobile/ui/connect_server/view_models/connect_server_view_model.dart';
 import 'package:waylight_mobile/ui/connect_server/widgets/connect_server_screen.dart';
+import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/widgets/view_model_host.dart';
 import 'package:waylight_mobile/ui/dashboard/view_models/dashboard_view_model.dart';
 import 'package:waylight_mobile/ui/dashboard/widgets/dashboard_screen.dart';
@@ -123,6 +124,7 @@ GoRouter createRouter(
       builder: (context, state) => ViewModelHost(
         create: (context) => SearchViewModel(
           initialQuery: state.uri.queryParameters['q'] ?? '',
+          language: context.l10n.localeName,
           serverRepository: context.read(),
           searchRepository: context.read(),
           dashboardRepository: context.read(),

@@ -22,4 +22,20 @@ class FakeSearchRepository implements SearchRepository {
     wikiQueries.add(query);
     return Result.ok(wikiHits);
   }
+
+  /// The answers every query gets.
+  List<SearchAnswer> answerList = const [];
+
+  /// The answer queries asked, as `query/language`.
+  final List<String> answerQueries = [];
+
+  @override
+  Future<Result<List<SearchAnswer>>> answers(
+    ServerAddress server,
+    String query,
+    String language,
+  ) async {
+    answerQueries.add('$query/$language');
+    return Result.ok(answerList);
+  }
 }
