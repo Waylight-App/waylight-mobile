@@ -861,5 +861,13 @@
   "summaryTitle": "Summary",
   "@summaryTitle": {"description": "Heading of the summary sheet."},
   "summaryByAi": "Written by the server's local AI; it can be wrong.",
-  "@summaryByAi": {"description": "Notice below an AI summary."}
+  "@summaryByAi": {"description": "Notice below an AI summary."},
+  "bookmarkAdd": "Add bookmark",
+  "@bookmarkAdd": {"description": "Button and dialog title."},
+  "bookmarkEdit": "Edit bookmark",
+  "@bookmarkEdit": {"description": "Dialog title."},
+  "bookmarkFolder": "Folder",
+  "@bookmarkFolder": {"description": "Field."},
+  "bookmarkNoFolder": "No folder",
+  "@bookmarkNoFolder": {"description": "Choice."}
 }

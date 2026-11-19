@@ -430,5 +430,9 @@
   "settingsPushNotInBuild": "Diese Version der App hat keine Push-Benachrichtigungen.",
   "summaryAction": "Zusammenfassen",
   "summaryTitle": "Zusammenfassung",
-  "summaryByAi": "Von der lokalen KI des Servers geschrieben; sie kann sich irren."
+  "summaryByAi": "Von der lokalen KI des Servers geschrieben; sie kann sich irren.",
+  "bookmarkAdd": "Lesezeichen hinzufügen",
+  "bookmarkEdit": "Lesezeichen bearbeiten",
+  "bookmarkFolder": "Ordner",
+  "bookmarkNoFolder": "Kein Ordner"
 }

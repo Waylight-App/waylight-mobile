@@ -36,6 +36,45 @@ class BookmarksApi {
         return Result.error(error);
     }
   }
+
+  /// Creates a bookmark (`POST /api/bookmarks`).
+  Future<Result<void>> create(
+    ServerAddress server,
+    BookmarkDraft draft,
+  ) async => _done(
+    await _client.postJson(
+      server.resolve('/api/bookmarks'),
+      body: _body(draft),
+    ),
+  );
+
+  /// Saves a bookmark (`PUT /api/bookmarks/{id}`).
+  Future<Result<void>> update(
+    ServerAddress server,
+    String id,
+    BookmarkDraft draft,
+  ) async => _done(
+    await _client.putJson(server.resolve(_path(id)), body: _body(draft)),
+  );
+
+  /// Deletes a bookmark.
+  Future<Result<void>> delete(ServerAddress server, String id) =>
+      _client.delete(server.resolve(_path(id)));
+
+  static String _path(String id) => '/api/bookmarks/${Uri.encodeComponent(id)}';
+
+  static Map<String, Object?> _body(BookmarkDraft d) => {
+    'folderId': d.folderId,
+    'title': d.title,
+    'url': '${d.url}',
+    'description': '',
+    'tags': <String>[],
+  };
+
+  static Result<void> _done(Result<Object?> r) => switch (r) {
+    Ok() => const Result.ok(null),
+    Error(:final error) => Result.error(error),
+  };
 }
 
 /// Maps the JSON of `GET /api/bookmarks`; `null` if it does not match.

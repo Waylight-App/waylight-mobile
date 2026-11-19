@@ -17,4 +17,19 @@ class BookmarksRepositoryRemote implements BookmarksRepository {
     String folder = '',
     String tag = '',
   }) => _api.bookmarks(server, folder: folder, tag: tag);
+
+  @override
+  Future<Result<void>> create(ServerAddress server, BookmarkDraft draft) =>
+      _api.create(server, draft);
+
+  @override
+  Future<Result<void>> update(
+    ServerAddress server,
+    String id,
+    BookmarkDraft draft,
+  ) => _api.update(server, id, draft);
+
+  @override
+  Future<Result<void>> delete(ServerAddress server, String id) =>
+      _api.delete(server, id);
 }

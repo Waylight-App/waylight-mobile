@@ -4,13 +4,13 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
-
 import 'package:waylight_mobile/data/repositories/bookmarks/bookmarks_repository.dart';
 import 'package:waylight_mobile/data/repositories/server/server_repository.dart';
 import 'package:waylight_mobile/data/services/api/bookmarks_api.dart';
 import 'package:waylight_mobile/domain/models/bookmark.dart';
 import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/ui/core/link_opener.dart';
+import 'package:waylight_mobile/ui/widgets/bookmarks/bookmark_dialog.dart';
 import 'package:waylight_mobile/ui/widgets/bookmarks/bookmarks_view_model.dart';
 import 'package:waylight_mobile/ui/widgets/bookmarks/bookmarks_widget.dart';
 import 'package:waylight_mobile/utils/result.dart';
@@ -150,5 +150,55 @@ void main() {
     await tester.pump();
 
     expect(find.text('failed'), findsOneWidget);
+  });
+
+  testWidgets('adds, edits and deletes bookmarks', (tester) async {
+    final repo = FakeBookmarksRepository()
+      ..result = Result.ok(parseBookmarks(demo)!);
+    await tester.pumpScreen(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider<ServerRepository>.value(
+            value: FakeServerRepository(current: testServer()),
+          ),
+          Provider<BookmarksRepository>.value(value: repo),
+        ],
+        child: const SingleChildScrollView(
+          child: BookmarksWidget(
+            widget: WidgetPlacement(
+              id: 'w',
+              kind: 'bookmarks',
+              config: {'tag': 'docker'},
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text(l10nEn.bookmarkAdd));
+    await tester.pumpAndSettle();
+    await tester.enterText(
+      find.byType(TextField).first,
+      'https://example.org/wiki',
+    );
+    await tester.enterText(find.byType(TextField).at(1), 'Wiki');
+    await tester.tap(find.text(l10nEn.calendarSave));
+    await tester.pumpAndSettle();
+    expect(repo.changes, ['create:Wiki']);
+
+    await tester.longPress(find.text('AdGuard Home'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text(l10nEn.noteDelete));
+    await tester.pumpAndSettle();
+    expect(repo.changes.last, startsWith('delete:'));
+  });
+
+  testWidgets('refuses an address that is not http', (tester) async {
+    await tester.pumpScreen(const BookmarkDialog(folders: []));
+    await tester.enterText(find.byType(TextField).first, 'ftp://example.org');
+    await tester.tap(find.text(l10nEn.calendarSave));
+    await tester.pumpAndSettle();
+    expect(find.byType(BookmarkDialog), findsNothing);
   });
 }

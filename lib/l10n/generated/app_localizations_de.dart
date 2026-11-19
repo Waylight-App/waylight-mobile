@@ -1459,4 +1459,16 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get summaryByAi =>
       'Von der lokalen KI des Servers geschrieben; sie kann sich irren.';
+
+  @override
+  String get bookmarkAdd => 'Lesezeichen hinzufügen';
+
+  @override
+  String get bookmarkEdit => 'Lesezeichen bearbeiten';
+
+  @override
+  String get bookmarkFolder => 'Ordner';
+
+  @override
+  String get bookmarkNoFolder => 'Kein Ordner';
 }

@@ -2683,6 +2683,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Written by the server\'s local AI; it can be wrong.'**
   String get summaryByAi;
+
+  /// Button and dialog title.
+  ///
+  /// In en, this message translates to:
+  /// **'Add bookmark'**
+  String get bookmarkAdd;
+
+  /// Dialog title.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit bookmark'**
+  String get bookmarkEdit;
+
+  /// Field.
+  ///
+  /// In en, this message translates to:
+  /// **'Folder'**
+  String get bookmarkFolder;
+
+  /// Choice.
+  ///
+  /// In en, this message translates to:
+  /// **'No folder'**
+  String get bookmarkNoFolder;
 }
 
 class _AppLocalizationsDelegate

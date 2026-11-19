@@ -1457,4 +1457,16 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get summaryByAi =>
       'Written by the server\'s local AI; it can be wrong.';
+
+  @override
+  String get bookmarkAdd => 'Add bookmark';
+
+  @override
+  String get bookmarkEdit => 'Edit bookmark';
+
+  @override
+  String get bookmarkFolder => 'Folder';
+
+  @override
+  String get bookmarkNoFolder => 'No folder';
 }
