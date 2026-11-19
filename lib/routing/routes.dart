@@ -12,6 +12,9 @@ abstract final class Routes {
   /// Server, account, appearance and about.
   static const settings = '/settings';
 
+  /// Pairs the app from a QR code: `waylight://pair?server=…&code=…` (#43).
+  static const pair = '/pair';
+
   /// Every path the router knows; links to others open the dashboard.
-  static const all = {home, connect, signIn, settings};
+  static const all = {home, connect, signIn, settings, pair};
 }

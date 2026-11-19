@@ -420,4 +420,22 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get settingsLicences => 'Open-Source-Lizenzen';
+
+  @override
+  String get pairTitle => 'App wird verbunden';
+
+  @override
+  String get pairInvalidLink =>
+      'Dieser Link enthält keinen vollständigen Kopplungscode. Lass dir in Waylight unter Einstellungen → Mobile App einen neuen QR-Code anzeigen.';
+
+  @override
+  String get pairCodeInvalid =>
+      'Dieser Kopplungscode ist nicht mehr gültig. Lass dir in Waylight unter Einstellungen → Mobile App einen neuen QR-Code anzeigen.';
+
+  @override
+  String get pairEnterManually => 'Adresse stattdessen eingeben';
+
+  @override
+  String get connectQrHint =>
+      'Oder scanne den QR-Code unter Einstellungen → Mobile App in Waylight mit der Kamera deines Handys.';
 }

@@ -43,6 +43,22 @@ class FakeSessionRepository extends SessionRepository {
     return signInResult;
   }
 
+  /// What [pair] returns; signed in by default.
+  Result<void> pairResult = const Result.ok(null);
+
+  /// The codes [pair] was called with.
+  final List<String> pairCalls = [];
+
+  @override
+  Future<Result<void>> pair(ServerAddress server, String code) async {
+    pairCalls.add(code);
+    if (pairResult case Ok()) {
+      signedIn = true;
+      notifyListeners();
+    }
+    return pairResult;
+  }
+
   @override
   Future<Result<void>> signOut() async {
     signOutCalls++;
