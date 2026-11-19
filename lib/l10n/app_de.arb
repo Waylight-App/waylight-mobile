@@ -70,5 +70,15 @@
   "weatherFeelsLike": "Gefühlt {value} °C",
   "weatherRange": "{min}° / {max}°",
   "weatherPrecipitation": "{value} % Regen",
-  "weatherNoPlace": "Wähle für dieses Widget in der Weboberfläche einen Ort."
+  "weatherNoPlace": "Wähle für dieses Widget in der Weboberfläche einen Ort.",
+  "todosTitle": "To-dos",
+  "todosEmpty": "Nichts zu tun.",
+  "todosDone": "Erledigt",
+  "todosOverdue": "Überfällig",
+  "todosToday": "Heute",
+  "todosTomorrow": "Morgen",
+  "notesTitle": "Notizen",
+  "notesNone": "Noch keine Notizen.",
+  "notesNonePinned": "Keine angehefteten Notizen.",
+  "notesPinned": "Angeheftet"
 }

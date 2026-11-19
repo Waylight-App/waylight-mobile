@@ -249,4 +249,34 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get weatherNoPlace =>
       'Choose a place for this widget in the web interface.';
+
+  @override
+  String get todosTitle => 'To-dos';
+
+  @override
+  String get todosEmpty => 'Nothing to do.';
+
+  @override
+  String get todosDone => 'Done';
+
+  @override
+  String get todosOverdue => 'Overdue';
+
+  @override
+  String get todosToday => 'Today';
+
+  @override
+  String get todosTomorrow => 'Tomorrow';
+
+  @override
+  String get notesTitle => 'Notes';
+
+  @override
+  String get notesNone => 'No notes yet.';
+
+  @override
+  String get notesNonePinned => 'No pinned notes.';
+
+  @override
+  String get notesPinned => 'Pinned';
 }

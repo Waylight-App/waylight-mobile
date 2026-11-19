@@ -165,4 +165,20 @@ void main() {
       expect(response.headers['set-cookie'], 'x=y');
     });
   });
+
+  test('decodes the body as UTF-8 without a charset', () async {
+    final client = ApiClient(
+      client: MockClient(
+        (_) async => http.Response.bytes(
+          utf8.encode('{"title":"Grüße 🏠"}'),
+          200,
+          headers: {'content-type': 'application/json'},
+        ),
+      ),
+    );
+
+    final result = await client.getJson(uri);
+
+    expect((result as Ok<Object?>).value, {'title': 'Grüße 🏠'});
+  });
 }

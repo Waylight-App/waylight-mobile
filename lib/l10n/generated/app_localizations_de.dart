@@ -251,4 +251,34 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get weatherNoPlace =>
       'Wähle für dieses Widget in der Weboberfläche einen Ort.';
+
+  @override
+  String get todosTitle => 'To-dos';
+
+  @override
+  String get todosEmpty => 'Nichts zu tun.';
+
+  @override
+  String get todosDone => 'Erledigt';
+
+  @override
+  String get todosOverdue => 'Überfällig';
+
+  @override
+  String get todosToday => 'Heute';
+
+  @override
+  String get todosTomorrow => 'Morgen';
+
+  @override
+  String get notesTitle => 'Notizen';
+
+  @override
+  String get notesNone => 'Noch keine Notizen.';
+
+  @override
+  String get notesNonePinned => 'Keine angehefteten Notizen.';
+
+  @override
+  String get notesPinned => 'Angeheftet';
 }

@@ -118,7 +118,11 @@ class ApiClient {
       return const Result.error(ApiException(ApiFailure.unreachable));
     }
 
-    final decoded = _decode(response.body);
+    // JSON is always UTF-8 (RFC 8259); Response.body would fall back to
+    // Latin-1 when the content type names no charset.
+    final decoded = _decode(
+      utf8.decode(response.bodyBytes, allowMalformed: true),
+    );
     if (response.statusCode >= 200 && response.statusCode < 300) {
       return Result.ok(
         ApiResponse(
