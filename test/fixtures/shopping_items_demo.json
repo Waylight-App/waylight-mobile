@@ -1,0 +1,42 @@
+[
+  {
+    "id": "ad041bd7faff2c6cca5027912d5e4151",
+    "summary": "Oat milk",
+    "done": false
+  },
+  {
+    "id": "d24a7ec3b0e1670ffbd186dad8dfd712",
+    "summary": "Coffee beans",
+    "done": false
+  },
+  {
+    "id": "82517fc0b47c822576e965347425f371",
+    "summary": "Sourdough bread",
+    "done": false
+  },
+  {
+    "id": "792ee7baa298b841523355cfdf4938bd",
+    "summary": "Tomatoes",
+    "done": false
+  },
+  {
+    "id": "0542dca37937935ef01e567c90a5a5fc",
+    "summary": "Cheese",
+    "done": false
+  },
+  {
+    "id": "59d95a01800a6bef220e2d3e922a00fb",
+    "summary": "Basil",
+    "done": false
+  },
+  {
+    "id": "327cae819b66c30dfd160f3dc85baab9",
+    "summary": "Dish soap",
+    "done": true
+  },
+  {
+    "id": "2de629a9ac12d0d7d2bf35f9c3508144",
+    "summary": "Bananas",
+    "done": true
+  }
+]

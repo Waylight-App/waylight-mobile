@@ -609,5 +609,21 @@
   "sportsPlayed": "{games} games",
   "@sportsPlayed": {"description": "Games played.", "placeholders": {"games": {"type": "int", "example": "11"}}},
   "sportsPoints": "{points} pts",
-  "@sportsPoints": {"description": "Points in the table.", "placeholders": {"points": {"type": "int", "example": "25"}}}
+  "@sportsPoints": {"description": "Points in the table.", "placeholders": {"points": {"type": "int", "example": "25"}}},
+  "shoppingTitle": "Shopping list",
+  "@shoppingTitle": {"description": "Default title of the shopping widget."},
+  "shoppingNotConfigured": "Create a shopping list in the web interface first.",
+  "@shoppingNotConfigured": {"description": "Shopping widget without a list."},
+  "shoppingEmpty": "Nothing to buy.",
+  "@shoppingEmpty": {"description": "Shopping list without items."},
+  "shoppingAdd": "Add item",
+  "@shoppingAdd": {"description": "Field and button to add an item."},
+  "habitsTitle": "Habits",
+  "@habitsTitle": {"description": "Default title of the habits widget."},
+  "habitsEmpty": "No habits due today.",
+  "@habitsEmpty": {"description": "Habits widget without habits due."},
+  "shoppingClear": "Remove {count} in the basket",
+  "@shoppingClear": {"description": "Button that removes ticked-off items.", "placeholders": {"count": {"type": "int", "example": "2"}}},
+  "habitsStreak": "{current} days in a row · best {best}",
+  "@habitsStreak": {"description": "Current and best streak.", "placeholders": {"current": {"type": "int", "example": "8"}, "best": {"type": "int", "example": "19"}}}
 }

@@ -8,6 +8,8 @@ import 'package:waylight_mobile/data/repositories/bookmarks/bookmarks_repository
 import 'package:waylight_mobile/data/repositories/bookmarks/bookmarks_repository_remote.dart';
 import 'package:waylight_mobile/data/repositories/dashboard/dashboard_repository.dart';
 import 'package:waylight_mobile/data/repositories/dashboard/dashboard_repository_remote.dart';
+import 'package:waylight_mobile/data/repositories/habits/habits_repository.dart';
+import 'package:waylight_mobile/data/repositories/habits/habits_repository_remote.dart';
 import 'package:waylight_mobile/data/repositories/lock/app_lock_repository.dart';
 import 'package:waylight_mobile/data/repositories/notes/notes_repository.dart';
 import 'package:waylight_mobile/data/repositories/notes/notes_repository_remote.dart';
@@ -20,6 +22,8 @@ import 'package:waylight_mobile/data/repositories/server/server_repository.dart'
 import 'package:waylight_mobile/data/repositories/server/server_repository_remote.dart';
 import 'package:waylight_mobile/data/repositories/session/session_repository.dart';
 import 'package:waylight_mobile/data/repositories/session/session_repository_remote.dart';
+import 'package:waylight_mobile/data/repositories/shopping/shopping_repository.dart';
+import 'package:waylight_mobile/data/repositories/shopping/shopping_repository_remote.dart';
 import 'package:waylight_mobile/data/repositories/todos/todos_repository.dart';
 import 'package:waylight_mobile/data/repositories/todos/todos_repository_outbox.dart';
 import 'package:waylight_mobile/data/repositories/todos/todos_repository_remote.dart';
@@ -63,6 +67,8 @@ typedef Repositories = ({
   TransitRepository transit,
   WasteRepository waste,
   WidgetDataRepository widgetData,
+  ShoppingRepository shopping,
+  HabitsRepository habits,
   PreferencesRepository preferences,
   OfflineRepository offline,
   SearchRepository search,
@@ -85,6 +91,8 @@ List<SingleChildWidget> providers(Repositories repositories) => [
   Provider<TransitRepository>.value(value: repositories.transit),
   Provider<WasteRepository>.value(value: repositories.waste),
   Provider<WidgetDataRepository>.value(value: repositories.widgetData),
+  Provider<ShoppingRepository>.value(value: repositories.shopping),
+  Provider<HabitsRepository>.value(value: repositories.habits),
   Provider<SearchRepository>.value(value: repositories.search),
   ChangeNotifierProvider<AppLockRepository>.value(value: repositories.lock),
   ChangeNotifierProvider<PreferencesRepository>.value(
@@ -109,6 +117,7 @@ Repositories createRepositories() {
     offline: offline,
   );
   const store = SecureKeyValueStore();
+  final modules = ModuleApi(client);
   final server = ServerRepositoryRemote(
     platformApi: PlatformApi(client),
     store: store,
@@ -136,7 +145,9 @@ Repositories createRepositories() {
     bookmarks: BookmarksRepositoryRemote(api: BookmarksApi(client)),
     transit: TransitRepositoryRemote(api: TransitApi(client)),
     waste: WasteRepositoryRemote(api: WasteApi(client)),
-    widgetData: WidgetDataRepositoryRemote(api: ModuleApi(client)),
+    widgetData: WidgetDataRepositoryRemote(api: modules),
+    shopping: ShoppingRepositoryRemote(api: modules),
+    habits: HabitsRepositoryRemote(api: modules),
     preferences: PreferencesRepositoryLocal(store: store),
     offline: OfflineRepository(offline),
     search: SearchRepositoryRemote(api: SearchApi(client)),

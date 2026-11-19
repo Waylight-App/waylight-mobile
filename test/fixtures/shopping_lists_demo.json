@@ -1,0 +1,14 @@
+{
+  "lists": [
+    {
+      "id": "086b84c6994626768a3d71e568be63c0",
+      "name": "Weekly shop",
+      "visibility": "everyone",
+      "mine": true,
+      "open": 6,
+      "done": 2
+    }
+  ],
+  "caldav": false,
+  "current": "086b84c6994626768a3d71e568be63c0"
+}

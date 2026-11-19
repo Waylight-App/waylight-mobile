@@ -1036,4 +1036,33 @@ class AppLocalizationsEn extends AppLocalizations {
   String sportsPoints(int points) {
     return '$points pts';
   }
+
+  @override
+  String get shoppingTitle => 'Shopping list';
+
+  @override
+  String get shoppingNotConfigured =>
+      'Create a shopping list in the web interface first.';
+
+  @override
+  String get shoppingEmpty => 'Nothing to buy.';
+
+  @override
+  String get shoppingAdd => 'Add item';
+
+  @override
+  String get habitsTitle => 'Habits';
+
+  @override
+  String get habitsEmpty => 'No habits due today.';
+
+  @override
+  String shoppingClear(int count) {
+    return 'Remove $count in the basket';
+  }
+
+  @override
+  String habitsStreak(int current, int best) {
+    return '$current days in a row · best $best';
+  }
 }

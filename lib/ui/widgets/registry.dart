@@ -12,6 +12,7 @@ import 'package:waylight_mobile/ui/widgets/docker/docker_widget.dart';
 import 'package:waylight_mobile/ui/widgets/electricity/electricity_widget.dart';
 import 'package:waylight_mobile/ui/widgets/fritzbox/fritzbox_widget.dart';
 import 'package:waylight_mobile/ui/widgets/fuel/fuel_widget.dart';
+import 'package:waylight_mobile/ui/widgets/habits/habits_widget.dart';
 import 'package:waylight_mobile/ui/widgets/holidays/holidays_widget.dart';
 import 'package:waylight_mobile/ui/widgets/lists/list_widgets.dart';
 import 'package:waylight_mobile/ui/widgets/markets/markets_widget.dart';
@@ -19,6 +20,7 @@ import 'package:waylight_mobile/ui/widgets/notes/notes_widget.dart';
 import 'package:waylight_mobile/ui/widgets/phonelist/phonelist_widget.dart';
 import 'package:waylight_mobile/ui/widgets/proxmox/proxmox_widget.dart';
 import 'package:waylight_mobile/ui/widgets/services/services_widget.dart';
+import 'package:waylight_mobile/ui/widgets/shopping/shopping_widget.dart';
 import 'package:waylight_mobile/ui/widgets/speedtest/speedtest_widget.dart';
 import 'package:waylight_mobile/ui/widgets/sports/sports_widget.dart';
 import 'package:waylight_mobile/ui/widgets/study/study_widget.dart';
@@ -49,6 +51,7 @@ const nativeWidgets = WidgetRegistry({
   'fritzbox-calls': CallsWidget.forPlacement,
   'fuel': FuelWidget.forPlacement,
   'gamedeals': ListWidget.gameDeals,
+  'habits': HabitsWidget.forPlacement,
   'holidays': HolidaysWidget.forPlacement,
   'immich': AppOverviewWidget.immich,
   'markets': MarketsWidget.forPlacement,
@@ -60,6 +63,7 @@ const nativeWidgets = WidgetRegistry({
   'readlater': ListWidget.readLater,
   'releases': ListWidget.releases,
   'services': ServicesWidget.forPlacement,
+  'shopping': ShoppingWidget.forPlacement,
   'space': ListWidget.space,
   'speedtest': SpeedtestWidget.forPlacement,
   'sports': SportsWidget.forPlacement,

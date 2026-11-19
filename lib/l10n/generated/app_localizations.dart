@@ -1927,6 +1927,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{points} pts'**
   String sportsPoints(int points);
+
+  /// Default title of the shopping widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Shopping list'**
+  String get shoppingTitle;
+
+  /// Shopping widget without a list.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a shopping list in the web interface first.'**
+  String get shoppingNotConfigured;
+
+  /// Shopping list without items.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing to buy.'**
+  String get shoppingEmpty;
+
+  /// Field and button to add an item.
+  ///
+  /// In en, this message translates to:
+  /// **'Add item'**
+  String get shoppingAdd;
+
+  /// Default title of the habits widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Habits'**
+  String get habitsTitle;
+
+  /// Habits widget without habits due.
+  ///
+  /// In en, this message translates to:
+  /// **'No habits due today.'**
+  String get habitsEmpty;
+
+  /// Button that removes ticked-off items.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove {count} in the basket'**
+  String shoppingClear(int count);
+
+  /// Current and best streak.
+  ///
+  /// In en, this message translates to:
+  /// **'{current} days in a row · best {best}'**
+  String habitsStreak(int current, int best);
 }
 
 class _AppLocalizationsDelegate

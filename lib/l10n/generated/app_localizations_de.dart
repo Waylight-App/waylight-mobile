@@ -1038,4 +1038,33 @@ class AppLocalizationsDe extends AppLocalizations {
   String sportsPoints(int points) {
     return '$points Pkt.';
   }
+
+  @override
+  String get shoppingTitle => 'Einkaufsliste';
+
+  @override
+  String get shoppingNotConfigured =>
+      'Lege zuerst im Web eine Einkaufsliste an.';
+
+  @override
+  String get shoppingEmpty => 'Nichts zu kaufen.';
+
+  @override
+  String get shoppingAdd => 'Artikel hinzufügen';
+
+  @override
+  String get habitsTitle => 'Gewohnheiten';
+
+  @override
+  String get habitsEmpty => 'Heute keine Gewohnheiten fällig.';
+
+  @override
+  String shoppingClear(int count) {
+    return '$count im Korb entfernen';
+  }
+
+  @override
+  String habitsStreak(int current, int best) {
+    return '$current Tage in Folge · Rekord $best';
+  }
 }

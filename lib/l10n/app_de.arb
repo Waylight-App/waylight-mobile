@@ -304,5 +304,13 @@
   "listMore": "{count} weitere",
   "studyCredits": "{passed} von {total} ECTS",
   "sportsPlayed": "{games} Spiele",
-  "sportsPoints": "{points} Pkt."
+  "sportsPoints": "{points} Pkt.",
+  "shoppingTitle": "Einkaufsliste",
+  "shoppingNotConfigured": "Lege zuerst im Web eine Einkaufsliste an.",
+  "shoppingEmpty": "Nichts zu kaufen.",
+  "shoppingAdd": "Artikel hinzufügen",
+  "habitsTitle": "Gewohnheiten",
+  "habitsEmpty": "Heute keine Gewohnheiten fällig.",
+  "shoppingClear": "{count} im Korb entfernen",
+  "habitsStreak": "{current} Tage in Folge · Rekord {best}"
 }
