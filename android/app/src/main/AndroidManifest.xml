@@ -29,6 +29,13 @@
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+            <!-- Text and links shared from other apps (#21); the activity turns
+                 them into a waylight://share link. -->
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
             <!-- Links into the app, e.g. waylight://settings (#47). -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -37,6 +44,23 @@
                 <data android:scheme="waylight" />
             </intent-filter>
         </activity>
+        <!-- Home screen widgets (#42); they show the cards the app stores. -->
+        <receiver android:name=".home.TodosWidget" android:exported="false"
+            android:label="@string/home_widget_todos">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider"
+                android:resource="@xml/home_widget_todos" />
+        </receiver>
+        <receiver android:name=".home.DeparturesWidget" android:exported="false"
+            android:label="@string/home_widget_departures">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider"
+                android:resource="@xml/home_widget_departures" />
+        </receiver>
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
         <meta-data

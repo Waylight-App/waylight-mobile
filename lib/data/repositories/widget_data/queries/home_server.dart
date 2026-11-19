@@ -329,3 +329,15 @@ List<Incident>? parseIncidents(Object? json) => listOf<Incident>(json, (i) {
   }
   return null;
 });
+
+/// `GET /api/modules`: the modules switched on on the server.
+const modulesQuery = WidgetQuery<Set<String>>('/api/modules', parseModules);
+
+/// Maps `GET /api/modules`.
+Set<String>? parseModules(Object? json) => switch (json) {
+  {'modules': final List<Object?> list} => {
+    for (final m in list)
+      if (m is String) m,
+  },
+  _ => null,
+};

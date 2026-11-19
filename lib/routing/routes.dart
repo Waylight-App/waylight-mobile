@@ -54,6 +54,9 @@ abstract final class Routes {
   /// Password, two-factor sign-in and sessions (#110).
   static const security = '/settings/security';
 
+  /// Saves content shared from another app: `/share?text=…` (#21).
+  static const share = '/share';
+
   /// Every path the router knows; links to others open the dashboard.
   static const all = {
     home,
@@ -74,5 +77,6 @@ abstract final class Routes {
     article,
     service,
     security,
+    share,
   };
 }

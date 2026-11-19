@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:waylight_mobile/app.dart';
 import 'package:waylight_mobile/config/dependencies.dart';
 import 'package:waylight_mobile/data/repositories/appearance/theme_repository.dart';
+import 'package:waylight_mobile/data/repositories/home_widgets/home_widgets_repository.dart';
 import 'package:waylight_mobile/data/repositories/lock/app_lock_repository.dart';
 import 'package:waylight_mobile/data/repositories/offline/offline_repository.dart';
 import 'package:waylight_mobile/data/repositories/todos/todos_repository_outbox.dart';
@@ -22,6 +23,7 @@ import '../testing/fakes/fake_bookmarks_repository.dart';
 import '../testing/fakes/fake_dashboard_repository.dart';
 import '../testing/fakes/fake_device_auth.dart';
 import '../testing/fakes/fake_habits_repository.dart';
+import '../testing/fakes/fake_home_widget_store.dart';
 import '../testing/fakes/fake_notes_repository.dart';
 import '../testing/fakes/fake_preferences_repository.dart';
 import '../testing/fakes/fake_search_repository.dart';
@@ -80,6 +82,12 @@ void main() {
             store: InMemoryKeyValueStore(),
           ),
           summary: FakeSummaryRepository(),
+          homeWidgets: HomeWidgetsRepository(
+            dashboard: FakeDashboardRepository(),
+            todos: FakeTodosRepository(),
+            transit: FakeTransitRepository(),
+            store: FakeHomeWidgetStore(),
+          ),
           preferences: FakePreferencesRepository(),
           offline: OfflineRepository(OfflineStatus()),
           search: FakeSearchRepository(),

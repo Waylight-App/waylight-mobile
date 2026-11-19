@@ -21,6 +21,7 @@ import 'package:waylight_mobile/data/repositories/dashboard/dashboard_repository
 import 'package:waylight_mobile/data/repositories/dashboard/dashboard_repository_remote.dart';
 import 'package:waylight_mobile/data/repositories/habits/habits_repository.dart';
 import 'package:waylight_mobile/data/repositories/habits/habits_repository_remote.dart';
+import 'package:waylight_mobile/data/repositories/home_widgets/home_widgets_repository.dart';
 import 'package:waylight_mobile/data/repositories/lock/app_lock_repository.dart';
 import 'package:waylight_mobile/data/repositories/notes/notes_repository.dart';
 import 'package:waylight_mobile/data/repositories/notes/notes_repository_remote.dart';
@@ -64,6 +65,7 @@ import 'package:waylight_mobile/data/services/api/transit_api.dart';
 import 'package:waylight_mobile/data/services/api/waste_api.dart';
 import 'package:waylight_mobile/data/services/api/weather_api.dart';
 import 'package:waylight_mobile/data/services/cache/response_cache.dart';
+import 'package:waylight_mobile/data/services/home_widgets/home_widget_store.dart';
 import 'package:waylight_mobile/data/services/platform/device_auth.dart';
 import 'package:waylight_mobile/data/services/platform/device_name.dart';
 import 'package:waylight_mobile/data/services/push/push_device.dart';
@@ -96,6 +98,7 @@ typedef Repositories = ({
   PushRepository push,
   ThemeRepository theme,
   SummaryRepository summary,
+  HomeWidgetsRepository homeWidgets,
   PreferencesRepository preferences,
   OfflineRepository offline,
   SearchRepository search,
@@ -132,6 +135,7 @@ List<SingleChildWidget> providers(Repositories repositories) => [
   Provider<PushRepository>.value(value: repositories.push),
   ChangeNotifierProvider<ThemeRepository>.value(value: repositories.theme),
   Provider<SummaryRepository>.value(value: repositories.summary),
+  Provider<HomeWidgetsRepository>.value(value: repositories.homeWidgets),
   Provider<SearchRepository>.value(value: repositories.search),
   ChangeNotifierProvider<AppLockRepository>.value(value: repositories.lock),
   ChangeNotifierProvider<PreferencesRepository>.value(
@@ -168,6 +172,14 @@ Repositories createRepositories() {
     offline: offline,
     server: () => server.current,
   );
+  final dashboard = DashboardRepositoryRemote(api: DashboardApi(client));
+  final transit = TransitRepositoryRemote(api: TransitApi(client));
+  final homeWidgets = HomeWidgetsRepository(
+    dashboard: dashboard,
+    todos: todos,
+    transit: transit,
+    store: MethodChannelHomeWidgetStore(),
+  );
   return (
     server: server,
     session: SessionRepositoryRemote(
@@ -176,14 +188,14 @@ Repositories createRepositories() {
       store: store,
       deviceName: deviceName(),
       cache: cache,
-      onForget: [todos.clear, theme.clear],
+      onForget: [todos.clear, theme.clear, homeWidgets.clear],
     ),
-    dashboard: DashboardRepositoryRemote(api: DashboardApi(client)),
+    dashboard: dashboard,
     weather: WeatherRepositoryRemote(api: WeatherApi(client)),
     todos: todos,
     notes: NotesRepositoryRemote(api: NotesApi(client)),
     bookmarks: BookmarksRepositoryRemote(api: BookmarksApi(client)),
-    transit: TransitRepositoryRemote(api: TransitApi(client)),
+    transit: transit,
     waste: WasteRepositoryRemote(api: WasteApi(client)),
     widgetData: WidgetDataRepositoryRemote(api: modules),
     shopping: ShoppingRepositoryRemote(api: modules),
@@ -205,6 +217,7 @@ Repositories createRepositories() {
     ),
     theme: theme,
     summary: SummaryRepositoryRemote(api: modules),
+    homeWidgets: homeWidgets,
     preferences: PreferencesRepositoryLocal(store: store),
     offline: OfflineRepository(offline),
     search: SearchRepositoryRemote(api: SearchApi(client)),
