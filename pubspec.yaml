@@ -12,10 +12,6 @@ environment:
 dependencies:
   # SHA-256 for the PKCE challenge of the browser sign-in; Dart team.
   crypto: ^3.0.8
-  # X25519, HKDF and AES-GCM to decrypt push notifications on the device
-  # (server ADR 0025). Pure Dart, no platform code or binaries; the SDK and
-  # the crypto package have no key agreement or AEAD.
-  cryptography: ^2.9.0
   flutter:
     sdk: flutter
   flutter_localizations:

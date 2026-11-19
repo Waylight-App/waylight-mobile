@@ -55,14 +55,16 @@ jobs:
           cache: true
       # Until store signing is set up (see ROADMAP.md), the APK is signed
       # with the debug key: fine for testers, not for the stores.
-      - run: flutter build apk --release
-      - name: Attach the APK to the release
+      - run: flutter build apk --release --flavor store
+      - run: flutter build apk --release --flavor fdroid
+      - name: Attach the APKs to the release
         env:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ needs.release-please.outputs.tag }}
         run: |
-          cp build/app/outputs/flutter-apk/app-release.apk "waylight-${TAG}.apk"
-          gh release upload "$TAG" "waylight-${TAG}.apk" --clobber
+          cp build/app/outputs/flutter-apk/app-store-release.apk "waylight-${TAG}.apk"
+          cp build/app/outputs/flutter-apk/app-fdroid-release.apk "waylight-${TAG}-fdroid.apk"
+          gh release upload "$TAG" "waylight-${TAG}.apk" "waylight-${TAG}-fdroid.apk" --clobber
 
   ios:
     needs: release-please
