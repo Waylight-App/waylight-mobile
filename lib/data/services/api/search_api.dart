@@ -24,6 +24,45 @@ class SearchApi {
       Error(:final error) => Result.error(error),
     };
   }
+
+  /// Searches the connected wikis (`GET /api/wiki/search`); at least two
+  /// characters.
+  Future<Result<List<WikiHit>>> wiki(ServerAddress server, String query) async {
+    final result = await _client.getJson(
+      server.resolve('/api/wiki/search').replace(queryParameters: {'q': query}),
+    );
+    return switch (result) {
+      Ok(:final value) => switch (parseWikiHits(value)) {
+        final hits? => Result.ok(hits),
+        null => const Result.error(ApiException(ApiFailure.server)),
+      },
+      Error(:final error) => Result.error(error),
+    };
+  }
+}
+
+/// Maps `GET /api/wiki/search`; pages without a valid address are left out.
+List<WikiHit>? parseWikiHits(Object? json) {
+  if (json case {'pages': final List<Object?> pages}) {
+    return [
+      for (final p in pages)
+        if (p case {'title': final String title, 'url': final String url})
+          if (Uri.tryParse(url) case final uri? when uri.hasScheme)
+            WikiHit(
+              title: title,
+              url: uri,
+              excerpt: switch (p['excerpt']) {
+                final String e => e,
+                _ => '',
+              },
+              wiki: switch (p['wiki']) {
+                final String w => w,
+                _ => '',
+              },
+            ),
+    ];
+  }
+  return null;
 }
 
 /// Maps the JSON of `GET /api/search/settings`; `null` if it does not

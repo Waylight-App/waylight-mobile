@@ -193,3 +193,26 @@ List<SearchResult> searchResults(
   }
   return results;
 }
+
+/// A page of a connected wiki that matches the query (`GET /api/wiki/search`).
+final class WikiHit {
+  /// Creates the hit.
+  const WikiHit({
+    required this.title,
+    required this.url,
+    this.excerpt = '',
+    this.wiki = '',
+  });
+
+  /// The page title.
+  final String title;
+
+  /// The page on the wiki's own host.
+  final Uri url;
+
+  /// The matching text.
+  final String excerpt;
+
+  /// The wiki's name.
+  final String wiki;
+}
