@@ -23,10 +23,15 @@ final class ApiCredentials {
   Map<String, String> headersFor(String method, Uri uri) {
     final session = this.session;
     if (session == null || !session.covers(uri)) return const {};
-    return {
-      HttpHeaders.cookieHeader: session.cookie,
-      // The server only checks the CSRF token on state-changing requests.
-      if (!_safeMethods.contains(method)) 'X-CSRF-Token': session.csrfToken,
+    return switch (session) {
+      AppSession(:final token) => {
+        HttpHeaders.authorizationHeader: 'Bearer $token',
+      },
+      BrowserSession(:final cookie, :final csrfToken) => {
+        HttpHeaders.cookieHeader: cookie,
+        // The server only checks the CSRF token on state-changing requests.
+        if (!_safeMethods.contains(method)) 'X-CSRF-Token': csrfToken,
+      },
     };
   }
 

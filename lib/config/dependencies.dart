@@ -33,6 +33,7 @@ import 'package:waylight_mobile/data/services/api/todos_api.dart';
 import 'package:waylight_mobile/data/services/api/transit_api.dart';
 import 'package:waylight_mobile/data/services/api/waste_api.dart';
 import 'package:waylight_mobile/data/services/api/weather_api.dart';
+import 'package:waylight_mobile/data/services/platform/device_name.dart';
 import 'package:waylight_mobile/data/services/storage/key_value_store.dart';
 
 /// The repositories of the app. Server and session are needed by the
@@ -84,6 +85,7 @@ Repositories createRepositories() {
       authApi: AuthApi(client),
       credentials: credentials,
       store: store,
+      deviceName: deviceName(),
     ),
     dashboard: DashboardRepositoryRemote(api: DashboardApi(client)),
     weather: WeatherRepositoryRemote(api: WeatherApi(client)),

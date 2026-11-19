@@ -37,17 +37,21 @@ certificates are not trusted.
 ## Sign-in
 
 How the app signs in is decided in [ADR 0004](adr/0004-authentication.md).
-Today the app uses the session of a browser (phase 1):
+The app asks the server for an **app session** (phase 2): a bearer token
+for this device, listed with the device name in the session list of the
+web interface and revoked there. Servers without app sessions get the
+session of a browser (phase 1). For both:
 
-- **What is kept.** After the sign-in the app keeps the session cookie and
-  its CSRF token, together with the server address they belong to, in the
+- **What is kept.** After the sign-in the app keeps the bearer token, or the
+  session cookie and its CSRF token, together with the server address they
+  belong to, in the
   secure storage (Keychain on iOS, Keystore on Android) and nowhere else.
   The password and the second-factor code are never stored or logged; the
   sign-in screen clears them after a failed attempt. `Session.toString()`
   leaves the secrets out, so they cannot end up in a log by accident.
-- **Where it is sent.** `ApiCredentials` adds the cookie to requests, and the
-  CSRF token to POST, PUT, PATCH and DELETE, but only to requests under the
-  address of the session's own server. Connecting another server cannot
+- **Where it is sent.** `ApiCredentials` adds the bearer token, or the
+  cookie and on POST, PUT, PATCH and DELETE the CSRF token, only to requests
+  under the address of the session's own server. Connecting another server cannot
   leak the session to it.
 - **When it ends.** A 401 from any request that carried the session ends it
   on the device, and the sign-in screen says that the session has ended.

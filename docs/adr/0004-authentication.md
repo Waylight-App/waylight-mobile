@@ -32,6 +32,16 @@ authentication, and stores nothing but a revocable credential.
    once released; phase 1 stays as fallback for older servers.
 3. Passkeys and single sign-on in the app follow after phase 2.
 
+## Status of the phases
+
+- Phase 1 is in place since #12 and #13.
+- Phase 2 (#15): the server offers app sessions since Waylight-App/waylight#559
+  (server ADR 0024). The app first asks for one
+  (`POST /api/auth/app-sessions` with a device name) and keeps its bearer
+  token; a server that answers 404 gets the browser session of phase 1.
+  Both kinds are stored with their kind, so sessions from before phase 2
+  keep working.
+
 ## Consequences
 
 - The app can be used with every current server from day one.
