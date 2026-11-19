@@ -84,5 +84,8 @@
 			</array>
 		</dict>
 	</array>
+	<!-- The launch screen shows the status bar like the app (flutter_native_splash). -->
+	<key>UIStatusBarHidden</key>
+	<false/>
 </dict>
 </plist>

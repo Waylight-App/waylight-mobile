@@ -44,6 +44,26 @@ adb shell am start -a android.intent.action.VIEW -d "waylight://settings"
 xcrun simctl openurl booted "waylight://settings"
 ```
 
+## Icons, launch screen and font
+
+The sources are in `assets/`:
+
+- `assets/icon/icon.svg` (full icon), `foreground.svg` (adaptive icon on
+  Android, inside the safe zone) and `monochrome.svg` (themed icons), drawn
+  after the favicon of the web interface. The PNGs next to them are the SVGs
+  rendered at 1024 × 1024 with any SVG renderer, e.g.
+  `rsvg-convert -w 1024 -h 1024 icon.svg -o icon.png`.
+- `assets/fonts/Fraunces-SemiBold.ttf`: the wordmark, an instance of the
+  Fraunces variable font (weight 600) reduced to Latin; licence in
+  `Fraunces-OFL.txt`.
+
+After changing an icon or the launch screen colours in `pubspec.yaml`:
+
+```sh
+dart run flutter_launcher_icons
+dart run flutter_native_splash:create
+```
+
 ## Everyday commands
 
 | Command | What it does |

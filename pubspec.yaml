@@ -44,7 +44,11 @@ dependencies:
   url_launcher: ^6.3.3
 
 dev_dependencies:
+  # Generates the app icons from assets/icon (docs/development.md#icons).
+  flutter_launcher_icons: ^0.14.4
   flutter_lints: ^6.0.0
+  # Generates the native launch screens (docs/development.md#icons).
+  flutter_native_splash: ^2.4.8
   flutter_test:
     sdk: flutter
   integration_test:
@@ -52,4 +56,33 @@ dev_dependencies:
 
 flutter:
   generate: true
+  fonts:
+    # The wordmark, as on the web (#10); SIL Open Font License,
+    # assets/fonts/Fraunces-OFL.txt.
+    - family: Fraunces
+      fonts:
+        - asset: assets/fonts/Fraunces-SemiBold.ttf
+          weight: 600
   uses-material-design: true
+
+# dart run flutter_launcher_icons
+flutter_launcher_icons:
+  image_path: assets/icon/icon.png
+  android: true
+  ios: true
+  remove_alpha_ios: true
+  adaptive_icon_background: "#131829"
+  adaptive_icon_foreground: assets/icon/foreground.png
+  adaptive_icon_monochrome: assets/icon/monochrome.png
+  min_sdk_android: 21
+
+# dart run flutter_native_splash:create
+flutter_native_splash:
+  color: "#FFF8F3"
+  color_dark: "#17130B"
+  image: assets/icon/foreground.png
+  android_12:
+    color: "#FFF8F3"
+    color_dark: "#17130B"
+    image: assets/icon/foreground.png
+

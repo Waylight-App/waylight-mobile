@@ -25,8 +25,7 @@ abstract final class AppTheme {
   /// Accent for text, icons and focus on dark backgrounds.
   static const Color accentTextDark = Color(0xFFFFD27A);
 
-  /// The font family of the wordmark (bundled with #10; until then the
-  /// platform's serif font is used).
+  /// The font family of the wordmark, bundled in `assets/fonts` (#10).
   static const String wordmarkFont = 'Fraunces';
 
   /// The theme in light mode.
