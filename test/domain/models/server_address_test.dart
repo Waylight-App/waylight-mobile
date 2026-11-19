@@ -60,7 +60,7 @@ void main() {
         (ServerAddress.parse(input) as Ok<ServerAddress>).value.isSecure;
 
     expect(secure('https://example.org'), isTrue);
-    expect(secure('http://example.org'), isFalse);
+    expect(secure('http://192.168.1.2'), isFalse);
   });
 
   test('addresses with the same URI are equal', () {
@@ -68,5 +68,55 @@ void main() {
       (ServerAddress.parse('example.org/') as Ok<ServerAddress>).value,
       (ServerAddress.parse('https://example.org') as Ok<ServerAddress>).value,
     );
+  });
+
+  group('plain HTTP (ADR 0006)', () {
+    test('is accepted for private addresses', () {
+      for (final address in [
+        'http://192.168.178.115:8090',
+        'http://10.0.2.2:8090',
+        'http://172.20.1.5',
+        'http://127.0.0.1:8090',
+        'http://localhost:8090',
+        'http://169.254.10.1',
+        'http://waylight.local',
+        'http://server.home.arpa',
+        'http://[fd12:3456::1]:8090',
+        'http://[fe80::1]',
+        'http://[::1]:8090',
+      ]) {
+        expect(
+          ServerAddress.parse(address),
+          isA<Ok<ServerAddress>>(),
+          reason: address,
+        );
+      }
+    });
+
+    test('is rejected for every other address', () {
+      for (final address in [
+        'http://home.example.org',
+        'http://8.8.8.8',
+        'http://172.32.0.1',
+        'http://192.169.1.1',
+        'http://server.fritz.box',
+        'http://[2001:db8::1]',
+      ]) {
+        final result = ServerAddress.parse(address);
+        expect(
+          ((result as Error<ServerAddress>).error as InvalidServerAddress)
+              .reason,
+          InvalidServerAddressReason.insecure,
+          reason: address,
+        );
+      }
+    });
+
+    test('HTTPS works for any address', () {
+      expect(
+        ServerAddress.parse('https://home.example.org'),
+        isA<Ok<ServerAddress>>(),
+      );
+    });
   });
 }

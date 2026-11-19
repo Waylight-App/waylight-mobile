@@ -151,4 +151,8 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get dashboardMenu => 'Konto';
+
+  @override
+  String get connectErrorInsecure =>
+      'Unverschlüsseltes http:// geht nur mit Adressen in deinem Heimnetz. Nutze für diesen Server https://.';
 }

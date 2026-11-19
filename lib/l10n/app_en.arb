@@ -81,5 +81,7 @@
   "dashboardEmptyTab": "This tab has no widgets yet.",
   "@dashboardEmptyTab": {"description": "Shown on a tab without widgets."},
   "dashboardMenu": "Account",
-  "@dashboardMenu": {"description": "Tooltip of the account menu in the app bar."}
+  "@dashboardMenu": {"description": "Tooltip of the account menu in the app bar."},
+  "connectErrorInsecure": "Plain http:// only works for addresses in your home network. Use https:// for this server.",
+  "@connectErrorInsecure": {"description": "Validation error: http:// to an address outside the private network."}
 }

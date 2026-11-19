@@ -343,6 +343,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Account'**
   String get dashboardMenu;
+
+  /// Validation error: http:// to an address outside the private network.
+  ///
+  /// In en, this message translates to:
+  /// **'Plain http:// only works for addresses in your home network. Use https:// for this server.'**
+  String get connectErrorInsecure;
 }
 
 class _AppLocalizationsDelegate

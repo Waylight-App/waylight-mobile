@@ -13,5 +13,6 @@ status *Proposed*, and discuss it in the pull request.
 | [0001](0001-app-architecture.md) | App architecture: the Flutter architecture guide (MVVM, repositories, services) with enforced layers | Accepted |
 | [0002](0002-flutter-stack.md) | Flutter stack: material_ui, provider, ChangeNotifier with commands, go_router, http, gen-l10n | Accepted |
 | [0003](0003-dependency-policy.md) | Dependency policy: every runtime dependency needs a reason | Accepted |
-| [0004](0004-authentication.md) | Sign-in of the app: session endpoints first, app sessions from the server later | Proposed |
+| [0004](0004-authentication.md) | Sign-in of the app: session endpoints first, app sessions from the server later | Accepted |
 | [0005](0005-design-system.md) | Design system in code: theme tokens and shared components | Accepted |
+| [0006](0006-plain-http-in-the-home-network.md) | Plain HTTP only for addresses in the home network | Accepted |

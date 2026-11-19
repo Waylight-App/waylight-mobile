@@ -40,5 +40,6 @@
   "dashboardRetry": "Erneut versuchen",
   "dashboardNoTabs": "Für dein Konto gibt es noch keine Tabs. Lege einen in der Weboberfläche an.",
   "dashboardEmptyTab": "Dieser Tab hat noch keine Widgets.",
-  "dashboardMenu": "Konto"
+  "dashboardMenu": "Konto",
+  "connectErrorInsecure": "Unverschlüsseltes http:// geht nur mit Adressen in deinem Heimnetz. Nutze für diesen Server https://."
 }
