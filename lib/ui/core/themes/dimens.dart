@@ -25,6 +25,15 @@ abstract final class Dimens {
   /// Size of an icon next to text, e.g. in a banner.
   static const double iconSmall = 20;
 
+  /// Size of the main icon of a widget, e.g. the weather now.
+  static const double iconLarge = 40;
+
+  /// Gap between the rows of a compact list, e.g. forecast days.
+  static const double gapTiny = 4;
+
+  /// Width of a short label column, e.g. the weekday of a forecast.
+  static const double labelColumn = 48;
+
   /// Corner radius of cards.
   static const double radiusCard = 16;
 

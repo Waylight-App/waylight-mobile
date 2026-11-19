@@ -18,6 +18,7 @@ class WidgetFrame<T> extends StatelessWidget {
     required this.title,
     required this.load,
     required this.builder,
+    this.errorText,
     super.key,
   });
 
@@ -29,6 +30,10 @@ class WidgetFrame<T> extends StatelessWidget {
 
   /// Builds the content once data is there.
   final Widget Function(BuildContext context, T data) builder;
+
+  /// The message for errors the widget explains itself, e.g. a missing
+  /// setting; `null` falls back to the common error texts.
+  final String? Function(Exception error)? errorText;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +48,7 @@ class WidgetFrame<T> extends StatelessWidget {
           Error(:final error) => Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(l10n.errorMessage(error)),
+              Text(errorText?.call(error) ?? l10n.errorMessage(error)),
               TextButton(
                 onPressed: load.running ? null : () => load.execute().ignore(),
                 child: Text(l10n.dashboardRetry),

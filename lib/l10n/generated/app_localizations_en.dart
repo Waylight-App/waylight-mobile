@@ -153,4 +153,100 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get connectErrorInsecure =>
       'Plain http:// only works for addresses in your home network. Use https:// for this server.';
+
+  @override
+  String get weatherClearSky => 'Clear sky';
+
+  @override
+  String get weatherMainlyClear => 'Mainly clear';
+
+  @override
+  String get weatherPartlyCloudy => 'Partly cloudy';
+
+  @override
+  String get weatherOvercast => 'Overcast';
+
+  @override
+  String get weatherFog => 'Fog';
+
+  @override
+  String get weatherRimeFog => 'Rime fog';
+
+  @override
+  String get weatherLightDrizzle => 'Light drizzle';
+
+  @override
+  String get weatherDrizzle => 'Drizzle';
+
+  @override
+  String get weatherDenseDrizzle => 'Dense drizzle';
+
+  @override
+  String get weatherFreezingDrizzle => 'Freezing drizzle';
+
+  @override
+  String get weatherLightRain => 'Light rain';
+
+  @override
+  String get weatherRain => 'Rain';
+
+  @override
+  String get weatherHeavyRain => 'Heavy rain';
+
+  @override
+  String get weatherFreezingRain => 'Freezing rain';
+
+  @override
+  String get weatherLightSnow => 'Light snow';
+
+  @override
+  String get weatherSnow => 'Snow';
+
+  @override
+  String get weatherHeavySnow => 'Heavy snow';
+
+  @override
+  String get weatherSnowGrains => 'Snow grains';
+
+  @override
+  String get weatherRainShowers => 'Rain showers';
+
+  @override
+  String get weatherViolentShowers => 'Violent showers';
+
+  @override
+  String get weatherSnowShowers => 'Snow showers';
+
+  @override
+  String get weatherThunderstorm => 'Thunderstorm';
+
+  @override
+  String get weatherThunderstormWithHail => 'Thunderstorm with hail';
+
+  @override
+  String get weatherUnknown => 'Unknown';
+
+  @override
+  String weatherDegrees(int value) {
+    return '$value °C';
+  }
+
+  @override
+  String weatherFeelsLike(int value) {
+    return 'Feels like $value °C';
+  }
+
+  @override
+  String weatherRange(int min, int max) {
+    return '$min° / $max°';
+  }
+
+  @override
+  String weatherPrecipitation(int value) {
+    return '$value % rain';
+  }
+
+  @override
+  String get weatherNoPlace =>
+      'Choose a place for this widget in the web interface.';
 }

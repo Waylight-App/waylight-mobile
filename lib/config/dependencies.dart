@@ -8,11 +8,14 @@ import 'package:waylight_mobile/data/repositories/server/server_repository.dart'
 import 'package:waylight_mobile/data/repositories/server/server_repository_remote.dart';
 import 'package:waylight_mobile/data/repositories/session/session_repository.dart';
 import 'package:waylight_mobile/data/repositories/session/session_repository_remote.dart';
+import 'package:waylight_mobile/data/repositories/weather/weather_repository.dart';
+import 'package:waylight_mobile/data/repositories/weather/weather_repository_remote.dart';
 import 'package:waylight_mobile/data/services/api/api_client.dart';
 import 'package:waylight_mobile/data/services/api/api_credentials.dart';
 import 'package:waylight_mobile/data/services/api/auth_api.dart';
 import 'package:waylight_mobile/data/services/api/dashboard_api.dart';
 import 'package:waylight_mobile/data/services/api/platform_api.dart';
+import 'package:waylight_mobile/data/services/api/weather_api.dart';
 import 'package:waylight_mobile/data/services/storage/key_value_store.dart';
 
 /// The repositories of the app. Server and session are needed by the
@@ -21,6 +24,7 @@ typedef Repositories = ({
   ServerRepository server,
   SessionRepository session,
   DashboardRepository dashboard,
+  WeatherRepository weather,
 });
 
 /// The services and repositories of the app: the composition root.
@@ -31,6 +35,7 @@ List<SingleChildWidget> providers(Repositories repositories) => [
   ChangeNotifierProvider<ServerRepository>.value(value: repositories.server),
   ChangeNotifierProvider<SessionRepository>.value(value: repositories.session),
   Provider<DashboardRepository>.value(value: repositories.dashboard),
+  Provider<WeatherRepository>.value(value: repositories.weather),
 ];
 
 /// Creates the repositories with their real services. They share one API
@@ -50,5 +55,6 @@ Repositories createRepositories() {
       store: store,
     ),
     dashboard: DashboardRepositoryRemote(api: DashboardApi(client)),
+    weather: WeatherRepositoryRemote(api: WeatherApi(client)),
   );
 }
