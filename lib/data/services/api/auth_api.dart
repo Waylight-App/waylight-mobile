@@ -137,16 +137,34 @@ class AuthApi {
     }
   }
 
-  /// Redeems the pairing [code] of a QR code from the web settings for an
-  /// app session of [device] (server #559).
+  /// Whether [server] offers app sessions (server #559). An empty request
+  /// is refused for the missing device name (422) by servers that do, and
+  /// is unknown (404) to the others; it creates nothing.
+  Future<bool> supportsAppSessions(ServerAddress server) async =>
+      switch (await _client.postJson(
+        server.resolve('/api/auth/app-sessions'),
+        body: <String, Object?>{},
+      )) {
+        Error(error: ApiException(failure: ApiFailure.invalid)) => true,
+        _ => false,
+      };
+
+  /// Redeems the pairing [code] of a QR code from the web settings, or of a
+  /// browser sign-in with its PKCE [verifier] (server #560), for an app
+  /// session of [device].
   Future<Result<Session>> redeemPairingCode(
     ServerAddress server, {
     required String device,
     required String code,
+    String verifier = '',
   }) async {
     final result = await _client.postJsonResponse(
       server.resolve('/api/auth/app-sessions'),
-      body: {'device': device, 'pairingCode': code},
+      body: {
+        'device': device,
+        'pairingCode': code,
+        if (verifier.isNotEmpty) 'verifier': verifier,
+      },
     );
     return switch (result) {
       Ok(value: ApiResponse(body: {'token': final String token}))

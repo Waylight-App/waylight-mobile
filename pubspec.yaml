@@ -10,6 +10,8 @@ environment:
 
 # Every runtime dependency needs a reason (docs/adr/0003-dependency-policy.md).
 dependencies:
+  # SHA-256 for the PKCE challenge of the browser sign-in; Dart team.
+  crypto: ^3.0.8
   flutter:
     sdk: flutter
   flutter_localizations:

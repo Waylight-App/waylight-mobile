@@ -481,4 +481,21 @@ class AppLocalizationsDe extends AppLocalizations {
   String dashboardOffline(String time) {
     return 'Offline · Daten von $time';
   }
+
+  @override
+  String get signInBrowser => 'Im Browser anmelden (Passkey, Microsoft, SSO)';
+
+  @override
+  String get authCallbackTitle => 'Anmeldung wird abgeschlossen';
+
+  @override
+  String get authCallbackCancelled =>
+      'Die Anmeldung im Browser wurde abgebrochen.';
+
+  @override
+  String get authCallbackUnexpected =>
+      'Diese Anmeldung wurde nicht in dieser App gestartet oder hat zu lange gedauert. Bitte starte sie erneut.';
+
+  @override
+  String get authCallbackBack => 'Zurück zur Anmeldung';
 }

@@ -139,5 +139,10 @@
   "todosRemoveDueDate": "Fälligkeitsdatum entfernen",
   "todosDelete": "Löschen",
   "todosSave": "Speichern",
-  "dashboardOffline": "Offline · Daten von {time}"
+  "dashboardOffline": "Offline · Daten von {time}",
+  "signInBrowser": "Im Browser anmelden (Passkey, Microsoft, SSO)",
+  "authCallbackTitle": "Anmeldung wird abgeschlossen",
+  "authCallbackCancelled": "Die Anmeldung im Browser wurde abgebrochen.",
+  "authCallbackUnexpected": "Diese Anmeldung wurde nicht in dieser App gestartet oder hat zu lange gedauert. Bitte starte sie erneut.",
+  "authCallbackBack": "Zurück zur Anmeldung"
 }

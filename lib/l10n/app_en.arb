@@ -279,5 +279,15 @@
   "todosSave": "Save",
   "@todosSave": {"description": "Button that saves the to-do."},
   "dashboardOffline": "Offline · showing the data from {time}",
-  "@dashboardOffline": {"description": "Banner while stored data is shown.", "placeholders": {"time": {"type": "String", "example": "07:58"}}}
+  "@dashboardOffline": {"description": "Banner while stored data is shown.", "placeholders": {"time": {"type": "String", "example": "07:58"}}},
+  "signInBrowser": "Sign in in the browser (passkey, Microsoft, SSO)",
+  "@signInBrowser": {"description": "Button that starts the sign-in in the browser."},
+  "authCallbackTitle": "Finishing the sign-in",
+  "@authCallbackTitle": {"description": "Title while the browser sign-in is finished."},
+  "authCallbackCancelled": "The sign-in in the browser was cancelled.",
+  "@authCallbackCancelled": {"description": "The person cancelled in the browser."},
+  "authCallbackUnexpected": "This sign-in was not started in this app, or it took too long. Please start it again.",
+  "@authCallbackUnexpected": {"description": "Answer without a matching started sign-in."},
+  "authCallbackBack": "Back to the sign-in",
+  "@authCallbackBack": {"description": "Button back to the sign-in screen."}
 }

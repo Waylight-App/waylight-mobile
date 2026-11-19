@@ -38,6 +38,7 @@ const _layers = <_Layer>[
       'flutter/services.dart',
       'http/',
       'flutter_secure_storage/',
+      'crypto/',
       'logging/',
     ],
   ),

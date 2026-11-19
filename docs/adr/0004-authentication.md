@@ -41,6 +41,12 @@ authentication, and stores nothing but a revocable credential.
   token; a server that answers 404 gets the browser session of phase 1.
   Both kinds are stored with their kind, so sessions from before phase 2
   keep working.
+- Passkeys, Microsoft and single sign-on (#45): on servers with app
+  sessions the app opens `/app-sign-in` in the browser with an S256 PKCE
+  challenge and a random state, both kept in the secure storage. The server
+  sends a single-use code to `waylight://auth`; the app accepts it only with
+  the state it started with and redeems it with the verifier (server
+  Waylight-App/waylight#560).
 
 ## Consequences
 
