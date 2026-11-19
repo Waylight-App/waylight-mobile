@@ -30,9 +30,11 @@ import 'package:waylight_mobile/ui/widgets/calendar/calendar_view_model.dart';
 import 'package:waylight_mobile/ui/widgets/common/remote_widget.dart';
 import 'package:waylight_mobile/ui/widgets/notes/note_editor_screen.dart';
 import 'package:waylight_mobile/ui/widgets/notes/note_editor_view_model.dart';
+import 'package:waylight_mobile/ui/widgets/readlater/article_screen.dart';
 import 'package:waylight_mobile/ui/widgets/registry.dart';
 import 'package:waylight_mobile/ui/widgets/rss/rss_reader_view_model.dart';
 import 'package:waylight_mobile/ui/widgets/rss/rss_screen.dart';
+import 'package:waylight_mobile/ui/widgets/services/service_details_screen.dart';
 import 'package:waylight_mobile/ui/widgets/shopping/shopping_screen.dart';
 import 'package:waylight_mobile/ui/widgets/shopping/shopping_view_model.dart';
 import 'package:waylight_mobile/ui/widgets/smarthome/smarthome_screen.dart';
@@ -178,6 +180,24 @@ GoRouter createRouter(
           notesRepository: context.read(),
         ),
         builder: (context, viewModel) => NoteEditorScreen(viewModel: viewModel),
+      ),
+    ),
+    GoRoute(
+      path: Routes.article,
+      builder: (context, state) => ViewModelHost(
+        create: (context) => ArticleViewModel(
+          articleId: state.uri.queryParameters['id'] ?? '',
+          serverRepository: context.read(),
+          readLater: context.read(),
+        ),
+        builder: (context, viewModel) => ArticleScreen(viewModel: viewModel),
+      ),
+    ),
+    GoRoute(
+      path: Routes.service,
+      builder: (context, state) => ServiceDetailsScreen(
+        id: state.uri.queryParameters['id'] ?? '',
+        name: state.uri.queryParameters['name'] ?? '',
       ),
     ),
     GoRoute(

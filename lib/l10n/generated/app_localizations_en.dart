@@ -1312,4 +1312,52 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noteUnpin => 'Unpin';
+
+  @override
+  String get readLaterUnread => 'Unread';
+
+  @override
+  String get readLaterSave => 'Save link';
+
+  @override
+  String get readLaterOriginal => 'Open original';
+
+  @override
+  String get readLaterArchive => 'Archive';
+
+  @override
+  String get readLaterNoCopy =>
+      'There is no reader copy of this page; open the original.';
+
+  @override
+  String get dropSend => 'Send text';
+
+  @override
+  String get serviceDetails => 'Uptime and outages';
+
+  @override
+  String get serviceUptime => 'Uptime';
+
+  @override
+  String get serviceDay => 'Last 24 hours';
+
+  @override
+  String get serviceWeek => 'Last 7 days';
+
+  @override
+  String get serviceMonth => 'Last 30 days';
+
+  @override
+  String get serviceQuarter => 'Last 90 days';
+
+  @override
+  String get serviceIncidents => 'Outages';
+
+  @override
+  String get serviceNoIncidents => 'No outages recorded.';
+
+  @override
+  String serviceDownSince(String time) {
+    return 'Down since $time';
+  }
 }

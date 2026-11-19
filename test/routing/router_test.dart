@@ -62,6 +62,8 @@ void main() {
           focus: FakeFocusRepository(),
           homeServer: FakeHomeServerActions(),
           calendar: FakeCalendarRepository(),
+          readLater: FakeReadLaterRepository(),
+          drop: FakeDropRepository(),
           preferences: FakePreferencesRepository(),
           offline: OfflineRepository(OfflineStatus()),
           search: FakeSearchRepository(),

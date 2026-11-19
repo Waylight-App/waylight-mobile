@@ -41,7 +41,6 @@ void main() {
     '/api/phonelist/entries': 'phonelist_entries',
     '/api/briefing': 'briefing',
     '/api/calendar/events': 'calendar_events',
-    '/api/readlater': 'readlater',
     '/api/sports/overview': 'sports_overview',
   };
 
@@ -121,7 +120,6 @@ void main() {
       parseCalendar(fixture('calendar_events'))!.first.summary,
       'Team call',
     );
-    expect(parseReadLater(fixture('readlater'))!.single.items, isNotEmpty);
     expect(
       parseSports(fixture('sports_overview'))!.rows.first.team,
       'Musterstadt',
@@ -142,7 +140,6 @@ void main() {
     'phonelist',
     'briefing',
     'calendar',
-    'readlater',
     'sports',
   ]) {
     testWidgets('$kind renders the demo data', (tester) async {

@@ -284,3 +284,48 @@ List<TimelineEntry>? parseTimeline(Object? json) =>
       }
       return null;
     });
+
+/// `GET /api/services/uptime`.
+const uptimeQuery = WidgetQuery<List<ServiceUptime>>(
+  '/api/services/uptime',
+  parseUptime,
+);
+
+/// `GET /api/services/incidents`.
+const incidentsQuery = WidgetQuery<List<Incident>>(
+  '/api/services/incidents',
+  parseIncidents,
+);
+
+/// Maps `GET /api/services/uptime`.
+List<ServiceUptime>? parseUptime(Object? json) =>
+    listOf<ServiceUptime>(json, (u) {
+      if (u case {'serviceId': final String id}) {
+        return ServiceUptime(
+          serviceId: id,
+          day: asDouble(u['day']),
+          week: asDouble(u['week']),
+          month: asDouble(u['month']),
+          quarter: asDouble(u['quarter']),
+        );
+      }
+      return null;
+    });
+
+/// Maps `GET /api/services/incidents`.
+List<Incident>? parseIncidents(Object? json) => listOf<Incident>(json, (i) {
+  if (i case {'serviceId': final String id, 'start': final String start}) {
+    final from = DateTime.tryParse(start);
+    if (from == null) return null;
+    return Incident(
+      serviceId: id,
+      start: from.toLocal(),
+      end: asDateTime(i['end'])?.toLocal(),
+      cause: switch (i['cause']) {
+        final String c => c,
+        _ => '',
+      },
+    );
+  }
+  return null;
+});

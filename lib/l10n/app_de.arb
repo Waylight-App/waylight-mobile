@@ -385,5 +385,20 @@
   "noteDelete": "Löschen",
   "noteDeleteConfirm": "Diese Notiz löschen?",
   "notePin": "Anheften",
-  "noteUnpin": "Lösen"
+  "noteUnpin": "Lösen",
+  "readLaterUnread": "Ungelesen",
+  "readLaterSave": "Link speichern",
+  "readLaterOriginal": "Original öffnen",
+  "readLaterArchive": "Archivieren",
+  "readLaterNoCopy": "Von dieser Seite gibt es keine Lesekopie; öffne das Original.",
+  "dropSend": "Text senden",
+  "serviceDetails": "Verfügbarkeit und Ausfälle",
+  "serviceUptime": "Verfügbarkeit",
+  "serviceDay": "Letzte 24 Stunden",
+  "serviceWeek": "Letzte 7 Tage",
+  "serviceMonth": "Letzte 30 Tage",
+  "serviceQuarter": "Letzte 90 Tage",
+  "serviceIncidents": "Ausfälle",
+  "serviceNoIncidents": "Keine Ausfälle erfasst.",
+  "serviceDownSince": "Ausgefallen seit {time}"
 }

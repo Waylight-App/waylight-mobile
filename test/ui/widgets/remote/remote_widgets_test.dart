@@ -95,6 +95,10 @@ void main() {
   ) async {
     await pump(tester, ServicesWidget(widget: placement('services')));
     await tester.tap(find.text('OpenStreetMap'));
+    await tester.pumpAndSettle();
+    expect(find.text(l10nEn.serviceDetails), findsOneWidget);
+    await tester.tap(find.text(l10nEn.servicesOpen));
+    await tester.pumpAndSettle();
     expect(links.opened.single.host, contains('openstreetmap'));
   });
 

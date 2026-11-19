@@ -45,6 +45,12 @@ abstract final class Routes {
   /// Writes a note: `/note?id=<id>`, without an id a new one (#101).
   static const note = '/note';
 
+  /// Reads a saved article: `/article?id=<id>` (#104).
+  static const article = '/article';
+
+  /// Uptime and outages of a service: `/service?id=<id>&name=<name>` (#108).
+  static const service = '/service';
+
   /// Every path the router knows; links to others open the dashboard.
   static const all = {
     home,
@@ -62,5 +68,7 @@ abstract final class Routes {
     timeline,
     smartHome,
     note,
+    article,
+    service,
   };
 }

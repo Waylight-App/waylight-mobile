@@ -1314,4 +1314,52 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get noteUnpin => 'Lösen';
+
+  @override
+  String get readLaterUnread => 'Ungelesen';
+
+  @override
+  String get readLaterSave => 'Link speichern';
+
+  @override
+  String get readLaterOriginal => 'Original öffnen';
+
+  @override
+  String get readLaterArchive => 'Archivieren';
+
+  @override
+  String get readLaterNoCopy =>
+      'Von dieser Seite gibt es keine Lesekopie; öffne das Original.';
+
+  @override
+  String get dropSend => 'Text senden';
+
+  @override
+  String get serviceDetails => 'Verfügbarkeit und Ausfälle';
+
+  @override
+  String get serviceUptime => 'Verfügbarkeit';
+
+  @override
+  String get serviceDay => 'Letzte 24 Stunden';
+
+  @override
+  String get serviceWeek => 'Letzte 7 Tage';
+
+  @override
+  String get serviceMonth => 'Letzte 30 Tage';
+
+  @override
+  String get serviceQuarter => 'Letzte 90 Tage';
+
+  @override
+  String get serviceIncidents => 'Ausfälle';
+
+  @override
+  String get serviceNoIncidents => 'Keine Ausfälle erfasst.';
+
+  @override
+  String serviceDownSince(String time) {
+    return 'Ausgefallen seit $time';
+  }
 }

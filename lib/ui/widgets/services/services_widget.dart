@@ -1,3 +1,4 @@
+import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
@@ -6,6 +7,7 @@ import 'package:waylight_mobile/data/repositories/actions/home_server_actions_re
 import 'package:waylight_mobile/data/repositories/widget_data/queries/home_server.dart';
 import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/domain/models/home_server.dart';
+import 'package:waylight_mobile/routing/routes.dart';
 import 'package:waylight_mobile/ui/core/link_opener.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
@@ -48,7 +50,6 @@ class ServicesWidget extends StatelessWidget {
             Builder(
               builder: (context) {
                 final (tone, label) = _stateOf(context, s.state);
-                final url = s.url;
                 return InfoRow(
                   leading: s.icon.isEmpty
                       ? StatusDot(tone: tone, label: label)
@@ -59,9 +60,7 @@ class ServicesWidget extends StatelessWidget {
                   trailingTone: s.state == ServiceState.offline
                       ? Tone.critical
                       : null,
-                  onTap: url == null && !s.canWake
-                      ? null
-                      : () => _actions(context, s),
+                  onTap: () => _actions(context, s),
                 );
               },
             ),
@@ -77,6 +76,16 @@ Future<void> _actions(BuildContext context, MonitoredService s) async {
   final admin = s.canWake && await isAdmin(context);
   if (!context.mounted) return;
   await showActions(context, [
+    (
+      icon: Icons.insights,
+      label: l10n.serviceDetails,
+      onTap: () => context.push(
+        Uri(
+          path: Routes.service,
+          queryParameters: {'id': s.id, 'name': s.name},
+        ).toString(),
+      ),
+    ),
     if (url != null)
       (
         icon: Icons.open_in_new,

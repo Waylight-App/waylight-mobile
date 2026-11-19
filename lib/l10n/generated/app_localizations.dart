@@ -2413,6 +2413,96 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unpin'**
   String get noteUnpin;
+
+  /// Spoken label of an unread article.
+  ///
+  /// In en, this message translates to:
+  /// **'Unread'**
+  String get readLaterUnread;
+
+  /// Saves a link to read later.
+  ///
+  /// In en, this message translates to:
+  /// **'Save link'**
+  String get readLaterSave;
+
+  /// Opens the article's page.
+  ///
+  /// In en, this message translates to:
+  /// **'Open original'**
+  String get readLaterOriginal;
+
+  /// Archives an article.
+  ///
+  /// In en, this message translates to:
+  /// **'Archive'**
+  String get readLaterArchive;
+
+  /// Article without a reader copy.
+  ///
+  /// In en, this message translates to:
+  /// **'There is no reader copy of this page; open the original.'**
+  String get readLaterNoCopy;
+
+  /// Sends a text to the drop zone.
+  ///
+  /// In en, this message translates to:
+  /// **'Send text'**
+  String get dropSend;
+
+  /// Opens the service details.
+  ///
+  /// In en, this message translates to:
+  /// **'Uptime and outages'**
+  String get serviceDetails;
+
+  /// Heading of the uptime card.
+  ///
+  /// In en, this message translates to:
+  /// **'Uptime'**
+  String get serviceUptime;
+
+  /// Uptime period.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 24 hours'**
+  String get serviceDay;
+
+  /// Uptime period.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 7 days'**
+  String get serviceWeek;
+
+  /// Uptime period.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 30 days'**
+  String get serviceMonth;
+
+  /// Uptime period.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 90 days'**
+  String get serviceQuarter;
+
+  /// Heading of the outages card.
+  ///
+  /// In en, this message translates to:
+  /// **'Outages'**
+  String get serviceIncidents;
+
+  /// Service without outages.
+  ///
+  /// In en, this message translates to:
+  /// **'No outages recorded.'**
+  String get serviceNoIncidents;
+
+  /// An ongoing outage.
+  ///
+  /// In en, this message translates to:
+  /// **'Down since {time}'**
+  String serviceDownSince(String time);
 }
 
 class _AppLocalizationsDelegate

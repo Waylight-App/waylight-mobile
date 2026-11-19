@@ -4,9 +4,11 @@ import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
+import 'package:waylight_mobile/data/repositories/actions/drop_repository.dart';
 import 'package:waylight_mobile/data/repositories/actions/focus_repository.dart';
 import 'package:waylight_mobile/data/repositories/actions/home_server_actions_repository.dart';
 import 'package:waylight_mobile/data/repositories/actions/parcels_repository.dart';
+import 'package:waylight_mobile/data/repositories/actions/read_later_repository.dart';
 import 'package:waylight_mobile/data/repositories/actions/rss_repository.dart';
 import 'package:waylight_mobile/data/repositories/actions/smarthome_repository.dart';
 import 'package:waylight_mobile/data/repositories/bookmarks/bookmarks_repository.dart';
@@ -81,6 +83,8 @@ typedef Repositories = ({
   FocusRepository focus,
   HomeServerActionsRepository homeServer,
   CalendarRepository calendar,
+  ReadLaterRepository readLater,
+  DropRepository drop,
   PreferencesRepository preferences,
   OfflineRepository offline,
   SearchRepository search,
@@ -111,6 +115,8 @@ List<SingleChildWidget> providers(Repositories repositories) => [
   Provider<FocusRepository>.value(value: repositories.focus),
   Provider<HomeServerActionsRepository>.value(value: repositories.homeServer),
   Provider<CalendarRepository>.value(value: repositories.calendar),
+  Provider<ReadLaterRepository>.value(value: repositories.readLater),
+  Provider<DropRepository>.value(value: repositories.drop),
   Provider<SearchRepository>.value(value: repositories.search),
   ChangeNotifierProvider<AppLockRepository>.value(value: repositories.lock),
   ChangeNotifierProvider<PreferencesRepository>.value(
@@ -172,6 +178,8 @@ Repositories createRepositories() {
     focus: FocusRepositoryRemote(api: modules),
     homeServer: HomeServerActionsRepositoryRemote(api: modules),
     calendar: CalendarRepositoryRemote(api: modules),
+    readLater: ReadLaterRepositoryRemote(api: modules),
+    drop: DropRepositoryRemote(api: modules),
     preferences: PreferencesRepositoryLocal(store: store),
     offline: OfflineRepository(offline),
     search: SearchRepositoryRemote(api: SearchApi(client)),

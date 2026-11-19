@@ -1,11 +1,14 @@
+import 'package:waylight_mobile/data/repositories/actions/drop_repository.dart';
 import 'package:waylight_mobile/data/repositories/actions/focus_repository.dart';
 import 'package:waylight_mobile/data/repositories/actions/home_server_actions_repository.dart';
 import 'package:waylight_mobile/data/repositories/actions/parcels_repository.dart';
+import 'package:waylight_mobile/data/repositories/actions/read_later_repository.dart';
 import 'package:waylight_mobile/data/repositories/actions/rss_repository.dart';
 import 'package:waylight_mobile/data/repositories/actions/smarthome_repository.dart';
 import 'package:waylight_mobile/data/repositories/calendar/calendar_repository.dart';
 import 'package:waylight_mobile/domain/models/actions.dart';
 import 'package:waylight_mobile/domain/models/information.dart';
+import 'package:waylight_mobile/domain/models/media.dart';
 import 'package:waylight_mobile/domain/models/server_address.dart';
 import 'package:waylight_mobile/utils/result.dart';
 
@@ -188,4 +191,63 @@ class FakeCalendarRepository with _Calls implements CalendarRepository {
     created.add(event);
     return _record('create:${event.summary}');
   }
+}
+
+/// A [ReadLaterRepository] in memory.
+class FakeReadLaterRepository with _Calls implements ReadLaterRepository {
+  /// The articles.
+  List<Article> list = [];
+
+  @override
+  Future<Result<List<Article>>> articles(ServerAddress server) async =>
+      Result.ok(list);
+
+  @override
+  Future<Result<Article>> article(ServerAddress server, String id) async =>
+      Result.ok(list.firstWhere((a) => a.id == id));
+
+  @override
+  Future<Result<void>> setStatus(
+    ServerAddress server,
+    String id,
+    ArticleStatus status,
+  ) async => _record('${status.name}:$id');
+
+  @override
+  Future<Result<Article>> save(ServerAddress server, Uri url) async {
+    if (_record('save:$url') case Error(:final error)) {
+      return Result.error(error);
+    }
+    return Result.ok(Article(id: 'new', url: url, title: '$url'));
+  }
+
+  @override
+  Future<Result<void>> remove(ServerAddress server, String id) async =>
+      _record('remove:$id');
+}
+
+/// A [DropRepository] in memory.
+class FakeDropRepository with _Calls implements DropRepository {
+  /// The items.
+  List<Drop> list = [];
+
+  @override
+  Future<Result<List<Drop>>> drops(ServerAddress server) async =>
+      Result.ok(list);
+
+  @override
+  Future<Result<Drop>> sendText(
+    ServerAddress server,
+    String text, {
+    int hours = 24,
+  }) async {
+    if (_record('send:$text') case Error(:final error)) {
+      return Result.error(error);
+    }
+    return Result.ok(Drop(id: 'new', isFile: false, text: text));
+  }
+
+  @override
+  Future<Result<void>> remove(ServerAddress server, String id) async =>
+      _record('remove:$id');
 }
