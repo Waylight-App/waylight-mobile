@@ -523,6 +523,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Choose a place for this widget in the web interface.'**
   String get weatherNoPlace;
+
+  /// Default title of the to-do widget.
+  ///
+  /// In en, this message translates to:
+  /// **'To-dos'**
+  String get todosTitle;
+
+  /// To-do widget without open to-dos.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing to do.'**
+  String get todosEmpty;
+
+  /// Screen reader label of a ticked-off to-do.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get todosDone;
+
+  /// Due date that has passed.
+  ///
+  /// In en, this message translates to:
+  /// **'Overdue'**
+  String get todosOverdue;
+
+  /// Due today.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get todosToday;
+
+  /// Due tomorrow.
+  ///
+  /// In en, this message translates to:
+  /// **'Tomorrow'**
+  String get todosTomorrow;
+
+  /// Default title of the notes widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes'**
+  String get notesTitle;
+
+  /// Notes widget without notes.
+  ///
+  /// In en, this message translates to:
+  /// **'No notes yet.'**
+  String get notesNone;
+
+  /// Notes widget showing pinned notes, without any.
+  ///
+  /// In en, this message translates to:
+  /// **'No pinned notes.'**
+  String get notesNonePinned;
+
+  /// Screen reader label of a pinned note.
+  ///
+  /// In en, this message translates to:
+  /// **'Pinned'**
+  String get notesPinned;
 }
 
 class _AppLocalizationsDelegate
