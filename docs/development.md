@@ -79,6 +79,15 @@ dart run flutter_native_splash:create
 
 `make help` lists all targets.
 
+### What CI builds
+
+Every pull request runs `make ci` and builds the Android app. The iOS app
+is built on a macOS runner only when a pull request changes files under
+`ios/`, or when the *iOS* workflow is started by hand. macOS minutes count
+ten times against the monthly Actions quota of the repository, so Dart-only
+changes rely on the Android build. If you change native iOS code, build it
+locally with `flutter build ios --debug --no-codesign` as well.
+
 ## Editor
 
 The repository ships settings for VS Code in `.vscode/` (format on save,
