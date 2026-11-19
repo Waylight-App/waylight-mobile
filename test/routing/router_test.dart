@@ -12,6 +12,7 @@ import 'package:waylight_mobile/ui/sign_in/widgets/sign_in_screen.dart';
 import '../testing/fakes/fake_dashboard_repository.dart';
 import '../testing/fakes/fake_server_repository.dart';
 import '../testing/fakes/fake_session_repository.dart';
+import '../testing/fakes/fake_weather_repository.dart';
 
 void main() {
   Future<void> pumpApp(
@@ -25,6 +26,7 @@ void main() {
           server: servers,
           session: sessions,
           dashboard: FakeDashboardRepository(),
+          weather: FakeWeatherRepository(),
         )),
         child: WaylightApp(router: createRouter(servers, sessions)),
       ),

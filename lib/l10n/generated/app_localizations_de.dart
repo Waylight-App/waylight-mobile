@@ -155,4 +155,100 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get connectErrorInsecure =>
       'Unverschlüsseltes http:// geht nur mit Adressen in deinem Heimnetz. Nutze für diesen Server https://.';
+
+  @override
+  String get weatherClearSky => 'Klarer Himmel';
+
+  @override
+  String get weatherMainlyClear => 'Überwiegend klar';
+
+  @override
+  String get weatherPartlyCloudy => 'Teilweise bewölkt';
+
+  @override
+  String get weatherOvercast => 'Bedeckt';
+
+  @override
+  String get weatherFog => 'Nebel';
+
+  @override
+  String get weatherRimeFog => 'Raureifnebel';
+
+  @override
+  String get weatherLightDrizzle => 'Leichter Nieselregen';
+
+  @override
+  String get weatherDrizzle => 'Nieselregen';
+
+  @override
+  String get weatherDenseDrizzle => 'Starker Nieselregen';
+
+  @override
+  String get weatherFreezingDrizzle => 'Gefrierender Nieselregen';
+
+  @override
+  String get weatherLightRain => 'Leichter Regen';
+
+  @override
+  String get weatherRain => 'Regen';
+
+  @override
+  String get weatherHeavyRain => 'Starker Regen';
+
+  @override
+  String get weatherFreezingRain => 'Gefrierender Regen';
+
+  @override
+  String get weatherLightSnow => 'Leichter Schneefall';
+
+  @override
+  String get weatherSnow => 'Schneefall';
+
+  @override
+  String get weatherHeavySnow => 'Starker Schneefall';
+
+  @override
+  String get weatherSnowGrains => 'Schneegriesel';
+
+  @override
+  String get weatherRainShowers => 'Regenschauer';
+
+  @override
+  String get weatherViolentShowers => 'Heftige Schauer';
+
+  @override
+  String get weatherSnowShowers => 'Schneeschauer';
+
+  @override
+  String get weatherThunderstorm => 'Gewitter';
+
+  @override
+  String get weatherThunderstormWithHail => 'Gewitter mit Hagel';
+
+  @override
+  String get weatherUnknown => 'Unbekannt';
+
+  @override
+  String weatherDegrees(int value) {
+    return '$value °C';
+  }
+
+  @override
+  String weatherFeelsLike(int value) {
+    return 'Gefühlt $value °C';
+  }
+
+  @override
+  String weatherRange(int min, int max) {
+    return '$min° / $max°';
+  }
+
+  @override
+  String weatherPrecipitation(int value) {
+    return '$value % Regen';
+  }
+
+  @override
+  String get weatherNoPlace =>
+      'Wähle für dieses Widget in der Weboberfläche einen Ort.';
 }

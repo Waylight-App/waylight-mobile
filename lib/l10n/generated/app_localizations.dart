@@ -349,6 +349,180 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Plain http:// only works for addresses in your home network. Use https:// for this server.'**
   String get connectErrorInsecure;
+
+  /// Weather condition, as in the web interface.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear sky'**
+  String get weatherClearSky;
+
+  /// Weather condition, as in the web interface.
+  ///
+  /// In en, this message translates to:
+  /// **'Mainly clear'**
+  String get weatherMainlyClear;
+
+  /// Weather condition, as in the web interface.
+  ///
+  /// In en, this message translates to:
+  /// **'Partly cloudy'**
+  String get weatherPartlyCloudy;
+
+  /// Weather condition, as in the web interface.
+  ///
+  /// In en, this message translates to:
+  /// **'Overcast'**
+  String get weatherOvercast;
+
+  /// Weather condition, as in the web interface.
+  ///
+  /// In en, this message translates to:
+  /// **'Fog'**
+  String get weatherFog;
+
+  /// Weather condition, as in the web interface.
+  ///
+  /// In en, this message translates to:
+  /// **'Rime fog'**
+  String get weatherRimeFog;
+
+  /// Weather condition, as in the web interface.
+  ///
+  /// In en, this message translates to:
+  /// **'Light drizzle'**
+  String get weatherLightDrizzle;
+
+  /// Weather condition, as in the web interface.
+  ///
+  /// In en, this message translates to:
+  /// **'Drizzle'**
+  String get weatherDrizzle;
+
+  /// Weather condition, as in the web interface.
+  ///
+  /// In en, this message translates to:
+  /// **'Dense drizzle'**
+  String get weatherDenseDrizzle;
+
+  /// Weather condition, as in the web interface.
+  ///
+  /// In en, this message translates to:
+  /// **'Freezing drizzle'**
+  String get weatherFreezingDrizzle;
+
+  /// Weather condition, as in the web interface.
+  ///
+  /// In en, this message translates to:
+  /// **'Light rain'**
+  String get weatherLightRain;
+
+  /// Weather condition, as in the web interface.
+  ///
+  /// In en, this message translates to:
+  /// **'Rain'**
+  String get weatherRain;
+
+  /// Weather condition, as in the web interface.
+  ///
+  /// In en, this message translates to:
+  /// **'Heavy rain'**
+  String get weatherHeavyRain;
+
+  /// Weather condition, as in the web interface.
+  ///
+  /// In en, this message translates to:
+  /// **'Freezing rain'**
+  String get weatherFreezingRain;
+
+  /// Weather condition, as in the web interface.
+  ///
+  /// In en, this message translates to:
+  /// **'Light snow'**
+  String get weatherLightSnow;
+
+  /// Weather condition, as in the web interface.
+  ///
+  /// In en, this message translates to:
+  /// **'Snow'**
+  String get weatherSnow;
+
+  /// Weather condition, as in the web interface.
+  ///
+  /// In en, this message translates to:
+  /// **'Heavy snow'**
+  String get weatherHeavySnow;
+
+  /// Weather condition, as in the web interface.
+  ///
+  /// In en, this message translates to:
+  /// **'Snow grains'**
+  String get weatherSnowGrains;
+
+  /// Weather condition, as in the web interface.
+  ///
+  /// In en, this message translates to:
+  /// **'Rain showers'**
+  String get weatherRainShowers;
+
+  /// Weather condition, as in the web interface.
+  ///
+  /// In en, this message translates to:
+  /// **'Violent showers'**
+  String get weatherViolentShowers;
+
+  /// Weather condition, as in the web interface.
+  ///
+  /// In en, this message translates to:
+  /// **'Snow showers'**
+  String get weatherSnowShowers;
+
+  /// Weather condition, as in the web interface.
+  ///
+  /// In en, this message translates to:
+  /// **'Thunderstorm'**
+  String get weatherThunderstorm;
+
+  /// Weather condition, as in the web interface.
+  ///
+  /// In en, this message translates to:
+  /// **'Thunderstorm with hail'**
+  String get weatherThunderstormWithHail;
+
+  /// Weather condition, as in the web interface.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown'**
+  String get weatherUnknown;
+
+  /// Temperature.
+  ///
+  /// In en, this message translates to:
+  /// **'{value} °C'**
+  String weatherDegrees(int value);
+
+  /// Apparent temperature.
+  ///
+  /// In en, this message translates to:
+  /// **'Feels like {value} °C'**
+  String weatherFeelsLike(int value);
+
+  /// Lowest and highest temperature of a day.
+  ///
+  /// In en, this message translates to:
+  /// **'{min}° / {max}°'**
+  String weatherRange(int min, int max);
+
+  /// Chance of rain or snow.
+  ///
+  /// In en, this message translates to:
+  /// **'{value} % rain'**
+  String weatherPrecipitation(int value);
+
+  /// Weather widget without a place.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a place for this widget in the web interface.'**
+  String get weatherNoPlace;
 }
 
 class _AppLocalizationsDelegate
