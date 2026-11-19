@@ -63,10 +63,14 @@ jobs:
           flutter-version: ${{ steps.flutter.outputs.version }}
           cache: true
       # Both distributions (ADR 0008); the F-Droid APK must not contain any
-      # Firebase code.
+      # Firebase code. Pull requests build the store flavour only and main
+      # checks F-Droid, which saves a build per pull request of the
+      # monthly Actions quota.
       - run: flutter build apk --debug --flavor store
-      - run: flutter build apk --debug --flavor fdroid
+      - if: github.event_name != 'pull_request'
+        run: flutter build apk --debug --flavor fdroid
       - name: The F-Droid build has no Firebase
+        if: github.event_name != 'pull_request'
         run: |
           if unzip -p build/app/outputs/flutter-apk/app-fdroid-debug.apk 'classes*.dex' | grep -aq 'com/google/firebase'; then
             echo "::error::The fdroid flavour contains Firebase classes (ADR 0008)."
