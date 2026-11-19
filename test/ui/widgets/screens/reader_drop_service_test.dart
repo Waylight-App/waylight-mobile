@@ -6,9 +6,9 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
-
 import 'package:waylight_mobile/data/repositories/actions/drop_repository.dart';
 import 'package:waylight_mobile/data/repositories/actions/read_later_repository.dart';
+import 'package:waylight_mobile/data/repositories/actions/summary_repository.dart';
 import 'package:waylight_mobile/data/repositories/server/server_repository.dart';
 import 'package:waylight_mobile/data/repositories/widget_data/queries/media.dart';
 import 'package:waylight_mobile/data/repositories/widget_data/widget_data_repository.dart';
@@ -70,13 +70,21 @@ void main() {
       ],
     );
     await tester.pumpWidget(
-      LinkOpenerScope(
-        opener: FakeLinkOpener(),
-        child: MaterialApp.router(
-          theme: AppTheme.light,
-          localizationsDelegates: appLocalizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-          routerConfig: router,
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider<ServerRepository>.value(
+            value: FakeServerRepository(current: testServer()),
+          ),
+          Provider<SummaryRepository>.value(value: FakeSummaryRepository()),
+        ],
+        child: LinkOpenerScope(
+          opener: FakeLinkOpener(),
+          child: MaterialApp.router(
+            theme: AppTheme.light,
+            localizationsDelegates: appLocalizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            routerConfig: router,
+          ),
         ),
       ),
     );

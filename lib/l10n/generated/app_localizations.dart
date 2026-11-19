@@ -2665,6 +2665,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This version of the app has no push notifications.'**
   String get settingsPushNotInBuild;
+
+  /// Asks the local AI for a summary.
+  ///
+  /// In en, this message translates to:
+  /// **'Summarise'**
+  String get summaryAction;
+
+  /// Heading of the summary sheet.
+  ///
+  /// In en, this message translates to:
+  /// **'Summary'**
+  String get summaryTitle;
+
+  /// Notice below an AI summary.
+  ///
+  /// In en, this message translates to:
+  /// **'Written by the server\'s local AI; it can be wrong.'**
+  String get summaryByAi;
 }
 
 class _AppLocalizationsDelegate

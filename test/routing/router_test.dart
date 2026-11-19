@@ -79,6 +79,7 @@ void main() {
             ),
             store: InMemoryKeyValueStore(),
           ),
+          summary: FakeSummaryRepository(),
           preferences: FakePreferencesRepository(),
           offline: OfflineRepository(OfflineStatus()),
           search: FakeSearchRepository(),

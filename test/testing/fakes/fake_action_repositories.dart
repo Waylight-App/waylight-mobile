@@ -6,6 +6,7 @@ import 'package:waylight_mobile/data/repositories/actions/parcels_repository.dar
 import 'package:waylight_mobile/data/repositories/actions/read_later_repository.dart';
 import 'package:waylight_mobile/data/repositories/actions/rss_repository.dart';
 import 'package:waylight_mobile/data/repositories/actions/smarthome_repository.dart';
+import 'package:waylight_mobile/data/repositories/actions/summary_repository.dart';
 import 'package:waylight_mobile/data/repositories/calendar/calendar_repository.dart';
 import 'package:waylight_mobile/data/repositories/push/push_repository.dart';
 import 'package:waylight_mobile/domain/models/account_security.dart';
@@ -342,4 +343,26 @@ class FakePushRepository with _Calls implements PushRepository {
 
   @override
   Future<void> refresh(ServerAddress server) async => _record('refresh');
+}
+
+/// A [SummaryRepository] in memory.
+class FakeSummaryRepository with _Calls implements SummaryRepository {
+  /// Whether the server has summaries.
+  bool configured = false;
+
+  @override
+  Future<bool> available(ServerAddress server) async => configured;
+
+  @override
+  Future<Result<String>> summarise(
+    ServerAddress server, {
+    required String language,
+    String text = '',
+    Uri? url,
+  }) async {
+    if (_record('summarise:${url ?? text}') case Error(:final error)) {
+      return Result.error(error);
+    }
+    return const Result.ok('In short: keep three copies.');
+  }
 }

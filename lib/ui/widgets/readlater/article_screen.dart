@@ -8,6 +8,7 @@ import 'package:waylight_mobile/ui/core/error_messages.dart';
 import 'package:waylight_mobile/ui/core/link_opener.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
+import 'package:waylight_mobile/ui/widgets/common/summary_button.dart';
 import 'package:waylight_mobile/utils/command.dart';
 import 'package:waylight_mobile/utils/html_text.dart';
 import 'package:waylight_mobile/utils/result.dart';
@@ -104,6 +105,7 @@ class ArticleScreen extends StatelessWidget {
           appBar: AppBar(
             actions: [
               if (article != null) ...[
+                SummaryButton(url: article.url),
                 IconButton(
                   tooltip: l10n.readLaterOriginal,
                   icon: const Icon(Icons.open_in_new),

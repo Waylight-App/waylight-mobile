@@ -1449,4 +1449,14 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get settingsPushNotInBuild =>
       'Diese Version der App hat keine Push-Benachrichtigungen.';
+
+  @override
+  String get summaryAction => 'Zusammenfassen';
+
+  @override
+  String get summaryTitle => 'Zusammenfassung';
+
+  @override
+  String get summaryByAi =>
+      'Von der lokalen KI des Servers geschrieben; sie kann sich irren.';
 }

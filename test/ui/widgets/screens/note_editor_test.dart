@@ -1,7 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
-
+import 'package:provider/provider.dart';
+import 'package:waylight_mobile/data/repositories/actions/summary_repository.dart';
+import 'package:waylight_mobile/data/repositories/server/server_repository.dart';
 import 'package:waylight_mobile/domain/models/api_exception.dart';
 import 'package:waylight_mobile/domain/models/note.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
@@ -9,6 +11,7 @@ import 'package:waylight_mobile/ui/core/themes/app_theme.dart';
 import 'package:waylight_mobile/ui/widgets/notes/note_editor_screen.dart';
 import 'package:waylight_mobile/ui/widgets/notes/note_editor_view_model.dart';
 
+import '../../../testing/fakes/fake_action_repositories.dart';
 import '../../../testing/fakes/fake_notes_repository.dart';
 import '../../../testing/fakes/fake_server_repository.dart';
 import '../../../testing/pump_app.dart';
@@ -52,11 +55,19 @@ void main() {
       ],
     );
     await tester.pumpWidget(
-      MaterialApp.router(
-        theme: AppTheme.light,
-        localizationsDelegates: appLocalizationsDelegates,
-        supportedLocales: AppLocalizations.supportedLocales,
-        routerConfig: router,
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider<ServerRepository>.value(
+            value: FakeServerRepository(current: testServer()),
+          ),
+          Provider<SummaryRepository>.value(value: FakeSummaryRepository()),
+        ],
+        child: MaterialApp.router(
+          theme: AppTheme.light,
+          localizationsDelegates: appLocalizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          routerConfig: router,
+        ),
       ),
     );
     await tester.tap(find.text('open'));

@@ -7,6 +7,7 @@ import 'package:waylight_mobile/ui/core/error_messages.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
 import 'package:waylight_mobile/ui/widgets/common/admin_actions.dart';
+import 'package:waylight_mobile/ui/widgets/common/summary_button.dart';
 import 'package:waylight_mobile/ui/widgets/notes/note_editor_view_model.dart';
 import 'package:waylight_mobile/utils/result.dart';
 
@@ -112,6 +113,7 @@ class _NoteEditorScreenState extends State<NoteEditorScreen> {
         appBar: AppBar(
           title: Text(_vm.isNew ? l10n.noteNew : l10n.noteEdit),
           actions: [
+            SummaryButton(text: () => _body.text),
             IconButton(
               tooltip: _pinned ? l10n.noteUnpin : l10n.notePin,
               icon: Icon(_pinned ? Icons.push_pin : Icons.push_pin_outlined),
