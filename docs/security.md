@@ -23,6 +23,14 @@ report a vulnerability, see [SECURITY.md](../SECURITY.md).
    (`ALLOWED_CIDRS`), lockouts, two-factor authentication and security log
    apply to the app exactly as to the browser. The app never weakens them.
 
+## App lock
+
+The optional app lock (*Settings → App lock*, #46) asks for the phone's
+fingerprint, face or device PIN when the app starts and when it returns
+after the chosen time in the background (at once, 1, 5 or 15 minutes). It
+uses the platform's local authentication; nothing about it is sent to the
+server, and turning it on needs one confirmation.
+
 ## Transport security
 
 Waylight usually runs in a home network, often on plain

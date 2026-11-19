@@ -301,5 +301,21 @@
   "searchTodoAdded": "To-do \"{title}\" added.",
   "@searchTodoAdded": {"description": "Snack bar after quick capture.", "placeholders": {"title": {"type": "String", "example": "Milk"}}},
   "searchOnTab": "On the tab {tab}",
-  "@searchOnTab": {"description": "Subtitle of a widget result.", "placeholders": {"tab": {"type": "String", "example": "Home"}}}
+  "@searchOnTab": {"description": "Subtitle of a widget result.", "placeholders": {"tab": {"type": "String", "example": "Home"}}},
+  "lockTitle": "Waylight is locked",
+  "@lockTitle": {"description": "Title of the lock screen."},
+  "lockUnlock": "Unlock",
+  "@lockUnlock": {"description": "Button on the lock screen."},
+  "lockReason": "Unlock Waylight",
+  "@lockReason": {"description": "Reason shown in the system's biometric prompt."},
+  "settingsLock": "App lock",
+  "@settingsLock": {"description": "Settings section."},
+  "settingsLockSwitch": "Lock with fingerprint, face or device PIN",
+  "@settingsLockSwitch": {"description": "Switch of the app lock."},
+  "settingsLockAfter": "Lock after",
+  "@settingsLockAfter": {"description": "Label of the lock timeout."},
+  "settingsLockNow": "At once",
+  "@settingsLockNow": {"description": "Lock timeout: at once."},
+  "settingsLockMinutes": "{minutes} min",
+  "@settingsLockMinutes": {"description": "Lock timeout in minutes.", "placeholders": {"minutes": {"type": "int", "example": "5"}}}
 }

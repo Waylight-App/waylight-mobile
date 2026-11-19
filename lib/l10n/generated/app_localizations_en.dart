@@ -524,4 +524,30 @@ class AppLocalizationsEn extends AppLocalizations {
   String searchOnTab(String tab) {
     return 'On the tab $tab';
   }
+
+  @override
+  String get lockTitle => 'Waylight is locked';
+
+  @override
+  String get lockUnlock => 'Unlock';
+
+  @override
+  String get lockReason => 'Unlock Waylight';
+
+  @override
+  String get settingsLock => 'App lock';
+
+  @override
+  String get settingsLockSwitch => 'Lock with fingerprint, face or device PIN';
+
+  @override
+  String get settingsLockAfter => 'Lock after';
+
+  @override
+  String get settingsLockNow => 'At once';
+
+  @override
+  String settingsLockMinutes(int minutes) {
+    return '$minutes min';
+  }
 }

@@ -525,4 +525,31 @@ class AppLocalizationsDe extends AppLocalizations {
   String searchOnTab(String tab) {
     return 'Im Tab $tab';
   }
+
+  @override
+  String get lockTitle => 'Waylight ist gesperrt';
+
+  @override
+  String get lockUnlock => 'Entsperren';
+
+  @override
+  String get lockReason => 'Waylight entsperren';
+
+  @override
+  String get settingsLock => 'App-Sperre';
+
+  @override
+  String get settingsLockSwitch =>
+      'Mit Fingerabdruck, Gesicht oder Geräte-PIN sperren';
+
+  @override
+  String get settingsLockAfter => 'Sperren nach';
+
+  @override
+  String get settingsLockNow => 'Sofort';
+
+  @override
+  String settingsLockMinutes(int minutes) {
+    return '$minutes Min.';
+  }
 }

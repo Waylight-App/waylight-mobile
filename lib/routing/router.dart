@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:waylight_mobile/data/repositories/lock/app_lock_repository.dart';
 import 'package:waylight_mobile/data/repositories/server/server_repository.dart';
 import 'package:waylight_mobile/data/repositories/session/session_repository.dart';
 import 'package:waylight_mobile/routing/routes.dart';
@@ -11,6 +12,8 @@ import 'package:waylight_mobile/ui/connect_server/widgets/connect_server_screen.
 import 'package:waylight_mobile/ui/core/widgets/view_model_host.dart';
 import 'package:waylight_mobile/ui/dashboard/view_models/dashboard_view_model.dart';
 import 'package:waylight_mobile/ui/dashboard/widgets/dashboard_screen.dart';
+import 'package:waylight_mobile/ui/lock/view_models/lock_view_model.dart';
+import 'package:waylight_mobile/ui/lock/widgets/lock_screen.dart';
 import 'package:waylight_mobile/ui/pair/view_models/pair_view_model.dart';
 import 'package:waylight_mobile/ui/pair/widgets/pair_screen.dart';
 import 'package:waylight_mobile/ui/search/view_models/search_view_model.dart';
@@ -29,14 +32,20 @@ import 'package:waylight_mobile/ui/widgets/registry.dart';
 /// long as the screen.
 GoRouter createRouter(
   ServerRepository serverRepository,
-  SessionRepository sessionRepository,
-) => GoRouter(
+  SessionRepository sessionRepository, {
+  AppLockRepository? lock,
+}) => GoRouter(
   initialLocation: Routes.home,
-  refreshListenable: Listenable.merge([serverRepository, sessionRepository]),
+  refreshListenable: Listenable.merge([
+    serverRepository,
+    sessionRepository,
+    ?lock,
+  ]),
   redirect: (context, state) => redirectFor(
     uri: state.uri,
     connected: serverRepository.current != null,
     signedIn: sessionRepository.signedIn,
+    locked: lock?.locked ?? false,
   ),
   routes: [
     GoRoute(
@@ -59,6 +68,7 @@ GoRouter createRouter(
           serverRepository: context.read(),
           sessionRepository: context.read(),
           preferencesRepository: context.read(),
+          lockRepository: context.read(),
         ),
         builder: (context, viewModel) => SettingsScreen(viewModel: viewModel),
       ),
@@ -96,6 +106,13 @@ GoRouter createRouter(
           todosRepository: context.read(),
         ),
         builder: (context, viewModel) => SearchScreen(viewModel: viewModel),
+      ),
+    ),
+    GoRoute(
+      path: Routes.locked,
+      builder: (context, state) => ViewModelHost(
+        create: (context) => LockViewModel(lock: context.read()),
+        builder: (context, viewModel) => LockScreen(viewModel: viewModel),
       ),
     ),
     GoRoute(
@@ -147,9 +164,23 @@ String? redirectFor({
   required Uri uri,
   required bool connected,
   required bool signedIn,
+  bool locked = false,
 }) {
   final link = routeOf(uri);
   if (!Routes.all.contains(link.path)) return Routes.home;
+  // The app lock comes first: nothing shows until it is unlocked (#46).
+  if (locked) {
+    if (link.path == Routes.locked) return link == uri ? null : link.toString();
+    final keep = link.path != Routes.home;
+    return Uri(
+      path: Routes.locked,
+      queryParameters: keep ? {'from': link.toString()} : null,
+    ).toString();
+  }
+  if (link.path == Routes.locked) {
+    final from = link.queryParameters['from'];
+    return _isLocal(from) ? from : Routes.home;
+  }
   // Pairing links and the answer of a browser sign-in bring their own
   // server or code, so they open without either; once signed in they lead
   // to the dashboard (#43, #45).

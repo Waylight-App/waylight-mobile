@@ -8,6 +8,7 @@ import 'package:waylight_mobile/data/repositories/bookmarks/bookmarks_repository
 import 'package:waylight_mobile/data/repositories/bookmarks/bookmarks_repository_remote.dart';
 import 'package:waylight_mobile/data/repositories/dashboard/dashboard_repository.dart';
 import 'package:waylight_mobile/data/repositories/dashboard/dashboard_repository_remote.dart';
+import 'package:waylight_mobile/data/repositories/lock/app_lock_repository.dart';
 import 'package:waylight_mobile/data/repositories/notes/notes_repository.dart';
 import 'package:waylight_mobile/data/repositories/notes/notes_repository_remote.dart';
 import 'package:waylight_mobile/data/repositories/offline/offline_repository.dart';
@@ -41,6 +42,7 @@ import 'package:waylight_mobile/data/services/api/transit_api.dart';
 import 'package:waylight_mobile/data/services/api/waste_api.dart';
 import 'package:waylight_mobile/data/services/api/weather_api.dart';
 import 'package:waylight_mobile/data/services/cache/response_cache.dart';
+import 'package:waylight_mobile/data/services/platform/device_auth.dart';
 import 'package:waylight_mobile/data/services/platform/device_name.dart';
 import 'package:waylight_mobile/data/services/storage/key_value_store.dart';
 
@@ -59,6 +61,7 @@ typedef Repositories = ({
   PreferencesRepository preferences,
   OfflineRepository offline,
   SearchRepository search,
+  AppLockRepository lock,
 });
 
 /// The services and repositories of the app: the composition root.
@@ -76,6 +79,7 @@ List<SingleChildWidget> providers(Repositories repositories) => [
   Provider<TransitRepository>.value(value: repositories.transit),
   Provider<WasteRepository>.value(value: repositories.waste),
   Provider<SearchRepository>.value(value: repositories.search),
+  ChangeNotifierProvider<AppLockRepository>.value(value: repositories.lock),
   ChangeNotifierProvider<PreferencesRepository>.value(
     value: repositories.preferences,
   ),
@@ -120,5 +124,6 @@ Repositories createRepositories() {
     preferences: PreferencesRepositoryLocal(store: store),
     offline: OfflineRepository(offline),
     search: SearchRepositoryRemote(api: SearchApi(client)),
+    lock: AppLockRepository(auth: LocalDeviceAuth(), store: store),
   );
 }
