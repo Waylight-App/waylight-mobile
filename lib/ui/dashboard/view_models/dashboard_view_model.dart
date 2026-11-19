@@ -14,10 +14,24 @@ class DashboardViewModel extends ChangeNotifier {
     required this._dashboardRepository,
   }) {
     load = Command0(_load)..execute().ignore();
+    _loadDemo().ignore();
   }
 
   final ServerRepository _serverRepository;
   final DashboardRepository _dashboardRepository;
+
+  bool _demo = false;
+
+  /// Whether the server is the public demo, whose data is reset.
+  bool get demo => _demo;
+
+  Future<void> _loadDemo() async {
+    if (await _serverRepository.status() case Ok(:final value)
+        when value.demo) {
+      _demo = true;
+      notifyListeners();
+    }
+  }
 
   /// Loads the tabs and widgets; run again to reload.
   late final Command0<Dashboard> load;

@@ -438,4 +438,11 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get connectQrHint =>
       'Oder scanne den QR-Code unter Einstellungen → Mobile App in Waylight mit der Kamera deines Handys.';
+
+  @override
+  String get connectTryDemo => 'Öffentliche Demo ausprobieren';
+
+  @override
+  String get dashboardDemo =>
+      'Das ist die öffentliche Demo. Ihre Daten werden stündlich zurückgesetzt.';
 }

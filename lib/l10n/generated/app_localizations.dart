@@ -859,6 +859,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Or scan the QR code under Settings → Mobile app in Waylight with your phone\'s camera.'**
   String get connectQrHint;
+
+  /// Button that connects the public demo.
+  ///
+  /// In en, this message translates to:
+  /// **'Try the public demo'**
+  String get connectTryDemo;
+
+  /// Banner on the dashboard of the demo.
+  ///
+  /// In en, this message translates to:
+  /// **'This is the public demo. Its data is reset every hour.'**
+  String get dashboardDemo;
 }
 
 class _AppLocalizationsDelegate

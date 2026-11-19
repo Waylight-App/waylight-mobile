@@ -7,6 +7,8 @@ final class AuthStatusApiModel {
     required this.authenticated,
     this.username = '',
     this.role = '',
+    this.demo = false,
+    this.demoPassword = '',
   });
 
   /// Parses the response body; `null` if it does not match the schema, which
@@ -27,6 +29,11 @@ final class AuthStatusApiModel {
           final String r => r,
           _ => '',
         },
+        demo: json['demo'] == true,
+        demoPassword: switch (json['demoPassword']) {
+          final String p => p,
+          _ => '',
+        },
       ),
     _ => null,
   };
@@ -42,4 +49,10 @@ final class AuthStatusApiModel {
 
   /// The signed-in account's role; empty when signed out.
   final String role;
+
+  /// Whether this is a public demo.
+  final bool demo;
+
+  /// The public password of the demo.
+  final String demoPassword;
 }

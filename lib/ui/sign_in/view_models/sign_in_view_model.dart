@@ -21,6 +21,20 @@ class SignInViewModel extends ChangeNotifier {
   }) : expired = _sessionRepository.expired {
     signIn = Command1(_signIn);
     useAnotherServer = Command0(_serverRepository.disconnect);
+    _loadDemo().ignore();
+  }
+
+  String _demoPassword = '';
+
+  /// The public password of a demo server, to fill in; empty elsewhere.
+  String get demoPassword => _demoPassword;
+
+  Future<void> _loadDemo() async {
+    if (await _serverRepository.status() case Ok(:final value)
+        when value.demo && value.demoPassword.isNotEmpty) {
+      _demoPassword = value.demoPassword;
+      notifyListeners();
+    }
   }
 
   final ServerRepository _serverRepository;

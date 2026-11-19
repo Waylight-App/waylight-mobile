@@ -95,7 +95,28 @@ class DashboardScreen extends StatelessWidget {
                       tabs: [for (final tab in tabs) Tab(text: tab.name)],
                     ),
             ),
-            body: RefreshHost(child: body),
+            body: ListenableBuilder(
+              listenable: viewModel,
+              builder: (context, _) => Column(
+                children: [
+                  if (viewModel.demo)
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(
+                        Dimens.gap,
+                        Dimens.gapSmall,
+                        Dimens.gap,
+                        0,
+                      ),
+                      child: MessageBanner(
+                        key: const ValueKey('dashboard.demo'),
+                        kind: MessageKind.info,
+                        message: l10n.dashboardDemo,
+                      ),
+                    ),
+                  Expanded(child: RefreshHost(child: body)),
+                ],
+              ),
+            ),
           ),
         );
       },
