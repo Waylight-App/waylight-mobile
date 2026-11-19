@@ -91,18 +91,40 @@ class SessionRepositoryRemote extends SessionRepository {
       case Ok(value: LoginNeedsCode(:final authenticatorApp)):
         return Result.ok(CodeRequired(authenticatorApp: authenticatorApp));
       case Ok(value: LoginSession(:final session)):
-        try {
-          await _store.write(storageKey, _encode(session));
-        } on Exception catch (e) {
-          _log.severe('Could not store the session.', e);
-          return Result.error(e);
-        }
-        _expired = false;
-        _use(session);
-        return const Result.ok(SignedIn());
+        return switch (await _keep(session)) {
+          Ok() => const Result.ok(SignedIn()),
+          Error(:final error) => Result.error(error),
+        };
       case Error(:final error):
         return Result.error(error);
     }
+  }
+
+  @override
+  Future<Result<void>> pair(ServerAddress server, String code) async {
+    final result = await _authApi.redeemPairingCode(
+      server,
+      device: deviceName,
+      code: code.trim(),
+    );
+    switch (result) {
+      case Ok(value: final session):
+        return _keep(session);
+      case Error(:final error):
+        return Result.error(error);
+    }
+  }
+
+  Future<Result<void>> _keep(Session session) async {
+    try {
+      await _store.write(storageKey, _encode(session));
+    } on Exception catch (e) {
+      _log.severe('Could not store the session.', e);
+      return Result.error(e);
+    }
+    _expired = false;
+    _use(session);
+    return const Result.ok(null);
   }
 
   @override

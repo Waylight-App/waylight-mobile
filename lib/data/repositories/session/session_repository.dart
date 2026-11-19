@@ -31,6 +31,9 @@ abstract class SessionRepository extends ChangeNotifier {
     String code = '',
   });
 
+  /// Signs in on [server] with the pairing [code] of a QR code (#43).
+  Future<Result<void>> pair(ServerAddress server, String code);
+
   /// Ends the session on the server if it can be reached, and always on the
   /// device.
   Future<Result<void>> signOut();

@@ -418,4 +418,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsLicences => 'Open-source licences';
+
+  @override
+  String get pairTitle => 'Connecting the app';
+
+  @override
+  String get pairInvalidLink =>
+      'This link is not a complete pairing code. Show a new QR code in Waylight under Settings → Mobile app.';
+
+  @override
+  String get pairCodeInvalid =>
+      'This pairing code is not valid any more. Show a new QR code in Waylight under Settings → Mobile app.';
+
+  @override
+  String get pairEnterManually => 'Enter the address instead';
+
+  @override
+  String get connectQrHint =>
+      'Or scan the QR code under Settings → Mobile app in Waylight with your phone\'s camera.';
 }

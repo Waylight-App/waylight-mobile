@@ -220,4 +220,32 @@ void main() {
 
     expect(credentials.session, isA<BrowserSession>());
   });
+
+  test('pairs with a code from the QR code', () async {
+    answer = (_) => http.Response('{"token":"wa_p","device":"Pixel"}', 201);
+    final repository = createRepository();
+
+    final result = await repository.pair(testServer(), ' c0de ');
+
+    expect(result, isA<Ok<void>>());
+    expect(jsonDecode(requests.single.body), {
+      'device': 'Pixel',
+      'pairingCode': 'c0de',
+    });
+    expect(
+      credentials.session,
+      AppSession(server: testServer(), token: 'wa_p'),
+    );
+    expect(store.values, isNotEmpty);
+  });
+
+  test('passes a rejected pairing code on', () async {
+    answer = (_) => http.Response('{"error":{"code":"unauthorized"}}', 401);
+    final repository = createRepository();
+
+    final result = await repository.pair(testServer(), 'old');
+
+    expect(result, isA<Error<void>>());
+    expect(repository.signedIn, isFalse);
+  });
 }

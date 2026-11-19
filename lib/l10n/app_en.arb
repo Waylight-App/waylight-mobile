@@ -243,5 +243,15 @@
   "settingsPrivacy": "Privacy",
   "@settingsPrivacy": {"description": "Settings screen."},
   "settingsLicences": "Open-source licences",
-  "@settingsLicences": {"description": "Settings screen."}
+  "@settingsLicences": {"description": "Settings screen."},
+  "pairTitle": "Connecting the app",
+  "@pairTitle": {"description": "Title while pairing from a QR code."},
+  "pairInvalidLink": "This link is not a complete pairing code. Show a new QR code in Waylight under Settings → Mobile app.",
+  "@pairInvalidLink": {"description": "Pairing link without server or code."},
+  "pairCodeInvalid": "This pairing code is not valid any more. Show a new QR code in Waylight under Settings → Mobile app.",
+  "@pairCodeInvalid": {"description": "Expired or used pairing code."},
+  "pairEnterManually": "Enter the address instead",
+  "@pairEnterManually": {"description": "Button to the connect screen after a failed pairing."},
+  "connectQrHint": "Or scan the QR code under Settings → Mobile app in Waylight with your phone's camera.",
+  "@connectQrHint": {"description": "Hint on the connect screen."}
 }

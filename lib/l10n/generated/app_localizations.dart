@@ -829,6 +829,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Open-source licences'**
   String get settingsLicences;
+
+  /// Title while pairing from a QR code.
+  ///
+  /// In en, this message translates to:
+  /// **'Connecting the app'**
+  String get pairTitle;
+
+  /// Pairing link without server or code.
+  ///
+  /// In en, this message translates to:
+  /// **'This link is not a complete pairing code. Show a new QR code in Waylight under Settings → Mobile app.'**
+  String get pairInvalidLink;
+
+  /// Expired or used pairing code.
+  ///
+  /// In en, this message translates to:
+  /// **'This pairing code is not valid any more. Show a new QR code in Waylight under Settings → Mobile app.'**
+  String get pairCodeInvalid;
+
+  /// Button to the connect screen after a failed pairing.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the address instead'**
+  String get pairEnterManually;
+
+  /// Hint on the connect screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Or scan the QR code under Settings → Mobile app in Waylight with your phone\'s camera.'**
+  String get connectQrHint;
 }
 
 class _AppLocalizationsDelegate

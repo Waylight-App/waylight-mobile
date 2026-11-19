@@ -103,6 +103,8 @@ class _ConnectServerScreenState extends State<ConnectServerScreen> {
               );
             },
           ),
+          const SizedBox(height: Dimens.gap),
+          Text(l10n.connectQrHint, style: theme.textTheme.bodyMedium),
           const SizedBox(height: Dimens.gapLarge),
           Text(
             l10n.connectPrivacy,

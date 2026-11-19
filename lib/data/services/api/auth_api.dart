@@ -137,6 +137,26 @@ class AuthApi {
     }
   }
 
+  /// Redeems the pairing [code] of a QR code from the web settings for an
+  /// app session of [device] (server #559).
+  Future<Result<Session>> redeemPairingCode(
+    ServerAddress server, {
+    required String device,
+    required String code,
+  }) async {
+    final result = await _client.postJsonResponse(
+      server.resolve('/api/auth/app-sessions'),
+      body: {'device': device, 'pairingCode': code},
+    );
+    return switch (result) {
+      Ok(value: ApiResponse(body: {'token': final String token}))
+          when token.isNotEmpty =>
+        Result.ok(AppSession(server: server, token: token)),
+      Ok() => const Result.error(ApiException(ApiFailure.server)),
+      Error(:final error) => Result.error(error),
+    };
+  }
+
   /// Ends the session the client currently sends (`POST /api/auth/logout`).
   Future<Result<void>> logout(ServerAddress server) async =>
       switch (await _client.postJson(server.resolve('/api/auth/logout'))) {

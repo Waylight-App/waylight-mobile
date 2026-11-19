@@ -10,6 +10,8 @@ import 'package:waylight_mobile/ui/connect_server/widgets/connect_server_screen.
 import 'package:waylight_mobile/ui/core/widgets/view_model_host.dart';
 import 'package:waylight_mobile/ui/dashboard/view_models/dashboard_view_model.dart';
 import 'package:waylight_mobile/ui/dashboard/widgets/dashboard_screen.dart';
+import 'package:waylight_mobile/ui/pair/view_models/pair_view_model.dart';
+import 'package:waylight_mobile/ui/pair/widgets/pair_screen.dart';
 import 'package:waylight_mobile/ui/settings/view_models/settings_view_model.dart';
 import 'package:waylight_mobile/ui/settings/widgets/settings_screen.dart';
 import 'package:waylight_mobile/ui/sign_in/view_models/sign_in_view_model.dart';
@@ -54,6 +56,18 @@ GoRouter createRouter(
           preferencesRepository: context.read(),
         ),
         builder: (context, viewModel) => SettingsScreen(viewModel: viewModel),
+      ),
+    ),
+    GoRoute(
+      path: Routes.pair,
+      builder: (context, state) => ViewModelHost(
+        create: (context) => PairViewModel(
+          server: state.uri.queryParameters['server'] ?? '',
+          code: state.uri.queryParameters['code'] ?? '',
+          serverRepository: context.read(),
+          sessionRepository: context.read(),
+        ),
+        builder: (context, viewModel) => PairScreen(viewModel: viewModel),
       ),
     ),
     GoRoute(
@@ -108,6 +122,12 @@ String? redirectFor({
 }) {
   final link = routeOf(uri);
   if (!Routes.all.contains(link.path)) return Routes.home;
+  // A pairing link brings its own server and code, so it opens without
+  // either; once signed in it leads to the dashboard (#43).
+  if (link.path == Routes.pair) {
+    if (connected && signedIn) return Routes.home;
+    return link == uri ? null : link.toString();
+  }
   final onEntry = link.path == Routes.connect || link.path == Routes.signIn;
   final from = onEntry ? link.queryParameters['from'] : link.toString();
 
