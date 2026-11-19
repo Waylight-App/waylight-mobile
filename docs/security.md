@@ -28,9 +28,11 @@ report a vulnerability, see [SECURITY.md](../SECURITY.md).
 Waylight usually runs in a home network, often on plain
 `http://192.168.x.x:8090`. HTTPS is the default in the app: an address
 without scheme becomes `https://`, and the connect screen warns when you
-type `http://`. Android and iOS block plain HTTP by default; whether and how
-the app allows it for local addresses is decided in
-[#9](https://github.com/Waylight-App/waylight-mobile/issues/9).
+type `http://`. Plain HTTP is only accepted for addresses in a private
+network (`192.168.x.x`, `10.x.x.x`, `172.16–31.x.x`, `localhost`, `.local`,
+`.home.arpa`, IPv6 ULA and link-local); every other address needs HTTPS
+([ADR 0006](adr/0006-plain-http-in-the-home-network.md)). Self-signed
+certificates are not trusted.
 
 ## Sign-in
 

@@ -28,10 +28,9 @@ make run             # starts on the running emulator or connected phone
 ```
 
 The emulator reaches a server on your computer at `http://10.0.2.2:8090`
-(Android) or `http://localhost:8090` (iOS simulator). Plain HTTP is
-blocked by Android and iOS until
-[#9](https://github.com/Waylight-App/waylight-mobile/issues/9) is done; until
-then use an HTTPS address, e.g. through the reverse proxy of your server.
+(Android) or `http://localhost:8090` (iOS simulator). Both are
+private addresses, so plain HTTP works
+([ADR 0006](adr/0006-plain-http-in-the-home-network.md)).
 
 ## Everyday commands
 

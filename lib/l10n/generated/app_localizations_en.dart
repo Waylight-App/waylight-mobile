@@ -149,4 +149,8 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dashboardMenu => 'Account';
+
+  @override
+  String get connectErrorInsecure =>
+      'Plain http:// only works for addresses in your home network. Use https:// for this server.';
 }

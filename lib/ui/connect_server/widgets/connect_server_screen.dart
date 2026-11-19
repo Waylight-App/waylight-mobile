@@ -125,6 +125,7 @@ String? fieldError(AppLocalizations l10n, Exception error) => switch (error) {
     InvalidServerAddressReason.malformed => l10n.connectErrorInvalid,
     InvalidServerAddressReason.unsupportedScheme => l10n.connectErrorScheme,
     InvalidServerAddressReason.unexpectedParts => l10n.connectErrorParts,
+    InvalidServerAddressReason.insecure => l10n.connectErrorInsecure,
   },
   _ => null,
 };
