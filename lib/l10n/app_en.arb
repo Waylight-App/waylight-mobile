@@ -193,5 +193,13 @@
   "wasteEmpty": "No collections ahead.",
   "@wasteEmpty": {"description": "Waste widget without dates."},
   "wasteInDays": "in {days} days",
-  "@wasteInDays": {"description": "Days until a collection.", "placeholders": {"days": {"type": "int", "example": "5"}}}
+  "@wasteInDays": {"description": "Days until a collection.", "placeholders": {"days": {"type": "int", "example": "5"}}},
+  "freshnessJustNow": "updated just now",
+  "@freshnessJustNow": {"description": "Age of a widget's data."},
+  "freshnessMinutesAgo": "updated {minutes} min ago",
+  "@freshnessMinutesAgo": {"description": "Age of a widget's data.", "placeholders": {"minutes": {"type": "int", "example": "5"}}},
+  "freshnessStale": "outdated – {age}",
+  "@freshnessStale": {"description": "Data older than twice its refresh interval.", "placeholders": {"age": {"type": "String", "example": "updated 5 min ago"}}},
+  "freshnessFailed": "refresh failed – {age}",
+  "@freshnessFailed": {"description": "The last reload failed; the older data stays.", "placeholders": {"age": {"type": "String", "example": "updated 5 min ago"}}}
 }

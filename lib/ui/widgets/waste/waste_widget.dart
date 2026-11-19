@@ -34,6 +34,7 @@ class WasteWidget extends StatelessWidget {
       builder: (context, viewModel) => WidgetFrame(
         title: widget.title.isNotEmpty ? widget.title : l10n.wasteTitle,
         load: viewModel.load,
+        interval: const Duration(hours: 6),
         // The server answers 404 while no waste calendar is set up.
         errorText: (error) =>
             error is ApiException && error.failure == ApiFailure.notFound

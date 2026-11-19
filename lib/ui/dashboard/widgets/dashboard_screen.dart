@@ -3,6 +3,7 @@ import 'package:material_ui/material_ui.dart';
 import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/ui/core/error_messages.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
+import 'package:waylight_mobile/ui/core/refresh.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
 import 'package:waylight_mobile/ui/core/widget_registry.dart';
 import 'package:waylight_mobile/ui/core/widgets/form_page.dart';
@@ -85,7 +86,7 @@ class DashboardScreen extends StatelessWidget {
                       tabs: [for (final tab in tabs) Tab(text: tab.name)],
                     ),
             ),
-            body: body,
+            body: RefreshHost(child: body),
           ),
         );
       },
@@ -103,21 +104,27 @@ class _TabPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (tab.widgets.isEmpty) return _Hint(context.l10n.dashboardEmptyTab);
-    return ListView.separated(
-      // Each tab keeps its own scroll position when swiping between tabs.
-      key: PageStorageKey(tab.id),
-      padding: const EdgeInsets.all(Dimens.gap),
-      itemCount: tab.widgets.length,
-      separatorBuilder: (_, _) => const SizedBox(height: Dimens.gap),
-      // Built lazily: a widget's view model, and with it its request, only
-      // starts when the widget scrolls into view.
-      itemBuilder: (context, i) {
-        final widget = tab.widgets[i];
-        final builder = registry.builderFor(widget.kind);
-        return builder == null
-            ? WidgetCard(widget: widget, webUrl: webUrl)
-            : builder(context, widget);
-      },
+    return RefreshIndicator(
+      // Reloads the widgets of this tab that are on screen (#19).
+      onRefresh: () =>
+          RefreshHost.maybeOf(context)?.refresh() ?? Future.value(),
+      child: ListView.separated(
+        physics: const AlwaysScrollableScrollPhysics(),
+        // Each tab keeps its own scroll position when swiping between tabs.
+        key: PageStorageKey(tab.id),
+        padding: const EdgeInsets.all(Dimens.gap),
+        itemCount: tab.widgets.length,
+        separatorBuilder: (_, _) => const SizedBox(height: Dimens.gap),
+        // Built lazily: a widget's view model, and with it its request, only
+        // starts when the widget scrolls into view.
+        itemBuilder: (context, i) {
+          final widget = tab.widgets[i];
+          final builder = registry.builderFor(widget.kind);
+          return builder == null
+              ? WidgetCard(widget: widget, webUrl: webUrl)
+              : builder(context, widget);
+        },
+      ),
     );
   }
 }

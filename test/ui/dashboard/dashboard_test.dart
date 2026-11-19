@@ -170,4 +170,17 @@ void main() {
 
     expect(opener.opened.single.toString(), 'https://home.example.org/?tab=t2');
   });
+
+  testWidgets('pulls to refresh a tab', (tester) async {
+    await pump(tester);
+
+    await tester.fling(
+      find.text('Status overview'),
+      const Offset(0, 400),
+      1000,
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.byType(RefreshIndicator), findsWidgets);
+  });
 }
