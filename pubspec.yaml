@@ -12,6 +12,10 @@ environment:
 dependencies:
   # SHA-256 for the PKCE challenge of the browser sign-in; Dart team.
   crypto: ^3.0.8
+  # X25519, HKDF and AES-GCM to decrypt push notifications on the device
+  # (server ADR 0025). Pure Dart, no platform code or binaries; the SDK and
+  # the crypto package have no key agreement or AEAD.
+  cryptography: ^2.9.0
   flutter:
     sdk: flutter
   flutter_localizations:
@@ -24,29 +28,28 @@ dependencies:
   http: ^1.6.0
   # Required by flutter gen-l10n for plurals, dates and numbers.
   intl: ^0.20.3
-  # Hierarchical loggers from the Dart team instead of print().
   # The app lock with biometrics or the device PIN (#46); Flutter team.
   local_auth: ^3.0.2
+  # Hierarchical loggers from the Dart team instead of print().
   logging: ^1.3.0
   # Material widgets, decoupled from the framework since Flutter 3.50.
   material_ui: ^1.11.1
-  # Dependency injection of repositories and view models (official architecture guide).
   # The app's version and build number for the settings; the platform
   # knows them, Dart does not.
   package_info_plus: ^10.2.2
   # The app's private directory for the offline copy of the dashboard
   # (ADR 0007); Flutter team.
   path_provider: ^2.1.6
+  # Dependency injection of repositories and view models (official architecture guide).
   provider: ^6.1.5+1
-  # IANA time zones for the clock widget; pure Dart from the Dart team, no
-  # platform code. The SDK only knows local time and UTC.
   # Shortcuts on the launcher icon (#50); Flutter team.
   quick_actions: ^1.1.1
+  # IANA time zones for the clock widget; pure Dart from the Dart team, no
+  # platform code. The SDK only knows local time and UTC.
   timezone: ^0.11.2
   # Opens bookmarks and the web interface in the browser; Flutter team,
   # thin platform channels to the system's own URL handling.
   url_launcher: ^6.3.3
-
 dev_dependencies:
   # Generates the app icons from assets/icon (docs/development.md#icons).
   flutter_launcher_icons: ^0.14.4
