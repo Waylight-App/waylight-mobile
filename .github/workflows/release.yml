@@ -65,21 +65,3 @@ jobs:
           cp build/app/outputs/flutter-apk/app-store-release.apk "waylight-${TAG}.apk"
           cp build/app/outputs/flutter-apk/app-fdroid-release.apk "waylight-${TAG}-fdroid.apk"
           gh release upload "$TAG" "waylight-${TAG}.apk" "waylight-${TAG}-fdroid.apk" --clobber
-
-  ios:
-    needs: release-please
-    if: needs.release-please.outputs.created == 'true'
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - name: Read the Flutter version from .fvmrc
-        id: flutter
-        run: echo "version=$(jq -r .flutter .fvmrc)" >> "$GITHUB_OUTPUT"
-      - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2.23.0
-        with:
-          channel: stable
-          flutter-version: ${{ steps.flutter.outputs.version }}
-          cache: true
-      # Proves that the iOS app builds; signing and TestFlight follow with
-      # the store setup (see ROADMAP.md).
-      - run: flutter build ios --release --no-codesign
