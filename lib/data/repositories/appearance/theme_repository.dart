@@ -2,37 +2,87 @@ import 'package:flutter/foundation.dart';
 
 import 'package:waylight_mobile/data/services/api/module_api.dart';
 import 'package:waylight_mobile/data/services/storage/key_value_store.dart';
+import 'package:waylight_mobile/data/services/system_colors/system_colors.dart';
 import 'package:waylight_mobile/domain/models/appearance.dart';
 import 'package:waylight_mobile/domain/models/server_address.dart';
 import 'package:waylight_mobile/utils/result.dart';
 
 /// The account's theme from the web interface (#157). The last palette is
 /// kept on the device, so the app starts in it without the network.
+///
+/// Where the system offers wallpaper colours, the app can use them instead
+/// (#198); that choice is kept on the device per server.
 class ThemeRepository extends ChangeNotifier {
   /// Creates the repository.
-  ThemeRepository({required this._api, required this._store});
+  ThemeRepository({
+    required this._api,
+    required this._store,
+    this._systemColors,
+  });
 
   final ModuleApi _api;
   final KeyValueStore _store;
+  final SystemColors? _systemColors;
 
   static const _key = 'theme.palette';
 
   ThemePalette? _palette;
+  int? _systemAccent;
+  bool _wallpaper = false;
+  ServerAddress? _server;
 
   /// The palette, or `null` for the app's own Amber.
   ThemePalette? get palette => _palette;
 
-  /// Reads the palette kept on the device.
-  Future<void> restore() async {
+  /// Whether the system offers wallpaper colours.
+  bool get wallpaperAvailable => _systemAccent != null;
+
+  /// Whether the app uses the wallpaper colours for the current server.
+  bool get useWallpaper => _wallpaper && wallpaperAvailable;
+
+  /// The seed of the wallpaper colours while they are in use, else `null`.
+  int? get wallpaperSeed => useWallpaper ? _systemAccent : null;
+
+  static String _wallpaperKey(ServerAddress server) =>
+      'theme.wallpaper.${server.uri}';
+
+  /// Reads the palette kept on the device, the system's wallpaper colours
+  /// and the choice for [server].
+  Future<void> restore({ServerAddress? server}) async {
+    _systemAccent = await _systemColors?.accent();
+    _server = server;
+    if (server != null) {
+      _wallpaper = await _store.read(_wallpaperKey(server)) == '1';
+    }
     final stored = await _store.read(_key);
-    if (stored == null) return;
-    _palette = paletteFromCss(stored);
+    if (stored != null) _palette = paletteFromCss(stored);
+    notifyListeners();
+  }
+
+  /// Uses the wallpaper colours for [server] or not.
+  Future<void> setWallpaper(
+    ServerAddress server, {
+    required bool enabled,
+  }) async {
+    if (enabled) {
+      await _store.write(_wallpaperKey(server), '1');
+    } else {
+      await _store.delete(_wallpaperKey(server));
+    }
+    _server = server;
+    _wallpaper = enabled;
     notifyListeners();
   }
 
   /// Reads the account's theme from [server]; a failure keeps the current
   /// palette.
   Future<void> refresh(ServerAddress server) async {
+    if (server != _server) {
+      // Another server: its own colour choice applies.
+      _server = server;
+      _wallpaper = await _store.read(_wallpaperKey(server)) == '1';
+      notifyListeners();
+    }
     final result = await _api.read(server, '/api/appearance', (json) {
       if (json case {'customCss': final String css}) return css;
       return '';
@@ -53,6 +103,8 @@ class ThemeRepository extends ChangeNotifier {
   Future<void> clear() async {
     _palette = null;
     await _store.delete(_key);
+    if (_server case final server?) await _store.delete(_wallpaperKey(server));
+    _wallpaper = false;
     notifyListeners();
   }
 }

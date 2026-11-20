@@ -147,6 +147,27 @@ class SettingsScreen extends StatelessWidget {
                     selected: {viewModel.appearance.theme},
                     onSelectionChanged: (s) => viewModel.setTheme(s.single),
                   ),
+                  if (viewModel.wallpaperAvailable) ...[
+                    const SizedBox(height: Dimens.gap),
+                    Text(l10n.settingsColours),
+                    const SizedBox(height: Dimens.gapSmall),
+                    SegmentedButton<bool>(
+                      key: const ValueKey('settings.colours'),
+                      segments: [
+                        ButtonSegment(
+                          value: false,
+                          label: Text(l10n.settingsColoursWaylight),
+                        ),
+                        ButtonSegment(
+                          value: true,
+                          label: Text(l10n.settingsColoursWallpaper),
+                        ),
+                      ],
+                      selected: {viewModel.useWallpaper},
+                      onSelectionChanged: (s) =>
+                          viewModel.setWallpaper(enabled: s.single).ignore(),
+                    ),
+                  ],
                   const SizedBox(height: Dimens.gap),
                   Text(l10n.settingsLanguage),
                   const SizedBox(height: Dimens.gapSmall),

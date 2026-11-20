@@ -1,6 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:http/http.dart' as http;
+import 'package:http/testing.dart';
 import 'package:material_ui/material_ui.dart';
-
+import 'package:waylight_mobile/data/repositories/appearance/theme_repository.dart';
+import 'package:waylight_mobile/data/services/api/api_client.dart';
+import 'package:waylight_mobile/data/services/api/module_api.dart';
 import 'package:waylight_mobile/domain/models/appearance.dart';
 import 'package:waylight_mobile/domain/models/server_status.dart';
 import 'package:waylight_mobile/ui/core/link_opener.dart';
@@ -13,6 +17,8 @@ import '../../testing/fakes/fake_link_opener.dart';
 import '../../testing/fakes/fake_preferences_repository.dart';
 import '../../testing/fakes/fake_server_repository.dart';
 import '../../testing/fakes/fake_session_repository.dart';
+import '../../testing/fakes/fake_system_colors.dart';
+import '../../testing/fakes/in_memory_key_value_store.dart';
 import '../../testing/pump_app.dart';
 
 void main() {
@@ -196,4 +202,45 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byKey(const ValueKey('settings.push')), findsNothing);
   });
+
+  testWidgets(
+    'offers wallpaper colours only where the system has them (#198)',
+    (tester) async {
+      tester.view.physicalSize = const Size(800, 2400);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.reset);
+      Future<ThemeRepository> theme(int? color) async {
+        final repo = ThemeRepository(
+          api: ModuleApi(
+            ApiClient(client: MockClient((_) async => http.Response('', 503))),
+          ),
+          store: InMemoryKeyValueStore(),
+          systemColors: FakeSystemColors(color),
+        );
+        await repo.restore(server: testServer());
+        return repo;
+      }
+
+      SettingsScreen screen(ThemeRepository repo) => SettingsScreen(
+        viewModel: SettingsViewModel(
+          serverRepository: servers,
+          sessionRepository: sessions,
+          preferencesRepository: preferences,
+          themeRepository: repo,
+          appVersion: () async => '0.3.0 (7)',
+        ),
+      );
+
+      await tester.pumpScreen(screen(await theme(null)));
+      await tester.pumpAndSettle();
+      expect(find.byKey(const ValueKey('settings.colours')), findsNothing);
+
+      final repo = await theme(0xFF3366CC);
+      await tester.pumpScreen(screen(repo));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Wallpaper'));
+      await tester.pumpAndSettle();
+      expect(repo.useWallpaper, isTrue);
+    },
+  );
 }

@@ -3049,6 +3049,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Share'**
   String get diagnosticsShare;
+
+  /// Settings, appearance: label of the colour choice.
+  ///
+  /// In en, this message translates to:
+  /// **'Colours'**
+  String get settingsColours;
+
+  /// Colour choice: the server's theme.
+  ///
+  /// In en, this message translates to:
+  /// **'Like Waylight'**
+  String get settingsColoursWaylight;
+
+  /// Colour choice: the system's wallpaper colours.
+  ///
+  /// In en, this message translates to:
+  /// **'Wallpaper'**
+  String get settingsColoursWallpaper;
 }
 
 class _AppLocalizationsDelegate

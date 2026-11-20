@@ -983,5 +983,11 @@
   "diagnosticsPreview": "This is everything the report contains. It only leaves the phone if you share it.",
   "@diagnosticsPreview": {"description": "Text above the preview."},
   "diagnosticsShare": "Share",
-  "@diagnosticsShare": {"description": "Button that opens the share sheet."}
+  "@diagnosticsShare": {"description": "Button that opens the share sheet."},
+  "settingsColours": "Colours",
+  "@settingsColours": {"description": "Settings, appearance: label of the colour choice."},
+  "settingsColoursWaylight": "Like Waylight",
+  "@settingsColoursWaylight": {"description": "Colour choice: the server's theme."},
+  "settingsColoursWallpaper": "Wallpaper",
+  "@settingsColoursWallpaper": {"description": "Colour choice: the system's wallpaper colours."}
 }
