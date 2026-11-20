@@ -129,6 +129,7 @@ GoRouter createRouter(
       builder: (context, state) => ViewModelHost(
         create: (context) => SearchViewModel(
           initialQuery: state.uri.queryParameters['q'] ?? '',
+          language: context.l10n.localeName,
           serverRepository: context.read(),
           searchRepository: context.read(),
           dashboardRepository: context.read(),

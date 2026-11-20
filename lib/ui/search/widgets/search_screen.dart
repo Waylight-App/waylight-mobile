@@ -8,15 +8,36 @@ import 'package:waylight_mobile/ui/core/link_opener.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
 import 'package:waylight_mobile/ui/search/view_models/search_view_model.dart';
+import 'package:waylight_mobile/ui/search/widgets/answer_card.dart';
 import 'package:waylight_mobile/utils/result.dart';
 
 /// The search of the app (#22).
-class SearchScreen extends StatelessWidget {
+class SearchScreen extends StatefulWidget {
   /// Creates the screen for [viewModel].
   const SearchScreen({required this.viewModel, super.key});
 
   /// The state and actions of this screen.
   final SearchViewModel viewModel;
+
+  @override
+  State<SearchScreen> createState() => _SearchScreenState();
+}
+
+class _SearchScreenState extends State<SearchScreen> {
+  SearchViewModel get viewModel => widget.viewModel;
+  late final _query = TextEditingController(text: viewModel.initialQuery);
+
+  @override
+  void dispose() {
+    _query.dispose();
+    super.dispose();
+  }
+
+  /// Searches for a name an answer suggested.
+  void _suggest(String name) {
+    _query.text = name;
+    viewModel.searchFor(name);
+  }
 
   Future<void> _run(BuildContext context, SearchResult result) async {
     final l10n = context.l10n;
@@ -48,7 +69,7 @@ class SearchScreen extends StatelessWidget {
       appBar: AppBar(
         title: TextFormField(
           key: const ValueKey('search.field'),
-          initialValue: viewModel.initialQuery,
+          controller: _query,
           autofocus: true,
           textInputAction: TextInputAction.search,
           onChanged: viewModel.onQueryChanged,
@@ -71,6 +92,19 @@ class SearchScreen extends StatelessWidget {
           }
           return ListView(
             children: [
+              for (final answer in viewModel.answers)
+                AnswerCard(
+                  answer: answer,
+                  onSuggestion: _suggest,
+                  onOpenWidget: answer.widgetKind.isEmpty
+                      ? null
+                      : () => context.go(
+                          Uri(
+                            path: Routes.home,
+                            queryParameters: {'widget': answer.widgetKind},
+                          ).toString(),
+                        ),
+                ),
               for (final result in viewModel.results)
                 ListTile(
                   minTileHeight: Dimens.tapTarget,

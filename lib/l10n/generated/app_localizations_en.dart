@@ -1471,6 +1471,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get bookmarkNoFolder => 'No folder';
 
   @override
+  String get searchOpenWidget => 'Open widget';
+
+  @override
   String get shareTitle => 'Save to Waylight';
 
   @override
