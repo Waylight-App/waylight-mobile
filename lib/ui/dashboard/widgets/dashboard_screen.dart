@@ -14,6 +14,8 @@ import 'package:waylight_mobile/ui/core/widgets/wordmark.dart';
 import 'package:waylight_mobile/ui/core/window_size.dart';
 import 'package:waylight_mobile/ui/dashboard/view_models/dashboard_view_model.dart';
 import 'package:waylight_mobile/ui/dashboard/widgets/widget_card.dart';
+import 'package:waylight_mobile/ui/dashboard/widgets/widget_full_screen.dart';
+import 'package:waylight_mobile/ui/dashboard/widgets/widget_grid.dart';
 import 'package:waylight_mobile/utils/result.dart';
 
 /// The tabs of the dashboard, one page per tab (docs/design/screens/
@@ -194,54 +196,114 @@ class _TabPage extends StatelessWidget {
         : builder(context, widget);
   }
 
+  void _open(BuildContext context, WidgetPlacement widget) {
+    Navigator.of(context)
+        .push(
+          MaterialPageRoute<void>(
+            builder: (context) => WidgetFullScreen(
+              placement: widget,
+              child: _card(context, widget),
+            ),
+          ),
+        )
+        .ignore();
+  }
+
+  /// The tab's widgets as runs: widgets with a size go into one grid,
+  /// widgets without one stay full width at their natural height (#208).
+  List<List<WidgetPlacement>> _runs() {
+    final runs = <List<WidgetPlacement>>[];
+    bool? sized;
+    for (final widget in tab.widgets) {
+      final isSized = tab.sizes.containsKey(widget.id);
+      if (isSized != sized) runs.add([]);
+      runs.last.add(widget);
+      sized = isSized;
+    }
+    return runs;
+  }
+
   @override
   Widget build(BuildContext context) {
     if (tab.widgets.isEmpty) return _Hint(context.l10n.dashboardEmptyTab);
-    final columns = WindowSize.of(context).columns;
+    final window = WindowSize.of(context);
+    final columns = window.columns;
+    final gridColumns = window == WindowSize.compact ? 4 : 8;
+    final blocks = <Widget>[];
+    for (final run in _runs()) {
+      if (tab.sizes.containsKey(run.first.id)) {
+        blocks.add(
+          WidgetGrid(
+            items: [
+              for (final widget in run)
+                (widget: widget, size: tab.sizes[widget.id]!),
+            ],
+            columns: gridColumns,
+            builder: _card,
+            onOpen: (widget) => _open(context, widget),
+          ),
+        );
+      } else if (columns == 1) {
+        // One block per widget keeps the list lazy: a widget's view model,
+        // and with it its request, only starts when it scrolls into view.
+        blocks.addAll([for (final widget in run) _card(context, widget)]);
+      } else {
+        blocks.add(_Columns(widgets: run, columns: columns, card: _card));
+      }
+    }
     return RefreshIndicator(
       // Reloads the widgets of this tab that are on screen (#19).
       onRefresh: () =>
           RefreshHost.maybeOf(context)?.refresh() ?? Future.value(),
-      child: columns == 1
-          ? ListView.separated(
-              physics: const AlwaysScrollableScrollPhysics(),
-              // Each tab keeps its own scroll position when swiping.
-              key: PageStorageKey(tab.id),
-              padding: const EdgeInsets.all(Dimens.gap),
-              itemCount: tab.widgets.length,
-              separatorBuilder: (_, _) => const SizedBox(height: Dimens.gap),
-              // Built lazily: a widget's view model, and with it its
-              // request, only starts when the widget scrolls into view.
-              itemBuilder: (context, i) => _card(context, tab.widgets[i]),
-            )
-          : SingleChildScrollView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              key: PageStorageKey(tab.id),
-              padding: const EdgeInsets.all(Dimens.gap),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  for (var c = 0; c < columns; c++) ...[
-                    if (c > 0) const SizedBox(width: Dimens.gap),
-                    Expanded(
-                      // The phone order runs left to right, then down, so
-                      // the first widgets stay at the top.
-                      child: Column(
-                        children: [
-                          for (var i = c; i < tab.widgets.length; i += columns)
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                bottom: Dimens.gap,
-                              ),
-                              child: _card(context, tab.widgets[i]),
-                            ),
-                        ],
-                      ),
+      child: ListView.separated(
+        physics: const AlwaysScrollableScrollPhysics(),
+        // Each tab keeps its own scroll position when swiping.
+        key: PageStorageKey(tab.id),
+        padding: const EdgeInsets.all(Dimens.gap),
+        itemCount: blocks.length,
+        separatorBuilder: (_, _) => const SizedBox(height: Dimens.gap),
+        itemBuilder: (context, i) => blocks[i],
+      ),
+    );
+  }
+}
+
+/// Widgets without a size on tablets: side by side in [columns] columns.
+class _Columns extends StatelessWidget {
+  const _Columns({
+    required this.widgets,
+    required this.columns,
+    required this.card,
+  });
+
+  final List<WidgetPlacement> widgets;
+  final int columns;
+  final PlacementBuilder card;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        for (var c = 0; c < columns; c++) ...[
+          if (c > 0) const SizedBox(width: Dimens.gap),
+          Expanded(
+            // The phone order runs left to right, then down, so the first
+            // widgets stay at the top.
+            child: Column(
+              children: [
+                for (var i = c; i < widgets.length; i += columns)
+                  Padding(
+                    padding: EdgeInsets.only(
+                      bottom: i + columns < widgets.length ? Dimens.gap : 0,
                     ),
-                  ],
-                ],
-              ),
+                    child: card(context, widgets[i]),
+                  ),
+              ],
             ),
+          ),
+        ],
+      ],
     );
   }
 }

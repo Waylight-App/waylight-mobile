@@ -13,7 +13,8 @@ final class TabNotEditable implements Exception {
   const TabNotEditable();
 }
 
-/// Edits the phone layout of one tab (#53): order, hidden widgets, reset.
+/// Edits the phone layout of one tab (#53): order, hidden widgets, sizes
+/// (#208), reset.
 class EditTabViewModel extends ChangeNotifier {
   /// Creates the view model for [tabId] and loads the tab.
   EditTabViewModel({
@@ -82,6 +83,16 @@ class EditTabViewModel extends ChangeNotifier {
   void toggleHidden(int index) {
     final list = [..._items];
     list[index] = list[index].copyWith(hidden: !list[index].hidden);
+    _items = List.unmodifiable(list);
+    notifyListeners();
+  }
+
+  /// Sets the grid size of the widget at [index]; `null` shows it at the
+  /// full width and its natural height (#208).
+  void setSize(int index, WidgetSize? size) {
+    if (_items[index].size == size) return;
+    final list = [..._items];
+    list[index] = list[index].withSize(size);
     _items = List.unmodifiable(list);
     notifyListeners();
   }

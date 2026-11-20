@@ -1545,4 +1545,32 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get connectPrivacyPush => 'Dein Waylight. Deine Daten. Dein Server.';
+
+  @override
+  String get dashboardOpenWidget => 'in voller Größe öffnen';
+
+  @override
+  String get widgetSizeFull => 'Volle Breite';
+
+  @override
+  String get widgetSizeSmall => 'Klein';
+
+  @override
+  String get widgetSizeMedium => 'Mittel';
+
+  @override
+  String get widgetSizeLarge => 'Groß';
+
+  @override
+  String get widgetSizeStrip => 'Leiste';
+
+  @override
+  String editTabSize(String size) {
+    return 'Größe: $size';
+  }
+
+  @override
+  String editTabSizeOf(String widget) {
+    return 'Größe von $widget';
+  }
 }

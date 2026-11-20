@@ -1,0 +1,106 @@
+<!doctype html>
+<!-- Mockup of the Waylight app (docs/design/README.md). Static HTML, not app code. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Add a widget</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#9C5D00}a:hover{color:#7E4A00}
+</style>
+</head>
+<body style="margin: 0; background: #E3E1E9">
+<main style="position: relative; width: 390px; height: 844px; box-sizing: border-box; background: #FFF8F3; color: #201B13; font-family: Roboto, system-ui, sans-serif; display: flex; flex-direction: column; overflow: hidden">
+  <header style="height: 64px; display: flex; align-items: center; gap: 4px; padding: 8px 4px 0">
+    <a href="home-edit.html" aria-label="Back" style="width: 48px; height: 48px; border-radius: 24px; display: flex; align-items: center; justify-content: center; color: #201B13">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"></path></svg>
+    </a>
+    <h1 style="margin: 0; font-size: 22px; line-height: 28px; font-weight: 400">Add to Home</h1>
+  </header>
+
+  <div style="padding: 8px 16px 0; display: flex; flex-direction: column; gap: 12px">
+    <div style="height: 48px; border-radius: 24px; background: #ECE1D4; display: flex; align-items: center; gap: 8px; padding: 0 16px">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#504535" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg>
+      <label for="find" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Find a widget</label>
+      <input id="find" placeholder="Find a widget" style="flex: 1; min-width: 0; border: 0; background: transparent; font: 400 16px Roboto, sans-serif; color: #201B13; outline: none">
+    </div>
+    <div role="tablist" aria-label="Category" style="display: flex; gap: 8px; overflow: hidden">
+      <button type="button" role="tab" aria-selected="true" style="flex: none; height: 32px; padding: 0 12px; border-radius: 8px; font: 500 13px Roboto, sans-serif; border: 0; background: #FEDAA3; color: #3E2A00;">Everyday</button>
+      
+<button type="button" role="tab" aria-selected="false" style="flex: none; height: 32px; padding: 0 12px; border-radius: 8px; font: 500 13px Roboto, sans-serif; border: 1px solid #827562; background: transparent; color: #504535;">Home server</button>
+      
+<button type="button" role="tab" aria-selected="false" style="flex: none; height: 32px; padding: 0 12px; border-radius: 8px; font: 500 13px Roboto, sans-serif; border: 1px solid #827562; background: transparent; color: #504535;">Information</button>
+      
+<button type="button" role="tab" aria-selected="false" style="flex: none; height: 32px; padding: 0 12px; border-radius: 8px; font: 500 13px Roboto, sans-serif; border: 1px solid #827562; background: transparent; color: #504535;">Team</button>
+      
+    </div>
+  </div>
+
+  <ul style="list-style: none; margin: 12px 0 0; padding: 0 16px; display: flex; flex-direction: column; gap: 10px">
+    <li style="border-radius: 20px; background: #F8ECDF; padding: 12px 14px; display: flex; align-items: center; gap: 14px">
+        <span aria-hidden="true" style="flex: none; width: 48px; height: 48px; border-radius: 14px; background: #FEDAA3; color: #3E2A00; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 18px">T</span>
+        <span style="flex: 1; min-width: 0">
+          <span style="display: block; font-size: 15px; font-weight: 500">To-dos</span>
+          <span style="display: block; font-size: 12px; line-height: 16px; color: #504535">Small · Medium · Large · Strip</span>
+        </span>
+        
+        
+          <button type="button" aria-label="Add To-dos to Home" style="height: 36px; padding: 0 14px; border-radius: 18px; border: 0; background: #F2B441; color: #1A1206; font: 500 13px Roboto, sans-serif; cursor: pointer">Add</button>
+        
+      </li>
+    
+<li style="border-radius: 20px; background: #F8ECDF; padding: 12px 14px; display: flex; align-items: center; gap: 14px">
+        <span aria-hidden="true" style="flex: none; width: 48px; height: 48px; border-radius: 14px; background: #FEDAA3; color: #3E2A00; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 18px">C</span>
+        <span style="flex: 1; min-width: 0">
+          <span style="display: block; font-size: 15px; font-weight: 500">Calendar</span>
+          <span style="display: block; font-size: 12px; line-height: 16px; color: #504535">Small · Medium · Large</span>
+        </span>
+        
+        
+          <button type="button" aria-label="Add Calendar to Home" style="height: 36px; padding: 0 14px; border-radius: 18px; border: 0; background: #F2B441; color: #1A1206; font: 500 13px Roboto, sans-serif; cursor: pointer">Add</button>
+        
+      </li>
+    
+<li style="border-radius: 20px; background: #F8ECDF; padding: 12px 14px; display: flex; align-items: center; gap: 14px">
+        <span aria-hidden="true" style="flex: none; width: 48px; height: 48px; border-radius: 14px; background: #FEDAA3; color: #3E2A00; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 18px">S</span>
+        <span style="flex: 1; min-width: 0">
+          <span style="display: block; font-size: 15px; font-weight: 500">Shopping list</span>
+          <span style="display: block; font-size: 12px; line-height: 16px; color: #504535">Medium · Large</span>
+        </span>
+        
+        
+          <button type="button" aria-label="Add Shopping list to Home" style="height: 36px; padding: 0 14px; border-radius: 18px; border: 0; background: #F2B441; color: #1A1206; font: 500 13px Roboto, sans-serif; cursor: pointer">Add</button>
+        
+      </li>
+    
+<li style="border-radius: 20px; background: #F8ECDF; padding: 12px 14px; display: flex; align-items: center; gap: 14px">
+        <span aria-hidden="true" style="flex: none; width: 48px; height: 48px; border-radius: 14px; background: #FEDAA3; color: #3E2A00; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 18px">H</span>
+        <span style="flex: 1; min-width: 0">
+          <span style="display: block; font-size: 15px; font-weight: 500">Habits</span>
+          <span style="display: block; font-size: 12px; line-height: 16px; color: #504535">Small · Medium</span>
+        </span>
+        
+        
+          <button type="button" aria-label="Add Habits to Home" style="height: 36px; padding: 0 14px; border-radius: 18px; border: 0; background: #F2B441; color: #1A1206; font: 500 13px Roboto, sans-serif; cursor: pointer">Add</button>
+        
+      </li>
+    
+<li style="border-radius: 20px; background: #F8ECDF; padding: 12px 14px; display: flex; align-items: center; gap: 14px">
+        <span aria-hidden="true" style="flex: none; width: 48px; height: 48px; border-radius: 14px; background: #FEDAA3; color: #3E2A00; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 18px">C</span>
+        <span style="flex: 1; min-width: 0">
+          <span style="display: block; font-size: 15px; font-weight: 500">Countdown</span>
+          <span style="display: block; font-size: 12px; line-height: 16px; color: #504535">Small · Strip</span>
+        </span>
+        
+        
+          <button type="button" aria-label="Add Countdown to Home" style="height: 36px; padding: 0 14px; border-radius: 18px; border: 0; background: #F2B441; color: #1A1206; font: 500 13px Roboto, sans-serif; cursor: pointer">Add</button>
+        
+      </li>
+    
+  </ul>
+
+  <p style="margin: auto 16px 20px; font-size: 12px; line-height: 16px; color: #504535">Widgets that need settings, such as the city for the weather, open their settings right after adding.</p>
+</main>
+</body>
+</html>

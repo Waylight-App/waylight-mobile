@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:waylight_mobile/domain/models/dashboard.dart';
 
 import 'package:waylight_mobile/ui/core/error_messages.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
@@ -84,7 +85,22 @@ class EditTabScreen extends StatelessWidget {
                   child: const Icon(Icons.drag_handle),
                 ),
                 title: Text(item.widget.displayTitle),
-                subtitle: item.hidden ? Text(l10n.editTabHidden) : null,
+                subtitle: Align(
+                  alignment: AlignmentDirectional.centerStart,
+                  child: Wrap(
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    spacing: Dimens.gapSmall,
+                    children: [
+                      _SizeMenu(
+                        key: ValueKey('editTab.size.${item.widget.id}'),
+                        title: item.widget.displayTitle,
+                        size: item.size,
+                        onSelected: (size) => viewModel.setSize(i, size),
+                      ),
+                      if (item.hidden) Text(l10n.editTabHidden),
+                    ],
+                  ),
+                ),
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -110,6 +126,55 @@ class EditTabScreen extends StatelessWidget {
             },
           ),
         },
+      ),
+    );
+  }
+}
+
+/// The choice of a size for one widget (#208).
+class _SizeMenu extends StatelessWidget {
+  const _SizeMenu({
+    required this.title,
+    required this.size,
+    required this.onSelected,
+    super.key,
+  });
+
+  final String title;
+  final WidgetSize? size;
+  final ValueChanged<WidgetSize?> onSelected;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    // A menu entry cannot carry null, so "full width" is its own choice.
+    final choices = <(WidgetSize?, String)>[
+      (null, l10n.widgetSizeFull),
+      (WidgetSize.small, l10n.widgetSizeSmall),
+      (WidgetSize.medium, l10n.widgetSizeMedium),
+      (WidgetSize.large, l10n.widgetSizeLarge),
+      (WidgetSize.strip, l10n.widgetSizeStrip),
+    ];
+    final current = choices.firstWhere((c) => c.$1 == size).$2;
+    return PopupMenuButton<int>(
+      tooltip: l10n.editTabSizeOf(title),
+      initialValue: choices.indexWhere((c) => c.$1 == size),
+      onSelected: (index) => onSelected(choices[index].$1),
+      itemBuilder: (context) => [
+        for (final (index, (_, label)) in choices.indexed)
+          PopupMenuItem<int>(value: index, child: Text(label)),
+      ],
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(minHeight: Dimens.tapTarget),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(Icons.aspect_ratio, size: Dimens.iconSmall),
+            const SizedBox(width: Dimens.gapSmall / 2),
+            Text(l10n.editTabSize(current)),
+            const Icon(Icons.arrow_drop_down),
+          ],
+        ),
       ),
     );
   }

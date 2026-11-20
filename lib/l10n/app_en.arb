@@ -913,5 +913,21 @@
   "grafanaPanelAlt": "Grafana panel {title}",
   "@grafanaPanelAlt": {"description": "Screen reader text of a panel image.", "placeholders": {"title": {"type": "String", "example": "CPU"}}},
   "connectPrivacyPush": "Your Waylight. Your data. Your server.",
-  "@connectPrivacyPush": {"description": "Note on the connect screen of builds with push notifications through Google (#176); a claim, not a technical statement."}
+  "@connectPrivacyPush": {"description": "Note on the connect screen of builds with push notifications through Google (#176); a claim, not a technical statement."},
+  "dashboardOpenWidget": "open in full",
+  "@dashboardOpenWidget": {"description": "Screen reader hint for a dashboard tile: what tapping it does."},
+  "widgetSizeFull": "Full width",
+  "@widgetSizeFull": {"description": "Size of a dashboard widget: full width at its natural height."},
+  "widgetSizeSmall": "Small",
+  "@widgetSizeSmall": {"description": "Size of a dashboard widget: half the width, square."},
+  "widgetSizeMedium": "Medium",
+  "@widgetSizeMedium": {"description": "Size of a dashboard widget: full width, half as high."},
+  "widgetSizeLarge": "Large",
+  "@widgetSizeLarge": {"description": "Size of a dashboard widget: full width, square."},
+  "widgetSizeStrip": "Strip",
+  "@widgetSizeStrip": {"description": "Size of a dashboard widget: full width, one row high."},
+  "editTabSize": "Size: {size}",
+  "@editTabSize": {"description": "Button that chooses the size of a widget in the tab editor.", "placeholders": {"size": {"type": "String", "example": "Small"}}},
+  "editTabSizeOf": "Size of {widget}",
+  "@editTabSizeOf": {"description": "Tooltip of the size button of a widget in the tab editor.", "placeholders": {"widget": {"type": "String", "example": "To-dos"}}}
 }

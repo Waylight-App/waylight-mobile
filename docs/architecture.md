@@ -181,6 +181,32 @@ does not know any widget:
 Adding a widget kind is then a new feature folder plus one line in the
 composition root (open/closed principle). The exact API is settled in #17.
 
+### Grid and sizes
+
+On the dashboard, a widget either has a size or takes the full width at
+its natural height (#208, [ADR 0011](adr/0011-dashboard-grid.md)). Sized
+widgets sit on a grid of square cells, 4 wide on phones and 8 on tablets:
+
+| Size | Cells | Typical use |
+| --- | --- | --- |
+| `small` | 2 × 2 | clock, weather, next event, next departure |
+| `medium` | 4 × 2 | the first to-dos, a few services, bookmarks |
+| `large` | 4 × 4 | lists: to-dos, calendar, feeds |
+| `strip` | 4 × 1 | one line: status overview, next waste collection |
+
+- `packGrid` (domain) places the widgets in display order and fills gaps
+  (dense packing); `WidgetGrid` (dashboard) turns the cells into pixels.
+- A `WidgetTile` builds the widget's view below a `WidgetSizeScope`, in a
+  box of the tile's size; taller content fades out, and a tap opens the
+  widget in full (`WidgetFullScreen`). Buttons inside the view keep their
+  own taps.
+- A view that has a compact form asks `WidgetSizeScope.maybeOf(context)`
+  and shows what fits; without a scope (list, full view) it shows
+  everything (#211).
+- Sizes are part of the phone layout of a tab. The dashboard repository
+  sends them to servers that know them (Waylight-App/waylight#585) and
+  keeps them on the device for the others.
+
 ## Models at the boundaries
 
 | Model | Lives in | Example | Purpose |

@@ -456,5 +456,13 @@
   "grafanaPanelTitle": "Grafana-Panel",
   "grafanaChoosePanel": "Wähle in der Weboberfläche ein Dashboard und ein Panel.",
   "grafanaPanelAlt": "Grafana-Panel {title}",
-  "connectPrivacyPush": "Dein Waylight. Deine Daten. Dein Server."
+  "connectPrivacyPush": "Dein Waylight. Deine Daten. Dein Server.",
+  "dashboardOpenWidget": "in voller Größe öffnen",
+  "widgetSizeFull": "Volle Breite",
+  "widgetSizeSmall": "Klein",
+  "widgetSizeMedium": "Mittel",
+  "widgetSizeLarge": "Groß",
+  "widgetSizeStrip": "Leiste",
+  "editTabSize": "Größe: {size}",
+  "editTabSizeOf": "Größe von {widget}"
 }
