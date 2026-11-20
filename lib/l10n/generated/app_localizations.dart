@@ -2845,6 +2845,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Allow'**
   String get settingsPushBatteryAction;
+
+  /// Screen reader hint for a dashboard tile: what tapping it does.
+  ///
+  /// In en, this message translates to:
+  /// **'open in full'**
+  String get dashboardOpenWidget;
+
+  /// Size of a dashboard widget: full width at its natural height.
+  ///
+  /// In en, this message translates to:
+  /// **'Full width'**
+  String get widgetSizeFull;
+
+  /// Size of a dashboard widget: half the width, square.
+  ///
+  /// In en, this message translates to:
+  /// **'Small'**
+  String get widgetSizeSmall;
+
+  /// Size of a dashboard widget: full width, half as high.
+  ///
+  /// In en, this message translates to:
+  /// **'Medium'**
+  String get widgetSizeMedium;
+
+  /// Size of a dashboard widget: full width, square.
+  ///
+  /// In en, this message translates to:
+  /// **'Large'**
+  String get widgetSizeLarge;
+
+  /// Size of a dashboard widget: full width, one row high.
+  ///
+  /// In en, this message translates to:
+  /// **'Strip'**
+  String get widgetSizeStrip;
+
+  /// Button that chooses the size of a widget in the tab editor.
+  ///
+  /// In en, this message translates to:
+  /// **'Size: {size}'**
+  String editTabSize(String size);
+
+  /// Tooltip of the size button of a widget in the tab editor.
+  ///
+  /// In en, this message translates to:
+  /// **'Size of {widget}'**
+  String editTabSizeOf(String widget);
 }
 
 class _AppLocalizationsDelegate

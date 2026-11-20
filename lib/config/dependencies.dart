@@ -172,7 +172,10 @@ Repositories createRepositories() {
     offline: offline,
     server: () => server.current,
   );
-  final dashboard = DashboardRepositoryRemote(api: DashboardApi(client));
+  final dashboard = DashboardRepositoryRemote(
+    api: DashboardApi(client),
+    store: store,
+  );
   final transit = TransitRepositoryRemote(api: TransitApi(client));
   final homeWidgets = HomeWidgetsRepository(
     dashboard: dashboard,
@@ -188,7 +191,7 @@ Repositories createRepositories() {
       store: store,
       deviceName: deviceName(),
       cache: cache,
-      onForget: [todos.clear, theme.clear, homeWidgets.clear],
+      onForget: [todos.clear, theme.clear, homeWidgets.clear, dashboard.clear],
     ),
     dashboard: dashboard,
     weather: WeatherRepositoryRemote(api: WeatherApi(client)),

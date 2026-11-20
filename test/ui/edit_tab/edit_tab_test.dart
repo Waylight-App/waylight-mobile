@@ -8,6 +8,7 @@ import 'package:material_ui/material_ui.dart';
 
 import 'package:waylight_mobile/data/services/api/api_client.dart';
 import 'package:waylight_mobile/data/services/api/dashboard_api.dart';
+import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/edit_tab/view_models/edit_tab_view_model.dart';
 import 'package:waylight_mobile/ui/edit_tab/widgets/edit_tab_screen.dart';
@@ -118,6 +119,25 @@ void main() {
       ]);
     });
 
+    test('sets and removes sizes and stores them', () async {
+      final viewModel = await loaded('t');
+      var notified = 0;
+      viewModel
+        ..addListener(() => notified++)
+        ..setSize(0, WidgetSize.small)
+        ..setSize(0, WidgetSize.small)
+        ..setSize(1, WidgetSize.large)
+        ..setSize(1, null);
+      await viewModel.save.execute();
+
+      expect(dashboards.saved['t']!.map((i) => i.size), [
+        WidgetSize.small,
+        null,
+        null,
+      ]);
+      expect(notified, 3, reason: 'setting the same size changes nothing');
+    });
+
     test('resets to the desktop grid', () async {
       final viewModel = await loaded('t');
       await viewModel.reset.execute();
@@ -175,5 +195,32 @@ void main() {
 
     expect(dashboards.saved['t']!.map((i) => i.widget.id), ['a', 'b', 'c']);
     expect(popped, isTrue);
+  });
+
+  testWidgets('chooses a size from the menu', (tester) async {
+    final dashboards = FakeDashboardRepository()
+      ..result = Result.ok(parseDashboard(json)!);
+    final viewModel = EditTabViewModel(
+      tabId: 't',
+      serverRepository: FakeServerRepository(current: testServer()),
+      dashboardRepository: dashboards,
+    );
+    await tester.pumpScreen(EditTabScreen(viewModel: viewModel));
+    await tester.pumpAndSettle();
+    expect(
+      find.text(l10nEn.editTabSize(l10nEn.widgetSizeFull)),
+      findsNWidgets(3),
+    );
+
+    await tester.tap(find.byKey(const ValueKey('editTab.size.b')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text(l10nEn.widgetSizeSmall).last);
+    await tester.pumpAndSettle();
+
+    expect(viewModel.items.first.size, WidgetSize.small);
+    expect(
+      find.text(l10nEn.editTabSize(l10nEn.widgetSizeSmall)),
+      findsOneWidget,
+    );
   });
 }

@@ -27,16 +27,25 @@ class DashboardApi {
 
   /// Stores the phone layout of [tabId]
   /// (`PUT /api/dashboard/tabs/{id}/mobile-layout`).
+  ///
+  /// Sizes are sent only [withSizes]: servers without them reject unknown
+  /// fields (Waylight-App/waylight#585). An empty size means "no size".
   Future<Result<void>> saveLayout(
     ServerAddress server,
     String tabId,
-    List<PhoneLayoutItem> layout,
-  ) async => switch (await _client.putJson(
+    List<PhoneLayoutItem> layout, {
+    bool withSizes = false,
+  }) async => switch (await _client.putJson(
     _layoutUri(server, tabId),
     body: {
       'items': [
         for (final item in layout)
-          {'id': item.widget.id, 'hidden': item.hidden, 'rows': item.rows},
+          {
+            'id': item.widget.id,
+            'hidden': item.hidden,
+            'rows': item.rows,
+            if (withSizes) 'size': item.size?.name ?? '',
+          },
       ],
     },
   )) {
@@ -120,6 +129,19 @@ Dashboard? parseDashboard(Object? json) {
         for (final item in items)
           if (item case {'id': final String id, 'rows': final int r}) id: r,
     };
+    // A server that knows sizes sends the field on every item (#208).
+    final mobile = switch (json['mobile']) {
+      final List<Object?> items => items,
+      _ => const <Object?>[],
+    };
+    final sizesOnServer = mobile.any(
+      (item) => item is Map<String, Object?> && item.containsKey('size'),
+    );
+    final sizes = <String, WidgetSize>{
+      for (final item in mobile)
+        if (item case {'id': final String id, 'size': final Object? name})
+          id: ?WidgetSize.parse(name),
+    };
     // Every widget once, in phone order, hidden ones included (#53).
     final order = [
       for (final p in phone)
@@ -147,9 +169,12 @@ Dashboard? parseDashboard(Object? json) {
               widget: byId[id]!,
               hidden: hidden.contains(id),
               rows: rows[id] ?? 1,
+              size: sizes[id],
             ),
         ],
         mine: json['mine'] != false,
+        sizes: sizes,
+        sizesOnServer: sizesOnServer,
       ),
     );
   }

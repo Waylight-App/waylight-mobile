@@ -85,6 +85,7 @@ it by purpose, not by size.
 | [`FormPage`](#formpage) | Centred, scrollable single-column pages | Connect, Home |
 | [`Wordmark`](#wordmark) | The name "Waylight" | Connect, app bar |
 | [`ViewModelHost`](#viewmodelhost) | Creating and disposing a screen's view model in a route | Router |
+| [`WidgetSizeScope`](#widgetsizescope) | Telling a widget's view the size of its dashboard tile | Dashboard grid |
 
 Planned with their issues (from the mockups): `StatusDot` and `FreshnessLabel`
 (#17, #19), `TabScaffold` for the dashboard (#16), `SettingsSection`
@@ -166,6 +167,25 @@ GoRoute(
   ),
 )
 ```
+
+### WidgetSizeScope
+
+Not visible: the dashboard grid puts every sized widget into a scope
+(#208). A widget's view reads it to show a compact form; outside the grid
+it is `null` and the view shows everything.
+
+```dart
+final size = WidgetSizeScope.maybeOf(context);
+final shown = switch (size) {
+  WidgetSize.small || WidgetSize.strip => todos.take(1),
+  WidgetSize.medium => todos.take(3),
+  WidgetSize.large || null => todos,
+};
+```
+
+Compact views follow the mockups in `docs/design/` (*Grid of sizes*,
+*Choose a size*) and must not overflow in any size their kind declares
+(#211).
 
 ## Adding a component
 

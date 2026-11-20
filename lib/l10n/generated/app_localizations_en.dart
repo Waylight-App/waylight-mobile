@@ -1547,4 +1547,32 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsPushBatteryAction => 'Allow';
+
+  @override
+  String get dashboardOpenWidget => 'open in full';
+
+  @override
+  String get widgetSizeFull => 'Full width';
+
+  @override
+  String get widgetSizeSmall => 'Small';
+
+  @override
+  String get widgetSizeMedium => 'Medium';
+
+  @override
+  String get widgetSizeLarge => 'Large';
+
+  @override
+  String get widgetSizeStrip => 'Strip';
+
+  @override
+  String editTabSize(String size) {
+    return 'Size: $size';
+  }
+
+  @override
+  String editTabSizeOf(String widget) {
+    return 'Size of $widget';
+  }
 }

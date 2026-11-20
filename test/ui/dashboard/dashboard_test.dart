@@ -8,8 +8,11 @@ import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/domain/models/home_snapshot.dart';
 import 'package:waylight_mobile/ui/core/link_opener.dart';
 import 'package:waylight_mobile/ui/core/widget_registry.dart';
+import 'package:waylight_mobile/ui/core/widget_size_scope.dart';
 import 'package:waylight_mobile/ui/dashboard/view_models/dashboard_view_model.dart';
 import 'package:waylight_mobile/ui/dashboard/widgets/dashboard_screen.dart';
+import 'package:waylight_mobile/ui/dashboard/widgets/widget_full_screen.dart';
+import 'package:waylight_mobile/ui/dashboard/widgets/widget_grid.dart';
 import 'package:waylight_mobile/ui/home_widgets/home_widget_texts.dart';
 import 'package:waylight_mobile/utils/result.dart';
 
@@ -204,6 +207,153 @@ void main() {
       expect(lefts, hasLength(columns));
     });
   }
+
+  group('grid of sizes (#208)', () {
+    Dashboard sized(Map<String, WidgetSize> sizes, {int count = 4}) =>
+        Dashboard(
+          tabs: [
+            DashboardTab(
+              id: 't',
+              name: 'Home',
+              widgets: [
+                for (var i = 0; i < count; i++)
+                  WidgetPlacement(id: 'w$i', kind: 'kind$i'),
+              ],
+            ).withSizes(sizes),
+          ],
+        );
+
+    setUp(() {
+      registry = WidgetRegistry({
+        for (var i = 0; i < 4; i++)
+          'kind$i': (context, widget) => Text('native ${widget.id}'),
+      });
+    });
+    tearDown(() => registry = const WidgetRegistry({}));
+
+    testWidgets('puts small widgets side by side', (tester) async {
+      dashboards.result = Result.ok(
+        sized({'w0': WidgetSize.small, 'w1': WidgetSize.small}),
+      );
+      await pump(tester);
+
+      final first = tester.getTopLeft(find.text('native w0'));
+      final second = tester.getTopLeft(find.text('native w1'));
+      expect(second.dy, first.dy);
+      expect(second.dx, greaterThan(first.dx));
+    });
+
+    testWidgets('keeps widgets without a size at full width', (tester) async {
+      tester.view.physicalSize = const Size(390, 900);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.reset);
+      dashboards.result = Result.ok(
+        sized({'w0': WidgetSize.small, 'w1': WidgetSize.small}),
+      );
+      await pump(tester);
+
+      final tile = tester.getTopLeft(find.text('native w0'));
+      final full = tester.getTopLeft(find.text('native w2'));
+      expect(full.dx, tile.dx);
+      expect(full.dy, greaterThan(tile.dy));
+      expect(find.byType(WidgetTile), findsNWidgets(2));
+    });
+
+    testWidgets('tells the view the size of its tile', (tester) async {
+      WidgetSize? seen;
+      registry = WidgetRegistry({
+        'kind0': (context, widget) {
+          seen = WidgetSizeScope.maybeOf(context);
+          return const Text('sized');
+        },
+      });
+      dashboards.result = Result.ok(sized({'w0': WidgetSize.medium}));
+      await pump(tester);
+
+      expect(seen, WidgetSize.medium);
+    });
+
+    testWidgets('fades out content that does not fit', (tester) async {
+      registry = WidgetRegistry({
+        'kind0': (context, widget) =>
+            Column(children: [for (var i = 0; i < 30; i++) Text('line $i')]),
+        'kind1': (context, widget) => const Text('short'),
+      });
+      dashboards.result = Result.ok(
+        sized({'w0': WidgetSize.small, 'w1': WidgetSize.small}),
+      );
+      await pump(tester);
+
+      expect(
+        find.descendant(
+          of: find.byKey(const ValueKey('grid.w0')),
+          matching: find.byType(ShaderMask),
+        ),
+        findsOneWidget,
+      );
+      expect(
+        find.descendant(
+          of: find.byKey(const ValueKey('grid.w1')),
+          matching: find.byType(ShaderMask),
+        ),
+        findsNothing,
+      );
+    });
+
+    testWidgets('opens a widget in full on tap and goes back', (tester) async {
+      dashboards.result = Result.ok(sized({'w0': WidgetSize.small}));
+      await pump(tester);
+
+      await tester.tap(find.byKey(const ValueKey('grid.w0')));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(WidgetFullScreen), findsOneWidget);
+      expect(find.widgetWithText(AppBar, 'Kind0'), findsOneWidget);
+      expect(
+        find.descendant(
+          of: find.byType(WidgetFullScreen),
+          matching: find.text('native w0'),
+        ),
+        findsOneWidget,
+      );
+
+      await tester.pageBack();
+      await tester.pumpAndSettle();
+      expect(find.byType(WidgetFullScreen), findsNothing);
+    });
+
+    testWidgets('uses eight columns on tablets', (tester) async {
+      tester.view.physicalSize = const Size(1200, 900);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.reset);
+      dashboards.result = Result.ok(
+        sized({
+          'w0': WidgetSize.medium,
+          'w1': WidgetSize.medium,
+          'w2': WidgetSize.small,
+        }),
+      );
+      await pump(tester);
+
+      final rows = {
+        for (var i = 0; i < 2; i++)
+          tester.getTopLeft(find.text('native w$i')).dy.round(),
+      };
+      expect(rows, hasLength(1), reason: 'two medium widgets in one row');
+    });
+
+    testWidgets('meets the accessibility guidelines', (tester) async {
+      final handle = tester.ensureSemantics();
+      dashboards.result = Result.ok(
+        sized({'w0': WidgetSize.small, 'w1': WidgetSize.strip}),
+      );
+      await pump(tester);
+
+      await expectLater(tester, meetsGuideline(androidTapTargetGuideline));
+      await expectLater(tester, meetsGuideline(labeledTapTargetGuideline));
+      handle.dispose();
+    });
+  });
 
   test('every load refreshes the home screen widgets', () async {
     final store = FakeHomeWidgetStore();

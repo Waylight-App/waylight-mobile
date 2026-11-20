@@ -118,4 +118,44 @@ void main() {
       ApiFailure.server,
     );
   });
+
+  group('widget sizes (#208)', () {
+    Map<String, Object?> tab(List<Map<String, Object?>> mobile) => {
+      'tabs': [
+        {
+          'id': 't',
+          'name': 'Home',
+          'widgets': [
+            {'id': 'a', 'kind': 'clock', 'x': 0, 'y': 0},
+            {'id': 'b', 'kind': 'notes', 'x': 0, 'y': 4},
+          ],
+          'mobile': mobile,
+        },
+      ],
+    };
+
+    test('reads sizes and knows the server has them', () {
+      final parsed = parseDashboard(
+        tab([
+          {'id': 'a', 'hidden': false, 'rows': 1, 'size': 'small'},
+          {'id': 'b', 'hidden': false, 'rows': 1, 'size': ''},
+        ]),
+      )!.tabs.single;
+
+      expect(parsed.sizesOnServer, isTrue);
+      expect(parsed.sizes, {'a': WidgetSize.small});
+      expect(parsed.layout.map((i) => i.size), [WidgetSize.small, null]);
+    });
+
+    test('knows when the server has no sizes', () {
+      final parsed = parseDashboard(
+        tab([
+          {'id': 'a', 'hidden': false, 'rows': 1},
+        ]),
+      )!.tabs.single;
+
+      expect(parsed.sizesOnServer, isFalse);
+      expect(parsed.sizes, isEmpty);
+    });
+  });
 }
