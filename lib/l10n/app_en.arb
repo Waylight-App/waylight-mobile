@@ -895,5 +895,21 @@
   "homeWidgetUpdated": "Updated {time}",
   "@homeWidgetUpdated": {"description": "Age of a home screen widget.", "placeholders": {"time": {"type": "String", "example": "10:42"}}},
   "summaryAsk": "Ask about it",
-  "@summaryAsk": {"description": "Field below an AI summary to ask a question."}
+  "@summaryAsk": {"description": "Field below an AI summary to ask a question."},
+  "grafanaAlertsTitle": "Grafana alerts",
+  "@grafanaAlertsTitle": {"description": "Grafana widgets (#165)."},
+  "grafanaAllQuiet": "No alert is firing.",
+  "@grafanaAllQuiet": {"description": "Grafana widgets (#165)."},
+  "grafanaFiring": "firing",
+  "@grafanaFiring": {"description": "Grafana widgets (#165)."},
+  "grafanaPending": "pending",
+  "@grafanaPending": {"description": "Grafana widgets (#165)."},
+  "grafanaAlertList": "Alert list",
+  "@grafanaAlertList": {"description": "Grafana widgets (#165)."},
+  "grafanaPanelTitle": "Grafana panel",
+  "@grafanaPanelTitle": {"description": "Grafana widgets (#165)."},
+  "grafanaChoosePanel": "Choose a dashboard and a panel in the web interface.",
+  "@grafanaChoosePanel": {"description": "Grafana widgets (#165)."},
+  "grafanaPanelAlt": "Grafana panel {title}",
+  "@grafanaPanelAlt": {"description": "Screen reader text of a panel image.", "placeholders": {"title": {"type": "String", "example": "CPU"}}}
 }

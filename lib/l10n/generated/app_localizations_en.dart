@@ -1513,4 +1513,31 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get summaryAsk => 'Ask about it';
+
+  @override
+  String get grafanaAlertsTitle => 'Grafana alerts';
+
+  @override
+  String get grafanaAllQuiet => 'No alert is firing.';
+
+  @override
+  String get grafanaFiring => 'firing';
+
+  @override
+  String get grafanaPending => 'pending';
+
+  @override
+  String get grafanaAlertList => 'Alert list';
+
+  @override
+  String get grafanaPanelTitle => 'Grafana panel';
+
+  @override
+  String get grafanaChoosePanel =>
+      'Choose a dashboard and a panel in the web interface.';
+
+  @override
+  String grafanaPanelAlt(String title) {
+    return 'Grafana panel $title';
+  }
 }

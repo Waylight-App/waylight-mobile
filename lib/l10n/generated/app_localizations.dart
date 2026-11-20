@@ -2785,6 +2785,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Ask about it'**
   String get summaryAsk;
+
+  /// Grafana widgets (#165).
+  ///
+  /// In en, this message translates to:
+  /// **'Grafana alerts'**
+  String get grafanaAlertsTitle;
+
+  /// Grafana widgets (#165).
+  ///
+  /// In en, this message translates to:
+  /// **'No alert is firing.'**
+  String get grafanaAllQuiet;
+
+  /// Grafana widgets (#165).
+  ///
+  /// In en, this message translates to:
+  /// **'firing'**
+  String get grafanaFiring;
+
+  /// Grafana widgets (#165).
+  ///
+  /// In en, this message translates to:
+  /// **'pending'**
+  String get grafanaPending;
+
+  /// Grafana widgets (#165).
+  ///
+  /// In en, this message translates to:
+  /// **'Alert list'**
+  String get grafanaAlertList;
+
+  /// Grafana widgets (#165).
+  ///
+  /// In en, this message translates to:
+  /// **'Grafana panel'**
+  String get grafanaPanelTitle;
+
+  /// Grafana widgets (#165).
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a dashboard and a panel in the web interface.'**
+  String get grafanaChoosePanel;
+
+  /// Screen reader text of a panel image.
+  ///
+  /// In en, this message translates to:
+  /// **'Grafana panel {title}'**
+  String grafanaPanelAlt(String title);
 }
 
 class _AppLocalizationsDelegate

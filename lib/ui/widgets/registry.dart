@@ -12,6 +12,7 @@ import 'package:waylight_mobile/ui/widgets/docker/docker_widget.dart';
 import 'package:waylight_mobile/ui/widgets/electricity/electricity_widget.dart';
 import 'package:waylight_mobile/ui/widgets/fritzbox/fritzbox_widget.dart';
 import 'package:waylight_mobile/ui/widgets/fuel/fuel_widget.dart';
+import 'package:waylight_mobile/ui/widgets/grafana/grafana_widgets.dart';
 import 'package:waylight_mobile/ui/widgets/habits/habits_widget.dart';
 import 'package:waylight_mobile/ui/widgets/holidays/holidays_widget.dart';
 import 'package:waylight_mobile/ui/widgets/lists/list_widgets.dart';
@@ -58,6 +59,8 @@ const nativeWidgets = WidgetRegistry({
   'fritzbox': FritzboxWidget.forPlacement,
   'fritzbox-calls': CallsWidget.forPlacement,
   'fuel': FuelWidget.forPlacement,
+  'grafana-alerts': GrafanaAlertsWidget.forPlacement,
+  'grafana-panel': GrafanaPanelWidget.forPlacement,
   'gamedeals': ListWidget.gameDeals,
   'habits': HabitsWidget.forPlacement,
   'holidays': HolidaysWidget.forPlacement,
