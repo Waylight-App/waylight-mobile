@@ -1542,6 +1542,5 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get connectPrivacyPush =>
-      'Your data goes to your server only. If you switch on push notifications, Google delivers them, end-to-end encrypted.';
+  String get connectPrivacyPush => 'Your Waylight. Your data. Your server.';
 }

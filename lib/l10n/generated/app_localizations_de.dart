@@ -1544,6 +1544,5 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
-  String get connectPrivacyPush =>
-      'Deine Daten gehen nur an deinen Server. Schaltest du Push-Nachrichten ein, stellt Google sie zu – Ende-zu-Ende-verschlüsselt.';
+  String get connectPrivacyPush => 'Dein Waylight. Deine Daten. Dein Server.';
 }

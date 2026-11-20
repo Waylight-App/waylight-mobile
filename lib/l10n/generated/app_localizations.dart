@@ -2834,10 +2834,10 @@ abstract class AppLocalizations {
   /// **'Grafana panel {title}'**
   String grafanaPanelAlt(String title);
 
-  /// Privacy note of the store flavour, which can receive push notifications through Google (#176).
+  /// Note on the connect screen of builds with push notifications through Google (#176); a claim, not a technical statement.
   ///
   /// In en, this message translates to:
-  /// **'Your data goes to your server only. If you switch on push notifications, Google delivers them, end-to-end encrypted.'**
+  /// **'Your Waylight. Your data. Your server.'**
   String get connectPrivacyPush;
 }
 
