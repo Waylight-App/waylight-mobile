@@ -3019,6 +3019,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'More'**
   String get editTabMore;
+
+  /// Settings entry.
+  ///
+  /// In en, this message translates to:
+  /// **'Create diagnostic report'**
+  String get diagnosticsCreate;
+
+  /// Under the diagnostics entry.
+  ///
+  /// In en, this message translates to:
+  /// **'For a bug report: app and server version, device and the last errors, without addresses or passwords.'**
+  String get diagnosticsHint;
+
+  /// Sheet title.
+  ///
+  /// In en, this message translates to:
+  /// **'Diagnostic report'**
+  String get diagnosticsTitle;
+
+  /// Text above the preview.
+  ///
+  /// In en, this message translates to:
+  /// **'This is everything the report contains. It only leaves the phone if you share it.'**
+  String get diagnosticsPreview;
+
+  /// Button that opens the share sheet.
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get diagnosticsShare;
 }
 
 class _AppLocalizationsDelegate

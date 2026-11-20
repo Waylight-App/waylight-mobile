@@ -1680,4 +1680,21 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get editTabMore => 'More';
+
+  @override
+  String get diagnosticsCreate => 'Create diagnostic report';
+
+  @override
+  String get diagnosticsHint =>
+      'For a bug report: app and server version, device and the last errors, without addresses or passwords.';
+
+  @override
+  String get diagnosticsTitle => 'Diagnostic report';
+
+  @override
+  String get diagnosticsPreview =>
+      'This is everything the report contains. It only leaves the phone if you share it.';
+
+  @override
+  String get diagnosticsShare => 'Share';
 }

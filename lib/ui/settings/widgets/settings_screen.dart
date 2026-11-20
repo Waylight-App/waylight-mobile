@@ -271,6 +271,16 @@ class SettingsScreen extends StatelessWidget {
                   _Line(label: l10n.settingsLicence, value: 'MIT'),
                   _LinkTile(label: l10n.settingsSource, url: sourceUrl),
                   _LinkTile(label: l10n.settingsPrivacy, url: privacyUrl),
+                  if (viewModel.diagnosticsAvailable)
+                    ListTile(
+                      key: const ValueKey('settings.diagnostics'),
+                      contentPadding: EdgeInsets.zero,
+                      minTileHeight: Dimens.tapTarget,
+                      title: Text(l10n.diagnosticsCreate),
+                      subtitle: Text(l10n.diagnosticsHint),
+                      trailing: const Icon(Icons.chevron_right),
+                      onTap: () => showDiagnosticsSheet(context, viewModel),
+                    ),
                   ListTile(
                     contentPadding: EdgeInsets.zero,
                     minTileHeight: Dimens.tapTarget,
@@ -369,3 +379,63 @@ String pushErrorText(AppLocalizations l10n, Exception error) => switch (error) {
   PushUnavailable() => l10n.settingsPushNotInBuild,
   _ => l10n.errorMessage(error),
 };
+
+/// Shows the diagnostic report before it is shared (#197): nothing leaves
+/// the device unless the person taps "Share".
+@visibleForTesting
+Future<void> showDiagnosticsSheet(
+  BuildContext context,
+  SettingsViewModel viewModel,
+) => showModalBottomSheet<void>(
+  context: context,
+  isScrollControlled: true,
+  builder: (context) => FractionallySizedBox(
+    heightFactor: 0.85,
+    child: FutureBuilder(
+      future: viewModel.diagnosticReport(),
+      builder: (context, snapshot) {
+        final l10n = context.l10n;
+        final report = snapshot.data;
+        if (report == null) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(Dimens.gap),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  l10n.diagnosticsTitle,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                const SizedBox(height: Dimens.gapSmall),
+                Text(
+                  l10n.diagnosticsPreview,
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+                const SizedBox(height: Dimens.gapSmall),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: SelectableText(
+                      report.text,
+                      style: Theme.of(context).textTheme.bodySmall
+                          ?.copyWith(fontFamily: 'monospace'),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: Dimens.gapSmall),
+                FilledButton.icon(
+                  key: const ValueKey('diagnostics.share'),
+                  icon: const Icon(Icons.share),
+                  label: Text(l10n.diagnosticsShare),
+                  onPressed: () => viewModel.shareDiagnostics(report).ignore(),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    ),
+  ),
+);
