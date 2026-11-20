@@ -92,12 +92,11 @@ push notifications either. iOS has no flavours.
 
 ### What CI builds
 
-Every pull request runs `make ci` and builds the Android app. The iOS app
-is built on a macOS runner only when a pull request changes files under
-`ios/`, or when the *iOS* workflow is started by hand. macOS minutes count
-ten times against the monthly Actions quota of the repository, so Dart-only
-changes rely on the Android build. If you change native iOS code, build it
-locally with `flutter build ios --debug --no-codesign` as well.
+Every pull request runs `make ci` and builds the Android app. GitHub
+Actions never builds the iOS app (#171): the maintainer builds it locally on
+a Mac and confirms before each release that it builds. If you change native
+iOS code, build it locally with `flutter build ios --debug --no-codesign` and
+say in the pull request that you did.
 
 ## Editor
 

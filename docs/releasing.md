@@ -13,8 +13,12 @@ the version or the changelog by hand.
    `CHANGELOG.md`.
 2. When the maintainer merges it, release-please tags `vx.y.z` and creates
    the GitHub release with the changelog.
-3. The release workflow then builds the Android APK and attaches it to the
-   release, and checks that the iOS app builds.
+3. The release workflow then builds the Android APKs and attaches them to
+   the release.
+
+Before merging the release pull request, the maintainer builds the iOS app
+locally on a Mac (`flutter build ios --release --no-codesign`) and confirms
+in the pull request that it builds. GitHub Actions does not build iOS (#171).
 
 Until 1.0.0, `feat` bumps the minor version and `fix` the patch version;
 breaking changes bump the minor version too.
@@ -43,8 +47,8 @@ The plan:
   `ANDROID_KEYSTORE_PASSWORD`, `ANDROID_KEY_ALIAS`, `ANDROID_KEY_PASSWORD`),
   read by `android/app/build.gradle.kts`; Play App Signing; upload of the AAB
   to the internal track.
-- **iOS:** App Store Connect API key and certificates in the secrets,
-  Xcode cloud or `fastlane match`, upload to TestFlight.
+- **iOS:** built, signed and uploaded to TestFlight locally on the
+  maintainer's Mac; certificates stay on that Mac.
 - **F-Droid:** possible because the app has no proprietary dependencies;
   to be decided.
 

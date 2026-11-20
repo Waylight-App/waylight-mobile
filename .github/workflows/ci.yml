@@ -40,8 +40,8 @@ jobs:
           path: coverage/lcov.info
           retention-days: 14
 
-  # The app must still build for Android. iOS builds need macOS runners,
-  # which cost ten times as much; they run in the release workflow.
+  # The app must still build for Android. The iOS app is built locally on
+  # the maintainer's Mac (#171); no workflow runs on macOS.
   android:
     name: Build Android
     runs-on: ubuntu-latest
