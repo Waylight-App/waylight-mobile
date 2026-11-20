@@ -1,11 +1,13 @@
 import 'dart:async';
 
 import 'package:material_ui/material_ui.dart';
-
+import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/ui/core/error_messages.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/refresh.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
+import 'package:waylight_mobile/ui/core/widget_size_scope.dart';
+import 'package:waylight_mobile/ui/core/widgets/compact_card.dart';
 import 'package:waylight_mobile/ui/core/widgets/section_card.dart';
 import 'package:waylight_mobile/utils/command.dart';
 import 'package:waylight_mobile/utils/result.dart';
@@ -28,6 +30,7 @@ class WidgetFrame<T> extends StatefulWidget {
     required this.load,
     required this.builder,
     this.errorText,
+    this.compact,
     this.interval = const Duration(minutes: 5),
     super.key,
   });
@@ -44,6 +47,10 @@ class WidgetFrame<T> extends StatefulWidget {
   /// The message for errors the widget explains itself, e.g. a missing
   /// setting; `null` falls back to the common error texts.
   final String? Function(Exception error)? errorText;
+
+  /// Builds the compact form for a small or strip tile of the dashboard
+  /// grid (#211); without it such tiles say that a tap shows everything.
+  final Widget Function(BuildContext context, T data, WidgetSize size)? compact;
 
   /// How often the data is reloaded while shown.
   final Duration interval;
@@ -119,6 +126,29 @@ class _WidgetFrameState<T> extends State<WidgetFrame<T>> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final result = widget.load.result;
+    final size = WidgetSizeScope.maybeOf(context);
+    if (size != null && isCompact(size)) {
+      return CompactCard(
+        title: widget.title,
+        size: size,
+        status: _status(l10n),
+        child: switch (result) {
+          _ when _hasData =>
+            widget.compact?.call(context, _data as T, size) ??
+                const TapToOpenHint(),
+          Error(:final error) => Text(
+            widget.errorText?.call(error) ?? l10n.errorMessage(error),
+            maxLines: 3,
+            overflow: TextOverflow.ellipsis,
+            style: Theme.of(context).textTheme.bodySmall,
+          ),
+          _ => const SizedBox.square(
+            dimension: Dimens.inlineProgress,
+            child: CircularProgressIndicator(strokeWidth: 2),
+          ),
+        },
+      );
+    }
     return SectionCard(
       title: widget.title,
       trailing: _status(l10n),

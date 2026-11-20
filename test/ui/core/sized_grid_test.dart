@@ -2,7 +2,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
 import 'package:waylight_mobile/domain/models/dashboard.dart';
-import 'package:waylight_mobile/ui/core/transitions.dart';
 import 'package:waylight_mobile/ui/core/widgets/sized_grid.dart';
 
 import '../../testing/pump_app.dart';
@@ -74,24 +73,5 @@ void main() {
       ),
     );
     expect((phone, tablet), (4, 8));
-  });
-
-  testWidgets('fades pages in', (tester) async {
-    final controller = AnimationController(vsync: const TestVSync())
-      ..value = 0.25;
-    addTearDown(controller.dispose);
-    await tester.pumpScreen(
-      Builder(
-        builder: (context) =>
-            fadeTransition(context, controller, controller, const Text('x')),
-      ),
-    );
-    expect(
-      tester
-          .widget<FadeTransition>(find.byType(FadeTransition).last)
-          .opacity
-          .value,
-      0.25,
-    );
   });
 }

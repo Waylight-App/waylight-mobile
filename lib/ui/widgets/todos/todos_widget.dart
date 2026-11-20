@@ -40,6 +40,27 @@ class TodosWidget extends StatelessWidget {
       builder: (context, viewModel) => WidgetFrame(
         title: widget.title.isNotEmpty ? widget.title : context.l10n.todosTitle,
         load: viewModel.load,
+        compact: (context, _, size) => ListenableBuilder(
+          listenable: viewModel,
+          builder: (context, _) {
+            final l10n = context.l10n;
+            final open = [
+              for (final t in viewModel.todos)
+                if (!t.done) t,
+            ];
+            if (open.isEmpty) return Text(l10n.todosEmpty);
+            final count = l10n.todosCompactOpen(open.length);
+            final next = l10n.todosCompactNext(open.first.title);
+            if (size == WidgetSize.strip) return Text('$count · $next');
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(count, style: Theme.of(context).textTheme.titleLarge),
+                Text(next, maxLines: 3, overflow: TextOverflow.ellipsis),
+              ],
+            );
+          },
+        ),
         builder: (context, _) => _TodoList(viewModel: viewModel),
       ),
     );

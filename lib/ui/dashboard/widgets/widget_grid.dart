@@ -103,11 +103,16 @@ class WidgetTile extends StatefulWidget {
   final WidgetBuilder builder;
 
   @override
-  State<WidgetTile> createState() => _WidgetTileState();
+  State<WidgetTile> createState() => WidgetTileState();
 }
 
-class _WidgetTileState extends State<WidgetTile> {
+/// The state of a [WidgetTile]: whether its view is taller than the tile.
+class WidgetTileState extends State<WidgetTile> {
   bool _overflows = false;
+
+  /// Whether the view is taller than the tile and fades out at the bottom.
+  @visibleForTesting
+  bool get fades => _overflows;
 
   // The view is laid out at its natural height in a scroll view that the
   // user cannot scroll; its metrics tell whether it is taller than the tile.
@@ -119,35 +124,39 @@ class _WidgetTileState extends State<WidgetTile> {
 
   @override
   Widget build(BuildContext context) {
-    Widget content = NotificationListener<ScrollMetricsNotification>(
-      onNotification: _onMetrics,
-      child: SingleChildScrollView(
-        physics: const NeverScrollableScrollPhysics(),
-        primary: false,
-        child: ConstrainedBox(
-          // Cards fill the tile, so short content does not leave a gap.
-          constraints: BoxConstraints(minHeight: widget.height),
-          child: WidgetSizeScope(
-            size: widget.size,
-            child: Builder(builder: widget.builder),
+    // Only the alpha of the mask matters (dstIn).
+    final opaque = Theme.of(context).colorScheme.onSurface;
+    // The mask is always part of the tree and only its gradient changes:
+    // wrapping the view only while it overflows would rebuild the view,
+    // which then reloads, gets shorter, unwraps and flickers in a loop.
+    final content = ShaderMask(
+      blendMode: BlendMode.dstIn,
+      shaderCallback: (bounds) => LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: [
+          opaque,
+          opaque,
+          if (_overflows) opaque.withValues(alpha: 0) else opaque,
+        ],
+        stops: const [0, 0.8, 1],
+      ).createShader(bounds),
+      child: NotificationListener<ScrollMetricsNotification>(
+        onNotification: _onMetrics,
+        child: SingleChildScrollView(
+          physics: const NeverScrollableScrollPhysics(),
+          primary: false,
+          child: ConstrainedBox(
+            // Cards fill the tile, so short content does not leave a gap.
+            constraints: BoxConstraints(minHeight: widget.height),
+            child: WidgetSizeScope(
+              size: widget.size,
+              child: Builder(builder: widget.builder),
+            ),
           ),
         ),
       ),
     );
-    if (_overflows) {
-      // Only the alpha of the mask matters (dstIn).
-      final opaque = Theme.of(context).colorScheme.onSurface;
-      content = ShaderMask(
-        blendMode: BlendMode.dstIn,
-        shaderCallback: (bounds) => LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [opaque, opaque, opaque.withValues(alpha: 0)],
-          stops: const [0, 0.8, 1],
-        ).createShader(bounds),
-        child: content,
-      );
-    }
     return Semantics(
       container: true,
       label: widget.title,

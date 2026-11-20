@@ -35,6 +35,65 @@ class CalendarWidget extends StatelessWidget {
     placement: widget,
     defaultTitle: context.l10n.calendarTitle,
     query: calendarQuery,
+    compact: (context, events, size) {
+      final l10n = context.l10n;
+      final at = (now ?? DateTime.now)();
+      final upcoming = events.where((e) => e.end.isAfter(at)).toList()
+        ..sort((a, b) => a.start.compareTo(b.start));
+      if (upcoming.isEmpty) {
+        return Text(
+          l10n.calendarEmpty,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+        );
+      }
+      final first = upcoming.first;
+      final time = DateFormat.Hm(
+        Localizations.localeOf(context).toLanguageTag(),
+      );
+      final when = first.allDay
+          ? l10n.calendarAllDay
+          : time.format(first.start);
+      if (size == WidgetSize.strip) return Text('$when · ${first.summary}');
+      final today = DateTime(at.year, at.month, at.day);
+      final day = DateTime(
+        first.start.year,
+        first.start.month,
+        first.start.day,
+      );
+      final days = day.difference(today).inDays;
+      final theme = Theme.of(context);
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            days <= 1 && days >= 0
+                ? daysText(context, days)
+                : shortDate(context, day),
+            style: theme.textTheme.labelLarge?.copyWith(
+              color: theme.colorScheme.primary,
+            ),
+          ),
+          Text(
+            first.summary,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: theme.textTheme.titleSmall,
+          ),
+          Text(
+            first.allDay
+                ? l10n.calendarAllDay
+                : '${time.format(first.start)}–${time.format(first.end)}',
+            style: theme.textTheme.bodySmall,
+          ),
+          if (upcoming.length > 1)
+            Text(
+              l10n.calendarMore(upcoming.length - 1),
+              style: theme.textTheme.bodySmall,
+            ),
+        ],
+      );
+    },
     builder: (context, events) {
       final l10n = context.l10n;
       final at = (now ?? DateTime.now)();

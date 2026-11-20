@@ -203,11 +203,25 @@ widgets sit on a grid of square cells, 4 wide on phones and 8 on tablets:
   own taps.
 - A view that has a compact form asks `WidgetSizeScope.maybeOf(context)`
   and shows what fits; without a scope (list, full view) it shows
-  everything (#211).
-- The edit mode (#209) shows the same grid: holding a widget on the
-  dashboard opens it, tiles wiggle (not with reduced animations), widgets
-  move by dragging or with *move earlier / later* in their sheet, change
-  size, hide and show again; *Done* saves the phone layout in one request.
+  everything (#211). Small and strip tiles use `CompactCard`: a view built
+  on `WidgetFrame` passes `compact:` and gets the card, its title and the
+  loading and error states for free; a view without a compact form shows
+  *tap to see everything* there instead of overflowing.
+- The tree of a tile does not change when its content starts or stops to
+  overflow (the fade is always there, only its gradient changes), so the
+  view and its view model are never created again — otherwise a view that
+  grows while loading would load in a loop and flicker.
+- The edit mode (#209) is a mode of the dashboard, not a route: holding a
+  widget or the *Arrange tab* button creates an `ArrangeViewModel` in
+  `DashboardViewModel.arranging`, and the dashboard shows `ArrangeView` on
+  the same grid. Tiles wiggle (not with reduced animations), widgets move
+  by dragging or with *move earlier / later* in their sheet, change size,
+  hide and show again; *Done* saves the phone layout in one request and
+  reloads, back asks before discarding changes.
+- *Add widget* in the edit mode opens the gallery (#210): the kinds of
+  `GET /api/modules`, searchable. Adding stores the widget on the server
+  right away, below the desktop grid (half its width, so it fits on every
+  desktop), and it joins the phone layout as a small tile.
 - Sizes are part of the phone layout of a tab. The dashboard repository
   sends them to servers that know them (Waylight-App/waylight#585) and
   keeps them on the device for the others.

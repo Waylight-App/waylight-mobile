@@ -175,7 +175,6 @@
   "editTabHidden": "Auf Handys ausgeblendet",
   "editTabUp": "Nach vorne",
   "editTabDown": "Nach hinten",
-  "editTabNotEditable": "Dieser Tab ist mit dir geteilt und kann hier nicht geändert werden.",
   "settingsSwitchServer": "Zu diesem Server wechseln",
   "settingsRemoveServer": "Server entfernen",
   "settingsAddServer": "Weiteren Server hinzufügen",
@@ -473,5 +472,19 @@
   "editTabShow": "{widget} wieder anzeigen",
   "editTabDiscardTitle": "Änderungen verwerfen?",
   "editTabDiscard": "Verwerfen",
-  "editTabKeep": "Weiter bearbeiten"
+  "editTabKeep": "Weiter bearbeiten",
+  "dashboardTapToOpen": "Antippen, um alles zu sehen",
+  "todosCompactOpen": "{count, plural, =1{1 offen} other{{count} offen}}",
+  "todosCompactNext": "als Nächstes: {title}",
+  "transitThen": "danach {times}",
+  "calendarMore": "{count, plural, =1{+1 weiterer} other{+{count} weitere}}",
+  "statusAllUp": "{count, plural, =1{1 Dienst läuft} other{{count} Dienste laufen}}",
+  "statusSomeDown": "{count, plural, =1{1 Dienst ausgefallen} other{{count} Dienste ausgefallen}}",
+  "galleryOpen": "Widget hinzufügen",
+  "galleryTitle": "Zu „{tab}“ hinzufügen",
+  "gallerySearch": "Widgets suchen",
+  "galleryAdd": "Hinzufügen",
+  "galleryAdded": "Hinzugefügt",
+  "galleryEmpty": "Keine passenden Widgets.",
+  "editTabMore": "Mehr"
 }

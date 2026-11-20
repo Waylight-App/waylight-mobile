@@ -33,6 +33,30 @@ class FakeDashboardRepository implements DashboardRepository {
     return const Result.ok(null);
   }
 
+  /// What [widgetKinds] returns.
+  Result<List<String>> kinds = const Result.ok(['clock', 'todos', 'weather']);
+
+  /// The widgets added with [addWidget], as `(tab, kind, row)`.
+  final List<(String, String, int)> added = [];
+
+  /// When set, [addWidget] fails with it.
+  Exception? addError;
+
+  @override
+  Future<Result<List<String>>> widgetKinds(ServerAddress server) async => kinds;
+
+  @override
+  Future<Result<WidgetPlacement>> addWidget(
+    ServerAddress server,
+    String tabId,
+    String kind, {
+    required int desktopRows,
+  }) async {
+    if (addError case final error?) return Result.error(error);
+    added.add((tabId, kind, desktopRows));
+    return Result.ok(WidgetPlacement(id: 'new-$kind', kind: kind));
+  }
+
   @override
   Future<Result<void>> resetLayout(ServerAddress server, String tabId) async {
     reset.add(tabId);

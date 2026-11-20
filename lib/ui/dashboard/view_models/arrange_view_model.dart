@@ -6,37 +6,37 @@ import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/utils/command.dart';
 import 'package:waylight_mobile/utils/result.dart';
 
-/// The tab could not be found, or it is a team tab the account may not
-/// change.
-final class TabNotEditable implements Exception {
-  /// Creates the exception.
-  const TabNotEditable();
-}
-
-/// The edit mode of a tab (#209): order, hidden widgets and sizes (#208)
-/// of its phone layout, saved together; or a reset to the desktop grid.
-class EditTabViewModel extends ChangeNotifier {
-  /// Creates the view model for [tabId] and loads the tab.
-  EditTabViewModel({
-    required this.tabId,
+/// The edit mode of one tab, right on the dashboard (#209): order, hidden
+/// widgets and sizes (#208) of its phone layout, saved together; adding
+/// widgets (#210); or a reset to the desktop grid.
+class ArrangeViewModel extends ChangeNotifier {
+  /// Creates the edit mode for [tab], as the dashboard shows it.
+  ArrangeViewModel({
+    required DashboardTab tab,
     required this._serverRepository,
     required this._dashboardRepository,
-  }) {
-    load = Command0(_load)..execute().ignore();
+  }) : tabId = tab.id,
+       name = tab.name,
+       _items = List.unmodifiable(tab.layout),
+       _desktopRows = tab.desktopRows {
     save = Command0(_save);
     reset = Command0(_reset);
+    kinds = Command0(_kinds);
+    add = Command1(_add);
   }
 
-  /// The tab being edited.
+  /// The tab being arranged.
   final String tabId;
+
+  /// The name of the tab.
+  final String name;
+
   final ServerRepository _serverRepository;
   final DashboardRepository _dashboardRepository;
 
-  List<PhoneLayoutItem> _items = const [];
-  String _name = '';
-
-  /// Loads the tab.
-  late final Command0<void> load;
+  List<PhoneLayoutItem> _items;
+  int _desktopRows;
+  bool _changed = false;
 
   /// Stores the layout.
   late final Command0<void> save;
@@ -44,35 +44,17 @@ class EditTabViewModel extends ChangeNotifier {
   /// Lets the layout follow the desktop grid again.
   late final Command0<void> reset;
 
+  /// Loads the widget kinds the server offers, for the gallery.
+  late final Command0<List<String>> kinds;
+
+  /// Adds a widget of the given kind to the tab.
+  late final Command1<void, String> add;
+
   /// The widgets in their phone order, hidden ones included.
   List<PhoneLayoutItem> get items => _items;
 
-  /// The name of the tab.
-  String get name => _name;
-
-  Future<Result<void>> _load() async {
-    final server = _serverRepository.current;
-    if (server == null) return const Result.error(NotConnectedException());
-    final result = await _dashboardRepository.dashboard(server);
-    switch (result) {
-      case Ok(:final value):
-        final tab = value.tabs
-            .where((t) => t.id == tabId && t.mine)
-            .firstOrNull;
-        if (tab == null) return const Result.error(TabNotEditable());
-        _items = List.unmodifiable(tab.layout);
-        _name = tab.name;
-        _changed = false;
-        notifyListeners();
-        return const Result.ok(null);
-      case Error(:final error):
-        return Result.error(error);
-    }
-  }
-
   /// Whether the layout differs from the one on the server.
   bool get changed => _changed;
-  bool _changed = false;
 
   /// The widgets shown on phones, in their order.
   List<PhoneLayoutItem> get visible => [
@@ -151,14 +133,52 @@ class EditTabViewModel extends ChangeNotifier {
   Future<Result<void>> _reset() async {
     final server = _serverRepository.current;
     if (server == null) return const Result.error(NotConnectedException());
-    return _dashboardRepository.resetLayout(server, tabId);
+    final result = await _dashboardRepository.resetLayout(server, tabId);
+    if (result is Ok<void>) _changed = false;
+    return result;
+  }
+
+  Future<Result<List<String>>> _kinds() async {
+    final server = _serverRepository.current;
+    if (server == null) return const Result.error(NotConnectedException());
+    final result = await _dashboardRepository.widgetKinds(server);
+    return switch (result) {
+      Ok(:final value) => Result.ok([...value]..sort()),
+      Error(:final error) => Result.error(error),
+    };
+  }
+
+  /// Adds the widget right away: the server stores it in the desktop grid
+  /// and the phone layout. Here it joins the end of the layout, as a small
+  /// tile, so the user sees it and can still arrange it before *Done*.
+  Future<Result<void>> _add(String kind) async {
+    final server = _serverRepository.current;
+    if (server == null) return const Result.error(NotConnectedException());
+    final result = await _dashboardRepository.addWidget(
+      server,
+      tabId,
+      kind,
+      desktopRows: _desktopRows,
+    );
+    switch (result) {
+      case Ok(:final value):
+        _desktopRows += addedWidgetRows;
+        _update([
+          ..._items,
+          PhoneLayoutItem(widget: value, size: WidgetSize.small),
+        ]);
+        return const Result.ok(null);
+      case Error(:final error):
+        return Result.error(error);
+    }
   }
 
   @override
   void dispose() {
-    load.dispose();
     save.dispose();
     reset.dispose();
+    kinds.dispose();
+    add.dispose();
     super.dispose();
   }
 }
