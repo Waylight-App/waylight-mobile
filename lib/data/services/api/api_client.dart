@@ -187,6 +187,31 @@ class ApiClient {
     }
   }
 
+  /// Sends a POST request with a JSON [body] and returns the answer as
+  /// text, for endpoints that answer in plain text (the AI's answer).
+  Future<Result<String>> postText(Uri uri, {Object? body}) async {
+    final result = await _transport(
+      'POST',
+      uri,
+      headers: {
+        HttpHeaders.contentTypeHeader: 'application/json',
+        HttpHeaders.acceptHeader: 'text/plain',
+      },
+      body: jsonEncode(body),
+    );
+    switch (result) {
+      case Error(:final error):
+        return Result.error(error);
+      case Ok(value: final response):
+        final text = utf8.decode(response.bodyBytes, allowMalformed: true);
+        if (response.statusCode >= 200 && response.statusCode < 300) {
+          return Result.ok(text.trim());
+        }
+        if (response.statusCode == 401) _credentials.rejected(uri);
+        return Result.error(_toException(response.statusCode, _decode(text)));
+    }
+  }
+
   /// Sends a GET request and returns the raw body, such as an image.
   Future<Result<Uint8List>> getBytes(Uri uri) async {
     final result = await _transport(

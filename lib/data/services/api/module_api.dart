@@ -47,6 +47,13 @@ class ModuleApi {
     Object? body,
   }) => _client.postJson(server.resolve(path), body: body);
 
+  /// Sends `POST path` with a JSON [body] and reads a plain-text answer.
+  Future<Result<String>> postText(
+    ServerAddress server,
+    String path, {
+    Object? body,
+  }) => _client.postText(server.resolve(path), body: body);
+
   /// Sends `PUT path` with a JSON [body].
   Future<Result<Object?>> put(
     ServerAddress server,

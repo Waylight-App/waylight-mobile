@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 
 import 'package:waylight_mobile/data/repositories/actions/rss_repository.dart';
 import 'package:waylight_mobile/data/repositories/actions/smarthome_repository.dart';
+import 'package:waylight_mobile/data/repositories/actions/summary_repository.dart';
 import 'package:waylight_mobile/data/repositories/server/server_repository.dart';
 import 'package:waylight_mobile/data/repositories/widget_data/queries/home_server.dart';
 import 'package:waylight_mobile/data/repositories/widget_data/widget_data_repository.dart';
@@ -35,6 +36,7 @@ void main() {
       jsonDecode(File('test/fixtures/${name}_demo.json').readAsStringSync());
 
   final servers = FakeServerRepository(current: testServer());
+  final summaries = FakeSummaryRepository()..configured = true;
 
   Future<void> pump(
     WidgetTester tester,
@@ -45,6 +47,7 @@ void main() {
       MultiProvider(
         providers: [
           ChangeNotifierProvider<ServerRepository>.value(value: servers),
+          Provider<SummaryRepository>.value(value: summaries),
           ...extra,
         ],
         child: LinkOpenerScope(opener: FakeLinkOpener(), child: screen),
@@ -114,5 +117,18 @@ void main() {
     ]);
     expect(find.text('sensor'), findsOneWidget);
     expect(find.text('Balcony solar'), findsOneWidget);
+  });
+
+  testWidgets('a long press on an article summarises it', (tester) async {
+    final rss = FakeRssRepository()
+      ..articles = parseFeedArticles(fixture('rss_items'))!
+      ..feedList = parseFeeds(fixture('rss_feeds'))!;
+    final vm = RssReaderViewModel(serverRepository: servers, rss: rss);
+    addTearDown(vm.dispose);
+    await pump(tester, RssScreen(viewModel: vm), []);
+    await tester.longPress(find.byType(ListTile).first);
+    await tester.pumpAndSettle();
+    expect(find.text('In short: keep three copies.'), findsOneWidget);
+    expect(summaries.calls.last, startsWith('summarise:http'));
   });
 }

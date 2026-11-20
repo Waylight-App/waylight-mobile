@@ -365,4 +365,17 @@ class FakeSummaryRepository with _Calls implements SummaryRepository {
     }
     return const Result.ok('In short: keep three copies.');
   }
+
+  @override
+  Future<Result<String>> ask(
+    ServerAddress server, {
+    required String question,
+    required String context,
+    required String language,
+  }) async {
+    if (_record('ask:$question') case Error(:final error)) {
+      return Result.error(error);
+    }
+    return const Result.ok('Once a week.');
+  }
 }

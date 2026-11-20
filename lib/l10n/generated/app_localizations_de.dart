@@ -1509,4 +1509,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String homeWidgetUpdated(String time) {
     return 'Stand $time';
   }
+
+  @override
+  String get summaryAsk => 'Frage dazu stellen';
 }
