@@ -13,10 +13,13 @@ import 'package:waylight_mobile/ui/core/widgets/message_banner.dart';
 import 'package:waylight_mobile/ui/core/widgets/sized_grid.dart';
 import 'package:waylight_mobile/ui/core/widgets/wordmark.dart';
 import 'package:waylight_mobile/ui/core/window_size.dart';
+import 'package:waylight_mobile/ui/dashboard/view_models/arrange_view_model.dart';
 import 'package:waylight_mobile/ui/dashboard/view_models/dashboard_view_model.dart';
+import 'package:waylight_mobile/ui/dashboard/widgets/arrange_view.dart';
 import 'package:waylight_mobile/ui/dashboard/widgets/widget_card.dart';
 import 'package:waylight_mobile/ui/dashboard/widgets/widget_full_screen.dart';
 import 'package:waylight_mobile/ui/dashboard/widgets/widget_grid.dart';
+import 'package:waylight_mobile/utils/command.dart';
 import 'package:waylight_mobile/utils/result.dart';
 
 /// The tabs of the dashboard, one page per tab (docs/design/screens/
@@ -35,19 +38,17 @@ class DashboardScreen extends StatelessWidget {
   /// The native views by widget kind; other kinds get a [WidgetCard].
   final WidgetRegistry registry;
 
-  /// Opens the edit mode of [tab] (#209) and reloads after saving.
-  Future<void> _arrange(BuildContext context, DashboardTab tab) async {
-    final saved = await context.push<bool>(
-      Uri(path: Routes.editTab, queryParameters: {'tab': tab.id}).toString(),
-    );
-    if (saved ?? false) viewModel.load.execute().ignore();
+  /// Switches [tab] into the edit mode (#209), right on the dashboard.
+  void _arrange(BuildContext context, DashboardTab tab) {
+    Feedback.forLongPress(context).ignore();
+    viewModel.arrange(tab);
   }
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     return ListenableBuilder(
-      listenable: viewModel.load,
+      listenable: Listenable.merge([viewModel, viewModel.load]),
       builder: (context, _) {
         final dashboard = switch (viewModel.load.result) {
           Ok(:final value) => value,
@@ -84,6 +85,7 @@ class DashboardScreen extends StatelessWidget {
             ],
           ),
         };
+        final arranging = viewModel.arranging;
         // The key makes a reloaded dashboard with other tabs start fresh.
         return DefaultTabController(
           key: ValueKey(tabs.map((t) => t.id).join()),
@@ -91,93 +93,100 @@ class DashboardScreen extends StatelessWidget {
           initialIndex: dashboard == null
               ? 0
               : viewModel.initialIndexIn(dashboard),
-          child: Scaffold(
-            appBar: AppBar(
-              title: const Wordmark(),
-              actions: [
-                if (tabs.isNotEmpty)
-                  Builder(
-                    builder: (context) {
-                      final controller = DefaultTabController.of(context);
-                      return ListenableBuilder(
-                        listenable: controller,
-                        builder: (context, _) {
-                          final tab = tabs[controller.index];
-                          if (!tab.mine) return const SizedBox.shrink();
-                          return IconButton(
-                            key: const ValueKey('dashboard.edit'),
-                            tooltip: l10n.editTabTitle,
-                            icon: const Icon(
-                              Icons.dashboard_customize_outlined,
-                            ),
-                            onPressed: () => _arrange(context, tab),
-                          );
-                        },
-                      );
-                    },
-                  ),
-                IconButton(
-                  key: const ValueKey('dashboard.search'),
-                  tooltip: l10n.searchHint,
-                  icon: const Icon(Icons.search),
-                  onPressed: () => context.push(Routes.search),
-                ),
-                IconButton(
-                  key: const ValueKey('dashboard.settings'),
-                  tooltip: l10n.settingsTitle,
-                  icon: const Icon(Icons.settings_outlined),
-                  onPressed: () => context.push(Routes.settings),
-                ),
-              ],
-              bottom: tabs.length < 2
-                  ? null
-                  : TabBar(
-                      isScrollable: true,
-                      tabAlignment: TabAlignment.start,
-                      tabs: [for (final tab in tabs) Tab(text: tab.name)],
-                    ),
-            ),
-            body: ListenableBuilder(
-              listenable: viewModel,
-              builder: (context, _) => Column(
-                children: [
-                  if (viewModel.offlineSince case final since?)
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(
-                        Dimens.gap,
-                        Dimens.gapSmall,
-                        Dimens.gap,
-                        0,
-                      ),
-                      child: MessageBanner(
-                        key: const ValueKey('dashboard.offline'),
-                        kind: MessageKind.warning,
-                        message: l10n.dashboardOffline(
-                          DateFormat.Hm(
-                            Localizations.localeOf(context).toLanguageTag(),
-                          ).format(since.toLocal()),
+          child: arranging != null
+              ? _ArrangeScaffold(
+                  viewModel: viewModel,
+                  arranging: arranging,
+                  registry: registry,
+                )
+              : Scaffold(
+                  appBar: AppBar(
+                    title: const Wordmark(),
+                    actions: [
+                      if (tabs.isNotEmpty)
+                        Builder(
+                          builder: (context) {
+                            final controller = DefaultTabController.of(context);
+                            return ListenableBuilder(
+                              listenable: controller,
+                              builder: (context, _) {
+                                final tab = tabs[controller.index];
+                                if (!tab.mine) return const SizedBox.shrink();
+                                return IconButton(
+                                  key: const ValueKey('dashboard.edit'),
+                                  tooltip: l10n.editTabTitle,
+                                  icon: const Icon(
+                                    Icons.dashboard_customize_outlined,
+                                  ),
+                                  onPressed: () => viewModel.arrange(tab),
+                                );
+                              },
+                            );
+                          },
                         ),
+                      IconButton(
+                        key: const ValueKey('dashboard.search'),
+                        tooltip: l10n.searchHint,
+                        icon: const Icon(Icons.search),
+                        onPressed: () => context.push(Routes.search),
                       ),
+                      IconButton(
+                        key: const ValueKey('dashboard.settings'),
+                        tooltip: l10n.settingsTitle,
+                        icon: const Icon(Icons.settings_outlined),
+                        onPressed: () => context.push(Routes.settings),
+                      ),
+                    ],
+                    bottom: tabs.length < 2
+                        ? null
+                        : TabBar(
+                            isScrollable: true,
+                            tabAlignment: TabAlignment.start,
+                            tabs: [for (final tab in tabs) Tab(text: tab.name)],
+                          ),
+                  ),
+                  body: ListenableBuilder(
+                    listenable: viewModel,
+                    builder: (context, _) => Column(
+                      children: [
+                        if (viewModel.offlineSince case final since?)
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(
+                              Dimens.gap,
+                              Dimens.gapSmall,
+                              Dimens.gap,
+                              0,
+                            ),
+                            child: MessageBanner(
+                              key: const ValueKey('dashboard.offline'),
+                              kind: MessageKind.warning,
+                              message: l10n.dashboardOffline(
+                                DateFormat.Hm(
+                                  Localizations.localeOf(context)
+                                      .toLanguageTag(),
+                                ).format(since.toLocal()),
+                              ),
+                            ),
+                          ),
+                        if (viewModel.demo)
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(
+                              Dimens.gap,
+                              Dimens.gapSmall,
+                              Dimens.gap,
+                              0,
+                            ),
+                            child: MessageBanner(
+                              key: const ValueKey('dashboard.demo'),
+                              kind: MessageKind.info,
+                              message: l10n.dashboardDemo,
+                            ),
+                          ),
+                        Expanded(child: RefreshHost(child: body)),
+                      ],
                     ),
-                  if (viewModel.demo)
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(
-                        Dimens.gap,
-                        Dimens.gapSmall,
-                        Dimens.gap,
-                        0,
-                      ),
-                      child: MessageBanner(
-                        key: const ValueKey('dashboard.demo'),
-                        kind: MessageKind.info,
-                        message: l10n.dashboardDemo,
-                      ),
-                    ),
-                  Expanded(child: RefreshHost(child: body)),
-                ],
-              ),
-            ),
-          ),
+                  ),
+                ),
         );
       },
     );
@@ -336,4 +345,147 @@ class _Hint extends StatelessWidget {
   Widget build(BuildContext context) => FormPage(
     children: [MessageBanner(kind: MessageKind.info, message: text)],
   );
+}
+
+/// The dashboard in its edit mode (docs/design: *Edit mode*): *Add widget*
+/// on the left, the tab's name, *Done* on the right. Back leaves the edit
+/// mode, after asking when there are changes.
+class _ArrangeScaffold extends StatelessWidget {
+  const _ArrangeScaffold({
+    required this.viewModel,
+    required this.arranging,
+    required this.registry,
+  });
+
+  final DashboardViewModel viewModel;
+  final ArrangeViewModel arranging;
+  final WidgetRegistry registry;
+
+  /// Runs [command], then leaves the edit mode and shows the new layout;
+  /// on an error the edit mode stays, with the message.
+  Future<void> _finish(BuildContext context, Command0<void> command) async {
+    await command.execute();
+    if (!context.mounted) return;
+    switch (command.result) {
+      case Ok():
+        viewModel.stopArranging(reload: true);
+      case Error(:final error):
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(context.l10n.errorMessage(error))),
+        );
+      case null:
+        break;
+    }
+  }
+
+  void _done(BuildContext context) {
+    if (arranging.changed) {
+      _finish(context, arranging.save).ignore();
+    } else {
+      viewModel.stopArranging();
+    }
+  }
+
+  Future<void> _leave(BuildContext context) async {
+    if (!arranging.changed) {
+      viewModel.stopArranging();
+      return;
+    }
+    final l10n = context.l10n;
+    final discard = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.editTabDiscardTitle),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text(l10n.editTabKeep),
+          ),
+          TextButton(
+            key: const ValueKey('editTab.discard'),
+            onPressed: () => Navigator.of(context).pop(true),
+            child: Text(l10n.editTabDiscard),
+          ),
+        ],
+      ),
+    );
+    // Widgets added from the gallery are on the server already, so the
+    // dashboard reloads.
+    if (discard ?? false) viewModel.stopArranging(reload: true);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    return ListenableBuilder(
+      listenable: Listenable.merge([arranging.save, arranging.reset]),
+      builder: (context, _) {
+        final busy = arranging.save.running || arranging.reset.running;
+        return PopScope<void>(
+          canPop: false,
+          onPopInvokedWithResult: (didPop, _) {
+            if (!didPop) _leave(context).ignore();
+          },
+          child: Scaffold(
+            appBar: AppBar(
+              automaticallyImplyLeading: false,
+              leadingWidth: 160,
+              leading: Padding(
+                padding: const EdgeInsetsDirectional.only(
+                  start: Dimens.gapSmall,
+                ),
+                child: Align(
+                  alignment: AlignmentDirectional.centerStart,
+                  child: TextButton.icon(
+                    key: const ValueKey('editTab.add'),
+                    icon: const Icon(Icons.add),
+                    label: Text(
+                      l10n.galleryOpen,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    onPressed: busy
+                        ? null
+                        : () => WidgetGallerySheet.show(
+                            context,
+                            viewModel: arranging,
+                          ).ignore(),
+                  ),
+                ),
+              ),
+              centerTitle: true,
+              title: Text(
+                arranging.name.isEmpty ? l10n.editTabTitle : arranging.name,
+              ),
+              actions: [
+                PopupMenuButton<void>(
+                  key: const ValueKey('editTab.more'),
+                  tooltip: l10n.editTabMore,
+                  enabled: !busy,
+                  itemBuilder: (context) => [
+                    PopupMenuItem<void>(
+                      key: const ValueKey('editTab.reset'),
+                      onTap: () => _finish(context, arranging.reset).ignore(),
+                      child: Text(l10n.editTabReset),
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsetsDirectional.only(
+                    end: Dimens.gapSmall,
+                  ),
+                  child: FilledButton(
+                    key: const ValueKey('editTab.save'),
+                    onPressed: busy ? null : () => _done(context),
+                    child: Text(l10n.editTabDone),
+                  ),
+                ),
+              ],
+            ),
+            body: ArrangeView(viewModel: arranging, registry: registry),
+          ),
+        );
+      },
+    );
+  }
 }

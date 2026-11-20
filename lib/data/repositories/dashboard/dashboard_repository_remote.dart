@@ -79,6 +79,18 @@ class DashboardRepositoryRemote implements DashboardRepository {
   }
 
   @override
+  Future<Result<List<String>>> widgetKinds(ServerAddress server) =>
+      _api.widgetKinds(server);
+
+  @override
+  Future<Result<WidgetPlacement>> addWidget(
+    ServerAddress server,
+    String tabId,
+    String kind, {
+    required int desktopRows,
+  }) => _api.addWidget(server, tabId, kind, row: desktopRows);
+
+  @override
   Future<Result<void>> resetLayout(ServerAddress server, String tabId) async {
     final result = await _api.resetLayout(server, tabId);
     if (result is Ok<void>) await _storeSizes(server, tabId, const {});

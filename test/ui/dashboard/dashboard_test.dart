@@ -280,24 +280,48 @@ void main() {
         'kind1': (context, widget) => const Text('short'),
       });
       dashboards.result = Result.ok(
-        sized({'w0': WidgetSize.small, 'w1': WidgetSize.small}),
+        sized({'w0': WidgetSize.medium, 'w1': WidgetSize.medium}),
       );
       await pump(tester);
 
-      expect(
+      WidgetTileState tile(String id) => tester.state<WidgetTileState>(
         find.descendant(
-          of: find.byKey(const ValueKey('grid.w0')),
-          matching: find.byType(ShaderMask),
+          of: find.byKey(ValueKey('grid.$id')),
+          matching: find.byType(WidgetTile),
         ),
-        findsOneWidget,
       );
-      expect(
-        find.descendant(
-          of: find.byKey(const ValueKey('grid.w1')),
-          matching: find.byType(ShaderMask),
+      expect(tile('w0').fades, isTrue);
+      expect(tile('w1').fades, isFalse);
+    });
+
+    testWidgets('keeps the view when it starts to overflow', (tester) async {
+      // Regression: wrapping the view only while it overflowed rebuilt it,
+      // so it reloaded, got shorter and flickered in a loop.
+      final grow = ValueNotifier(false);
+      addTearDown(grow.dispose);
+      var created = 0;
+      registry = WidgetRegistry({
+        'kind0': (context, widget) => _Counting(
+          onCreate: () => created++,
+          child: ValueListenableBuilder(
+            valueListenable: grow,
+            builder: (context, tall, _) => Column(
+              children: [
+                for (var i = 0; i < (tall ? 30 : 1); i++) Text('line $i'),
+              ],
+            ),
+          ),
         ),
-        findsNothing,
-      );
+      });
+      dashboards.result = Result.ok(sized({'w0': WidgetSize.medium}));
+      await pump(tester);
+
+      grow.value = true;
+      await tester.pumpAndSettle();
+      grow.value = false;
+      await tester.pumpAndSettle();
+
+      expect(created, 1);
     });
 
     testWidgets('opens a widget in full on tap and goes back', (tester) async {
@@ -374,4 +398,25 @@ void main() {
     expect(store.scheduled, isTrue);
     expect(store.cards.keys, containsAll(HomeWidgetKind.values));
   });
+}
+
+class _Counting extends StatefulWidget {
+  const _Counting({required this.onCreate, required this.child});
+
+  final VoidCallback onCreate;
+  final Widget child;
+
+  @override
+  State<_Counting> createState() => _CountingState();
+}
+
+class _CountingState extends State<_Counting> {
+  @override
+  void initState() {
+    super.initState();
+    widget.onCreate();
+  }
+
+  @override
+  Widget build(BuildContext context) => widget.child;
 }

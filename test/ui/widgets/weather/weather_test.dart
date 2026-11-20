@@ -8,6 +8,7 @@ import 'package:waylight_mobile/data/repositories/weather/weather_repository.dar
 import 'package:waylight_mobile/domain/models/api_exception.dart';
 import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/domain/models/weather.dart';
+import 'package:waylight_mobile/ui/core/widget_size_scope.dart';
 import 'package:waylight_mobile/ui/widgets/weather/weather_view_model.dart';
 import 'package:waylight_mobile/ui/widgets/weather/weather_widget.dart';
 import 'package:waylight_mobile/utils/result.dart';
@@ -58,20 +59,66 @@ void main() {
     expect(config.lat, isNull);
   });
 
-  Future<void> pump(WidgetTester tester, Map<String, Object?> config) async {
+  Future<void> pump(
+    WidgetTester tester,
+    Map<String, Object?> config, {
+    (WidgetSize, Size)? tile,
+  }) async {
+    Widget view = WeatherWidget(
+      widget: WidgetPlacement(id: 'w', kind: 'weather', config: config),
+    );
+    if (tile case (final size, final pixels)) {
+      view = Align(
+        alignment: Alignment.topLeft,
+        child: SizedBox.fromSize(
+          size: pixels,
+          child: WidgetSizeScope(size: size, child: view),
+        ),
+      );
+    }
     await tester.pumpScreen(
       MultiProvider(
         providers: [
           ChangeNotifierProvider<ServerRepository>.value(value: servers),
           Provider<WeatherRepository>.value(value: weather),
         ],
-        child: WeatherWidget(
-          widget: WidgetPlacement(id: 'w', kind: 'weather', config: config),
-        ),
+        child: view,
       ),
     );
     await tester.pumpAndSettle();
   }
+
+  // The tiles of a narrow phone (360 dp): an overflow fails the test.
+  const small = (WidgetSize.small, Size(150, 150));
+  const strip = (WidgetSize.strip, Size(328, 70));
+
+  testWidgets('fits a small tile (#211)', (tester) async {
+    await pump(tester, {
+      'lat': 1.0,
+      'lon': 2.0,
+      'label': 'A rather long place name',
+    }, tile: small);
+
+    expect(find.text('14 °C'), findsOneWidget);
+    expect(find.text('8° / 16°'), findsOneWidget);
+    expect(find.text(l10nEn.weatherFeelsLike(13)), findsNothing);
+  });
+
+  testWidgets('fits a strip on one line (#211)', (tester) async {
+    await pump(tester, {'lat': 1.0, 'lon': 2.0}, tile: strip);
+
+    expect(
+      find.textContaining('14 °C · ${l10nEn.weatherPartlyCloudy}'),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets('shows errors in a small tile', (tester) async {
+    weather.result = const Result.error(ApiException(ApiFailure.unreachable));
+    await pump(tester, {'lat': 1.0, 'lon': 2.0}, tile: small);
+
+    expect(find.text(l10nEn.errorUnreachable), findsOneWidget);
+  });
 
   testWidgets('shows now and the next days', (tester) async {
     await pump(tester, {'lat': 1.0, 'lon': 2.0, 'days': 3, 'label': 'Berlin'});

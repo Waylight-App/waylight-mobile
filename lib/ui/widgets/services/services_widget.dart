@@ -126,6 +126,34 @@ class StatusOverviewWidget extends StatelessWidget {
         : context.l10n.statusOverviewTitle,
     query: servicesQuery,
     interval: const Duration(minutes: 1),
+    compact: (context, services, size) {
+      final l10n = context.l10n;
+      if (services.isEmpty) return Text(l10n.servicesEmpty);
+      final down = services
+          .where((s) => s.state == ServiceState.offline)
+          .length;
+      return Row(
+        children: [
+          StatusDot(
+            tone: down == 0 ? Tone.ok : Tone.critical,
+            label: down == 0 ? l10n.servicesOnline : l10n.servicesOffline,
+          ),
+          const SizedBox(width: Dimens.gapSmall),
+          Flexible(
+            child: Text(
+              down == 0
+                  ? l10n.statusAllUp(services.length)
+                  : l10n.statusSomeDown(down),
+              maxLines: size == WidgetSize.strip ? 1 : 3,
+              overflow: TextOverflow.ellipsis,
+              style: size == WidgetSize.strip
+                  ? null
+                  : Theme.of(context).textTheme.titleMedium,
+            ),
+          ),
+        ],
+      );
+    },
     builder: (context, services) {
       int count(ServiceState s) => services.where((x) => x.state == s).length;
       final down = services

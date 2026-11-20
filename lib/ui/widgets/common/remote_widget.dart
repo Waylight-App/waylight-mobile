@@ -1,8 +1,8 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
-
 import 'package:waylight_mobile/data/repositories/server/server_repository.dart';
 import 'package:waylight_mobile/data/repositories/widget_data/widget_data_repository.dart';
+import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/ui/core/widgets/view_model_host.dart';
 import 'package:waylight_mobile/ui/core/widgets/widget_frame.dart';
 import 'package:waylight_mobile/utils/command.dart';
@@ -49,6 +49,7 @@ class RemoteWidget<T> extends StatelessWidget {
     required this.query,
     required this.builder,
     this.errorText,
+    this.compact,
     this.interval = const Duration(minutes: 5),
     super.key,
   });
@@ -65,6 +66,9 @@ class RemoteWidget<T> extends StatelessWidget {
   /// See [WidgetFrame.errorText].
   final String? Function(Exception error)? errorText;
 
+  /// See [WidgetFrame.compact].
+  final Widget Function(BuildContext context, T data, WidgetSize size)? compact;
+
   /// How often the data is reloaded while shown.
   final Duration interval;
 
@@ -80,6 +84,7 @@ class RemoteWidget<T> extends StatelessWidget {
       load: viewModel.load,
       builder: builder,
       errorText: errorText,
+      compact: compact,
       interval: interval,
     ),
   );

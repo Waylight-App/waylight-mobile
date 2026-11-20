@@ -611,10 +611,6 @@ class AppLocalizationsDe extends AppLocalizations {
   String get editTabDown => 'Nach hinten';
 
   @override
-  String get editTabNotEditable =>
-      'Dieser Tab ist mit dir geteilt und kann hier nicht geändert werden.';
-
-  @override
   String get settingsSwitchServer => 'Zu diesem Server wechseln';
 
   @override
@@ -1605,4 +1601,84 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get editTabKeep => 'Weiter bearbeiten';
+
+  @override
+  String get dashboardTapToOpen => 'Antippen, um alles zu sehen';
+
+  @override
+  String todosCompactOpen(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count offen',
+      one: '1 offen',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String todosCompactNext(String title) {
+    return 'als Nächstes: $title';
+  }
+
+  @override
+  String transitThen(String times) {
+    return 'danach $times';
+  }
+
+  @override
+  String calendarMore(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '+$count weitere',
+      one: '+1 weiterer',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String statusAllUp(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count Dienste laufen',
+      one: '1 Dienst läuft',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String statusSomeDown(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count Dienste ausgefallen',
+      one: '1 Dienst ausgefallen',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get galleryOpen => 'Widget hinzufügen';
+
+  @override
+  String galleryTitle(String tab) {
+    return 'Zu „$tab“ hinzufügen';
+  }
+
+  @override
+  String get gallerySearch => 'Widgets suchen';
+
+  @override
+  String get galleryAdd => 'Hinzufügen';
+
+  @override
+  String get galleryAdded => 'Hinzugefügt';
+
+  @override
+  String get galleryEmpty => 'Keine passenden Widgets.';
+
+  @override
+  String get editTabMore => 'Mehr';
 }

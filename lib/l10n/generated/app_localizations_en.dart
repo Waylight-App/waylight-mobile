@@ -610,10 +610,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get editTabDown => 'Move later';
 
   @override
-  String get editTabNotEditable =>
-      'This tab is shared with you and cannot be changed here.';
-
-  @override
   String get settingsSwitchServer => 'Switch to this server';
 
   @override
@@ -1604,4 +1600,84 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get editTabKeep => 'Keep editing';
+
+  @override
+  String get dashboardTapToOpen => 'Tap to see everything';
+
+  @override
+  String todosCompactOpen(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count open',
+      one: '1 open',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String todosCompactNext(String title) {
+    return 'next: $title';
+  }
+
+  @override
+  String transitThen(String times) {
+    return 'then $times';
+  }
+
+  @override
+  String calendarMore(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '+$count more',
+      one: '+1 more',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String statusAllUp(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count services up',
+      one: '1 service up',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String statusSomeDown(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count services down',
+      one: '1 service down',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get galleryOpen => 'Add widget';
+
+  @override
+  String galleryTitle(String tab) {
+    return 'Add to “$tab”';
+  }
+
+  @override
+  String get gallerySearch => 'Search widgets';
+
+  @override
+  String get galleryAdd => 'Add';
+
+  @override
+  String get galleryAdded => 'Added';
+
+  @override
+  String get galleryEmpty => 'No widgets match.';
+
+  @override
+  String get editTabMore => 'More';
 }

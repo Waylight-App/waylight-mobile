@@ -42,6 +42,8 @@ class WeatherWidget extends StatelessWidget {
         interval: const Duration(minutes: 15),
         errorText: (error) =>
             error is NoPlaceException ? context.l10n.weatherNoPlace : null,
+        compact: (context, weather, size) =>
+            _WeatherCompact(weather: weather, size: size),
         builder: (context, weather) => Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -50,6 +52,57 @@ class WeatherWidget extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+/// The weather in a small tile or a strip (#211): temperature, sky and the
+/// range of today.
+class _WeatherCompact extends StatelessWidget {
+  const _WeatherCompact({required this.weather, required this.size});
+
+  final Weather weather;
+  final WidgetSize size;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final theme = Theme.of(context);
+    final degrees = l10n.weatherDegrees(weather.temperature.round());
+    final sky = labelOf(l10n, weather.condition);
+    if (size == WidgetSize.strip) {
+      return Row(
+        children: [
+          Icon(iconOf(weather.condition), size: Dimens.iconSmall),
+          const SizedBox(width: Dimens.gapSmall),
+          Flexible(child: Text('$degrees · $sky')),
+        ],
+      );
+    }
+    final today = weather.days.isEmpty ? null : weather.days.first;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Flexible(
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                alignment: AlignmentDirectional.centerStart,
+                child: Text(degrees, style: theme.textTheme.headlineMedium),
+              ),
+            ),
+            const SizedBox(width: Dimens.gapSmall),
+            Icon(iconOf(weather.condition), semanticLabel: sky),
+          ],
+        ),
+        Text(sky, maxLines: 1, overflow: TextOverflow.ellipsis),
+        if (today != null)
+          Text(
+            l10n.weatherRange(today.min.round(), today.max.round()),
+            style: theme.textTheme.bodySmall,
+          ),
+      ],
     );
   }
 }
