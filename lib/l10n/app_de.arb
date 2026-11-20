@@ -447,5 +447,13 @@
   "homeWidgetNoDepartures": "Keine Abfahrten",
   "homeWidgetCancelled": "fällt aus",
   "homeWidgetUpdated": "Stand {time}",
-  "summaryAsk": "Frage dazu stellen"
+  "summaryAsk": "Frage dazu stellen",
+  "grafanaAlertsTitle": "Grafana-Alarme",
+  "grafanaAllQuiet": "Kein Alarm ist aktiv.",
+  "grafanaFiring": "aktiv",
+  "grafanaPending": "ausstehend",
+  "grafanaAlertList": "Alarmliste",
+  "grafanaPanelTitle": "Grafana-Panel",
+  "grafanaChoosePanel": "Wähle in der Weboberfläche ein Dashboard und ein Panel.",
+  "grafanaPanelAlt": "Grafana-Panel {title}"
 }

@@ -1,5 +1,6 @@
 import 'package:waylight_mobile/data/repositories/widget_data/queries/json.dart';
 import 'package:waylight_mobile/data/repositories/widget_data/widget_data_repository.dart';
+import 'package:waylight_mobile/domain/models/grafana.dart';
 import 'package:waylight_mobile/domain/models/home_server.dart';
 
 /// `GET /api/system`.
@@ -341,3 +342,37 @@ Set<String>? parseModules(Object? json) => switch (json) {
   },
   _ => null,
 };
+
+/// `GET /api/grafana/alerts` (#165).
+const grafanaAlertsQuery = WidgetQuery<GrafanaAlerts>(
+  '/api/grafana/alerts',
+  parseGrafanaAlerts,
+);
+
+/// Maps `GET /api/grafana/alerts`; links other than http(s) are dropped.
+GrafanaAlerts? parseGrafanaAlerts(Object? json) {
+  if (json case {'alerts': final List<Object?> list}) {
+    final url = switch (json['url']) {
+      final String u => Uri.tryParse(u),
+      _ => null,
+    };
+    String str(Object? v) => v is String ? v : '';
+    return GrafanaAlerts(
+      url: url != null && (url.scheme == 'http' || url.scheme == 'https')
+          ? url
+          : null,
+      alerts: [
+        for (final a in list)
+          if (a case {'name': final String name, 'state': final String state})
+            GrafanaAlert(
+              name: name,
+              firing: state != 'pending',
+              summary: str(a['summary']),
+              severity: str(a['severity']),
+              since: DateTime.tryParse(str(a['since']))?.toLocal(),
+            ),
+      ],
+    );
+  }
+  return null;
+}

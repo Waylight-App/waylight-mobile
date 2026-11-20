@@ -1515,4 +1515,31 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get summaryAsk => 'Frage dazu stellen';
+
+  @override
+  String get grafanaAlertsTitle => 'Grafana-Alarme';
+
+  @override
+  String get grafanaAllQuiet => 'Kein Alarm ist aktiv.';
+
+  @override
+  String get grafanaFiring => 'aktiv';
+
+  @override
+  String get grafanaPending => 'ausstehend';
+
+  @override
+  String get grafanaAlertList => 'Alarmliste';
+
+  @override
+  String get grafanaPanelTitle => 'Grafana-Panel';
+
+  @override
+  String get grafanaChoosePanel =>
+      'Wähle in der Weboberfläche ein Dashboard und ein Panel.';
+
+  @override
+  String grafanaPanelAlt(String title) {
+    return 'Grafana-Panel $title';
+  }
 }
