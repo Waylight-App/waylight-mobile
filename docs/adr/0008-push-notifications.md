@@ -57,6 +57,8 @@ app side:
   (Apache 2.0). The Dart package `cryptography` is no longer needed.
 - Commands that build or run the Android app need `--flavor`; `make` targets
   pass it.
+- iOS push waits for the Apple Developer account (ADR 0010, #184); until
+  then iPhone users get notifications through Web Push in the web app.
 
 ## Alternatives considered
 

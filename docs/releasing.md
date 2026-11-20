@@ -14,7 +14,13 @@ the version or the changelog by hand.
 2. When the maintainer merges it, release-please tags `vx.y.z` and creates
    the GitHub release with the changelog.
 3. The release workflow then builds the Android APKs and attaches them to
-   the release.
+   the release: `waylight-vX.Y.Z.apk` (store flavour, push through
+   Firebase) and `waylight-vX.Y.Z-fdroid.apk` (no Google code).
+
+Until there are store accounts (ADR 0010), GitHub Releases is how the app
+is distributed. Users install the APK by hand or with
+[Obtainium](https://github.com/ImranR98/Obtainium), which watches the
+releases of `Waylight-App/waylight-mobile` and installs updates.
 
 Before merging the release pull request, the maintainer builds the iOS app
 locally on a Mac (`flutter build ios --release --no-codesign`) and confirms

@@ -6,24 +6,26 @@ The companion app of [Waylight](https://github.com/Waylight-App/waylight),
 the self-hosted start page. It connects to your own Waylight server and
 brings your dashboard, to-dos and quick capture to your phone — with
 nothing in between: no account at us, no telemetry, no requests to anyone
-but your server.
+but your server. Push notifications, if you switch them on, travel end-to-end
+encrypted through the Waylight relay and Google.
 
-> **Status:** early development (phase 0 of the [roadmap](ROADMAP.md)). The
-> app connects to a server; sign-in and the dashboard follow in the next
-> releases. Until then, Waylight can be [installed as a web app](https://github.com/Waylight-App/waylight/blob/main/docs/apps-and-offline.md)
-> on your phone.
+> **Status:** Android app with every widget of the web interface, push
+> notifications, home screen widgets and the share sheet, distributed through
+> GitHub Releases. No store release yet; on the iPhone, use Waylight as a
+> [web app](https://github.com/Waylight-App/waylight/blob/main/docs/apps-and-offline.md)
+> for now ([ADR 0010](docs/adr/0010-distribution-without-store-accounts.md)).
 
 ## Features
 
-| | Status |
-| --- | --- |
-| Connect to your Waylight server, checked before it is saved | ✅ |
-| English and German, light and dark mode | ✅ |
-| Sign-in with password and two-factor code | Phase 1 |
-| Your tabs and widgets | Phase 2 |
-| To-dos, share sheet, smart search | Phase 3 |
-| Offline use and notifications | Phase 4 |
-| Google Play, App Store | Phase 5 |
+| | Android | iOS |
+| --- | --- | --- |
+| Sign-in with password, two-factor code or QR code | ✅ | built locally |
+| Your tabs and every widget of the web interface | ✅ | built locally |
+| To-dos, notes, smart search with answers, quick capture | ✅ | built locally |
+| Offline copy of the dashboard | ✅ | built locally |
+| Push notifications, end-to-end encrypted | ✅ (store APK) | waits for the Apple account |
+| Home screen widgets, share sheet, background refresh | ✅ | waits for the Apple account |
+| Store release | later | later |
 
 ## Requirements
 
@@ -34,9 +36,13 @@ but your server.
 
 ## Install
 
-There are no store releases yet. Every [release](https://github.com/Waylight-App/waylight-mobile/releases)
-has an APK for testers; it is signed with a development key until store
-signing is set up.
+Download the APK from the latest [release](https://github.com/Waylight-App/waylight-mobile/releases):
+
+- `waylight-vX.Y.Z.apk` – with push notifications (needs Google Play services)
+- `waylight-vX.Y.Z-fdroid.apk` – without any Google code, no push
+
+[Obtainium](https://github.com/ImranR98/Obtainium) installs it and keeps it
+up to date: add `https://github.com/Waylight-App/waylight-mobile` as an app.
 
 ## Documentation
 
