@@ -10,6 +10,7 @@ import 'package:waylight_mobile/ui/core/themes/dimens.dart';
 import 'package:waylight_mobile/ui/core/widget_registry.dart';
 import 'package:waylight_mobile/ui/core/widgets/form_page.dart';
 import 'package:waylight_mobile/ui/core/widgets/message_banner.dart';
+import 'package:waylight_mobile/ui/core/widgets/sized_grid.dart';
 import 'package:waylight_mobile/ui/core/widgets/wordmark.dart';
 import 'package:waylight_mobile/ui/core/window_size.dart';
 import 'package:waylight_mobile/ui/dashboard/view_models/dashboard_view_model.dart';
@@ -33,6 +34,14 @@ class DashboardScreen extends StatelessWidget {
 
   /// The native views by widget kind; other kinds get a [WidgetCard].
   final WidgetRegistry registry;
+
+  /// Opens the edit mode of [tab] (#209) and reloads after saving.
+  Future<void> _arrange(BuildContext context, DashboardTab tab) async {
+    final saved = await context.push<bool>(
+      Uri(path: Routes.editTab, queryParameters: {'tab': tab.id}).toString(),
+    );
+    if (saved ?? false) viewModel.load.execute().ignore();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,6 +79,7 @@ class DashboardScreen extends StatelessWidget {
                   tab: tab,
                   registry: registry,
                   webUrl: viewModel.webUrl(tab.id),
+                  onArrange: tab.mine ? () => _arrange(context, tab) : null,
                 ),
             ],
           ),
@@ -97,18 +107,10 @@ class DashboardScreen extends StatelessWidget {
                           return IconButton(
                             key: const ValueKey('dashboard.edit'),
                             tooltip: l10n.editTabTitle,
-                            icon: const Icon(Icons.edit_outlined),
-                            onPressed: () async {
-                              final saved = await context.push<bool>(
-                                Uri(
-                                  path: Routes.editTab,
-                                  queryParameters: {'tab': tab.id},
-                                ).toString(),
-                              );
-                              if (saved ?? false) {
-                                viewModel.load.execute().ignore();
-                              }
-                            },
+                            icon: const Icon(
+                              Icons.dashboard_customize_outlined,
+                            ),
+                            onPressed: () => _arrange(context, tab),
                           );
                         },
                       );
@@ -183,11 +185,27 @@ class DashboardScreen extends StatelessWidget {
 }
 
 class _TabPage extends StatelessWidget {
-  const _TabPage({required this.tab, required this.registry, this.webUrl});
+  const _TabPage({
+    required this.tab,
+    required this.registry,
+    this.webUrl,
+    this.onArrange,
+  });
 
   final DashboardTab tab;
   final WidgetRegistry registry;
   final Uri? webUrl;
+
+  /// Opens the edit mode; `null` for tabs the account may not change.
+  final VoidCallback? onArrange;
+
+  /// A widget without a size: its view, held to open the edit mode.
+  Widget _unsized(BuildContext context, WidgetPlacement widget) =>
+      GestureDetector(
+        onLongPress: onArrange,
+        excludeFromSemantics: true,
+        child: _card(context, widget),
+      );
 
   Widget _card(BuildContext context, WidgetPlacement widget) {
     final builder = registry.builderFor(widget.kind);
@@ -228,7 +246,7 @@ class _TabPage extends StatelessWidget {
     if (tab.widgets.isEmpty) return _Hint(context.l10n.dashboardEmptyTab);
     final window = WindowSize.of(context);
     final columns = window.columns;
-    final gridColumns = window == WindowSize.compact ? 4 : 8;
+    final gridColumns = SizedGrid.columnsOf(context);
     final blocks = <Widget>[];
     for (final run in _runs()) {
       if (tab.sizes.containsKey(run.first.id)) {
@@ -241,14 +259,15 @@ class _TabPage extends StatelessWidget {
             columns: gridColumns,
             builder: _card,
             onOpen: (widget) => _open(context, widget),
+            onArrange: onArrange,
           ),
         );
       } else if (columns == 1) {
         // One block per widget keeps the list lazy: a widget's view model,
         // and with it its request, only starts when it scrolls into view.
-        blocks.addAll([for (final widget in run) _card(context, widget)]);
+        blocks.addAll([for (final widget in run) _unsized(context, widget)]);
       } else {
-        blocks.add(_Columns(widgets: run, columns: columns, card: _card));
+        blocks.add(_Columns(widgets: run, columns: columns, card: _unsized));
       }
     }
     return RefreshIndicator(

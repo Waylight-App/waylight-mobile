@@ -195,7 +195,8 @@ widgets sit on a grid of square cells, 4 wide on phones and 8 on tablets:
 | `strip` | 4 × 1 | one line: status overview, next waste collection |
 
 - `packGrid` (domain) places the widgets in display order and fills gaps
-  (dense packing); `WidgetGrid` (dashboard) turns the cells into pixels.
+  (dense packing); `SizedGrid` (`ui/core`) turns the cells into pixels for
+  the dashboard, its edit mode and the size sheet alike.
 - A `WidgetTile` builds the widget's view below a `WidgetSizeScope`, in a
   box of the tile's size; taller content fades out, and a tap opens the
   widget in full (`WidgetFullScreen`). Buttons inside the view keep their
@@ -203,6 +204,10 @@ widgets sit on a grid of square cells, 4 wide on phones and 8 on tablets:
 - A view that has a compact form asks `WidgetSizeScope.maybeOf(context)`
   and shows what fits; without a scope (list, full view) it shows
   everything (#211).
+- The edit mode (#209) shows the same grid: holding a widget on the
+  dashboard opens it, tiles wiggle (not with reduced animations), widgets
+  move by dragging or with *move earlier / later* in their sheet, change
+  size, hide and show again; *Done* saves the phone layout in one request.
 - Sizes are part of the phone layout of a tab. The dashboard repository
   sends them to servers that know them (Waylight-App/waylight#585) and
   keeps them on the device for the others.

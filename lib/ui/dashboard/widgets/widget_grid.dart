@@ -1,11 +1,10 @@
-import 'dart:math';
-
 import 'package:material_ui/material_ui.dart';
 
 import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
 import 'package:waylight_mobile/ui/core/widget_size_scope.dart';
+import 'package:waylight_mobile/ui/core/widgets/sized_grid.dart';
 
 /// Builds the view of one widget on the dashboard.
 typedef PlacementBuilder = Widget Function(
@@ -13,10 +12,10 @@ typedef PlacementBuilder = Widget Function(
   WidgetPlacement widget,
 );
 
-/// Widgets with a size, laid out on a grid of square cells like a phone's
-/// home screen (#208, docs/design: *Home screen as a grid of sizes*).
+/// Widgets with a size, laid out on a [SizedGrid] like a phone's home
+/// screen (#208, docs/design: *Home screen as a grid of sizes*).
 ///
-/// The widgets keep their order and fill gaps ([packGrid]). Each tile
+/// Each tile
 /// shows the widget's view in a box of the tile's size; content that does
 /// not fit fades out, and tapping the tile calls [onOpen] to show it in
 /// full.
@@ -27,6 +26,7 @@ class WidgetGrid extends StatelessWidget {
     required this.columns,
     required this.builder,
     required this.onOpen,
+    this.onArrange,
     super.key,
   });
 
@@ -42,40 +42,25 @@ class WidgetGrid extends StatelessWidget {
   /// Shows a widget in full.
   final ValueChanged<WidgetPlacement> onOpen;
 
+  /// Opens the edit mode of the tab (#209); `null` where the tab cannot be
+  /// changed.
+  final VoidCallback? onArrange;
+
   @override
   Widget build(BuildContext context) {
-    final tiles = packGrid([
-      for (final item in items) (id: item.widget.id, size: item.size),
-    ], columns: columns);
     final byId = {for (final item in items) item.widget.id: item};
-    final rows = tiles.fold(0, (rows, t) => max(rows, t.row + t.rows));
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        const gap = Dimens.gapCard;
-        final cell = (constraints.maxWidth - gap * (columns - 1)) / columns;
-        double extent(int cells) => cells * cell + (cells - 1) * gap;
-        return SizedBox(
-          height: rows == 0 ? 0 : extent(rows),
-          child: Stack(
-            children: [
-              for (final tile in tiles)
-                Positioned(
-                  key: ValueKey('grid.${tile.id}'),
-                  left: tile.column * (cell + gap),
-                  top: tile.row * (cell + gap),
-                  width: extent(tile.columns),
-                  height: extent(tile.rows),
-                  child: WidgetTile(
-                    size: byId[tile.id]!.size,
-                    title: byId[tile.id]!.widget.displayTitle,
-                    height: extent(tile.rows),
-                    onOpen: () => onOpen(byId[tile.id]!.widget),
-                    builder: (context) =>
-                        builder(context, byId[tile.id]!.widget),
-                  ),
-                ),
-            ],
-          ),
+    return SizedGrid(
+      items: [for (final item in items) (id: item.widget.id, size: item.size)],
+      columns: columns,
+      tileBuilder: (context, tile, size) {
+        final item = byId[tile.id]!;
+        return WidgetTile(
+          size: item.size,
+          title: item.widget.displayTitle,
+          height: size.height,
+          onOpen: () => onOpen(item.widget),
+          onLongPress: onArrange,
+          builder: (context) => builder(context, item.widget),
         );
       },
     );
@@ -95,6 +80,7 @@ class WidgetTile extends StatefulWidget {
     required this.height,
     required this.onOpen,
     required this.builder,
+    this.onLongPress,
     super.key,
   });
 
@@ -109,6 +95,9 @@ class WidgetTile extends StatefulWidget {
 
   /// Shows the widget in full.
   final VoidCallback onOpen;
+
+  /// Opens the edit mode, e.g. when the tile is held (#209).
+  final VoidCallback? onLongPress;
 
   /// Builds the widget's view.
   final WidgetBuilder builder;
@@ -170,6 +159,7 @@ class _WidgetTileState extends State<WidgetTile> {
         behavior: HitTestBehavior.translucent,
         excludeFromSemantics: true,
         onTap: widget.onOpen,
+        onLongPress: widget.onLongPress,
         child: ClipRRect(
           borderRadius: BorderRadius.circular(Dimens.radiusCard),
           child: content,

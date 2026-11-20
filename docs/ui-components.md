@@ -86,6 +86,7 @@ it by purpose, not by size.
 | [`Wordmark`](#wordmark) | The name "Waylight" | Connect, app bar |
 | [`ViewModelHost`](#viewmodelhost) | Creating and disposing a screen's view model in a route | Router |
 | [`WidgetSizeScope`](#widgetsizescope) | Telling a widget's view the size of its dashboard tile | Dashboard grid |
+| [`SizedGrid`](#sizedgrid) | Items of different sizes on a grid of square cells | Dashboard, edit mode, size sheet |
 
 Planned with their issues (from the mockups): `StatusDot` and `FreshnessLabel`
 (#17, #19), `TabScaffold` for the dashboard (#16), `SettingsSection`
@@ -165,6 +166,22 @@ GoRoute(
     ),
     builder: (context, viewModel) => SignInScreen(viewModel: viewModel),
   ),
+)
+```
+
+### SizedGrid
+
+Lays items of a `WidgetSize` out on square cells, 4 wide on phones and 8 on
+tablets (`SizedGrid.columnsOf(context)`), in order with gaps filled
+(`packGrid`). The caller builds each tile and gets its size in pixels;
+`animate: true` lets tiles glide to their new place, for example while
+dragging in the edit mode (and not when animations are reduced).
+
+```dart
+SizedGrid(
+  items: [for (final w in widgets) (id: w.id, size: w.size)],
+  columns: SizedGrid.columnsOf(context),
+  tileBuilder: (context, place, size) => MyTile(id: place.id, size: size),
 )
 ```
 
