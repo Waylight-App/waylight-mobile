@@ -1540,4 +1540,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String grafanaPanelAlt(String title) {
     return 'Grafana panel $title';
   }
+
+  @override
+  String get connectPrivacyPush => 'Your Waylight. Your data. Your server.';
 }

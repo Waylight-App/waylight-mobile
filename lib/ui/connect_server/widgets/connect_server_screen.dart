@@ -117,7 +117,9 @@ class _ConnectServerScreenState extends State<ConnectServerScreen> {
           ),
           const SizedBox(height: Dimens.gapLarge),
           Text(
-            l10n.connectPrivacy,
+            viewModel.pushPossible
+                ? l10n.connectPrivacyPush
+                : l10n.connectPrivacy,
             style: theme.textTheme.bodySmall?.copyWith(
               color: theme.colorScheme.onSurfaceVariant,
             ),

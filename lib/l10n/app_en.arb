@@ -911,5 +911,7 @@
   "grafanaChoosePanel": "Choose a dashboard and a panel in the web interface.",
   "@grafanaChoosePanel": {"description": "Grafana widgets (#165)."},
   "grafanaPanelAlt": "Grafana panel {title}",
-  "@grafanaPanelAlt": {"description": "Screen reader text of a panel image.", "placeholders": {"title": {"type": "String", "example": "CPU"}}}
+  "@grafanaPanelAlt": {"description": "Screen reader text of a panel image.", "placeholders": {"title": {"type": "String", "example": "CPU"}}},
+  "connectPrivacyPush": "Your Waylight. Your data. Your server.",
+  "@connectPrivacyPush": {"description": "Note on the connect screen of builds with push notifications through Google (#176); a claim, not a technical statement."}
 }

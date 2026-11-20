@@ -124,6 +124,8 @@ void main() {
     });
     expect(find.text('Oldenburg'), findsOneWidget);
     expect(find.byType(Image), findsOneWidget);
+    // On a dark background with the credit, as in the web widget (#176).
+    expect(find.text('Oldenburg · © Deutscher Wetterdienst'), findsOneWidget);
 
     await pump(tester, 'radar');
     expect(find.text(l10nEn.radarNoPlace), findsOneWidget);

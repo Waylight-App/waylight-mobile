@@ -40,6 +40,9 @@ abstract final class Dimens {
   /// Corner radius of banners and small containers.
   static const double radiusBanner = 12;
 
+  /// Corner radius of small framed content such as the radar picture.
+  static const double radiusSmall = 8;
+
   /// Maximum width of forms on tablets and in landscape.
   static const double maxFormWidth = 480;
 }

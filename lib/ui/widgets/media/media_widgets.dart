@@ -13,6 +13,7 @@ import 'package:waylight_mobile/domain/models/media.dart';
 import 'package:waylight_mobile/ui/core/link_opener.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
+import 'package:waylight_mobile/ui/core/themes/radar_colors.dart';
 import 'package:waylight_mobile/ui/core/widgets/section_card.dart';
 import 'package:waylight_mobile/ui/widgets/common/items_view_model.dart';
 import 'package:waylight_mobile/ui/widgets/common/items_widget.dart';
@@ -152,19 +153,71 @@ class _RadarWidgetState extends State<RadarWidget> {
     return SectionCard(
       title: widget.widget.title.isNotEmpty ? widget.widget.title : label,
       child: lat is num && lon is num
-          ? AspectRatio(
-              aspectRatio: 1,
-              child: ServerImage(
-                // A new key per round reloads the picture of the radar.
-                key: ValueKey(_round),
-                path: '/api/weather/radar',
-                query: {'lat': '$lat', 'lon': '$lon', 'k': '$_round'},
-                semanticLabel: context.l10n.radarTitle,
+          // The radar is made for a dark map, as in the web widget: on the
+          // light card its yellow borders and light rain disappear (#176).
+          ? ClipRRect(
+              borderRadius: BorderRadius.circular(Dimens.radiusSmall),
+              child: ColoredBox(
+                color: RadarColors.background,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    AspectRatio(
+                      aspectRatio: 1,
+                      child: Stack(
+                        fit: StackFit.expand,
+                        children: [
+                          ServerImage(
+                            // A new key per round reloads the radar.
+                            key: ValueKey(_round),
+                            path: '/api/weather/radar',
+                            query: {
+                              'lat': '$lat',
+                              'lon': '$lon',
+                              'k': '$_round',
+                            },
+                            fit: BoxFit.cover,
+                            semanticLabel: context.l10n.radarTitle,
+                          ),
+                          // The place of the widget, in the middle.
+                          const Center(child: _RadarMarker()),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: Dimens.gapSmall,
+                        vertical: Dimens.gapTiny,
+                      ),
+                      child: Text(
+                        '${config['label'] is String && (config['label']! as String).isNotEmpty ? '$label · ' : ''}© Deutscher Wetterdienst',
+                        style: Theme.of(context).textTheme.bodySmall
+                            ?.copyWith(color: RadarColors.caption),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             )
           : Text(context.l10n.radarNoPlace),
     );
   }
+}
+
+/// The red dot with a white ring that marks the widget's place.
+class _RadarMarker extends StatelessWidget {
+  const _RadarMarker();
+
+  @override
+  Widget build(BuildContext context) => Container(
+    width: 10,
+    height: 10,
+    decoration: BoxDecoration(
+      color: RadarColors.marker,
+      shape: BoxShape.circle,
+      border: Border.all(color: RadarColors.markerRing, width: 2),
+    ),
+  );
 }
 
 /// The space widget (#147): the next launches and, below, the astronomy

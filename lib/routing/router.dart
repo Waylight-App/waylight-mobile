@@ -259,8 +259,10 @@ GoRouter createRouter(
     GoRoute(
       path: Routes.connect,
       builder: (context, state) => ViewModelHost(
-        create: (context) =>
-            ConnectServerViewModel(serverRepository: context.read()),
+        create: (context) => ConnectServerViewModel(
+          serverRepository: context.read(),
+          pushRepository: context.read(),
+        ),
         builder: (context, viewModel) =>
             ConnectServerScreen(viewModel: viewModel),
       ),

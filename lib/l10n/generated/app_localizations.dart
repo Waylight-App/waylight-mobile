@@ -2833,6 +2833,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Grafana panel {title}'**
   String grafanaPanelAlt(String title);
+
+  /// Note on the connect screen of builds with push notifications through Google (#176); a claim, not a technical statement.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Waylight. Your data. Your server.'**
+  String get connectPrivacyPush;
 }
 
 class _AppLocalizationsDelegate

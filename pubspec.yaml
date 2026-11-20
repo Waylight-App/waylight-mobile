@@ -60,12 +60,11 @@ dev_dependencies:
 flutter:
   generate: true
   fonts:
-    # The wordmark, as on the web (#10); SIL Open Font License,
-    # assets/fonts/Fraunces-OFL.txt.
+    # The wordmark, the same variable Fraunces (weight axis, Latin) as the
+    # web (#10, #176); SIL Open Font License, assets/fonts/Fraunces-OFL.txt.
     - family: Fraunces
       fonts:
-        - asset: assets/fonts/Fraunces-SemiBold.ttf
-          weight: 600
+        - asset: assets/fonts/Fraunces-Variable.ttf
   uses-material-design: true
 
 # dart run flutter_launcher_icons
