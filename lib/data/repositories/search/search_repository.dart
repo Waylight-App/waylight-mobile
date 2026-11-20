@@ -9,4 +9,11 @@ abstract interface class SearchRepository {
 
   /// Pages of the connected wikis that match [query] (#156).
   Future<Result<List<WikiHit>>> wiki(ServerAddress server, String query);
+
+  /// Answers of the server's smart search for [query] in [language] (#82).
+  Future<Result<List<SearchAnswer>>> answers(
+    ServerAddress server,
+    String query,
+    String language,
+  );
 }

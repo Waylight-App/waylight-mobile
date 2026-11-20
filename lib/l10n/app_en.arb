@@ -870,6 +870,8 @@
   "@bookmarkFolder": {"description": "Field."},
   "bookmarkNoFolder": "No folder",
   "@bookmarkNoFolder": {"description": "Choice."},
+  "searchOpenWidget": "Open widget",
+  "@searchOpenWidget": {"description": "Button below a search answer."},
   "shareTitle": "Save to Waylight",
   "@shareTitle": {"description": "Title of the share screen."},
   "shareTodo": "As a to-do",

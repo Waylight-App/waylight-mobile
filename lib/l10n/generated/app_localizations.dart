@@ -2708,6 +2708,12 @@ abstract class AppLocalizations {
   /// **'No folder'**
   String get bookmarkNoFolder;
 
+  /// Button below a search answer.
+  ///
+  /// In en, this message translates to:
+  /// **'Open widget'**
+  String get searchOpenWidget;
+
   /// Title of the share screen.
   ///
   /// In en, this message translates to:
