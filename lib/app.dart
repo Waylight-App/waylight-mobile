@@ -13,6 +13,7 @@ class WaylightApp extends StatelessWidget {
     required this.router,
     this.appearance = const Appearance(),
     this.palette,
+    this.wallpaperSeed,
     this.onShortcut = _ignore,
     super.key,
   });
@@ -31,12 +32,20 @@ class WaylightApp extends StatelessWidget {
   /// The colours of the account's web theme, or `null` for Amber (#157).
   final ThemePalette? palette;
 
+  /// The seed of the wallpaper colours when the person chose them (#198);
+  /// it replaces [palette].
+  final int? wallpaperSeed;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
       onGenerateTitle: (context) => AppLocalizations.of(context).appTitle,
-      theme: AppTheme.lightFor(palette),
-      darkTheme: AppTheme.darkFor(palette),
+      theme: wallpaperSeed == null
+          ? AppTheme.lightFor(palette)
+          : AppTheme.wallpaper(Color(wallpaperSeed!), Brightness.light),
+      darkTheme: wallpaperSeed == null
+          ? AppTheme.darkFor(palette)
+          : AppTheme.wallpaper(Color(wallpaperSeed!), Brightness.dark),
       themeMode: switch (appearance.theme) {
         ThemeChoice.system => ThemeMode.system,
         ThemeChoice.light => ThemeMode.light,

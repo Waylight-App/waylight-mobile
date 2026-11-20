@@ -1698,4 +1698,13 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get diagnosticsShare => 'Teilen';
+
+  @override
+  String get settingsColours => 'Farben';
+
+  @override
+  String get settingsColoursWaylight => 'Wie Waylight';
+
+  @override
+  String get settingsColoursWallpaper => 'Hintergrundbild';
 }

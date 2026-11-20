@@ -73,6 +73,7 @@ import 'package:waylight_mobile/data/services/platform/device_auth.dart';
 import 'package:waylight_mobile/data/services/platform/device_name.dart';
 import 'package:waylight_mobile/data/services/push/push_device.dart';
 import 'package:waylight_mobile/data/services/storage/key_value_store.dart';
+import 'package:waylight_mobile/data/services/system_colors/system_colors.dart';
 
 /// The repositories of the app. Server and session are needed by the
 /// router before the app starts.
@@ -167,7 +168,11 @@ Repositories createRepositories() {
   );
   const store = SecureKeyValueStore();
   final modules = ModuleApi(client);
-  final theme = ThemeRepository(api: modules, store: store);
+  final theme = ThemeRepository(
+    api: modules,
+    store: store,
+    systemColors: const MethodChannelSystemColors(),
+  );
   final server = ServerRepositoryRemote(
     platformApi: PlatformApi(client),
     store: store,

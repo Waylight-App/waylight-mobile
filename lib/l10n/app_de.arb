@@ -491,5 +491,8 @@
   "diagnosticsHint": "Für eine Fehlermeldung: App- und Server-Version, Gerät und die letzten Fehler, ohne Adressen oder Passwörter.",
   "diagnosticsTitle": "Diagnosebericht",
   "diagnosticsPreview": "Das ist alles, was der Bericht enthält. Er verlässt das Handy nur, wenn du ihn teilst.",
-  "diagnosticsShare": "Teilen"
+  "diagnosticsShare": "Teilen",
+  "settingsColours": "Farben",
+  "settingsColoursWaylight": "Wie Waylight",
+  "settingsColoursWallpaper": "Hintergrundbild"
 }

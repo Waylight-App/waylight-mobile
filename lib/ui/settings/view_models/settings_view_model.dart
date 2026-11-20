@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:waylight_mobile/data/repositories/appearance/theme_repository.dart';
 import 'package:waylight_mobile/data/repositories/diagnostics/diagnostics_repository.dart';
 import 'package:waylight_mobile/data/repositories/lock/app_lock_repository.dart';
 import 'package:waylight_mobile/data/repositories/preferences/preferences_repository.dart';
@@ -30,12 +31,14 @@ class SettingsViewModel extends ChangeNotifier {
     required this._preferencesRepository,
     AppLockRepository? lockRepository,
     PushRepository? pushRepository,
+    ThemeRepository? themeRepository,
     AppVersionReader appVersion = _platformVersion,
     DiagnosticsRepository? diagnosticsRepository,
   }) : _lock = lockRepository,
        _diagnostics = diagnosticsRepository,
        _readAppVersion = appVersion,
-       _push = pushRepository {
+       _push = pushRepository,
+       _theme = themeRepository {
     account = Command0(_serverRepository.status)..execute().ignore();
     serverVersion = Command0(_serverRepository.version)..execute().ignore();
     this.appVersion = Command0(() async => Result.ok(await appVersion()))
@@ -45,6 +48,7 @@ class SettingsViewModel extends ChangeNotifier {
     _preferencesRepository.addListener(notifyListeners);
     _serverRepository.addListener(notifyListeners);
     _lock?.addListener(notifyListeners);
+    _theme?.addListener(notifyListeners);
     _lock?.available().then((available) {
       _lockAvailable = available;
       notifyListeners();
@@ -67,6 +71,22 @@ class SettingsViewModel extends ChangeNotifier {
   /// Opens the share sheet with [report].
   Future<void> shareDiagnostics(DiagnosticReport report) async =>
       _diagnostics?.share(report);
+  final ThemeRepository? _theme;
+
+  /// Whether the system offers wallpaper colours (#198, Android 12+).
+  bool get wallpaperAvailable => _theme?.wallpaperAvailable ?? false;
+
+  /// Whether the app uses the wallpaper colours for this server.
+  bool get useWallpaper => _theme?.useWallpaper ?? false;
+
+  /// Switches between the Waylight colours and the wallpaper colours for
+  /// the current server.
+  Future<void> setWallpaper({required bool enabled}) async {
+    final server = _serverRepository.current;
+    if (server == null) return;
+    await _theme?.setWallpaper(server, enabled: enabled);
+  }
+
   bool _pushAvailable = false;
   bool _pushOn = false;
 
@@ -204,6 +224,7 @@ class SettingsViewModel extends ChangeNotifier {
     _preferencesRepository.removeListener(notifyListeners);
     _serverRepository.removeListener(notifyListeners);
     _lock?.removeListener(notifyListeners);
+    _theme?.removeListener(notifyListeners);
     for (final c in [account, serverVersion, appVersion, signOut, disconnect]) {
       c.dispose();
     }

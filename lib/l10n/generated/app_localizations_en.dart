@@ -1697,4 +1697,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get diagnosticsShare => 'Share';
+
+  @override
+  String get settingsColours => 'Colours';
+
+  @override
+  String get settingsColoursWaylight => 'Like Waylight';
+
+  @override
+  String get settingsColoursWallpaper => 'Wallpaper';
 }

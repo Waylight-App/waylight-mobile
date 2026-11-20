@@ -44,6 +44,22 @@ abstract final class AppTheme {
   static ThemeData darkFor(ThemePalette? palette) =>
       _theme(Brightness.dark, StatusColors.dark, palette);
 
+  /// A theme in the wallpaper colours (#198): the whole scheme comes from
+  /// the system's [seed] (tonalSpot, as Android's own apps), only the status
+  /// colours stay the app's, so warnings and successes keep their meaning.
+  static ThemeData wallpaper(Color seed, Brightness brightness) {
+    final scheme = ColorScheme.fromSeed(
+      seedColor: seed,
+      brightness: brightness,
+    );
+    return _build(
+      scheme,
+      brightness == Brightness.light ? StatusColors.light : StatusColors.dark,
+      accent: scheme.primary,
+      onAccent: scheme.onPrimary,
+    );
+  }
+
   static ThemeData _theme(
     Brightness brightness,
     StatusColors status,
@@ -78,6 +94,15 @@ abstract final class AppTheme {
         onSurface: Color(mode.text),
       );
     }
+    return _build(colors, status, accent: accent, onAccent: onAccent);
+  }
+
+  static ThemeData _build(
+    ColorScheme colors,
+    StatusColors status, {
+    required Color accent,
+    required Color onAccent,
+  }) {
     const buttonSize = Size(64, Dimens.tapTarget);
     return ThemeData(
       colorScheme: colors,

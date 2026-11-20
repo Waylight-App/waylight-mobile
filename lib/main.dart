@@ -18,7 +18,7 @@ Future<void> main() async {
   await repositories.session.restore(repositories.server.current);
   await repositories.preferences.restore();
   await repositories.lock.restore();
-  await repositories.theme.restore();
+  await repositories.theme.restore(server: repositories.server.current);
   await repositories.todos.restore();
   // The app lock counts the time in the background (#46).
   AppLifecycleListener(
@@ -44,6 +44,7 @@ Future<void> main() async {
           router: router,
           appearance: repositories.preferences.appearance,
           palette: repositories.theme.palette,
+          wallpaperSeed: repositories.theme.wallpaperSeed,
           onShortcut: (shortcut) => router.go(shortcutLocation(shortcut)),
         ),
       ),
