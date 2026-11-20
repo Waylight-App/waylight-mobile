@@ -69,6 +69,11 @@ android {
         release {
             // Signed with the debug keys until store signing is set up (#25).
             signingConfig = signingConfigs.getByName("debug")
+            // Keep rules for classes created by reflection (#174).
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro",
+            )
         }
     }
 }
