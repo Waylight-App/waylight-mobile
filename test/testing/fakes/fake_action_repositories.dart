@@ -343,6 +343,18 @@ class FakePushRepository with _Calls implements PushRepository {
 
   @override
   Future<void> refresh(ServerAddress server) async => _record('refresh');
+
+  /// Whether the battery restrictions are lifted.
+  bool unrestricted = true;
+
+  @override
+  Future<bool> batteryUnrestricted() async => unrestricted;
+
+  @override
+  Future<void> requestBatteryUnrestricted() async {
+    _record('battery');
+    unrestricted = true;
+  }
 }
 
 /// A [SummaryRepository] in memory.

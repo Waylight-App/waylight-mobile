@@ -184,7 +184,7 @@ composition root (open/closed principle). The exact API is settled in #17.
 ### Grid and sizes
 
 On the dashboard, a widget either has a size or takes the full width at
-its natural height (#208, [ADR 0011](adr/0011-dashboard-grid.md)). Sized
+its natural height (#208, [ADR 0012](adr/0012-dashboard-grid.md)). Sized
 widgets sit on a grid of square cells, 4 wide on phones and 8 on tablets:
 
 | Size | Cells | Typical use |

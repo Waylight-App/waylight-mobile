@@ -7,7 +7,6 @@ import 'package:waylight_mobile/ui/connect_server/view_models/connect_server_vie
 import 'package:waylight_mobile/ui/connect_server/widgets/connect_server_screen.dart';
 import 'package:waylight_mobile/utils/result.dart';
 
-import '../../testing/fakes/fake_action_repositories.dart';
 import '../../testing/fakes/fake_server_repository.dart';
 import '../../testing/pump_app.dart';
 
@@ -118,20 +117,9 @@ void main() {
     });
   });
 
-  testWidgets('the privacy note names Google only when push is possible', (
-    tester,
-  ) async {
+  testWidgets('shows the claim of the app', (tester) async {
     await tester.pumpScreen(ConnectServerScreen(viewModel: viewModel));
     expect(find.text(l10nEn.connectPrivacy), findsOneWidget);
-
-    final withPush = ConnectServerViewModel(
-      serverRepository: repository,
-      pushRepository: FakePushRepository(),
-    );
-    addTearDown(withPush.dispose);
-    await tester.pumpScreen(ConnectServerScreen(viewModel: withPush));
-    await tester.pumpAndSettle();
-    expect(find.text(l10nEn.connectPrivacyPush), findsOneWidget);
     expect(find.bySemanticsLabel('Waylight'), findsWidgets);
   });
 }

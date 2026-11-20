@@ -79,16 +79,14 @@ dart run flutter_native_splash:create
 
 `make help` lists all targets.
 
-### Android flavours
+### Push notifications
 
-Android has two flavours (ADR 0008): `store` receives push notifications
-through Firebase, `fdroid` contains no Firebase code. Every Android build
-names one, e.g. `flutter run --flavor store`; `make run` and
-`make integration` use `FLAVOR=store` unless you pass another. Push needs
-the Firebase values of the project as Gradle properties
-(`waylight.fcm.projectId`, `appId`, `apiKey`, `senderId`) or environment
-variables (`WAYLIGHT_FCM_PROJECT_ID`, …); without them the store build has no
-push notifications either. iOS has no flavours.
+There is one Android build. Push notifications come over a Server-Sent
+Events stream from the relay at `push.getwaylight.app` (ADR 0011, server
+ADR 0027); a foreground service holds it while push is on. Nothing needs to
+be configured to build; to try push, sign in to an instance that has the
+channel *Waylight app* turned on and switch on notifications in the app's
+settings.
 
 ### What CI builds
 

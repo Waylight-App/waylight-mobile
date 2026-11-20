@@ -38,7 +38,7 @@ repositories know how to use.
 6. **No Flutter plugin for widgets or scheduling.** `home_widget` and
    `workmanager` would wrap about the same amount of native code that we now
    own. The only new native dependency is `androidx.work:work-runtime`
-   (Apache 2.0, Google), part of both flavours.
+   (Apache 2.0), part of the one Android build (ADR 0011).
 
 ## Consequences
 

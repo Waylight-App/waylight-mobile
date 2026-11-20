@@ -30,7 +30,7 @@ request as the code.
 | | |
 | --- | --- |
 | ![Home screen as a grid of sizes](screens/home-grid.png) | ![Edit mode](screens/home-edit.png) |
-| **Grid of sizes**: small 2 × 2, medium 4 × 2, large 4 × 4, strip 4 × 1 on a grid 4 cells wide; tap opens a widget in full ([#208](https://github.com/Waylight-App/waylight-mobile/issues/208), ADR 0011) | **Edit mode**: hold to move, tap the size to change it, − hides on phones ([#209](https://github.com/Waylight-App/waylight-mobile/issues/209)) |
+| **Grid of sizes**: small 2 × 2, medium 4 × 2, large 4 × 4, strip 4 × 1 on a grid 4 cells wide; tap opens a widget in full ([#208](https://github.com/Waylight-App/waylight-mobile/issues/208), ADR 0012) | **Edit mode**: hold to move, tap the size to change it, − hides on phones ([#209](https://github.com/Waylight-App/waylight-mobile/issues/209)) |
 | ![Choose a size](screens/size-picker.png) | ![Add a widget](screens/widget-gallery.png) |
 | **Choose a size** with a live preview ([#209](https://github.com/Waylight-App/waylight-mobile/issues/209), compact views [#211](https://github.com/Waylight-App/waylight-mobile/issues/211)) | **Add a widget** from the phone ([#210](https://github.com/Waylight-App/waylight-mobile/issues/210)) |
 

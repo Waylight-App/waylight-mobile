@@ -1,4 +1,4 @@
-# ADR 0011: Dashboard grid with widget sizes
+# ADR 0012: Dashboard grid with widget sizes
 
 - Status: Accepted
 - Date: 2026-11-20
