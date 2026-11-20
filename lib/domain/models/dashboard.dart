@@ -98,7 +98,7 @@ enum WidgetSize {
 }
 
 /// A widget's place in the grid: its top left cell and its span (#208).
-typedef GridTile = ({String id, int column, int row, int columns, int rows});
+typedef GridPlace = ({String id, int column, int row, int columns, int rows});
 
 /// Places widgets of the given sizes on a grid [columns] cells wide.
 ///
@@ -106,7 +106,7 @@ typedef GridTile = ({String id, int column, int row, int columns, int rows});
 /// the first place where it fits, so a later small widget fills a gap left
 /// by a wider one (dense packing, as on a phone's home screen). Widgets
 /// wider than the grid are narrowed to its width.
-List<GridTile> packGrid(
+List<GridPlace> packGrid(
   List<({String id, WidgetSize size})> items, {
   required int columns,
 }) {
@@ -122,7 +122,7 @@ List<GridTile> packGrid(
     return true;
   }
 
-  final tiles = <GridTile>[];
+  final tiles = <GridPlace>[];
   for (final item in items) {
     final width = item.size.columns.clamp(1, columns);
     final height = item.size.rows;

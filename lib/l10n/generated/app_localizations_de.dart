@@ -596,7 +596,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get todosDeletedTodo => 'Gelöschtes To-do';
 
   @override
-  String get editTabTitle => 'Tab bearbeiten';
+  String get editTabTitle => 'Tab anordnen';
 
   @override
   String get editTabReset => 'Zurücksetzen';
@@ -605,10 +605,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get editTabHidden => 'Auf Handys ausgeblendet';
 
   @override
-  String get editTabUp => 'Nach oben';
+  String get editTabUp => 'Nach vorne';
 
   @override
-  String get editTabDown => 'Nach unten';
+  String get editTabDown => 'Nach hinten';
 
   @override
   String get editTabNotEditable =>
@@ -1576,4 +1576,33 @@ class AppLocalizationsDe extends AppLocalizations {
   String editTabSizeOf(String widget) {
     return 'Größe von $widget';
   }
+
+  @override
+  String get editTabHint =>
+      'Halten und ziehen zum Verschieben. Tippe auf die Größe, um sie zu ändern. − blendet ein Widget auf Handys aus.';
+
+  @override
+  String get editTabDone => 'Fertig';
+
+  @override
+  String editTabHide(String widget) {
+    return '$widget auf Handys ausblenden';
+  }
+
+  @override
+  String get editTabHideOnPhones => 'Auf Handys ausblenden';
+
+  @override
+  String editTabShow(String widget) {
+    return '$widget wieder anzeigen';
+  }
+
+  @override
+  String get editTabDiscardTitle => 'Änderungen verwerfen?';
+
+  @override
+  String get editTabDiscard => 'Verwerfen';
+
+  @override
+  String get editTabKeep => 'Weiter bearbeiten';
 }

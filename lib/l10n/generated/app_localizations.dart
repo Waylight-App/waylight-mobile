@@ -1121,7 +1121,7 @@ abstract class AppLocalizations {
   /// Title of the tab editor.
   ///
   /// In en, this message translates to:
-  /// **'Edit tab'**
+  /// **'Arrange tab'**
   String get editTabTitle;
 
   /// Lets the phone layout follow the desktop grid again.
@@ -1139,13 +1139,13 @@ abstract class AppLocalizations {
   /// Tooltip of the up button.
   ///
   /// In en, this message translates to:
-  /// **'Move up'**
+  /// **'Move earlier'**
   String get editTabUp;
 
   /// Tooltip of the down button.
   ///
   /// In en, this message translates to:
-  /// **'Move down'**
+  /// **'Move later'**
   String get editTabDown;
 
   /// Team tab or unknown tab.
@@ -2893,6 +2893,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Size of {widget}'**
   String editTabSizeOf(String widget);
+
+  /// Hint at the top of the edit mode of a tab.
+  ///
+  /// In en, this message translates to:
+  /// **'Hold and drag to move. Tap the size to change it. − hides a widget on phones.'**
+  String get editTabHint;
+
+  /// Button that saves the edit mode of a tab.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get editTabDone;
+
+  /// Tooltip of the − button of a widget in the edit mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide {widget} on phones'**
+  String editTabHide(String widget);
+
+  /// Button in the size sheet that hides the widget on phones.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide on phones'**
+  String get editTabHideOnPhones;
+
+  /// Tooltip of a hidden widget in the edit mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Show {widget} again'**
+  String editTabShow(String widget);
+
+  /// Question when leaving the edit mode without saving.
+  ///
+  /// In en, this message translates to:
+  /// **'Discard your changes?'**
+  String get editTabDiscardTitle;
+
+  /// Leaves the edit mode without saving.
+  ///
+  /// In en, this message translates to:
+  /// **'Discard'**
+  String get editTabDiscard;
+
+  /// Stays in the edit mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep editing'**
+  String get editTabKeep;
 }
 
 class _AppLocalizationsDelegate
