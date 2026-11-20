@@ -55,7 +55,14 @@ jobs:
           cache: true
       # Until store signing is set up (see ROADMAP.md), the APK is signed
       # with the debug key: fine for testers, not for the stores.
+      # The Firebase options of the project (ADR 0008, #178); without the
+      # secrets, e.g. in forks, the store APK builds without push.
       - run: flutter build apk --release --flavor store
+        env:
+          WAYLIGHT_FCM_PROJECT_ID: ${{ secrets.WAYLIGHT_FCM_PROJECT_ID }}
+          WAYLIGHT_FCM_APP_ID: ${{ secrets.WAYLIGHT_FCM_APP_ID }}
+          WAYLIGHT_FCM_API_KEY: ${{ secrets.WAYLIGHT_FCM_API_KEY }}
+          WAYLIGHT_FCM_SENDER_ID: ${{ secrets.WAYLIGHT_FCM_SENDER_ID }}
       - run: flutter build apk --release --flavor fdroid
       - name: Attach the APKs to the release
         env:

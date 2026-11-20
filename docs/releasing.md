@@ -35,6 +35,22 @@ Configuration: `release-please-config.json`,
 
 Store identifiers can never change after the first store release.
 
+## Firebase options
+
+The store APK of a release receives push notifications only with the
+Firebase options of the project `waylight-app` (ADR 0008, #178). They are
+repository secrets, read by the release workflow:
+
+| Secret | Value |
+| --- | --- |
+| `WAYLIGHT_FCM_PROJECT_ID` | `project_id` of `google-services.json` |
+| `WAYLIGHT_FCM_APP_ID` | `mobilesdk_app_id` |
+| `WAYLIGHT_FCM_API_KEY` | `current_key` |
+| `WAYLIGHT_FCM_SENDER_ID` | `project_number` |
+
+For local builds put the same values into `~/.gradle/gradle.properties` as
+`waylight.fcm.projectId`, `appId`, `apiKey` and `senderId`.
+
 ## Signing and stores
 
 Not set up yet ([#25](https://github.com/Waylight-App/waylight-mobile/issues/25)). Until then
