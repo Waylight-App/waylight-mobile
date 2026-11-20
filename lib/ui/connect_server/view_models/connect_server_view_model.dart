@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 
+import 'package:waylight_mobile/data/repositories/push/push_repository.dart';
 import 'package:waylight_mobile/data/repositories/server/server_repository.dart';
 import 'package:waylight_mobile/domain/models/server_address.dart';
 import 'package:waylight_mobile/domain/models/server_status.dart';
@@ -9,11 +10,25 @@ import 'package:waylight_mobile/utils/result.dart';
 /// The state and actions of the screen that connects a server.
 class ConnectServerViewModel extends ChangeNotifier {
   /// Creates the view model.
-  ConnectServerViewModel({required this._serverRepository}) {
+  ConnectServerViewModel({
+    required this._serverRepository,
+    PushRepository? pushRepository,
+  }) {
+    // Whether this build can receive push notifications through Google,
+    // which the privacy note has to mention (#176).
+    pushRepository?.available().then((on) {
+      if (on && !pushPossible) {
+        pushPossible = true;
+        notifyListeners();
+      }
+    }).ignore();
     connect = Command1(_connect);
   }
 
   final ServerRepository _serverRepository;
+
+  /// Whether push notifications through Google are possible in this build.
+  bool pushPossible = false;
   bool _insecure = false;
 
   /// Checks the entered address and saves it if a Waylight server answers.

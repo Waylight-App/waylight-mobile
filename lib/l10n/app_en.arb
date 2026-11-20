@@ -911,5 +911,7 @@
   "grafanaChoosePanel": "Choose a dashboard and a panel in the web interface.",
   "@grafanaChoosePanel": {"description": "Grafana widgets (#165)."},
   "grafanaPanelAlt": "Grafana panel {title}",
-  "@grafanaPanelAlt": {"description": "Screen reader text of a panel image.", "placeholders": {"title": {"type": "String", "example": "CPU"}}}
+  "@grafanaPanelAlt": {"description": "Screen reader text of a panel image.", "placeholders": {"title": {"type": "String", "example": "CPU"}}},
+  "connectPrivacyPush": "Your data goes to your server only. If you switch on push notifications, Google delivers them, end-to-end encrypted.",
+  "@connectPrivacyPush": {"description": "Privacy note of the store flavour, which can receive push notifications through Google (#176)."}
 }

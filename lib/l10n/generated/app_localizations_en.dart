@@ -1540,4 +1540,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String grafanaPanelAlt(String title) {
     return 'Grafana panel $title';
   }
+
+  @override
+  String get connectPrivacyPush =>
+      'Your data goes to your server only. If you switch on push notifications, Google delivers them, end-to-end encrypted.';
 }

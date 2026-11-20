@@ -2833,6 +2833,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Grafana panel {title}'**
   String grafanaPanelAlt(String title);
+
+  /// Privacy note of the store flavour, which can receive push notifications through Google (#176).
+  ///
+  /// In en, this message translates to:
+  /// **'Your data goes to your server only. If you switch on push notifications, Google delivers them, end-to-end encrypted.'**
+  String get connectPrivacyPush;
 }
 
 class _AppLocalizationsDelegate
