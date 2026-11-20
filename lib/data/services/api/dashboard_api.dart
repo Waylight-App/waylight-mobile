@@ -53,6 +53,44 @@ class DashboardApi {
     Error(:final error) => Result.error(error),
   };
 
+  /// The widget kinds the server offers (`GET /api/modules`), for adding
+  /// widgets from the phone (#210).
+  Future<Result<List<String>>> widgetKinds(ServerAddress server) async =>
+      switch (await _client.getJson(server.resolve('/api/modules'))) {
+        Ok(value: {'widgetKinds': final List<Object?> kinds}) => Result.ok([
+          for (final kind in kinds)
+            if (kind is String) kind,
+        ]),
+        Ok() => const Result.error(ApiException(ApiFailure.server)),
+        Error(:final error) => Result.error(error),
+      };
+
+  /// Adds a widget of [kind] to [tabId] at the start of desktop row [row],
+  /// as wide as half the desktop grid (`POST /api/dashboard/tabs/{id}/widgets`).
+  /// The server appends it to the phone layout too.
+  Future<Result<WidgetPlacement>> addWidget(
+    ServerAddress server,
+    String tabId,
+    String kind, {
+    required int row,
+  }) async => switch (await _client.postJson(
+    server.resolve('/api/dashboard/tabs/${Uri.encodeComponent(tabId)}/widgets'),
+    body: {
+      'kind': kind,
+      'x': 0,
+      'y': row,
+      'w': addedWidgetColumns,
+      'h': addedWidgetRows,
+      'config': <String, Object?>{},
+    },
+  )) {
+    Ok(value: {'id': final String id, 'kind': final String kind}) => Result.ok(
+      WidgetPlacement(id: id, kind: kind),
+    ),
+    Ok() => const Result.error(ApiException(ApiFailure.server)),
+    Error(:final error) => Result.error(error),
+  };
+
   /// Lets the phone layout of [tabId] follow the desktop grid again.
   Future<Result<void>> resetLayout(ServerAddress server, String tabId) =>
       _client.delete(_layoutUri(server, tabId));
@@ -93,6 +131,7 @@ Dashboard? parseDashboard(Object? json) {
   }) {
     final byId = <String, WidgetPlacement>{};
     final grid = <GridPosition>[];
+    var desktopRows = 0;
     for (final w in widgets) {
       if (w case {
         'id': final String id,
@@ -114,6 +153,11 @@ Dashboard? parseDashboard(Object? json) {
           config: config,
         );
         grid.add((id: id, x: x, y: y));
+        final height = switch (w['h']) {
+          final int h => h,
+          _ => 1,
+        };
+        if (y + height > desktopRows) desktopRows = y + height;
       } else {
         return null;
       }
@@ -175,6 +219,7 @@ Dashboard? parseDashboard(Object? json) {
         mine: json['mine'] != false,
         sizes: sizes,
         sizesOnServer: sizesOnServer,
+        desktopRows: desktopRows,
       ),
     );
   }

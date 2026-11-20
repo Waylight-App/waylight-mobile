@@ -1148,12 +1148,6 @@ abstract class AppLocalizations {
   /// **'Move later'**
   String get editTabDown;
 
-  /// Team tab or unknown tab.
-  ///
-  /// In en, this message translates to:
-  /// **'This tab is shared with you and cannot be changed here.'**
-  String get editTabNotEditable;
-
   /// Servers in the settings.
   ///
   /// In en, this message translates to:
@@ -2941,6 +2935,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Keep editing'**
   String get editTabKeep;
+
+  /// Small dashboard tile of a widget without a compact view yet.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to see everything'**
+  String get dashboardTapToOpen;
+
+  /// Number of open to-dos in a small dashboard tile.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 open} other{{count} open}}'**
+  String todosCompactOpen(int count);
+
+  /// The next open to-do in a small dashboard tile.
+  ///
+  /// In en, this message translates to:
+  /// **'next: {title}'**
+  String todosCompactNext(String title);
+
+  /// The following departures in a small dashboard tile.
+  ///
+  /// In en, this message translates to:
+  /// **'then {times}'**
+  String transitThen(String times);
+
+  /// More upcoming events in a small dashboard tile.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{+1 more} other{+{count} more}}'**
+  String calendarMore(int count);
+
+  /// Status overview in a small tile when nothing is down.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 service up} other{{count} services up}}'**
+  String statusAllUp(int count);
+
+  /// Status overview in a small tile when services are down.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 service down} other{{count} services down}}'**
+  String statusSomeDown(int count);
+
+  /// Button in the header of the edit mode that opens the widget gallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Add widget'**
+  String get galleryOpen;
+
+  /// Title of the widget gallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to “{tab}”'**
+  String galleryTitle(String tab);
+
+  /// Search field of the widget gallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Search widgets'**
+  String get gallerySearch;
+
+  /// Adds a widget from the gallery to the tab.
+  ///
+  /// In en, this message translates to:
+  /// **'Add'**
+  String get galleryAdd;
+
+  /// Shown in the gallery for a widget just added.
+  ///
+  /// In en, this message translates to:
+  /// **'Added'**
+  String get galleryAdded;
+
+  /// The gallery search found nothing.
+  ///
+  /// In en, this message translates to:
+  /// **'No widgets match.'**
+  String get galleryEmpty;
+
+  /// Tooltip of the menu in the header of the edit mode.
+  ///
+  /// In en, this message translates to:
+  /// **'More'**
+  String get editTabMore;
 }
 
 class _AppLocalizationsDelegate

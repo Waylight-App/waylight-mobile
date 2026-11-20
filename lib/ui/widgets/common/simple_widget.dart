@@ -16,6 +16,7 @@ class SimpleWidget<T> extends StatelessWidget {
     required this.builder,
     this.interval = const Duration(minutes: 5),
     this.errorText,
+    this.compact,
     super.key,
   });
 
@@ -37,6 +38,9 @@ class SimpleWidget<T> extends StatelessWidget {
   /// See [RemoteWidget.errorText].
   final String? Function(Exception error)? errorText;
 
+  /// The compact form for small and strip tiles (see `WidgetFrame.compact`).
+  final Widget Function(BuildContext context, T data, WidgetSize size)? compact;
+
   @override
   Widget build(BuildContext context) => RemoteWidget<T>(
     title: placement.title.isNotEmpty ? placement.title : defaultTitle,
@@ -44,5 +48,6 @@ class SimpleWidget<T> extends StatelessWidget {
     builder: builder,
     interval: interval,
     errorText: errorText,
+    compact: compact,
   );
 }

@@ -87,6 +87,7 @@ it by purpose, not by size.
 | [`ViewModelHost`](#viewmodelhost) | Creating and disposing a screen's view model in a route | Router |
 | [`WidgetSizeScope`](#widgetsizescope) | Telling a widget's view the size of its dashboard tile | Dashboard grid |
 | [`SizedGrid`](#sizedgrid) | Items of different sizes on a grid of square cells | Dashboard, edit mode, size sheet |
+| [`CompactCard`](#compactcard) | A widget in a small or strip tile | Clock, weather, to-dos, transit |
 
 Planned with their issues (from the mockups): `StatusDot` and `FreshnessLabel`
 (#17, #19), `TabScaffold` for the dashboard (#16), `SettingsSection`
@@ -203,6 +204,29 @@ final shown = switch (size) {
 Compact views follow the mockups in `docs/design/` (*Grid of sizes*,
 *Choose a size*) and must not overflow in any size their kind declares
 (#211).
+
+### CompactCard
+
+The card of a widget in a small (2 × 2) or strip (4 × 1) tile: the title
+and one short content — a small tile stacks them, a strip puts them on one
+line and cuts the content with an ellipsis. `isCompact(size)` says when to
+use it. Views on `WidgetFrame` (`RemoteWidget`, `SimpleWidget`) only pass
+`compact:`; the frame shows the card with loading and error states, and
+`TapToOpenHint` for views without a compact form.
+
+```dart
+SimpleWidget<T>(
+  placement: placement,
+  defaultTitle: l10n.myWidgetTitle,
+  query: myQuery,
+  builder: (context, data) => MyFullView(data),
+  compact: (context, data, size) => size == WidgetSize.strip
+      ? Text(data.oneLine) // one line, cut with an ellipsis
+      : MySmallView(data), // a few lines in a 2 × 2 tile
+)
+```
+
+See `ui/widgets/weather/` or `ui/widgets/todos/` for real ones.
 
 ## Adding a component
 

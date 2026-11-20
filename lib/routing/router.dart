@@ -11,12 +11,9 @@ import 'package:waylight_mobile/ui/auth_callback/widgets/auth_callback_screen.da
 import 'package:waylight_mobile/ui/connect_server/view_models/connect_server_view_model.dart';
 import 'package:waylight_mobile/ui/connect_server/widgets/connect_server_screen.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
-import 'package:waylight_mobile/ui/core/transitions.dart';
 import 'package:waylight_mobile/ui/core/widgets/view_model_host.dart';
 import 'package:waylight_mobile/ui/dashboard/view_models/dashboard_view_model.dart';
 import 'package:waylight_mobile/ui/dashboard/widgets/dashboard_screen.dart';
-import 'package:waylight_mobile/ui/edit_tab/view_models/edit_tab_view_model.dart';
-import 'package:waylight_mobile/ui/edit_tab/widgets/edit_tab_screen.dart';
 import 'package:waylight_mobile/ui/home_widgets/home_widget_texts.dart';
 import 'package:waylight_mobile/ui/lock/view_models/lock_view_model.dart';
 import 'package:waylight_mobile/ui/lock/widgets/lock_screen.dart';
@@ -244,24 +241,6 @@ GoRouter createRouter(
       builder: (context, state) => ViewModelHost(
         create: (context) => LockViewModel(lock: context.read()),
         builder: (context, viewModel) => LockScreen(viewModel: viewModel),
-      ),
-    ),
-    GoRoute(
-      path: Routes.editTab,
-      // The edit mode fades in over the dashboard, so it feels like the same
-      // screen switching into editing (#209).
-      pageBuilder: (context, state) => CustomTransitionPage<bool>(
-        key: state.pageKey,
-        transitionsBuilder: fadeTransition,
-        child: ViewModelHost(
-          create: (context) => EditTabViewModel(
-            tabId: state.uri.queryParameters['tab'] ?? '',
-            serverRepository: context.read(),
-            dashboardRepository: context.read(),
-          ),
-          builder: (context, viewModel) =>
-              EditTabScreen(viewModel: viewModel, registry: nativeWidgets),
-        ),
       ),
     ),
     GoRoute(

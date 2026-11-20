@@ -7,6 +7,7 @@ import 'package:waylight_mobile/data/repositories/push/push_repository.dart';
 import 'package:waylight_mobile/data/repositories/server/server_repository.dart';
 import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/domain/models/home_snapshot.dart';
+import 'package:waylight_mobile/ui/dashboard/view_models/arrange_view_model.dart';
 import 'package:waylight_mobile/utils/command.dart';
 import 'package:waylight_mobile/utils/result.dart';
 
@@ -84,6 +85,33 @@ class DashboardViewModel extends ChangeNotifier {
   /// Loads the tabs and widgets; run again to reload.
   late final Command0<Dashboard> load;
 
+  ArrangeViewModel? _arranging;
+
+  /// The edit mode of the tab being arranged (#209), or `null`.
+  ArrangeViewModel? get arranging => _arranging;
+
+  /// Switches [tab] into the edit mode; team tabs cannot be arranged.
+  void arrange(DashboardTab tab) {
+    if (!tab.mine || _arranging != null) return;
+    _arranging = ArrangeViewModel(
+      tab: tab,
+      serverRepository: _serverRepository,
+      dashboardRepository: _dashboardRepository,
+    );
+    notifyListeners();
+  }
+
+  /// Leaves the edit mode; with [reload] after saving, so the dashboard
+  /// shows the new layout.
+  void stopArranging({bool reload = false}) {
+    final arranging = _arranging;
+    if (arranging == null) return;
+    _arranging = null;
+    arranging.dispose();
+    notifyListeners();
+    if (reload) load.execute().ignore();
+  }
+
   /// The address of [tabId] in the web interface, for widgets without a
   /// native view; `null` without a server.
   Uri? webUrl(String tabId) => _serverRepository.current
@@ -118,6 +146,7 @@ class DashboardViewModel extends ChangeNotifier {
 
   @override
   void dispose() {
+    _arranging?.dispose();
     _offline?.removeListener(notifyListeners);
     load.dispose();
     super.dispose();

@@ -28,6 +28,7 @@ final class DashboardTab {
     this.mine = true,
     this.sizes = const {},
     this.sizesOnServer = false,
+    this.desktopRows = 0,
   });
 
   /// The server's id of the tab.
@@ -55,6 +56,10 @@ final class DashboardTab {
   /// device.
   final bool sizesOnServer;
 
+  /// The number of rows the widgets take in the desktop grid; a widget
+  /// added from the phone goes below them (#210).
+  final int desktopRows;
+
   /// A copy of the tab with [sizes] for its widgets, in [layout] too.
   DashboardTab withSizes(Map<String, WidgetSize> sizes) => DashboardTab(
     id: id,
@@ -64,8 +69,17 @@ final class DashboardTab {
     mine: mine,
     sizes: Map.unmodifiable(sizes),
     sizesOnServer: sizesOnServer,
+    desktopRows: desktopRows,
   );
 }
+
+/// The width of a widget added from the phone (#210), in columns of the
+/// twelve of the desktop grid: half of it.
+const addedWidgetColumns = 6;
+
+/// The height of a widget added from the phone (#210), in rows of the
+/// desktop grid.
+const addedWidgetRows = 4;
 
 /// The size of a widget in the dashboard grid (#208), in cells of a grid
 /// that is four cells wide on phones: like the widgets of a phone's home

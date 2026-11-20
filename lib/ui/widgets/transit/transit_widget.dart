@@ -43,6 +43,40 @@ class TransitWidget extends StatelessWidget {
         interval: const Duration(minutes: 1),
         errorText: (error) =>
             error is NoStopException ? l10n.transitNoStop : null,
+        compact: (context, departures, size) {
+          final next = [
+            for (final d in departures)
+              if (!d.cancelled) d,
+          ];
+          if (next.isEmpty) return Text(l10n.transitEmpty);
+          final first = next.first;
+          final minutes = viewModel.minutesUntil(first);
+          final when = minutes == 0
+              ? l10n.transitNow
+              : l10n.transitInMinutes(minutes);
+          final line = '${first.line} ${first.headsign}';
+          if (size == WidgetSize.strip) return Text('$line · $when');
+          final time = DateFormat.Hm(
+            Localizations.localeOf(context).toLanguageTag(),
+          );
+          final later = [
+            for (final d in next.skip(1).take(2)) time.format(d.expected),
+          ];
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(when, style: Theme.of(context).textTheme.headlineSmall),
+              Text(line, maxLines: 2, overflow: TextOverflow.ellipsis),
+              if (later.isNotEmpty)
+                Text(
+                  l10n.transitThen(later.join(', ')),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+            ],
+          );
+        },
         builder: (context, departures) => departures.isEmpty
             ? Text(l10n.transitEmpty)
             : Column(

@@ -3,6 +3,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:material_ui/material_ui.dart';
 
 import 'package:waylight_mobile/domain/models/dashboard.dart';
+import 'package:waylight_mobile/ui/core/widget_size_scope.dart';
 import 'package:waylight_mobile/ui/widgets/clock/clock_view_model.dart';
 import 'package:waylight_mobile/ui/widgets/clock/clock_widget.dart';
 
@@ -84,4 +85,34 @@ void main() {
     // Removing the widget stops its timer.
     await tester.pumpWidget(const SizedBox());
   });
+
+  for (final (size, pixels) in [
+    (WidgetSize.small, const Size(150, 150)),
+    (WidgetSize.strip, const Size(328, 70)),
+  ]) {
+    testWidgets('fits a ${size.name} tile (#211)', (tester) async {
+      await tester.pumpScreen(
+        Align(
+          alignment: Alignment.topLeft,
+          child: SizedBox.fromSize(
+            size: pixels,
+            child: WidgetSizeScope(
+              size: size,
+              child: const ClockWidget(
+                widget: WidgetPlacement(
+                  id: 'w',
+                  kind: 'clock',
+                  config: {'timeZone': 'Europe/Berlin', 'showSeconds': true},
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+
+      expect(find.text('Clock'), findsOneWidget);
+      expect(find.text('Europe/Berlin'), findsNothing);
+      await tester.pumpWidget(const SizedBox());
+    });
+  }
 }

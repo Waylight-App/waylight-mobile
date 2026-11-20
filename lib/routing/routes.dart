@@ -24,9 +24,6 @@ abstract final class Routes {
   /// Waits for biometrics or the device PIN (#46).
   static const locked = '/locked';
 
-  /// Edits the phone layout of a tab: `/edit-tab?tab=<id>` (#53).
-  static const editTab = '/edit-tab';
-
   /// The agenda of the next weeks and new events (#100).
   static const calendar = '/calendar';
 
@@ -67,7 +64,6 @@ abstract final class Routes {
     auth,
     search,
     locked,
-    editTab,
     calendar,
     shopping,
     feeds,
