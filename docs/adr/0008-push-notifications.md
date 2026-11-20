@@ -44,6 +44,10 @@ app side:
 5. **Dart keeps the protocol in one place for tests.** The server's
    `pushproto` package defines the format; the native code is tested against
    a payload sealed by it.
+6. **iOS receives through APNs directly, not through Firebase.** The push
+   relay (server ADR 0025) sends to FCM for Android and to APNs for iOS. The
+   iOS app contains no Firebase code; only Apple takes part in delivering to
+   iPhones. The APNs key stays with the relay.
 
 ## Consequences
 
@@ -60,5 +64,8 @@ app side:
   F-Droid build and decrypt in a background Flutter isolate.
 - **Key in Dart's secure storage** (as first built in #94): the native
   receivers cannot read it reliably, so every message would need Flutter.
+- **Firebase for iOS as well:** one provider API in the relay, but the iOS
+  app would carry the Firebase SDK, Google would take part in every iPhone
+  delivery, and APNs would still be needed behind Firebase.
 - **UnifiedPush for everyone:** needs a distributor app on the phone; it can
   be added to the F-Droid build later.
