@@ -8,11 +8,13 @@ import 'package:waylight_mobile/ui/core/link_opener.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
 import 'package:waylight_mobile/ui/widgets/common/error_snack_listener.dart';
+import 'package:waylight_mobile/ui/widgets/common/summary_button.dart';
 import 'package:waylight_mobile/ui/widgets/rss/rss_reader_view_model.dart';
 import 'package:waylight_mobile/utils/result.dart';
 
-/// The feed reader (#106).
-class RssScreen extends StatelessWidget {
+/// The feed reader (#106). With summaries on the server, a long press on an
+/// article summarises it (#155).
+class RssScreen extends StatefulWidget {
   /// Creates the screen for [viewModel].
   const RssScreen({required this.viewModel, super.key});
 
@@ -20,9 +22,24 @@ class RssScreen extends StatelessWidget {
   final RssReaderViewModel viewModel;
 
   @override
+  State<RssScreen> createState() => _RssScreenState();
+}
+
+class _RssScreenState extends State<RssScreen> {
+  bool _summaries = false;
+
+  @override
+  void initState() {
+    super.initState();
+    summariesAvailable(context).then((on) {
+      if (mounted && on) setState(() => _summaries = true);
+    }).ignore();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final vm = viewModel;
+    final vm = widget.viewModel;
     return ErrorSnackListener(
       listenable: vm,
       takeError: vm.takeLastError,
@@ -116,6 +133,9 @@ class RssScreen extends StatelessWidget {
                               unawaited(vm.setRead(a, read: true));
                               unawaited(LinkOpener.of(context).open(a.link!));
                             },
+                      onLongPress: _summaries && a.link != null
+                          ? () => showSummarySheet(context, url: a.link)
+                          : null,
                     ),
                 ],
               ),

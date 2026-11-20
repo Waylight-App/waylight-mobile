@@ -27,6 +27,22 @@ void main() {
     expect((result as Ok<Object?>).value, {'ok': true});
   });
 
+  test('reads a plain-text answer and maps its errors', () async {
+    final ok = await clientAnswering(200, 'Once a week.\n').postText(
+      Uri.parse('https://w.example/api/summary/ask'),
+      body: {'question': 'q'},
+    );
+    expect(
+      ok,
+      isA<Ok<String>>().having((r) => r.value, 'value', 'Once a week.'),
+    );
+    final failed = await clientAnswering(
+      503,
+      '{"error":{"code":"unavailable","message":"Ollama is off"}}',
+    ).postText(Uri.parse('https://w.example/api/summary/ask'));
+    expect(failed, isA<Error<String>>());
+  });
+
   test('sends JSON bodies with the content type', () async {
     late http.Request sent;
     final client = ApiClient(

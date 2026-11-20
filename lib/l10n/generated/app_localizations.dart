@@ -2779,6 +2779,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Updated {time}'**
   String homeWidgetUpdated(String time);
+
+  /// Field below an AI summary to ask a question.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask about it'**
+  String get summaryAsk;
 }
 
 class _AppLocalizationsDelegate

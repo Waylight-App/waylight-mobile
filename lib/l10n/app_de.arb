@@ -446,5 +446,6 @@
   "homeWidgetNoStop": "Füge dem Dashboard ein ÖPNV-Widget mit Haltestelle hinzu",
   "homeWidgetNoDepartures": "Keine Abfahrten",
   "homeWidgetCancelled": "fällt aus",
-  "homeWidgetUpdated": "Stand {time}"
+  "homeWidgetUpdated": "Stand {time}",
+  "summaryAsk": "Frage dazu stellen"
 }

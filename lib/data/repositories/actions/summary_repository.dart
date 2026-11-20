@@ -8,6 +8,14 @@ abstract interface class SummaryRepository {
   /// Whether the server has summaries set up; otherwise nothing is shown.
   Future<bool> available(ServerAddress server);
 
+  /// Answers [question] about [context] in [language] (#155).
+  Future<Result<String>> ask(
+    ServerAddress server, {
+    required String question,
+    required String context,
+    required String language,
+  });
+
   /// Summarises [text], or the page behind [url], in [language].
   Future<Result<String>> summarise(
     ServerAddress server, {
@@ -59,5 +67,17 @@ class SummaryRepositoryRemote implements SummaryRepository {
         'language': language,
       },
     ),
+  );
+
+  @override
+  Future<Result<String>> ask(
+    ServerAddress server, {
+    required String question,
+    required String context,
+    required String language,
+  }) => _api.postText(
+    server,
+    '/api/summary/ask',
+    body: {'question': question, 'context': context, 'language': language},
   );
 }

@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
 import 'package:waylight_mobile/data/repositories/actions/summary_repository.dart';
@@ -44,5 +45,16 @@ void main() {
   testWidgets('is hidden without summaries', (tester) async {
     await pump(tester, configured: false);
     expect(find.byTooltip(l10nEn.summaryAction), findsNothing);
+  });
+
+  testWidgets('asks a question about the summary', (tester) async {
+    final summary = await pump(tester, configured: true);
+    await tester.tap(find.byTooltip(l10nEn.summaryAction));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byType(TextField), 'How often?');
+    await tester.tap(find.byIcon(Icons.send));
+    await tester.pumpAndSettle();
+    expect(summary.calls.last, 'ask:How often?');
+    expect(find.text('Once a week.'), findsOneWidget);
   });
 }

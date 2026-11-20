@@ -893,5 +893,7 @@
   "homeWidgetCancelled": "cancelled",
   "@homeWidgetCancelled": {"description": "A cancelled departure."},
   "homeWidgetUpdated": "Updated {time}",
-  "@homeWidgetUpdated": {"description": "Age of a home screen widget.", "placeholders": {"time": {"type": "String", "example": "10:42"}}}
+  "@homeWidgetUpdated": {"description": "Age of a home screen widget.", "placeholders": {"time": {"type": "String", "example": "10:42"}}},
+  "summaryAsk": "Ask about it",
+  "@summaryAsk": {"description": "Field below an AI summary to ask a question."}
 }
