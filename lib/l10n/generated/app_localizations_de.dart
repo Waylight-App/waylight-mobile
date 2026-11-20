@@ -59,8 +59,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get homeDisconnect => 'Anderen Server verwenden';
 
   @override
-  String get connectPrivacy =>
-      'Die App spricht nur mit deinem Server und mit niemandem sonst.';
+  String get connectPrivacy => 'Dein Waylight. Deine Daten. Dein Server.';
 
   @override
   String get errorUnreachable =>
@@ -1440,7 +1439,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get settingsPushHint =>
-      'Nachrichten aus den Benachrichtigungsregeln von Waylight kommen Ende-zu-Ende-verschlüsselt an. Schalte im Web auch den Kanal „Waylight-App“ ein.';
+      'Nachrichten aus den Benachrichtigungsregeln von Waylight kommen Ende-zu-Ende-verschlüsselt über den Waylight-Relay an, ohne Google. Solange es an ist, zeigt Android dauerhaft „Waylight ist verbunden“. Schalte im Web auch den Kanal „Waylight-App“ ein.';
 
   @override
   String get settingsPushDenied =>
@@ -1544,5 +1543,9 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
-  String get connectPrivacyPush => 'Dein Waylight. Deine Daten. Dein Server.';
+  String get settingsPushBattery =>
+      'Android kann die Verbindung zum Akkusparen trennen.';
+
+  @override
+  String get settingsPushBatteryAction => 'Erlauben';
 }

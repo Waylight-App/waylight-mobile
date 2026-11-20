@@ -68,4 +68,11 @@ class PushRepositoryRemote implements PushRepository {
     await _store.delete(_onKey);
     return result;
   }
+
+  @override
+  Future<bool> batteryUnrestricted() => _device.batteryUnrestricted();
+
+  @override
+  Future<void> requestBatteryUnrestricted() =>
+      _device.requestBatteryUnrestricted();
 }

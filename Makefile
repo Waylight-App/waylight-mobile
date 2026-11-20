@@ -2,7 +2,6 @@
 # Uses `fvm flutter` when FVM is installed, plain `flutter` otherwise.
 FLUTTER ?= $(shell command -v fvm >/dev/null 2>&1 && echo "fvm flutter" || echo flutter)
 # Android flavour of run and integration (ADR 0008); iOS ignores it.
-FLAVOR ?= store
 DART    ?= $(shell command -v fvm >/dev/null 2>&1 && echo "fvm dart" || echo dart)
 COVERAGE_MIN ?= 80
 # Server of the end-to-end tests (make integration).
@@ -43,10 +42,10 @@ check-generated: gen ## Fail if generated files are not committed
 ci: deps check-generated format-check lint coverage ## Everything CI checks, before every pull request
 
 integration: ## End-to-end tests on the connected device against WAYLIGHT_URL
-	$(FLUTTER) test integration_test --flavor $(FLAVOR) --dart-define=WAYLIGHT_URL=$(WAYLIGHT_URL) --dart-define=WAYLIGHT_PASSWORD=$(WAYLIGHT_PASSWORD)
+	$(FLUTTER) test integration_test --dart-define=WAYLIGHT_URL=$(WAYLIGHT_URL) --dart-define=WAYLIGHT_PASSWORD=$(WAYLIGHT_PASSWORD)
 
-run: ## Start the app on the connected device (FLAVOR=store or fdroid, ADR 0008)
-	$(FLUTTER) run --flavor $(FLAVOR)
+run: ## Start the app on the connected device
+	$(FLUTTER) run
 
 clean: ## Remove build output
 	$(FLUTTER) clean

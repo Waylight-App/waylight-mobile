@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Texts of the push service's permanent notification (server ADR 0027). -->
+<resources>
+    <string name="push_connection_channel">Connection for notifications</string>
+    <string name="push_connection_title">Waylight is connected</string>
+    <string name="push_connection_text">Receives your notifications. You can hide this notification in the system settings.</string>
+</resources>

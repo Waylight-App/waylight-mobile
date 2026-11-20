@@ -14,7 +14,7 @@
   "connectInsecureWarning": "Ohne https:// wird dein Passwort unverschlüsselt übertragen. Nutze das nur in deinem eigenen Netz.",
   "homeSetupRequired": "Dieser Server hat noch kein Konto. Schließe zuerst die Einrichtung im Browser ab.",
   "homeDisconnect": "Anderen Server verwenden",
-  "connectPrivacy": "Die App spricht nur mit deinem Server und mit niemandem sonst.",
+  "connectPrivacy": "Dein Waylight. Deine Daten. Dein Server.",
   "errorUnreachable": "Der Server ist nicht erreichbar. Ist dein Handy im selben Netz oder VPN?",
   "errorUnauthorized": "Deine Sitzung ist abgelaufen. Bitte melde dich erneut an.",
   "errorForbidden": "Dein Konto darf das nicht.",
@@ -425,7 +425,7 @@
   "securitySessionEnded": "Abgemeldet.",
   "settingsNotifications": "Benachrichtigungen",
   "settingsPushSwitch": "Benachrichtigungen auf diesem Handy",
-  "settingsPushHint": "Nachrichten aus den Benachrichtigungsregeln von Waylight kommen Ende-zu-Ende-verschlüsselt an. Schalte im Web auch den Kanal „Waylight-App“ ein.",
+  "settingsPushHint": "Nachrichten aus den Benachrichtigungsregeln von Waylight kommen Ende-zu-Ende-verschlüsselt über den Waylight-Relay an, ohne Google. Solange es an ist, zeigt Android dauerhaft „Waylight ist verbunden“. Schalte im Web auch den Kanal „Waylight-App“ ein.",
   "settingsPushDenied": "Benachrichtigungen sind für diese App in den Systemeinstellungen gesperrt.",
   "settingsPushNotInBuild": "Diese Version der App hat keine Push-Benachrichtigungen.",
   "summaryAction": "Zusammenfassen",
@@ -456,5 +456,6 @@
   "grafanaPanelTitle": "Grafana-Panel",
   "grafanaChoosePanel": "Wähle in der Weboberfläche ein Dashboard und ein Panel.",
   "grafanaPanelAlt": "Grafana-Panel {title}",
-  "connectPrivacyPush": "Dein Waylight. Deine Daten. Dein Server."
+  "settingsPushBattery": "Android kann die Verbindung zum Akkusparen trennen.",
+  "settingsPushBatteryAction": "Erlauben"
 }

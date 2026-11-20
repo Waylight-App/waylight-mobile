@@ -59,7 +59,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeDisconnect => 'Use another server';
 
   @override
-  String get connectPrivacy => 'The app talks to your server and nobody else.';
+  String get connectPrivacy => 'Your Waylight. Your data. Your server.';
 
   @override
   String get errorUnreachable =>
@@ -1438,7 +1438,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsPushHint =>
-      'Messages of Waylight’s notification rules arrive end-to-end encrypted. Turn on the channel “Waylight app” in the web interface too.';
+      'Messages from the notification rules of Waylight arrive end-to-end encrypted through the Waylight relay, without Google. While on, Android shows a permanent notification “Waylight is connected”. In the web interface, also turn on the channel “Waylight app”.';
 
   @override
   String get settingsPushDenied =>
@@ -1542,5 +1542,9 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get connectPrivacyPush => 'Your Waylight. Your data. Your server.';
+  String get settingsPushBattery =>
+      'Android may cut the connection to save battery.';
+
+  @override
+  String get settingsPushBatteryAction => 'Allow';
 }

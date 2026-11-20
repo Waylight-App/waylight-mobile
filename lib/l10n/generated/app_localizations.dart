@@ -182,10 +182,10 @@ abstract class AppLocalizations {
   /// **'Use another server'**
   String get homeDisconnect;
 
-  /// Footnote on the connect screen about privacy.
+  /// Claim on the connect screen.
   ///
   /// In en, this message translates to:
-  /// **'The app talks to your server and nobody else.'**
+  /// **'Your Waylight. Your data. Your server.'**
   String get connectPrivacy;
 
   /// Error: no answer from the server.
@@ -2651,7 +2651,7 @@ abstract class AppLocalizations {
   /// Explains push notifications.
   ///
   /// In en, this message translates to:
-  /// **'Messages of Waylight’s notification rules arrive end-to-end encrypted. Turn on the channel “Waylight app” in the web interface too.'**
+  /// **'Messages from the notification rules of Waylight arrive end-to-end encrypted through the Waylight relay, without Google. While on, Android shows a permanent notification “Waylight is connected”. In the web interface, also turn on the channel “Waylight app”.'**
   String get settingsPushHint;
 
   /// Permission denied.
@@ -2660,7 +2660,7 @@ abstract class AppLocalizations {
   /// **'Notifications are blocked for this app in the system settings.'**
   String get settingsPushDenied;
 
-  /// F-Droid build or no Firebase.
+  /// Platform without push notifications, such as iOS for now.
   ///
   /// In en, this message translates to:
   /// **'This version of the app has no push notifications.'**
@@ -2834,11 +2834,17 @@ abstract class AppLocalizations {
   /// **'Grafana panel {title}'**
   String grafanaPanelAlt(String title);
 
-  /// Note on the connect screen of builds with push notifications through Google (#176); a claim, not a technical statement.
+  /// Hint while push is on and the app has battery restrictions.
   ///
   /// In en, this message translates to:
-  /// **'Your Waylight. Your data. Your server.'**
-  String get connectPrivacyPush;
+  /// **'Android may cut the connection to save battery.'**
+  String get settingsPushBattery;
+
+  /// Button that asks to lift the battery restrictions.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow'**
+  String get settingsPushBatteryAction;
 }
 
 class _AppLocalizationsDelegate

@@ -1,17 +1,3 @@
-// Firebase options of the store flavour (ADR 0008), from the Gradle property
-// waylight.fcm.<name> or the environment variable WAYLIGHT_FCM_<NAME>.
-val firebaseFields = mapOf(
-    "FCM_PROJECT_ID" to "projectId",
-    "FCM_APP_ID" to "appId",
-    "FCM_API_KEY" to "apiKey",
-    "FCM_SENDER_ID" to "senderId",
-)
-
-fun firebaseValue(name: String): String =
-    (project.findProperty("waylight.fcm.$name") as String?)
-        ?: System.getenv("WAYLIGHT_FCM_" + name.replace(Regex("([A-Z])"), "_$1").uppercase())
-        ?: ""
-
 plugins {
     id("com.android.application")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
@@ -43,28 +29,6 @@ android {
         versionName = flutter.versionName
     }
 
-    // Two distributions (ADR 0008): "store" receives push notifications
-    // through Firebase, "fdroid" contains no Firebase code at all.
-    flavorDimensions += "distribution"
-    productFlavors {
-        create("store") {
-            dimension = "distribution"
-            // Firebase is initialised in code from these build-time values
-            // instead of a google-services.json in the repository; empty
-            // values leave push notifications off.
-            for ((field, property) in firebaseFields) {
-                buildConfigField("String", field, "\"${firebaseValue(property)}\"")
-            }
-        }
-        create("fdroid") {
-            dimension = "distribution"
-        }
-    }
-
-    buildFeatures {
-        buildConfig = true
-    }
-
     buildTypes {
         release {
             // Signed with the debug keys until store signing is set up (#25).
@@ -92,11 +56,9 @@ dependencies {
     // Refresh of the home screen widgets while the app is closed (ADR 0009):
     // the platform's scheduler, which respects Doze and battery limits.
     implementation("androidx.work:work-runtime:2.10.0")
-    // Store flavour only (ADR 0008): Firebase Messaging receives the push
-    // messages, Tink provides X25519 below Android 13. Neither is part of the
-    // F-Droid build.
-    "storeImplementation"("com.google.firebase:firebase-messaging:26.0.2")
-    "storeImplementation"("com.google.crypto.tink:tink-android:1.24.0")
+    // X25519 for decrypting push messages below Android 13 (ADR 0008); an
+    // offline crypto library without network access.
+    implementation("com.google.crypto.tink:tink-android:1.24.0")
     // JVM unit tests of the native push code; org.json is only a stub in
     // the Android SDK outside a device.
     testImplementation("junit:junit:4.13.2")

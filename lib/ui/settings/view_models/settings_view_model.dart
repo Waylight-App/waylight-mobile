@@ -52,9 +52,15 @@ class SettingsViewModel extends ChangeNotifier {
   bool _pushAvailable = false;
   bool _pushOn = false;
 
-  /// Whether this build and server can send notifications to the phone
-  /// (#59; not in the F-Droid build).
+  bool _batteryUnrestricted = true;
+
+  /// Whether this platform can receive notifications from the server
+  /// (#59; Android for now).
   bool get pushAvailable => _pushAvailable;
+
+  /// Whether Android lets the app keep its connection without battery
+  /// restrictions; shown as a hint while push is on and it is not.
+  bool get batteryUnrestricted => _batteryUnrestricted;
 
   /// Whether notifications are on for this phone.
   bool get pushOn => _pushOn;
@@ -67,6 +73,16 @@ class SettingsViewModel extends ChangeNotifier {
     if (push == null) return;
     _pushAvailable = await push.available();
     _pushOn = await push.isOn();
+    _batteryUnrestricted = await push.batteryUnrestricted();
+    notifyListeners();
+  }
+
+  /// Asks the person to lift the battery restrictions and reads the answer.
+  Future<void> allowInBackground() async {
+    final push = _push;
+    if (push == null) return;
+    await push.requestBatteryUnrestricted();
+    _batteryUnrestricted = await push.batteryUnrestricted();
     notifyListeners();
   }
 
@@ -78,6 +94,7 @@ class SettingsViewModel extends ChangeNotifier {
     }
     final result = on ? await push.enable(server) : await push.disable(server);
     _pushOn = await push.isOn();
+    _batteryUnrestricted = await push.batteryUnrestricted();
     notifyListeners();
     return result;
   }

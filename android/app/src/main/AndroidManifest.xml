@@ -1,6 +1,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- The app talks to the user's own Waylight server. -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Push notifications over the relay's stream (server ADR 0027): asked
+         at runtime on Android 13 and later when push is turned on; the
+         stream runs in a foreground service and restarts after a reboot. -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_REMOTE_MESSAGING" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
     <!-- The optional app lock (#46). -->
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
     <application
@@ -44,6 +52,17 @@
                 <data android:scheme="waylight" />
             </intent-filter>
         </activity>
+        <!-- Holds the relay's stream while push is on (server ADR 0027). -->
+        <service
+            android:name=".push.PushService"
+            android:exported="false"
+            android:foregroundServiceType="remoteMessaging" />
+        <receiver android:name=".push.BootReceiver" android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
         <!-- Home screen widgets (#42); they show the cards the app stores. -->
         <receiver android:name=".home.TodosWidget" android:exported="false"
             android:label="@string/home_widget_todos">
