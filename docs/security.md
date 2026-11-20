@@ -14,7 +14,12 @@ report a vulnerability, see [SECURITY.md](../SECURITY.md).
    (`SecureKeyValueStore`), never in shared preferences, files or logs.
 3. **Nothing sensitive in logs.** Loggers write paths and status codes,
    never bodies, cookies, tokens, passwords or full URLs with query
-   parameters. Release builds log warnings and worse only.
+   parameters. Release builds log warnings and worse only. The last
+   records are kept in a file of at most 300 lines for the diagnostic
+   report (#197); addresses, IP and e-mail addresses, credentials and long
+   tokens are redacted before a record is written (`utils/redact.dart`).
+   Signing out deletes the file, and the report leaves the phone only
+   through the system share sheet.
 4. **Least permissions.** The app asks only for `INTERNET` on Android.
    Every further permission (notifications, camera for QR codes) needs an
    issue that explains why, and is requested when the feature is first

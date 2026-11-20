@@ -45,6 +45,9 @@ body:
   - type: textarea
     id: logs
     attributes:
-      label: Logs or screenshots
-      description: Remove server addresses, tokens and personal data first.
+      label: Diagnostic report, logs or screenshots
+      description: >-
+        In the app: Settings → About → Create diagnostic report → Share, and
+        paste it here. The report already leaves out addresses and secrets;
+        remove them yourself from anything else.
       render: text

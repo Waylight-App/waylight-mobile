@@ -1,11 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:waylight_mobile/data/repositories/diagnostics/diagnostics_repository.dart';
 import 'package:waylight_mobile/data/repositories/lock/app_lock_repository.dart';
 import 'package:waylight_mobile/data/repositories/preferences/preferences_repository.dart';
 import 'package:waylight_mobile/data/repositories/push/push_repository.dart';
 import 'package:waylight_mobile/data/repositories/server/server_repository.dart';
 import 'package:waylight_mobile/data/repositories/session/session_repository.dart';
 import 'package:waylight_mobile/domain/models/appearance.dart';
+import 'package:waylight_mobile/domain/models/diagnostics.dart';
 import 'package:waylight_mobile/domain/models/server_address.dart';
 import 'package:waylight_mobile/domain/models/server_status.dart';
 import 'package:waylight_mobile/utils/command.dart';
@@ -29,7 +31,10 @@ class SettingsViewModel extends ChangeNotifier {
     AppLockRepository? lockRepository,
     PushRepository? pushRepository,
     AppVersionReader appVersion = _platformVersion,
+    DiagnosticsRepository? diagnosticsRepository,
   }) : _lock = lockRepository,
+       _diagnostics = diagnosticsRepository,
+       _readAppVersion = appVersion,
        _push = pushRepository {
     account = Command0(_serverRepository.status)..execute().ignore();
     serverVersion = Command0(_serverRepository.version)..execute().ignore();
@@ -49,6 +54,19 @@ class SettingsViewModel extends ChangeNotifier {
   }
 
   final PushRepository? _push;
+  final DiagnosticsRepository? _diagnostics;
+  final AppVersionReader _readAppVersion;
+
+  /// Whether this build can create a diagnostic report (#197).
+  bool get diagnosticsAvailable => _diagnostics != null;
+
+  /// Collects the diagnostic report for the preview (#197).
+  Future<DiagnosticReport?> diagnosticReport() async =>
+      _diagnostics?.report(appVersion: await _readAppVersion());
+
+  /// Opens the share sheet with [report].
+  Future<void> shareDiagnostics(DiagnosticReport report) async =>
+      _diagnostics?.share(report);
   bool _pushAvailable = false;
   bool _pushOn = false;
 

@@ -10,9 +10,8 @@ import 'package:waylight_mobile/ui/home_widgets/background_refresh.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  setupLogging();
-
   final repositories = createRepositories();
+  setupLogging(store: repositories.logs);
   // A failure only means the user has to enter the address or sign in
   // again. The session needs the restored server to check it belongs to it.
   await repositories.server.restore();

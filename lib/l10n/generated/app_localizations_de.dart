@@ -1681,4 +1681,21 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get editTabMore => 'Mehr';
+
+  @override
+  String get diagnosticsCreate => 'Diagnosebericht erstellen';
+
+  @override
+  String get diagnosticsHint =>
+      'Für eine Fehlermeldung: App- und Server-Version, Gerät und die letzten Fehler, ohne Adressen oder Passwörter.';
+
+  @override
+  String get diagnosticsTitle => 'Diagnosebericht';
+
+  @override
+  String get diagnosticsPreview =>
+      'Das ist alles, was der Bericht enthält. Er verlässt das Handy nur, wenn du ihn teilst.';
+
+  @override
+  String get diagnosticsShare => 'Teilen';
 }

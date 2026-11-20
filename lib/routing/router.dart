@@ -95,6 +95,7 @@ GoRouter createRouter(
           preferencesRepository: context.read(),
           pushRepository: context.read(),
           lockRepository: context.read(),
+          diagnosticsRepository: context.read(),
         ),
         builder: (context, viewModel) => SettingsScreen(viewModel: viewModel),
       ),

@@ -973,5 +973,15 @@
   "galleryEmpty": "No widgets match.",
   "@galleryEmpty": {"description": "The gallery search found nothing."},
   "editTabMore": "More",
-  "@editTabMore": {"description": "Tooltip of the menu in the header of the edit mode."}
+  "@editTabMore": {"description": "Tooltip of the menu in the header of the edit mode."},
+  "diagnosticsCreate": "Create diagnostic report",
+  "@diagnosticsCreate": {"description": "Settings entry."},
+  "diagnosticsHint": "For a bug report: app and server version, device and the last errors, without addresses or passwords.",
+  "@diagnosticsHint": {"description": "Under the diagnostics entry."},
+  "diagnosticsTitle": "Diagnostic report",
+  "@diagnosticsTitle": {"description": "Sheet title."},
+  "diagnosticsPreview": "This is everything the report contains. It only leaves the phone if you share it.",
+  "@diagnosticsPreview": {"description": "Text above the preview."},
+  "diagnosticsShare": "Share",
+  "@diagnosticsShare": {"description": "Button that opens the share sheet."}
 }

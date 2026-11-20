@@ -19,6 +19,7 @@ import 'package:waylight_mobile/data/repositories/bookmarks/bookmarks_repository
 import 'package:waylight_mobile/data/repositories/calendar/calendar_repository.dart';
 import 'package:waylight_mobile/data/repositories/dashboard/dashboard_repository.dart';
 import 'package:waylight_mobile/data/repositories/dashboard/dashboard_repository_remote.dart';
+import 'package:waylight_mobile/data/repositories/diagnostics/diagnostics_repository.dart';
 import 'package:waylight_mobile/data/repositories/habits/habits_repository.dart';
 import 'package:waylight_mobile/data/repositories/habits/habits_repository_remote.dart';
 import 'package:waylight_mobile/data/repositories/home_widgets/home_widgets_repository.dart';
@@ -65,7 +66,9 @@ import 'package:waylight_mobile/data/services/api/transit_api.dart';
 import 'package:waylight_mobile/data/services/api/waste_api.dart';
 import 'package:waylight_mobile/data/services/api/weather_api.dart';
 import 'package:waylight_mobile/data/services/cache/response_cache.dart';
+import 'package:waylight_mobile/data/services/device/device_info.dart';
 import 'package:waylight_mobile/data/services/home_widgets/home_widget_store.dart';
+import 'package:waylight_mobile/data/services/logging/log_store.dart';
 import 'package:waylight_mobile/data/services/platform/device_auth.dart';
 import 'package:waylight_mobile/data/services/platform/device_name.dart';
 import 'package:waylight_mobile/data/services/push/push_device.dart';
@@ -99,6 +102,8 @@ typedef Repositories = ({
   ThemeRepository theme,
   SummaryRepository summary,
   HomeWidgetsRepository homeWidgets,
+  LogStore logs,
+  DiagnosticsRepository diagnostics,
   PreferencesRepository preferences,
   OfflineRepository offline,
   SearchRepository search,
@@ -136,6 +141,7 @@ List<SingleChildWidget> providers(Repositories repositories) => [
   ChangeNotifierProvider<ThemeRepository>.value(value: repositories.theme),
   Provider<SummaryRepository>.value(value: repositories.summary),
   Provider<HomeWidgetsRepository>.value(value: repositories.homeWidgets),
+  Provider<DiagnosticsRepository>.value(value: repositories.diagnostics),
   Provider<SearchRepository>.value(value: repositories.search),
   ChangeNotifierProvider<AppLockRepository>.value(value: repositories.lock),
   ChangeNotifierProvider<PreferencesRepository>.value(
@@ -183,6 +189,12 @@ Repositories createRepositories() {
     transit: transit,
     store: MethodChannelHomeWidgetStore(),
   );
+  final widgetData = WidgetDataRepositoryRemote(api: modules);
+  final logs = FileLogStore(
+    () async => File(
+      '${(await getApplicationSupportDirectory()).path}/diagnostics.log',
+    ),
+  );
   return (
     server: server,
     session: SessionRepositoryRemote(
@@ -191,7 +203,13 @@ Repositories createRepositories() {
       store: store,
       deviceName: deviceName(),
       cache: cache,
-      onForget: [todos.clear, theme.clear, homeWidgets.clear, dashboard.clear],
+      onForget: [
+        todos.clear,
+        theme.clear,
+        homeWidgets.clear,
+        dashboard.clear,
+        logs.clear,
+      ],
     ),
     dashboard: dashboard,
     weather: WeatherRepositoryRemote(api: WeatherApi(client)),
@@ -200,7 +218,7 @@ Repositories createRepositories() {
     bookmarks: BookmarksRepositoryRemote(api: BookmarksApi(client)),
     transit: transit,
     waste: WasteRepositoryRemote(api: WasteApi(client)),
-    widgetData: WidgetDataRepositoryRemote(api: modules),
+    widgetData: widgetData,
     shopping: ShoppingRepositoryRemote(api: modules),
     habits: HabitsRepositoryRemote(api: modules),
     rss: RssRepositoryRemote(api: modules),
@@ -221,6 +239,13 @@ Repositories createRepositories() {
     theme: theme,
     summary: SummaryRepositoryRemote(api: modules),
     homeWidgets: homeWidgets,
+    logs: logs,
+    diagnostics: DiagnosticsRepository(
+      logs: logs,
+      device: const MethodChannelDeviceInfo(),
+      server: server,
+      data: widgetData,
+    ),
     preferences: PreferencesRepositoryLocal(store: store),
     offline: OfflineRepository(offline),
     search: SearchRepositoryRemote(api: SearchApi(client)),
