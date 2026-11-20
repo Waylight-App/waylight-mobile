@@ -193,6 +193,18 @@ class SettingsScreen extends StatelessWidget {
                             ? null
                             : (on) => viewModel.setPush.execute(on).ignore(),
                       ),
+                      if (viewModel.pushOn && !viewModel.batteryUnrestricted)
+                        ListTile(
+                          key: const ValueKey('settings.push.battery'),
+                          contentPadding: EdgeInsets.zero,
+                          leading: const Icon(Icons.battery_alert_outlined),
+                          title: Text(l10n.settingsPushBattery),
+                          trailing: TextButton(
+                            onPressed: () =>
+                                viewModel.allowInBackground().ignore(),
+                            child: Text(l10n.settingsPushBatteryAction),
+                          ),
+                        ),
                       if (viewModel.setPush.result case Error(:final error))
                         Text(
                           pushErrorText(l10n, error),

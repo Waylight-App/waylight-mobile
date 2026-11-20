@@ -12,14 +12,14 @@ final class PushUnavailable implements Exception {
 
 /// The reasons of [PushUnavailable].
 enum PushUnavailableReason {
-  /// This build has no push services (the F-Droid build, ADR 0008).
+  /// This platform has no push notifications yet (iOS, ADR 0010).
   notInBuild,
 
   /// The person denied the notification permission.
   permissionDenied,
 }
 
-/// Push notifications from the server (#59, server ADR 0025).
+/// Push notifications from the server (#59, server ADR 0025 and 0027).
 abstract interface class PushRepository {
   /// Whether this build can receive push notifications.
   Future<bool> available();
@@ -34,7 +34,13 @@ abstract interface class PushRepository {
   /// Whether the person turned notifications on for this phone.
   Future<bool> isOn();
 
-  /// Registers again when notifications are on, e.g. after the push
-  /// service changed the token; does nothing otherwise.
+  /// Registers again when notifications are on, e.g. after the server
+  /// forgot the device; does nothing otherwise.
   Future<void> refresh(ServerAddress server);
+
+  /// Whether the app may keep its connection without battery restrictions.
+  Future<bool> batteryUnrestricted();
+
+  /// Asks the person to lift the battery restrictions for the app.
+  Future<void> requestBatteryUnrestricted();
 }

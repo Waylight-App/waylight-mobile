@@ -9,7 +9,7 @@ import 'package:waylight_mobile/domain/models/push.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   const channel = MethodChannel('app.waylight/push');
-  const device = MethodChannelPushDevice(platform: PushPlatform.fcm);
+  const device = MethodChannelPushDevice(platform: PushPlatform.sse);
   final calls = <String>[];
 
   void answer(Object? Function(String method) reply) {

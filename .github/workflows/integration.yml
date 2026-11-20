@@ -64,4 +64,4 @@ jobs:
           cores: 4
           disk-size: 2048M
           emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim -no-metrics
-          script: flutter test integration_test --flavor store --dart-define=WAYLIGHT_URL=$WAYLIGHT_URL --dart-define=WAYLIGHT_PASSWORD=$WAYLIGHT_PASSWORD
+          script: flutter test integration_test --dart-define=WAYLIGHT_URL=$WAYLIGHT_URL --dart-define=WAYLIGHT_PASSWORD=$WAYLIGHT_PASSWORD

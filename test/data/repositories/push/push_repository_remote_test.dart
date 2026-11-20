@@ -17,7 +17,7 @@ import '../../../testing/fakes/fake_server_repository.dart';
 import '../../../testing/fakes/in_memory_key_value_store.dart';
 
 final class _Device implements PushDevice {
-  _Device({this.isAvailable = true, this.tokenValue = 'fcm-token'});
+  _Device({this.isAvailable = true, this.tokenValue = 'device-id'});
 
   final bool isAvailable;
   final String? tokenValue;
@@ -27,7 +27,7 @@ final class _Device implements PushDevice {
   Future<bool> available() async => isAvailable;
 
   @override
-  PushPlatform get platform => PushPlatform.fcm;
+  PushPlatform get platform => PushPlatform.sse;
 
   @override
   Future<String?> token() async => tokenValue;
@@ -37,6 +37,12 @@ final class _Device implements PushDevice {
 
   @override
   Future<void> forget() async => forgotten = true;
+
+  @override
+  Future<bool> batteryUnrestricted() async => false;
+
+  @override
+  Future<void> requestBatteryUnrestricted() async {}
 }
 
 void main() {
@@ -70,8 +76,8 @@ void main() {
     expect(put.method, 'PUT');
     expect(put.url.path, '/api/notifications/app-device');
     final body = jsonDecode(put.body) as Map<String, Object?>;
-    expect(body['platform'], 'fcm');
-    expect(body['token'], 'fcm-token');
+    expect(body['platform'], 'sse');
+    expect(body['token'], 'device-id');
     expect(body['name'], 'Android');
     expect(base64Decode(body['publicKey']! as String)[0], 7);
     expect(await repo.isOn(), isTrue);

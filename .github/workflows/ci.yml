@@ -62,17 +62,12 @@ jobs:
           channel: stable
           flutter-version: ${{ steps.flutter.outputs.version }}
           cache: true
-      # Both distributions (ADR 0008); the F-Droid APK must not contain any
-      # Firebase code. Pull requests build the store flavour only and main
-      # checks F-Droid, which saves a build per pull request of the
-      # monthly Actions quota.
-      - run: flutter build apk --debug --flavor store
-      - if: github.event_name != 'pull_request'
-        run: flutter build apk --debug --flavor fdroid
-      - name: The F-Droid build has no Firebase
-        if: github.event_name != 'pull_request'
+      # One APK without Google services (ADR 0008, #205); the check keeps
+      # Firebase and Play services from coming back through a dependency.
+      - run: flutter build apk --debug
+      - name: The APK contains no Google services
         run: |
-          if unzip -p build/app/outputs/flutter-apk/app-fdroid-debug.apk 'classes*.dex' | grep -aq 'com/google/firebase'; then
-            echo "::error::The fdroid flavour contains Firebase classes (ADR 0008)."
+          if unzip -p build/app/outputs/flutter-apk/app-debug.apk 'classes*.dex' | grep -aqE 'com/google/(firebase|android/gms)'; then
+            echo "::error::The APK contains Firebase or Play services classes (ADR 0008)."
             exit 1
           fi

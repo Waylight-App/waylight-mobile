@@ -13,8 +13,13 @@ the version or the changelog by hand.
    `CHANGELOG.md`.
 2. When the maintainer merges it, release-please tags `vx.y.z` and creates
    the GitHub release with the changelog.
-3. The release workflow then builds the Android APKs and attaches them to
-   the release.
+3. The release workflow then builds the Android APK and attaches it to the
+   release as `waylight-vX.Y.Z.apk`.
+
+Until there are store accounts (ADR 0010), GitHub Releases is how the app
+is distributed. Users install the APK by hand or with
+[Obtainium](https://github.com/ImranR98/Obtainium), which watches the
+releases of `Waylight-App/waylight-mobile` and installs updates.
 
 Before merging the release pull request, the maintainer builds the iOS app
 locally on a Mac (`flutter build ios --release --no-codesign`) and confirms
@@ -35,22 +40,6 @@ Configuration: `release-please-config.json`,
 
 Store identifiers can never change after the first store release.
 
-## Firebase options
-
-The store APK of a release receives push notifications only with the
-Firebase options of the project `waylight-app` (ADR 0008, #178). They are
-repository secrets, read by the release workflow:
-
-| Secret | Value |
-| --- | --- |
-| `WAYLIGHT_FCM_PROJECT_ID` | `project_id` of `google-services.json` |
-| `WAYLIGHT_FCM_APP_ID` | `mobilesdk_app_id` |
-| `WAYLIGHT_FCM_API_KEY` | `current_key` |
-| `WAYLIGHT_FCM_SENDER_ID` | `project_number` |
-
-For local builds put the same values into `~/.gradle/gradle.properties` as
-`waylight.fcm.projectId`, `appId`, `apiKey` and `senderId`.
-
 ## Signing and stores
 
 Not set up yet ([#25](https://github.com/Waylight-App/waylight-mobile/issues/25)). Until then
@@ -65,8 +54,8 @@ The plan:
   to the internal track.
 - **iOS:** built, signed and uploaded to TestFlight locally on the
   maintainer's Mac; certificates stay on that Mac.
-- **F-Droid:** possible because the app has no proprietary dependencies;
-  to be decided.
+- **F-Droid:** possible because the app has no proprietary dependencies
+  (ADR 0011); to be decided.
 
 Signing material never goes into the repository; `.gitignore` excludes
 keystores and `key.properties`.

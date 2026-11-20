@@ -1,6 +1,6 @@
 # ADR 0008: Push notifications in native code, Firebase only in the store build
 
-- Status: Accepted
+- Status: Accepted; decisions 1 and 2 superseded by [ADR 0011](0011-push-over-the-relay-stream.md)
 - Date: 2026-11-19
 
 ## Context
