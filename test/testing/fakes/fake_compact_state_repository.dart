@@ -33,6 +33,22 @@ class FakeCompactStateRepository implements CompactStateRepository {
   bool supports(String kind, {Map<String, Object?> config = const {}}) =>
       kinds.contains(kind);
 
+  /// The actions run, with their choice.
+  final List<(CompactAction, CompactChoice?)> ran = [];
+
+  /// What [run] returns.
+  Result<void> runResult = const Result.ok(null);
+
+  @override
+  Future<Result<void>> run(
+    ServerAddress server,
+    CompactAction action, {
+    CompactChoice? choice,
+  }) async {
+    ran.add((action, choice));
+    return runResult;
+  }
+
   @override
   Future<Result<CompactState>> state(
     ServerAddress server,

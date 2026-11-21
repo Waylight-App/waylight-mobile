@@ -1,9 +1,9 @@
 import 'package:material_ui/material_ui.dart';
-
 import 'package:waylight_mobile/data/repositories/widget_data/queries/network.dart';
 import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/domain/models/network.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
+import 'package:waylight_mobile/ui/widgets/common/compact_state_widget.dart';
 import 'package:waylight_mobile/ui/widgets/common/simple_widget.dart';
 import 'package:waylight_mobile/ui/widgets/common/widget_rows.dart';
 
@@ -17,8 +17,16 @@ class SpeedtestWidget extends StatelessWidget {
   final WidgetPlacement widget;
 
   /// The builder for the widget registry.
+  /// Small and strip tiles show the server's compact state (#274).
   static Widget forPlacement(BuildContext context, WidgetPlacement widget) =>
-      SpeedtestWidget(widget: widget, key: ValueKey(widget.id));
+      CompactStateWidget.orFull(
+        context,
+        widget,
+        title: widget.title.isNotEmpty
+            ? widget.title
+            : context.l10n.speedtestTitle,
+        full: () => SpeedtestWidget(widget: widget, key: ValueKey(widget.id)),
+      );
 
   @override
   Widget build(BuildContext context) => SimpleWidget<SpeedtestResults>(

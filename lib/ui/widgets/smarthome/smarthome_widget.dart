@@ -1,12 +1,12 @@
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
-
 import 'package:waylight_mobile/data/repositories/actions/smarthome_repository.dart';
 import 'package:waylight_mobile/domain/models/actions.dart';
 import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/routing/routes.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
+import 'package:waylight_mobile/ui/widgets/common/compact_state_widget.dart';
 import 'package:waylight_mobile/ui/widgets/common/items_view_model.dart';
 import 'package:waylight_mobile/ui/widgets/common/items_widget.dart';
 import 'package:waylight_mobile/ui/widgets/smarthome/smart_entity_tile.dart';
@@ -22,8 +22,16 @@ class SmartHomeWidget extends StatelessWidget {
   final WidgetPlacement widget;
 
   /// The builder for the widget registry.
+  /// Small and strip tiles show the server's compact state (#274).
   static Widget forPlacement(BuildContext context, WidgetPlacement widget) =>
-      SmartHomeWidget(widget: widget, key: ValueKey(widget.id));
+      CompactStateWidget.orFull(
+        context,
+        widget,
+        title: widget.title.isNotEmpty
+            ? widget.title
+            : context.l10n.smartHomeTitle,
+        full: () => SmartHomeWidget(widget: widget, key: ValueKey(widget.id)),
+      );
 
   @override
   Widget build(BuildContext context) {

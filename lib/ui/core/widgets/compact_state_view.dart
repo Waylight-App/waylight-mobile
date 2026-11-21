@@ -12,13 +12,22 @@ import 'package:waylight_mobile/ui/core/widgets/rows.dart';
 /// detail line in small tiles.
 class CompactStateView extends StatelessWidget {
   /// Creates the view of [state] for a tile of [size].
-  const CompactStateView({required this.state, required this.size, super.key});
+  const CompactStateView({
+    required this.state,
+    required this.size,
+    this.showDetail = true,
+    super.key,
+  });
 
   /// The state to show.
   final CompactState state;
 
   /// The size of the tile; strips show the title line only.
   final WidgetSize size;
+
+  /// Whether small tiles show the detail line; off where an action needs
+  /// the room.
+  final bool showDetail;
 
   /// The tone of [level]; healthy and neutral states stay uncoloured.
   static Tone? toneOf(CompactLevel level) => switch (level) {
@@ -41,7 +50,10 @@ class CompactStateView extends StatelessWidget {
       ),
     );
     final detail = state.detail;
-    if (size == WidgetSize.strip || detail == null || detail.text.isEmpty) {
+    if (size == WidgetSize.strip ||
+        !showDetail ||
+        detail == null ||
+        detail.text.isEmpty) {
       return title;
     }
     return Column(

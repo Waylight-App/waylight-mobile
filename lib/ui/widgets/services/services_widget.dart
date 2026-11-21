@@ -1,9 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
-
 import 'package:waylight_mobile/data/repositories/actions/home_server_actions_repository.dart';
-
 import 'package:waylight_mobile/data/repositories/widget_data/queries/home_server.dart';
 import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/domain/models/home_server.dart';
@@ -12,6 +10,7 @@ import 'package:waylight_mobile/ui/core/link_opener.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
 import 'package:waylight_mobile/ui/widgets/common/admin_actions.dart';
+import 'package:waylight_mobile/ui/widgets/common/compact_state_widget.dart';
 import 'package:waylight_mobile/ui/widgets/common/remote_widget.dart';
 import 'package:waylight_mobile/ui/widgets/common/widget_rows.dart';
 
@@ -33,8 +32,16 @@ class ServicesWidget extends StatelessWidget {
   final WidgetPlacement widget;
 
   /// The builder for the widget registry.
+  /// Small and strip tiles show the server's compact state (#274).
   static Widget forPlacement(BuildContext context, WidgetPlacement widget) =>
-      ServicesWidget(widget: widget, key: ValueKey(widget.id));
+      CompactStateWidget.orFull(
+        context,
+        widget,
+        title: widget.title.isNotEmpty
+            ? widget.title
+            : context.l10n.servicesTitle,
+        full: () => ServicesWidget(widget: widget, key: ValueKey(widget.id)),
+      );
 
   @override
   Widget build(BuildContext context) => RemoteWidget<List<MonitoredService>>(
@@ -116,8 +123,17 @@ class StatusOverviewWidget extends StatelessWidget {
   final WidgetPlacement widget;
 
   /// The builder for the widget registry.
+  /// Small and strip tiles show the server's compact state (#274).
   static Widget forPlacement(BuildContext context, WidgetPlacement widget) =>
-      StatusOverviewWidget(widget: widget, key: ValueKey(widget.id));
+      CompactStateWidget.orFull(
+        context,
+        widget,
+        title: widget.title.isNotEmpty
+            ? widget.title
+            : context.l10n.statusOverviewTitle,
+        full: () =>
+            StatusOverviewWidget(widget: widget, key: ValueKey(widget.id)),
+      );
 
   @override
   Widget build(BuildContext context) => RemoteWidget<List<MonitoredService>>(
