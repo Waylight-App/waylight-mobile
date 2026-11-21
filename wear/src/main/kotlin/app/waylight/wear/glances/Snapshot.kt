@@ -34,6 +34,7 @@ data class CompactGlance(
     val detail: GlanceText?,
     val level: Level,
     val count: Int?,
+    val action: GlanceAction? = null,
 )
 
 /** My presence today (`GET /api/presence`): office, home, away or none. */
@@ -63,6 +64,8 @@ data class Snapshot(
     val nextEvent: NextEvent?,
     val presence: Presence?,
     val compact: List<CompactGlance>,
+    val firstTodo: OpenTodo? = null,
+    val devices: List<Device> = emptyList(),
 ) {
     fun toJson(): String = JSONObject().apply {
         put("fetchedAt", fetchedAt)
@@ -81,11 +84,14 @@ data class Snapshot(
                             c.detail?.let { put("detail", it.toJson()) }
                             put("level", c.level.name)
                             c.count?.let { put("count", it) }
+                            c.action?.let { put("action", it.toJson()) }
                         },
                     )
                 }
             },
         )
+        firstTodo?.let { put("firstTodo", it.toJson()) }
+        put("devices", JSONArray().apply { devices.forEach { put(it.toJson()) } })
     }.toString()
 
     companion object {
@@ -109,8 +115,13 @@ data class Snapshot(
                             detail = storedText(c, "detail"),
                             level = Level.entries.firstOrNull { it.name == c.optString("level") } ?: Level.NONE,
                             count = if (c.has("count")) c.getInt("count") else null,
+                            action = GlanceAction.fromJson(c.optJSONObject("action")),
                         )
                     }
+                }.orEmpty(),
+                firstTodo = OpenTodo.fromJson(o.optJSONObject("firstTodo")),
+                devices = o.optJSONArray("devices")?.let { array ->
+                    (0 until array.length()).mapNotNull { array.optJSONObject(it)?.let(Device::fromJson) }
                 }.orEmpty(),
             )
         } catch (e: org.json.JSONException) {

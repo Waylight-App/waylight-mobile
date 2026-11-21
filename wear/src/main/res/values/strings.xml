@@ -40,6 +40,12 @@
     <string name="complication_todos">Waylight: open to-dos</string>
     <string name="complication_todos_title">To-dos</string>
     <string name="complication_preview_event">Standup</string>
+    <string name="todo_tick_off">Tap to tick off</string>
+    <string name="smart_home">Smart home</string>
+    <string name="device_press">Tap to press</string>
+    <string name="action_done">Done.</string>
+    <string name="action_failed">That did not work. Try again in the app on the phone.</string>
+    <string name="tile_tick_off">✓ %1$s</string>
     <!-- Templates of the server's compact states (#246); {name} is filled in. -->
     <string name="srv_todos_open">{count} open</string>
     <string name="srv_todos_nothing">Nothing to do</string>

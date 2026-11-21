@@ -512,9 +512,9 @@ class _WidgetGallerySheetState extends State<WidgetGallerySheet> {
   String _query = '';
   final Set<String> _added = {};
 
-  Future<void> _add(String kind) async {
+  Future<void> _add(String kind, WidgetSize size) async {
     final add = widget.viewModel.add;
-    await add.execute(kind);
+    await add.execute((kind: kind, size: size));
     if (!mounted) return;
     switch (add.result) {
       case Ok():
@@ -587,18 +587,38 @@ class _WidgetGallerySheetState extends State<WidgetGallerySheet> {
       itemBuilder: (context, i) {
         final kind = shown[i];
         final title = _title(kind);
-        return ListTile(
+        return Padding(
           key: ValueKey('gallery.$kind'),
-          contentPadding: EdgeInsets.zero,
-          leading: CircleAvatar(child: Text(title.characters.first)),
-          title: Text(title),
-          trailing: _added.contains(kind)
-              ? Text(l10n.galleryAdded)
-              : FilledButton.tonal(
-                  key: ValueKey('gallery.add.$kind'),
-                  onPressed: busy ? null : () => _add(kind).ignore(),
-                  child: Text(l10n.galleryAdd),
-                ),
+          padding: const EdgeInsets.only(bottom: Dimens.gap),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ListTile(
+                contentPadding: EdgeInsets.zero,
+                leading: CircleAvatar(child: Text(title.characters.first)),
+                title: Text(title),
+                trailing: _added.contains(kind)
+                    ? Text(l10n.galleryAdded)
+                    : null,
+              ),
+              // One preview per size; tapping one adds the widget in that
+              // size (#227).
+              Wrap(
+                spacing: Dimens.gapSmall,
+                runSpacing: Dimens.gapSmall,
+                crossAxisAlignment: WrapCrossAlignment.end,
+                children: [
+                  for (final size in WidgetSize.values)
+                    SizePreview(
+                      key: ValueKey('gallery.add.$kind.${size.name}'),
+                      title: title,
+                      size: size,
+                      onTap: busy ? null : () => _add(kind, size).ignore(),
+                    ),
+                ],
+              ),
+            ],
+          ),
         );
       },
     );
@@ -606,4 +626,109 @@ class _WidgetGallerySheetState extends State<WidgetGallerySheet> {
 
   static String _title(String kind) =>
       WidgetPlacement(id: '', kind: kind).displayTitle;
+}
+
+/// A small picture of a widget in one size, for the gallery (#227): the
+/// tile's shape on the phone grid with the widget's title and example
+/// lines, and the size's name below. Tapping it adds the widget in that
+/// size.
+class SizePreview extends StatelessWidget {
+  /// Creates the preview of the widget [title] in [size].
+  const SizePreview({
+    required this.title,
+    required this.size,
+    required this.onTap,
+    super.key,
+  });
+
+  /// The widget's title.
+  final String title;
+
+  /// The size shown.
+  final WidgetSize size;
+
+  /// Adds the widget in [size]; `null` while adding is not possible.
+  final VoidCallback? onTap;
+
+  /// The side of one grid cell in the preview; a large tile is four cells
+  /// wide, so four previews fit next to each other on a phone.
+  static const cell = 18.0;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    final name = sizeName(l10n, size);
+    // Example content: one line per row of the tile below the title.
+    final lines = size.rows - 1;
+    return Semantics(
+      button: true,
+      enabled: onTap != null,
+      label: l10n.galleryAddSized(title, name),
+      excludeSemantics: true,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(Dimens.radiusSmall),
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(
+            minWidth: Dimens.tapTarget,
+            minHeight: Dimens.tapTarget,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(Dimens.gapTiny),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  width: size.columns * cell,
+                  height: size.rows * cell,
+                  padding: const EdgeInsets.all(Dimens.gapTiny),
+                  decoration: BoxDecoration(
+                    color: scheme.surfaceContainerHighest,
+                    borderRadius: BorderRadius.circular(Dimens.radiusSmall),
+                  ),
+                  // Clipped instead of overflowing: a strip is lower than
+                  // a line of text plus its padding.
+                  child: ClipRect(
+                    child: OverflowBox(
+                      alignment: AlignmentDirectional.topStart,
+                      maxHeight: double.infinity,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            title,
+                            maxLines: 1,
+                            overflow: TextOverflow.clip,
+                            style: theme.textTheme.labelSmall?.copyWith(
+                              height: 1,
+                            ),
+                          ),
+                          for (var i = 0; i < lines; i++)
+                            Container(
+                              margin: const EdgeInsets.only(
+                                top: Dimens.gapTiny,
+                              ),
+                              width:
+                                  (size.columns * cell) *
+                                  (i.isEven ? 0.7 : 0.5),
+                              height: Dimens.gapTiny,
+                              color: scheme.outlineVariant,
+                            ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: Dimens.gapTiny),
+                Text(name, style: theme.textTheme.labelSmall),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }

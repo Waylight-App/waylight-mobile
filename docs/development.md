@@ -58,7 +58,7 @@ a link leads to the start page. The areas are defined in
 | Server & connection | `waylight://settings/server` | address and version, addresses in the order they are tried, other servers, checking the addresses again, disconnecting |
 | Appearance | `waylight://settings/appearance` | theme, wallpaper colours, language |
 | Notifications & reminders | `waylight://settings/notifications` | push notifications with the battery hint, reminders on the phone |
-| This phone | `waylight://settings/phone` | app lock, home screen widgets, Quick Settings tiles, wall display |
+| This phone | `waylight://settings/phone` | app lock, home screen widgets, Quick Settings tiles, pairing a watch, wall display |
 | About & help | `waylight://settings/about` | app version, licences, source code, privacy, diagnostic report |
 
 The start page hides *Notifications & reminders* on phones that have

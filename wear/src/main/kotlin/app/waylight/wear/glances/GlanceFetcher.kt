@@ -23,17 +23,26 @@ class GlanceFetcher(private val api: WaylightApi) {
             null
         }
         val presence = optional { Parsers.presence(api.get("/api/presence")) }
+        // The list gives the to-do to tick off (#245) and the count for
+        // servers without the compact state.
+        val todos = if (enabled("todos")) optional { api.get("/api/todos") } else null
         val compact = COMPACT_MODULES.filter(::enabled).mapNotNull { module ->
             optional { Parsers.compact(module, api.get("/api/$module/compact")) }
-                ?: if (module == "todos") optional { todosFallback() } else null
+                ?: if (module == "todos" && todos != null) optional { todosFallback(todos) } else null
         }
-        return Snapshot(now.toEpochMilli(), nextEvent, presence, compact)
+        val firstTodo = todos?.let { optional { Parsers.firstOpenTodo(it) } }
+        val devices = if (enabled("smarthome")) {
+            optional { Parsers.devices(api.get("/api/smarthome/entities")) }.orEmpty()
+        } else {
+            emptyList()
+        }
+        return Snapshot(now.toEpochMilli(), nextEvent, presence, compact, firstTodo, devices)
     }
 
     // Servers from before the compact states (server #597) still list the
     // to-dos; the title is then left to the watch's own translation.
-    private fun todosFallback(): CompactGlance {
-        val open = Parsers.openTodos(api.get("/api/todos"))
+    private fun todosFallback(todos: String): CompactGlance {
+        val open = Parsers.openTodos(todos)
         return CompactGlance("todos", title = GlanceText(""), detail = null, level = Level.NONE, count = open)
     }
 

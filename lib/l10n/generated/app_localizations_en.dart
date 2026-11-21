@@ -506,6 +506,65 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pairEnterManually => 'Enter the address instead';
 
   @override
+  String get pairWatchTitle => 'Pair a watch';
+
+  @override
+  String get pairWatchEntry => 'Pair a watch';
+
+  @override
+  String get pairWatchIntro =>
+      'Open Waylight on your Wear OS watch and choose Pair with phone. The watch shows a QR code. Both devices need to be in the same Wi-Fi.';
+
+  @override
+  String get pairWatchScan => 'Scan the watch\'s code';
+
+  @override
+  String get pairWatchScanAgain => 'Scan another code';
+
+  @override
+  String get pairWatchScanPrompt =>
+      'Point the camera at the QR code on the watch';
+
+  @override
+  String pairWatchFound(String address) {
+    return 'Watch found at $address';
+  }
+
+  @override
+  String get pairWatchSend => 'Pair this watch';
+
+  @override
+  String get pairWatchDone =>
+      'The watch is paired. It shows up under Settings → Apps in Waylight, where you can revoke it.';
+
+  @override
+  String get pairWatchUnavailable => 'Pairing a watch needs the Android app.';
+
+  @override
+  String get pairWatchInvalidCode =>
+      'This is not the code of a Waylight watch. Open Pair with phone on the watch and scan the code it shows.';
+
+  @override
+  String get pairWatchUnreachable =>
+      'The watch does not answer. Check that the phone and the watch are in the same Wi-Fi and the code is still shown on the watch.';
+
+  @override
+  String get pairWatchNotDecryptable =>
+      'The watch could not read the message. Scan the code the watch shows now.';
+
+  @override
+  String get pairWatchRejected =>
+      'The server did not accept the pairing. Try again.';
+
+  @override
+  String get pairWatchInvalidServer =>
+      'The watch does not accept this server\'s address. Plain HTTP only works for addresses in the home network.';
+
+  @override
+  String get pairWatchServerUnreachable =>
+      'The watch cannot reach your server. Check its network connection.';
+
+  @override
   String get connectQrHint =>
       'Or scan the QR code under Settings → Mobile app in Waylight with your phone\'s camera.';
 
@@ -1748,10 +1807,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get gallerySearch => 'Search widgets';
 
   @override
-  String get galleryAdd => 'Add';
+  String get galleryAdded => 'Added';
 
   @override
-  String get galleryAdded => 'Added';
+  String galleryAddSized(String widget, String size) {
+    return 'Add $widget as $size tile';
+  }
 
   @override
   String get galleryEmpty => 'No widgets match.';
