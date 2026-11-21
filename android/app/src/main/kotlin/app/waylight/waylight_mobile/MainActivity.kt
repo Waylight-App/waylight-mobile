@@ -2,6 +2,7 @@ package app.waylight.waylight_mobile
 
 import android.content.Intent
 import android.net.Uri
+import android.nfc.NfcAdapter
 import android.os.Bundle
 import app.waylight.waylight_mobile.focus.FocusChannel
 import app.waylight.waylight_mobile.home.HomeWidgetChannel
@@ -19,14 +20,15 @@ class MainActivity : FlutterFragmentActivity() {
     private val push = PushChannel(this)
     private val reminders = ReminderChannel(this)
     private val scan = ScanChannel(this)
+    private val nfc = NfcChannel(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        intent = asShareLink(intent)
+        intent = asShareLink(asTagLink(intent))
         super.onCreate(savedInstanceState)
     }
 
     override fun onNewIntent(intent: Intent) {
-        super.onNewIntent(asShareLink(intent))
+        super.onNewIntent(asShareLink(asTagLink(intent)))
     }
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
@@ -34,6 +36,7 @@ class MainActivity : FlutterFragmentActivity() {
         push.register(flutterEngine)
         reminders.register(flutterEngine)
         scan.register(flutterEngine)
+        nfc.register(flutterEngine)
         TilesChannel.register(applicationContext, flutterEngine.dartExecutor.binaryMessenger)
         FocusChannel.register(applicationContext, flutterEngine)
         NetworkChannel.register(applicationContext, flutterEngine)
@@ -58,6 +61,16 @@ class MainActivity : FlutterFragmentActivity() {
  * waylight://share?text=…, which the router handles like every other link,
  * signed out included. Other intents pass unchanged.
  */
+/**
+ * A Waylight NFC tag (#195) as the link it carries, so the router opens it
+ * like any other `waylight://` link. Other intents stay as they are.
+ */
+internal fun asTagLink(intent: Intent): Intent {
+    val data = intent.data
+    if (intent.action != NfcAdapter.ACTION_NDEF_DISCOVERED || data?.scheme != "waylight") return intent
+    return Intent(Intent.ACTION_VIEW, data)
+}
+
 internal fun asShareLink(intent: Intent): Intent {
     if (intent.action != Intent.ACTION_SEND || intent.type != "text/plain") return intent
     val text = listOfNotNull(

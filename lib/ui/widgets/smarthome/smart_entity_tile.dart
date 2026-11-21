@@ -1,7 +1,9 @@
 import 'package:material_ui/material_ui.dart';
 
 import 'package:waylight_mobile/domain/models/actions.dart';
+import 'package:waylight_mobile/domain/models/tag_action.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
+import 'package:waylight_mobile/ui/widgets/common/tag_writer.dart';
 import 'package:waylight_mobile/ui/widgets/common/widget_rows.dart';
 
 /// One Home Assistant entity: a switch, a button or its state, as the
@@ -27,7 +29,7 @@ class SmartEntityTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final e = entity;
-    return switch (canAct ? e.action : EntityAction.none) {
+    final row = switch (canAct ? e.action : EntityAction.none) {
       EntityAction.toggle => SwitchListTile(
         contentPadding: EdgeInsets.zero,
         dense: true,
@@ -45,5 +47,8 @@ class SmartEntityTile extends StatelessWidget {
         trailing: e.unit.isEmpty ? e.state : '${e.state} ${e.unit}',
       ),
     };
+    // Only what the account may change can go onto an NFC tag (#195).
+    if (!canAct || e.action == EntityAction.none) return row;
+    return TagWritable(action: SmartHomeTag(e.id), subject: e.name, child: row);
   }
 }

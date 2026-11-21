@@ -2188,4 +2188,101 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get settingsWallDisplayHint =>
       'Wähle unter Server & Verbindung „Weiteren Server hinzufügen“, dann „Als Wandbildschirm nutzen“ und füge den Link einer Kiosk-Anzeige ein.';
+
+  @override
+  String get tagTitle => 'NFC-Tag';
+
+  @override
+  String tagConfirm(String name) {
+    return '$name schalten?';
+  }
+
+  @override
+  String get tagConfirmAction => 'Ja, schalten';
+
+  @override
+  String get tagClose => 'Schließen';
+
+  @override
+  String get tagUnknown =>
+      'Dieser Tag enthält keine Waylight-Aktion, die diese App kennt.';
+
+  @override
+  String tagTicked(String name) {
+    return '$name für heute abgehakt.';
+  }
+
+  @override
+  String tagAlreadyDone(String name) {
+    return '$name war heute schon abgehakt.';
+  }
+
+  @override
+  String tagSwitched(String name) {
+    return '$name geschaltet.';
+  }
+
+  @override
+  String tagPressed(String name) {
+    return '$name gestartet.';
+  }
+
+  @override
+  String tagAdded(String name) {
+    return '$name steht auf der Einkaufsliste.';
+  }
+
+  @override
+  String get tagWrite => 'Auf NFC-Tag schreiben';
+
+  @override
+  String get tagWriteHint =>
+      'Der Tag speichert nur einen Link zu dieser Aktion. Auf einem Handy ohne dein Waylight-Konto bewirkt er nichts.';
+
+  @override
+  String get tagWriteStart => 'Tag beschreiben';
+
+  @override
+  String get tagHold => 'Halte den Tag an die Rückseite des Handys.';
+
+  @override
+  String get tagAsk => 'Vor dem Schalten fragen';
+
+  @override
+  String get tagWritten =>
+      'Fertig. Berühre den Tag mit dem entsperrten Handy, um die Aktion auszuführen.';
+
+  @override
+  String get tagLocked =>
+      'Dieser Tag ist gesperrt und lässt sich nicht beschreiben.';
+
+  @override
+  String get tagTooSmall =>
+      'Dieser Tag ist zu klein für den Link. Nimm einen NTAG213 oder größer.';
+
+  @override
+  String get tagUnsupported => 'Diese Art Tag kann keinen Link speichern.';
+
+  @override
+  String get tagLost =>
+      'Der Tag wurde zu früh entfernt. Halte ihn still, bis es fertig ist.';
+
+  @override
+  String get tagFailed => 'Der Tag konnte nicht beschrieben werden.';
+
+  @override
+  String get tagTryAgain => 'Noch einmal';
+
+  @override
+  String get tagNoNfc => 'Dieses Handy hat kein NFC.';
+
+  @override
+  String get tagNfcOff =>
+      'NFC ist ausgeschaltet. Schalte es in den Systemeinstellungen ein.';
+
+  @override
+  String get tagShopping => 'NFC-Tag für einen Artikel';
+
+  @override
+  String get tagShoppingItem => 'Artikel';
 }

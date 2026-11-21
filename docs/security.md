@@ -100,6 +100,25 @@ session of a browser (phase 1). For both:
   to the app with a code that only redeems with the app's PKCE verifier,
   and the app ignores answers to sign-ins it did not start.
 
+## NFC tags
+
+A tag can run a Waylight action: tick off a habit, switch a smart home
+device or add an item to the shopping list (#195).
+
+- **Permission.** `NFC`, a normal permission granted at install; there is
+  nothing to ask at runtime. Phones without NFC can still install the app.
+- **No background scanning.** The app turns on NFC reader mode only while
+  the *Write to NFC tag* sheet is open. Reading a tag is the system's tag
+  dispatch, which works only while the phone is unlocked.
+- **No secret on the tag.** A tag holds a link such as
+  `waylight://tag?do=habit&id=…`. It runs nothing on a phone without a
+  session for your server, and the router asks to sign in or unlock the app
+  lock first. Anyone with the tag learns the habit or entity id and the
+  item text.
+- **Changes to other systems.** A tag that switches a smart home device asks
+  before it does, unless that was turned off when the tag was written. The
+  server's allow-list applies as in the app.
+
 ## Wear OS app
 
 The watch app ([ADR 0015](adr/0015-standalone-wear-os-app.md)) follows the

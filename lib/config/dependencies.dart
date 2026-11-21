@@ -30,6 +30,7 @@ import 'package:waylight_mobile/data/repositories/habits/habits_repository_remot
 import 'package:waylight_mobile/data/repositories/home_widgets/home_widgets_repository.dart';
 import 'package:waylight_mobile/data/repositories/kiosk/kiosk_repository.dart';
 import 'package:waylight_mobile/data/repositories/lock/app_lock_repository.dart';
+import 'package:waylight_mobile/data/repositories/nfc/nfc_repository.dart';
 import 'package:waylight_mobile/data/repositories/notes/notes_repository.dart';
 import 'package:waylight_mobile/data/repositories/notes/notes_repository_remote.dart';
 import 'package:waylight_mobile/data/repositories/offline/offline_repository.dart';
@@ -84,6 +85,7 @@ import 'package:waylight_mobile/data/services/focus/focus_timer_service.dart';
 import 'package:waylight_mobile/data/services/home_widgets/home_widget_store.dart';
 import 'package:waylight_mobile/data/services/logging/log_store.dart';
 import 'package:waylight_mobile/data/services/network/network_changes.dart';
+import 'package:waylight_mobile/data/services/nfc/nfc_writer.dart';
 import 'package:waylight_mobile/data/services/platform/device_auth.dart';
 import 'package:waylight_mobile/data/services/platform/device_name.dart';
 import 'package:waylight_mobile/data/services/push/push_device.dart';
@@ -129,6 +131,7 @@ typedef Repositories = ({
   SummaryRepository summary,
   HomeWidgetsRepository homeWidgets,
   QuickTilesRepository quickTiles,
+  NfcRepository nfc,
   ReminderRepository reminders,
   LogStore logs,
   DiagnosticsRepository diagnostics,
@@ -180,6 +183,7 @@ List<SingleChildWidget> providers(Repositories repositories) => [
   Provider<SummaryRepository>.value(value: repositories.summary),
   Provider<HomeWidgetsRepository>.value(value: repositories.homeWidgets),
   Provider<QuickTilesRepository>.value(value: repositories.quickTiles),
+  Provider<NfcRepository>.value(value: repositories.nfc),
   ChangeNotifierProvider<ReminderRepository>.value(
     value: repositories.reminders,
   ),
@@ -334,6 +338,7 @@ Repositories createRepositories() {
     summary: SummaryRepositoryRemote(api: modules),
     homeWidgets: homeWidgets,
     quickTiles: quickTiles,
+    nfc: NfcRepository(writer: MethodChannelNfcWriter()),
     reminders: reminders,
     logs: logs,
     diagnostics: DiagnosticsRepository(
