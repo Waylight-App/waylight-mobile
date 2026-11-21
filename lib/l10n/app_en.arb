@@ -989,5 +989,21 @@
   "settingsColoursWaylight": "Like Waylight",
   "@settingsColoursWaylight": {"description": "Colour choice: the server's theme."},
   "settingsColoursWallpaper": "Wallpaper",
-  "@settingsColoursWallpaper": {"description": "Colour choice: the system's wallpaper colours."}
+  "@settingsColoursWallpaper": {"description": "Colour choice: the system's wallpaper colours."},
+  "addressesTitle": "Addresses",
+  "@addressesTitle": {"description": "Settings, server: heading of the server's addresses."},
+  "addressesHint": "Tried in this order; the first that answers and knows your session is used, e.g. the home network first, then the address on the go.",
+  "@addressesHint": {"description": "Below the addresses heading."},
+  "addressInUse": "In use",
+  "@addressInUse": {"description": "Address status."},
+  "addressUnreachable": "Not reachable right now",
+  "@addressUnreachable": {"description": "Address status."},
+  "addressRejected": "Answers, but does not know your session – another server under this address?",
+  "@addressRejected": {"description": "Address status."},
+  "addressRaise": "Try earlier",
+  "@addressRaise": {"description": "Tooltip: move address up."},
+  "addressRemove": "Remove address",
+  "@addressRemove": {"description": "Tooltip."},
+  "addressAdd": "Add address",
+  "@addressAdd": {"description": "Button and dialog title."}
 }

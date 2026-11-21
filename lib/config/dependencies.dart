@@ -33,6 +33,7 @@ import 'package:waylight_mobile/data/repositories/push/push_repository.dart';
 import 'package:waylight_mobile/data/repositories/push/push_repository_remote.dart';
 import 'package:waylight_mobile/data/repositories/search/search_repository.dart';
 import 'package:waylight_mobile/data/repositories/search/search_repository_remote.dart';
+import 'package:waylight_mobile/data/repositories/server/address_selector.dart';
 import 'package:waylight_mobile/data/repositories/server/server_repository.dart';
 import 'package:waylight_mobile/data/repositories/server/server_repository_remote.dart';
 import 'package:waylight_mobile/data/repositories/session/session_repository.dart';
@@ -50,6 +51,7 @@ import 'package:waylight_mobile/data/repositories/weather/weather_repository.dar
 import 'package:waylight_mobile/data/repositories/weather/weather_repository_remote.dart';
 import 'package:waylight_mobile/data/repositories/widget_data/widget_data_repository.dart';
 import 'package:waylight_mobile/data/repositories/widget_data/widget_data_repository_remote.dart';
+import 'package:waylight_mobile/data/services/api/address_routes.dart';
 import 'package:waylight_mobile/data/services/api/api_client.dart';
 import 'package:waylight_mobile/data/services/api/api_credentials.dart';
 import 'package:waylight_mobile/data/services/api/auth_api.dart';
@@ -69,6 +71,7 @@ import 'package:waylight_mobile/data/services/cache/response_cache.dart';
 import 'package:waylight_mobile/data/services/device/device_info.dart';
 import 'package:waylight_mobile/data/services/home_widgets/home_widget_store.dart';
 import 'package:waylight_mobile/data/services/logging/log_store.dart';
+import 'package:waylight_mobile/data/services/network/network_changes.dart';
 import 'package:waylight_mobile/data/services/platform/device_auth.dart';
 import 'package:waylight_mobile/data/services/platform/device_name.dart';
 import 'package:waylight_mobile/data/services/push/push_device.dart';
@@ -160,9 +163,11 @@ Repositories createRepositories() {
     () async =>
         Directory('${(await getApplicationSupportDirectory()).path}/offline'),
   );
+  final routes = AddressRoutes();
   final client = ApiClient(
     client: http.Client(),
     credentials: credentials,
+    routes: routes,
     cache: cache,
     offline: offline,
   );
@@ -173,9 +178,14 @@ Repositories createRepositories() {
     store: store,
     systemColors: const MethodChannelSystemColors(),
   );
+  final platform = PlatformApi(client);
   final server = ServerRepositoryRemote(
-    platformApi: PlatformApi(client),
+    platformApi: platform,
     store: store,
+    selector: AddressSelector(api: platform),
+    routes: routes,
+    signedIn: (s) => credentials.session?.server == s,
+    networkChanges: networkChanges(),
   );
   final todos = TodosRepositoryOutbox(
     remote: TodosRepositoryRemote(api: TodosApi(client)),

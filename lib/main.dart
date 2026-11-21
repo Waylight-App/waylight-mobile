@@ -31,6 +31,11 @@ Future<void> main() async {
     repositories.session,
     lock: repositories.lock,
   );
+  // Coming back to the app may mean another network: check which server
+  // address answers (#189). The listener lives as long as the app.
+  AppLifecycleListener(
+    onResume: () => repositories.server.selectAddress().ignore(),
+  );
   runApp(
     MultiProvider(
       providers: providers(repositories),

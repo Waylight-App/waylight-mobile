@@ -1707,4 +1707,30 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get settingsColoursWallpaper => 'Hintergrundbild';
+
+  @override
+  String get addressesTitle => 'Adressen';
+
+  @override
+  String get addressesHint =>
+      'Werden in dieser Reihenfolge probiert; die erste, die antwortet und deine Sitzung kennt, wird benutzt, z. B. zuerst das Heimnetz, dann die Adresse für unterwegs.';
+
+  @override
+  String get addressInUse => 'In Benutzung';
+
+  @override
+  String get addressUnreachable => 'Gerade nicht erreichbar';
+
+  @override
+  String get addressRejected =>
+      'Antwortet, kennt deine Sitzung aber nicht – ein anderer Server unter dieser Adresse?';
+
+  @override
+  String get addressRaise => 'Früher probieren';
+
+  @override
+  String get addressRemove => 'Adresse entfernen';
+
+  @override
+  String get addressAdd => 'Adresse hinzufügen';
 }

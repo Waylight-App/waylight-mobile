@@ -243,4 +243,44 @@ void main() {
       expect(repo.useWallpaper, isTrue);
     },
   );
+
+  testWidgets('adds, reorders and removes server addresses (#189)', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(800, 2400);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+    await tester.pumpScreen(SettingsScreen(viewModel: create()));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byKey(const ValueKey('settings.addAddress')));
+    await tester.pumpAndSettle();
+    await tester.enterText(
+      find.byKey(const ValueKey('settings.addressField')),
+      'ftp://nas',
+    );
+    await tester.tap(find.byKey(const ValueKey('settings.addressSave')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const ValueKey('settings.addressField')), findsOneWidget);
+
+    await tester.enterText(
+      find.byKey(const ValueKey('settings.addressField')),
+      'http://192.168.178.115:8090',
+    );
+    await tester.tap(find.byKey(const ValueKey('settings.addressSave')));
+    await tester.pumpAndSettle();
+    expect(servers.addresses.map((a) => a.toString()), [
+      testServer().toString(),
+      'http://192.168.178.115:8090',
+    ]);
+
+    await tester.tap(find.byTooltip('Try earlier'));
+    await tester.pumpAndSettle();
+    expect(servers.addresses.first.toString(), 'http://192.168.178.115:8090');
+
+    await tester.tap(find.byTooltip('Remove address').first);
+    await tester.pumpAndSettle();
+    expect(servers.addresses, [testServer()]);
+    expect(find.byTooltip('Remove address'), findsNothing);
+  });
 }

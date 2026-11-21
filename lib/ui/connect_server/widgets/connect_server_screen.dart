@@ -3,6 +3,7 @@ import 'package:material_ui/material_ui.dart';
 import 'package:waylight_mobile/domain/models/api_exception.dart';
 import 'package:waylight_mobile/domain/models/server_address.dart';
 import 'package:waylight_mobile/ui/connect_server/view_models/connect_server_view_model.dart';
+import 'package:waylight_mobile/ui/core/address_errors.dart';
 import 'package:waylight_mobile/ui/core/error_messages.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
@@ -127,20 +128,6 @@ class _ConnectServerScreenState extends State<ConnectServerScreen> {
     );
   }
 }
-
-/// The message shown at the address field, for input the app rejects
-/// itself; `null` for every other error.
-@visibleForTesting
-String? fieldError(AppLocalizations l10n, Exception error) => switch (error) {
-  InvalidServerAddress(:final reason) => switch (reason) {
-    InvalidServerAddressReason.empty => l10n.connectErrorEmpty,
-    InvalidServerAddressReason.malformed => l10n.connectErrorInvalid,
-    InvalidServerAddressReason.unsupportedScheme => l10n.connectErrorScheme,
-    InvalidServerAddressReason.unexpectedParts => l10n.connectErrorParts,
-    InvalidServerAddressReason.insecure => l10n.connectErrorInsecure,
-  },
-  _ => null,
-};
 
 /// The message shown in the error banner below the button; `null` for
 /// errors shown at the field.

@@ -23,6 +23,7 @@ encrypted through the Waylight relay; no Google service is involved.
 | Your tabs and every widget of the web interface | ✅ | built locally |
 | To-dos, notes, smart search with answers, quick capture | ✅ | built locally |
 | Offline copy of the dashboard | ✅ | built locally |
+| Up to three server addresses, e.g. home network and on the go; the one that answers is used | ✅ | built locally |
 | Push notifications, end-to-end encrypted, without Google | ✅ | waits for the Apple account |
 | Home screen widgets, share sheet, background refresh | ✅ | waits for the Apple account |
 | Store release | later | later |

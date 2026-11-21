@@ -20,7 +20,10 @@ report a vulnerability, see [SECURITY.md](../SECURITY.md).
    tokens are redacted before a record is written (`utils/redact.dart`).
    Signing out deletes the file, and the report leaves the phone only
    through the system share sheet.
-4. **Least permissions.** The app asks only for `INTERNET` on Android.
+4. **Least permissions.** At install the app gets `INTERNET` and
+   `ACCESS_NETWORK_STATE` on Android; the latter only tells it that the
+   network changed, to pick the server address that answers (#189). It
+   never reads the Wi-Fi name, which would need the location permission.
    Every further permission (notifications, camera for QR codes) needs an
    issue that explains why, and is requested when the feature is first
    used, not at start.

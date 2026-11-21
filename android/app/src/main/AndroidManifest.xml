@@ -1,6 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- The app talks to the user's own Waylight server. -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Network changes for the choice of a server address (#189); a normal
+         permission, granted at install. -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!-- Push notifications over the relay's stream (server ADR 0027): asked
          at runtime on Android 13 and later when push is turned on; the
          stream runs in a foreground service and restarts after a reboot. -->

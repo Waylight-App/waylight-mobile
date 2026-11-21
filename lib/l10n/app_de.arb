@@ -494,5 +494,13 @@
   "diagnosticsShare": "Teilen",
   "settingsColours": "Farben",
   "settingsColoursWaylight": "Wie Waylight",
-  "settingsColoursWallpaper": "Hintergrundbild"
+  "settingsColoursWallpaper": "Hintergrundbild",
+  "addressesTitle": "Adressen",
+  "addressesHint": "Werden in dieser Reihenfolge probiert; die erste, die antwortet und deine Sitzung kennt, wird benutzt, z. B. zuerst das Heimnetz, dann die Adresse für unterwegs.",
+  "addressInUse": "In Benutzung",
+  "addressUnreachable": "Gerade nicht erreichbar",
+  "addressRejected": "Antwortet, kennt deine Sitzung aber nicht – ein anderer Server unter dieser Adresse?",
+  "addressRaise": "Früher probieren",
+  "addressRemove": "Adresse entfernen",
+  "addressAdd": "Adresse hinzufügen"
 }

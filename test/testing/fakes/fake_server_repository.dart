@@ -46,6 +46,18 @@ class FakeServerRepository extends ServerRepository {
   @override
   List<ServerAddress> known = [];
 
+  List<ServerAddress>? _addresses;
+
+  @override
+  List<ServerAddress> get addresses => _addresses ?? [?current];
+
+  @override
+  Future<Result<void>> setAddresses(List<ServerAddress> addresses) async {
+    _addresses = addresses;
+    notifyListeners();
+    return const Result.ok(null);
+  }
+
   @override
   Future<Result<void>> switchTo(ServerAddress server) async {
     _current = server;
