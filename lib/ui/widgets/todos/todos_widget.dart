@@ -11,6 +11,7 @@ import 'package:waylight_mobile/ui/core/themes/dimens.dart';
 import 'package:waylight_mobile/ui/core/widgets/message_banner.dart';
 import 'package:waylight_mobile/ui/core/widgets/view_model_host.dart';
 import 'package:waylight_mobile/ui/core/widgets/widget_frame.dart';
+import 'package:waylight_mobile/ui/widgets/common/compact_state_widget.dart';
 import 'package:waylight_mobile/ui/widgets/todos/conflicts_sheet.dart';
 import 'package:waylight_mobile/ui/widgets/todos/todo_sheet.dart';
 import 'package:waylight_mobile/ui/widgets/todos/todos_view_model.dart';
@@ -25,8 +26,14 @@ class TodosWidget extends StatelessWidget {
   final WidgetPlacement widget;
 
   /// The builder for the widget registry.
+  /// Small and strip tiles show the server's compact state (#228).
   static Widget forPlacement(BuildContext context, WidgetPlacement widget) =>
-      TodosWidget(widget: widget, key: ValueKey(widget.id));
+      CompactStateWidget.orFull(
+        context,
+        widget,
+        title: widget.title.isNotEmpty ? widget.title : context.l10n.todosTitle,
+        full: () => TodosWidget(widget: widget, key: ValueKey(widget.id)),
+      );
 
   @override
   Widget build(BuildContext context) {

@@ -1,0 +1,7 @@
+{
+  "title": {"key": "srv_1a2b3c4d5e6f7081", "text": "3 open · 1 overdue", "params": {"open": "3", "overdue": "1"}},
+  "detail": {"key": "srv_9f8e7d6c5b4a3921", "text": "Next: Tax return"},
+  "level": "attention",
+  "count": 3,
+  "updatedAt": "2026-11-21T10:15:00Z"
+}

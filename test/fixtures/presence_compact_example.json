@@ -1,0 +1,15 @@
+{
+  "title": {"key": "srv_0102030405060708", "text": "In the office"},
+  "level": "none",
+  "updatedAt": "2026-11-21T08:00:00Z",
+  "action": {
+    "id": "presence.set",
+    "label": {"key": "srv_1112131415161718", "text": "Set my status"},
+    "method": "put",
+    "path": "/api/presence/me",
+    "choices": [
+      {"id": "office", "label": {"key": "k1", "text": "Office"}, "body": {"status": "office"}, "selected": true},
+      {"id": "home", "label": {"key": "k2", "text": "Home"}, "body": {"status": "home"}, "selected": false}
+    ]
+  }
+}

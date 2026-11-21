@@ -20,6 +20,7 @@ import 'package:waylight_mobile/data/repositories/attention/attention_repository
 import 'package:waylight_mobile/data/repositories/bookmarks/bookmarks_repository.dart';
 import 'package:waylight_mobile/data/repositories/bookmarks/bookmarks_repository_remote.dart';
 import 'package:waylight_mobile/data/repositories/calendar/calendar_repository.dart';
+import 'package:waylight_mobile/data/repositories/compact/compact_state_repository.dart';
 import 'package:waylight_mobile/data/repositories/dashboard/dashboard_repository.dart';
 import 'package:waylight_mobile/data/repositories/dashboard/dashboard_repository_remote.dart';
 import 'package:waylight_mobile/data/repositories/diagnostics/diagnostics_repository.dart';
@@ -113,6 +114,7 @@ typedef Repositories = ({
   FocusRepository focus,
   PresenceRepository presence,
   AttentionRepository attention,
+  CompactStateRepository compact,
   AbsencesRepository absences,
   AnnouncementsRepository announcements,
   ScannerRepository scanner,
@@ -161,6 +163,7 @@ List<SingleChildWidget> providers(Repositories repositories) => [
   Provider<FocusRepository>.value(value: repositories.focus),
   Provider<PresenceRepository>.value(value: repositories.presence),
   ListenableProvider<AttentionRepository>.value(value: repositories.attention),
+  Provider<CompactStateRepository>.value(value: repositories.compact),
   Provider<AbsencesRepository>.value(value: repositories.absences),
   Provider<ScannerRepository>.value(value: repositories.scanner),
   Provider<AnnouncementsRepository>.value(value: repositories.announcements),
@@ -306,6 +309,7 @@ Repositories createRepositories() {
     focus: focusSessions,
     presence: presence,
     attention: attention,
+    compact: CompactStateRepositoryRemote(api: modules),
     absences: AbsencesRepositoryRemote(api: modules),
     announcements: AnnouncementsRepositoryRemote(api: modules),
     scanner: const ScannerRepository(scanner: MethodChannelBarcodeScanner()),
