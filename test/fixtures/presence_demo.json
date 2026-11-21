@@ -1,0 +1,1 @@
+{"day":"2026-11-21","people":[{"accountId":"a1","name":"Anna","status":"office","source":"self"},{"accountId":"b2","name":"Ben","status":"away","source":"absence","returnOn":"2026-11-24"},{"accountId":"c3","name":"Cem","status":"","source":"none"}],"counts":{"office":1,"home":0,"away":1,"none":1},"mine":{"accountId":"a1","name":"Anna","status":"office","source":"self"}}

@@ -1832,4 +1832,45 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get kioskLeaveReason =>
       'Bestätige, um den Wandbildschirm zu verlassen';
+
+  @override
+  String get presenceTitle => 'Anwesenheit';
+
+  @override
+  String get presenceOffice => 'Büro';
+
+  @override
+  String get presenceHome => 'Homeoffice';
+
+  @override
+  String get presenceAway => 'Weg';
+
+  @override
+  String get presenceNone => 'Nicht gesetzt';
+
+  @override
+  String get presenceMine => 'Mein Status heute';
+
+  @override
+  String get presenceReturnOn => 'Zurück am';
+
+  @override
+  String presenceBack(String date) {
+    return 'zurück $date';
+  }
+
+  @override
+  String get presenceFromAbsence => 'aus den Abwesenheiten';
+
+  @override
+  String get presenceEmpty => 'Niemand in dieser Gruppe.';
+
+  @override
+  String get presenceOff =>
+      'Anwesenheit ist für diese Organisation ausgeschaltet.';
+
+  @override
+  String presenceCounts(int office, int home, int away, int none) {
+    return '$office im Büro · $home im Homeoffice · $away weg · $none nicht gesetzt';
+  }
 }

@@ -21,6 +21,7 @@ import 'package:waylight_mobile/ui/widgets/media/media_widgets.dart';
 import 'package:waylight_mobile/ui/widgets/notes/notes_widget.dart';
 import 'package:waylight_mobile/ui/widgets/parcels/parcels_widget.dart';
 import 'package:waylight_mobile/ui/widgets/phonelist/phonelist_widget.dart';
+import 'package:waylight_mobile/ui/widgets/presence/presence_widget.dart';
 import 'package:waylight_mobile/ui/widgets/proxmox/proxmox_widget.dart';
 import 'package:waylight_mobile/ui/widgets/readlater/read_later_widget.dart';
 import 'package:waylight_mobile/ui/widgets/rss/rss_widget.dart';
@@ -56,6 +57,7 @@ const nativeWidgets = WidgetRegistry({
   'drop': DropWidget.forPlacement,
   'electricity': ElectricityWidget.forPlacement,
   'focus': FocusWidget.forPlacement,
+  'presence': PresenceWidget.forPlacement,
   'fritzbox': FritzboxWidget.forPlacement,
   'fritzbox-calls': CallsWidget.forPlacement,
   'fuel': FuelWidget.forPlacement,

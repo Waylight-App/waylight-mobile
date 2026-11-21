@@ -33,6 +33,7 @@ import '../testing/fakes/fake_home_widget_store.dart';
 import '../testing/fakes/fake_log_store.dart';
 import '../testing/fakes/fake_notes_repository.dart';
 import '../testing/fakes/fake_preferences_repository.dart';
+import '../testing/fakes/fake_presence_repository.dart';
 import '../testing/fakes/fake_reminder_scheduler.dart';
 import '../testing/fakes/fake_search_repository.dart';
 import '../testing/fakes/fake_server_repository.dart';
@@ -75,6 +76,7 @@ void main() {
           parcels: FakeParcelsRepository(),
           smartHome: FakeSmartHomeRepository(),
           focus: FakeFocusRepository(),
+          presence: FakePresenceRepository(),
           focusTimer: FocusTimerRepository(
             timer: InAppFocusTimer(),
             sessions: FakeFocusRepository(),

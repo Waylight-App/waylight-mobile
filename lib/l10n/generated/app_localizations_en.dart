@@ -1830,4 +1830,44 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get kioskLeaveReason => 'Confirm to leave the wall display';
+
+  @override
+  String get presenceTitle => 'Presence';
+
+  @override
+  String get presenceOffice => 'Office';
+
+  @override
+  String get presenceHome => 'Home';
+
+  @override
+  String get presenceAway => 'Away';
+
+  @override
+  String get presenceNone => 'Not set';
+
+  @override
+  String get presenceMine => 'My status today';
+
+  @override
+  String get presenceReturnOn => 'Back on';
+
+  @override
+  String presenceBack(String date) {
+    return 'back $date';
+  }
+
+  @override
+  String get presenceFromAbsence => 'from the absences';
+
+  @override
+  String get presenceEmpty => 'Nobody in this group.';
+
+  @override
+  String get presenceOff => 'Presence is switched off for this organisation.';
+
+  @override
+  String presenceCounts(int office, int home, int away, int none) {
+    return '$office in the office · $home at home · $away away · $none not set';
+  }
 }
