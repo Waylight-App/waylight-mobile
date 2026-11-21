@@ -526,6 +526,7 @@ class FocusWidget extends StatelessWidget {
         widget,
         title: widget.title.isNotEmpty ? widget.title : context.l10n.focusTitle,
         full: () => FocusWidget(widget: widget, key: ValueKey(widget.id)),
+        quickAction: const FocusQuickAction(),
       );
 
   @override
@@ -548,6 +549,27 @@ class FocusWidget extends StatelessWidget {
       );
     },
   );
+}
+
+/// Starts or stops a focus phase right on a small focus tile (#226).
+class FocusQuickAction extends StatelessWidget {
+  /// Creates the button.
+  const FocusQuickAction({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final timer = context.watch<FocusTimerRepository>();
+    final running = timer.state != null;
+    return IconButton.filledTonal(
+      key: const ValueKey('focus.quick'),
+      tooltip: running ? l10n.focusStop : l10n.focusStartFocus,
+      icon: Icon(running ? Icons.stop : Icons.play_arrow),
+      onPressed: () => running
+          ? timer.stop().ignore()
+          : timer.start(FocusPhase.focus).ignore(),
+    );
+  }
 }
 
 /// The focus timer (#191): 25 minutes of focus, then a 5-minute break. It

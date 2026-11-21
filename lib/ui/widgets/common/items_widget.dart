@@ -1,5 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 
+import 'package:waylight_mobile/domain/models/dashboard.dart';
+
 import 'package:waylight_mobile/ui/core/widgets/view_model_host.dart';
 import 'package:waylight_mobile/ui/core/widgets/widget_frame.dart';
 import 'package:waylight_mobile/ui/widgets/common/error_snack_listener.dart';
@@ -13,6 +15,7 @@ class ItemsWidget<T> extends StatelessWidget {
     required this.title,
     required this.create,
     required this.builder,
+    this.compact,
     this.interval = const Duration(minutes: 5),
     super.key,
   });
@@ -27,6 +30,14 @@ class ItemsWidget<T> extends StatelessWidget {
   final Widget Function(BuildContext context, ItemsViewModel<T> viewModel)
   builder;
 
+  /// Builds the compact form for small and strip tiles (#211).
+  final Widget Function(
+    BuildContext context,
+    ItemsViewModel<T> viewModel,
+    WidgetSize size,
+  )?
+  compact;
+
   /// How often the list is reloaded.
   final Duration interval;
 
@@ -37,6 +48,17 @@ class ItemsWidget<T> extends StatelessWidget {
       title: title,
       load: viewModel.load,
       interval: interval,
+      compact: switch (compact) {
+        final compact? => (context, _, size) => ErrorSnackListener(
+          listenable: viewModel,
+          takeError: viewModel.takeLastError,
+          child: ListenableBuilder(
+            listenable: viewModel,
+            builder: (context, _) => compact(context, viewModel, size),
+          ),
+        ),
+        null => null,
+      },
       builder: (context, _) => ErrorSnackListener(
         listenable: viewModel,
         takeError: viewModel.takeLastError,

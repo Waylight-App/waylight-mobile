@@ -480,6 +480,8 @@
   "settingsPushBattery": "Android kann die Verbindung zum Akkusparen trennen.",
   "settingsPushBatteryAction": "Erlauben",
   "dashboardOpenWidget": "in voller Größe öffnen",
+  "dashboardOpenDetails": "Details öffnen",
+  "focusStartFocus": "Fokus starten",
   "widgetSizeFull": "Volle Breite",
   "widgetSizeSmall": "Klein",
   "widgetSizeMedium": "Mittel",
