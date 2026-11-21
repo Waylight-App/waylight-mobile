@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:waylight_mobile/data/repositories/lock/app_lock_repository.dart';
@@ -13,6 +15,7 @@ import 'package:waylight_mobile/ui/core/themes/dimens.dart';
 import 'package:waylight_mobile/ui/core/widgets/command_button.dart';
 import 'package:waylight_mobile/ui/core/widgets/section_card.dart';
 import 'package:waylight_mobile/ui/settings/view_models/settings_area.dart';
+import 'package:waylight_mobile/ui/settings/view_models/settings_index.dart';
 import 'package:waylight_mobile/ui/settings/view_models/settings_view_model.dart';
 import 'package:waylight_mobile/ui/settings/widgets/settings_texts.dart';
 import 'package:waylight_mobile/utils/command.dart';
@@ -33,11 +36,16 @@ class SettingsAreaScreen extends StatelessWidget {
   const SettingsAreaScreen({
     required this.area,
     required this.viewModel,
+    this.focus,
     super.key,
   });
 
   /// Which settings this screen shows.
   final SettingsArea area;
+
+  /// The setting a search result pointed to: scrolled into view and
+  /// briefly highlighted (#232).
+  final SettingsItem? focus;
 
   /// The state and actions of the settings.
   final SettingsViewModel viewModel;
@@ -51,15 +59,18 @@ class SettingsAreaScreen extends StatelessWidget {
         listenable: viewModel,
         builder: (context, _) {
           final cards = _cards(context);
-          return SettingsPage(
-            children: cards.isEmpty
-                ? [Text(l10n.settingsAreaEmpty)]
-                : [
-                    for (final (i, card) in cards.indexed) ...[
-                      if (i > 0) const SizedBox(height: Dimens.gap),
-                      card,
+          return _Spotlight(
+            item: focus,
+            child: SettingsPage(
+              children: cards.isEmpty
+                  ? [Text(l10n.settingsAreaEmpty)]
+                  : [
+                      for (final (i, card) in cards.indexed) ...[
+                        if (i > 0) const SizedBox(height: Dimens.gap),
+                        card,
+                      ],
                     ],
-                  ],
+            ),
           );
         },
       ),
@@ -70,33 +81,80 @@ class SettingsAreaScreen extends StatelessWidget {
     SettingsArea.account => [_Account(viewModel: viewModel)],
     SettingsArea.server => [
       _Connection(viewModel: viewModel),
-      _OtherServers(viewModel: viewModel),
+      SettingsTarget(
+        item: SettingsItem.otherServers,
+        child: _OtherServers(viewModel: viewModel),
+      ),
       _Advanced(viewModel: viewModel),
     ],
     SettingsArea.appearance => [_Appearance(viewModel: viewModel)],
     SettingsArea.notifications => [
       if (viewModel.pushAvailable) _Push(viewModel: viewModel),
-      if (viewModel.remindersAvailable) _Reminders(viewModel: viewModel),
+      if (viewModel.remindersAvailable)
+        SettingsTarget(
+          item: SettingsItem.reminders,
+          child: _Reminders(viewModel: viewModel),
+        ),
     ],
     SettingsArea.phone => [
-      if (viewModel.lockAvailable) _Lock(viewModel: viewModel),
-      if (viewModel.homeWidgetsAvailable)
-        _Hint(
-          title: context.l10n.settingsHomeWidgets,
-          text: context.l10n.settingsHomeWidgetsHint,
+      if (viewModel.lockAvailable)
+        SettingsTarget(
+          item: SettingsItem.lock,
+          child: _Lock(viewModel: viewModel),
         ),
-      if (viewModel.quickTilesAvailable) _QuickTiles(viewModel: viewModel),
-      _Hint(
-        title: context.l10n.kioskUse,
-        text: context.l10n.settingsWallDisplayHint,
+      if (viewModel.homeWidgetsAvailable)
+        SettingsTarget(
+          item: SettingsItem.homeWidgets,
+          child: _Hint(
+            title: context.l10n.settingsHomeWidgets,
+            text: context.l10n.settingsHomeWidgetsHint,
+          ),
+        ),
+      if (viewModel.quickTilesAvailable)
+        SettingsTarget(
+          item: SettingsItem.quickTiles,
+          child: _QuickTiles(viewModel: viewModel),
+        ),
+      // Watches are paired through the Android app only (#239, #185).
+      if (viewModel.watchPairingAvailable)
+        const SettingsTarget(item: SettingsItem.pairWatch, child: _PairWatch()),
+      SettingsTarget(
+        item: SettingsItem.wallDisplay,
+        child: _Hint(
+          title: context.l10n.kioskUse,
+          text: context.l10n.settingsWallDisplayHint,
+        ),
       ),
     ],
     SettingsArea.about => [_About(viewModel: viewModel)],
   };
 }
 
+/// Opens the pairing of a Wear OS watch (#239).
+class _PairWatch extends StatelessWidget {
+  const _PairWatch();
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    return SectionCard(
+      title: l10n.pairWatchTitle,
+      child: ListTile(
+        key: const ValueKey('settings.pairWatch'),
+        contentPadding: EdgeInsets.zero,
+        minTileHeight: Dimens.tapTarget,
+        leading: const Icon(Icons.watch),
+        title: Text(l10n.pairWatchEntry),
+        trailing: const Icon(Icons.chevron_right),
+        onTap: () => context.push(Routes.pairWatch),
+      ),
+    );
+  }
+}
+
 /// The scrolling frame of every settings screen; narrow enough on tablets
-/// and in landscape that rows stay readable (#52).
+/// and in landscape that rows stay readable (#52). Not lazy: the pages are
+/// short, and a search result must be able to scroll to any row.
 class SettingsPage extends StatelessWidget {
   /// Creates the page around [children].
   const SettingsPage({required this.children, super.key});
@@ -109,9 +167,12 @@ class SettingsPage extends StatelessWidget {
     alignment: Alignment.topCenter,
     child: ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: Dimens.maxPageWidth),
-      child: ListView(
+      child: SingleChildScrollView(
         padding: const EdgeInsets.all(Dimens.gap),
-        children: children,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: children,
+        ),
       ),
     ),
   );
@@ -130,34 +191,43 @@ class _Account extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          ListenableBuilder(
-            listenable: viewModel.account,
-            builder: (context, _) => switch (viewModel.account.result) {
-              Ok(:final value) => _Line(
-                label: roleLabel(l10n, value.role),
-                value: value.username.isEmpty
-                    ? l10n.settingsOwnerAccount
-                    : value.username,
-              ),
-              _ => const SizedBox.shrink(),
-            },
+          SettingsTarget(
+            item: SettingsItem.account,
+            child: ListenableBuilder(
+              listenable: viewModel.account,
+              builder: (context, _) => switch (viewModel.account.result) {
+                Ok(:final value) => _Line(
+                  label: roleLabel(l10n, value.role),
+                  value: value.username.isEmpty
+                      ? l10n.settingsOwnerAccount
+                      : value.username,
+                ),
+                _ => const SizedBox.shrink(),
+              },
+            ),
           ),
-          ListTile(
-            key: const ValueKey('settings.security'),
-            contentPadding: EdgeInsets.zero,
-            minTileHeight: Dimens.tapTarget,
-            leading: const Icon(Icons.security),
-            title: Text(l10n.securityTitle),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () => context.push(Routes.security),
+          SettingsTarget(
+            item: SettingsItem.security,
+            child: ListTile(
+              key: const ValueKey('settings.security'),
+              contentPadding: EdgeInsets.zero,
+              minTileHeight: Dimens.tapTarget,
+              leading: const Icon(Icons.security),
+              title: Text(l10n.securityTitle),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () => context.push(Routes.security),
+            ),
           ),
           const SizedBox(height: Dimens.gapSmall),
-          CommandButton(
-            key: const ValueKey('settings.signOut'),
-            command: viewModel.signOut,
-            onPressed: () => viewModel.signOut.execute().ignore(),
-            label: l10n.homeSignOut,
-            variant: CommandButtonVariant.outlined,
+          SettingsTarget(
+            item: SettingsItem.signOut,
+            child: CommandButton(
+              key: const ValueKey('settings.signOut'),
+              command: viewModel.signOut,
+              onPressed: () => viewModel.signOut.execute().ignore(),
+              label: l10n.homeSignOut,
+              variant: CommandButtonVariant.outlined,
+            ),
           ),
         ],
       ),
@@ -180,16 +250,25 @@ class _Connection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          _Line(label: l10n.settingsAddress, value: viewModel.server),
+          SettingsTarget(
+            item: SettingsItem.serverAddress,
+            child: _Line(label: l10n.settingsAddress, value: viewModel.server),
+          ),
           _Line(
             label: l10n.addressInUse,
             value: active?.toString() ?? l10n.settingsStatusNoAddress,
           ),
-          _CommandLine(
-            label: l10n.settingsVersion,
-            command: viewModel.serverVersion,
+          SettingsTarget(
+            item: SettingsItem.serverVersion,
+            child: _CommandLine(
+              label: l10n.settingsVersion,
+              command: viewModel.serverVersion,
+            ),
           ),
-          _Addresses(viewModel: viewModel),
+          SettingsTarget(
+            item: SettingsItem.addresses,
+            child: _Addresses(viewModel: viewModel),
+          ),
         ],
       ),
     );
@@ -251,22 +330,28 @@ class _Advanced extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          ListTile(
-            key: const ValueKey('settings.checkAddresses'),
-            contentPadding: EdgeInsets.zero,
-            minTileHeight: Dimens.tapTarget,
-            leading: const Icon(Icons.refresh),
-            title: Text(l10n.settingsCheckNow),
-            subtitle: Text(l10n.settingsCheckNowHint),
-            onTap: () => viewModel.checkAddresses().ignore(),
+          SettingsTarget(
+            item: SettingsItem.checkAddresses,
+            child: ListTile(
+              key: const ValueKey('settings.checkAddresses'),
+              contentPadding: EdgeInsets.zero,
+              minTileHeight: Dimens.tapTarget,
+              leading: const Icon(Icons.refresh),
+              title: Text(l10n.settingsCheckNow),
+              subtitle: Text(l10n.settingsCheckNowHint),
+              onTap: () => viewModel.checkAddresses().ignore(),
+            ),
           ),
           const SizedBox(height: Dimens.gapSmall),
-          CommandButton(
-            key: const ValueKey('settings.disconnect'),
-            command: viewModel.disconnect,
-            onPressed: () => viewModel.disconnect.execute().ignore(),
-            label: l10n.homeDisconnect,
-            variant: CommandButtonVariant.outlined,
+          SettingsTarget(
+            item: SettingsItem.disconnect,
+            child: CommandButton(
+              key: const ValueKey('settings.disconnect'),
+              command: viewModel.disconnect,
+              onPressed: () => viewModel.disconnect.execute().ignore(),
+              label: l10n.homeDisconnect,
+              variant: CommandButtonVariant.outlined,
+            ),
           ),
         ],
       ),
@@ -289,69 +374,78 @@ class _Appearance extends StatelessWidget {
         children: [
           Text(l10n.settingsTheme),
           const SizedBox(height: Dimens.gapSmall),
-          SegmentedButton<ThemeChoice>(
-            key: const ValueKey('settings.theme'),
-            segments: [
-              ButtonSegment(
-                value: ThemeChoice.system,
-                label: Text(l10n.settingsSystem),
-              ),
-              ButtonSegment(
-                value: ThemeChoice.light,
-                label: Text(l10n.settingsLight),
-              ),
-              ButtonSegment(
-                value: ThemeChoice.dark,
-                label: Text(l10n.settingsDark),
-              ),
-            ],
-            selected: {viewModel.appearance.theme},
-            onSelectionChanged: (s) => viewModel.setTheme(s.single),
+          SettingsTarget(
+            item: SettingsItem.theme,
+            child: SegmentedButton<ThemeChoice>(
+              key: const ValueKey('settings.theme'),
+              segments: [
+                ButtonSegment(
+                  value: ThemeChoice.system,
+                  label: Text(l10n.settingsSystem),
+                ),
+                ButtonSegment(
+                  value: ThemeChoice.light,
+                  label: Text(l10n.settingsLight),
+                ),
+                ButtonSegment(
+                  value: ThemeChoice.dark,
+                  label: Text(l10n.settingsDark),
+                ),
+              ],
+              selected: {viewModel.appearance.theme},
+              onSelectionChanged: (s) => viewModel.setTheme(s.single),
+            ),
           ),
           if (viewModel.wallpaperAvailable) ...[
             const SizedBox(height: Dimens.gap),
             Text(l10n.settingsColours),
             const SizedBox(height: Dimens.gapSmall),
-            SegmentedButton<bool>(
-              key: const ValueKey('settings.colours'),
-              segments: [
-                ButtonSegment(
-                  value: false,
-                  label: Text(l10n.settingsColoursWaylight),
-                ),
-                ButtonSegment(
-                  value: true,
-                  label: Text(l10n.settingsColoursWallpaper),
-                ),
-              ],
-              selected: {viewModel.useWallpaper},
-              onSelectionChanged: (s) =>
-                  viewModel.setWallpaper(enabled: s.single).ignore(),
+            SettingsTarget(
+              item: SettingsItem.colours,
+              child: SegmentedButton<bool>(
+                key: const ValueKey('settings.colours'),
+                segments: [
+                  ButtonSegment(
+                    value: false,
+                    label: Text(l10n.settingsColoursWaylight),
+                  ),
+                  ButtonSegment(
+                    value: true,
+                    label: Text(l10n.settingsColoursWallpaper),
+                  ),
+                ],
+                selected: {viewModel.useWallpaper},
+                onSelectionChanged: (s) =>
+                    viewModel.setWallpaper(enabled: s.single).ignore(),
+              ),
             ),
           ],
           const SizedBox(height: Dimens.gap),
           Text(l10n.settingsLanguage),
           const SizedBox(height: Dimens.gapSmall),
-          SegmentedButton<AppLanguage>(
-            key: const ValueKey('settings.language'),
-            segments: [
-              ButtonSegment(
-                value: AppLanguage.system,
-                label: Text(l10n.settingsSystem),
-              ),
-              // Language names in their own language, so anyone finds
-              // theirs.
-              const ButtonSegment(
-                value: AppLanguage.en,
-                label: Text('English'),
-              ),
-              const ButtonSegment(
-                value: AppLanguage.de,
-                label: Text('Deutsch'),
-              ),
-            ],
-            selected: {viewModel.appearance.language},
-            onSelectionChanged: (s) => viewModel.setLanguage(s.single),
+          SettingsTarget(
+            item: SettingsItem.language,
+            child: SegmentedButton<AppLanguage>(
+              key: const ValueKey('settings.language'),
+              segments: [
+                ButtonSegment(
+                  value: AppLanguage.system,
+                  label: Text(l10n.settingsSystem),
+                ),
+                // Language names in their own language, so anyone finds
+                // theirs.
+                const ButtonSegment(
+                  value: AppLanguage.en,
+                  label: Text('English'),
+                ),
+                const ButtonSegment(
+                  value: AppLanguage.de,
+                  label: Text('Deutsch'),
+                ),
+              ],
+              selected: {viewModel.appearance.language},
+              onSelectionChanged: (s) => viewModel.setLanguage(s.single),
+            ),
           ),
         ],
       ),
@@ -375,25 +469,31 @@ class _Push extends StatelessWidget {
         builder: (context, _) => Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SwitchListTile(
-              key: const ValueKey('settings.push'),
-              contentPadding: EdgeInsets.zero,
-              title: Text(l10n.settingsPushSwitch),
-              subtitle: Text(l10n.settingsPushHint),
-              value: viewModel.pushOn,
-              onChanged: viewModel.setPush.running
-                  ? null
-                  : (on) => viewModel.setPush.execute(on).ignore(),
+            SettingsTarget(
+              item: SettingsItem.push,
+              child: SwitchListTile(
+                key: const ValueKey('settings.push'),
+                contentPadding: EdgeInsets.zero,
+                title: Text(l10n.settingsPushSwitch),
+                subtitle: Text(l10n.settingsPushHint),
+                value: viewModel.pushOn,
+                onChanged: viewModel.setPush.running
+                    ? null
+                    : (on) => viewModel.setPush.execute(on).ignore(),
+              ),
             ),
             if (viewModel.pushOn && !viewModel.batteryUnrestricted)
-              ListTile(
-                key: const ValueKey('settings.push.battery'),
-                contentPadding: EdgeInsets.zero,
-                leading: const Icon(Icons.battery_alert_outlined),
-                title: Text(l10n.settingsPushBattery),
-                trailing: TextButton(
-                  onPressed: () => viewModel.allowInBackground().ignore(),
-                  child: Text(l10n.settingsPushBatteryAction),
+              SettingsTarget(
+                item: SettingsItem.battery,
+                child: ListTile(
+                  key: const ValueKey('settings.push.battery'),
+                  contentPadding: EdgeInsets.zero,
+                  leading: const Icon(Icons.battery_alert_outlined),
+                  title: Text(l10n.settingsPushBattery),
+                  trailing: TextButton(
+                    onPressed: () => viewModel.allowInBackground().ignore(),
+                    child: Text(l10n.settingsPushBatteryAction),
+                  ),
                 ),
               ),
             if (viewModel.setPush.result case Error(:final error))
@@ -525,6 +625,80 @@ class _QuickTiles extends StatelessWidget {
   }
 }
 
+/// Tells the [SettingsTarget]s of a screen which one a search result
+/// pointed to.
+class _Spotlight extends InheritedWidget {
+  const _Spotlight({required this.item, required super.child});
+
+  final SettingsItem? item;
+
+  static SettingsItem? of(BuildContext context) =>
+      context.getInheritedWidgetOfExactType<_Spotlight>()?.item;
+
+  @override
+  bool updateShouldNotify(_Spotlight oldWidget) => item != oldWidget.item;
+}
+
+/// A setting the search can point to (#232): when it is the one, it
+/// scrolls into view and is highlighted for a moment.
+class SettingsTarget extends StatefulWidget {
+  /// Marks [child] as the place of [item].
+  const SettingsTarget({required this.item, required this.child, super.key});
+
+  /// The setting shown by [child].
+  final SettingsItem item;
+
+  /// The row or card of the setting.
+  final Widget child;
+
+  /// How long the highlight stays.
+  static const highlight = Duration(seconds: 2);
+
+  @override
+  State<SettingsTarget> createState() => _SettingsTargetState();
+}
+
+class _SettingsTargetState extends State<SettingsTarget> {
+  bool _lit = false;
+  Timer? _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted || _Spotlight.of(context) != widget.item) return;
+      Scrollable.ensureVisible(
+        context,
+        alignment: 0.2,
+        duration: const Duration(milliseconds: 300),
+      ).ignore();
+      setState(() => _lit = true);
+      _timer = Timer(SettingsTarget.highlight, () {
+        if (mounted) setState(() => _lit = false);
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 400),
+      decoration: BoxDecoration(
+        color: _lit ? scheme.primaryContainer : Colors.transparent,
+        borderRadius: BorderRadius.circular(Dimens.radiusSmall),
+      ),
+      child: widget.child,
+    );
+  }
+}
+
 /// A card that only explains where something is set up outside the app.
 class _Hint extends StatelessWidget {
   const _Hint({required this.title, required this.text});
@@ -552,31 +726,46 @@ class _About extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          _CommandLine(
-            label: l10n.settingsAppVersion,
-            command: viewModel.appVersion,
+          SettingsTarget(
+            item: SettingsItem.appVersion,
+            child: _CommandLine(
+              label: l10n.settingsAppVersion,
+              command: viewModel.appVersion,
+            ),
           ),
           _Line(label: l10n.settingsLicence, value: 'MIT'),
-          _LinkTile(label: l10n.settingsSource, url: sourceUrl),
-          _LinkTile(label: l10n.settingsPrivacy, url: privacyUrl),
+          SettingsTarget(
+            item: SettingsItem.source,
+            child: _LinkTile(label: l10n.settingsSource, url: sourceUrl),
+          ),
+          SettingsTarget(
+            item: SettingsItem.privacy,
+            child: _LinkTile(label: l10n.settingsPrivacy, url: privacyUrl),
+          ),
           if (viewModel.diagnosticsAvailable)
-            ListTile(
-              key: const ValueKey('settings.diagnostics'),
+            SettingsTarget(
+              item: SettingsItem.diagnostics,
+              child: ListTile(
+                key: const ValueKey('settings.diagnostics'),
+                contentPadding: EdgeInsets.zero,
+                minTileHeight: Dimens.tapTarget,
+                title: Text(l10n.diagnosticsCreate),
+                subtitle: Text(l10n.diagnosticsHint),
+                trailing: const Icon(Icons.chevron_right),
+                onTap: () => showDiagnosticsSheet(context, viewModel),
+              ),
+            ),
+          SettingsTarget(
+            item: SettingsItem.licences,
+            child: ListTile(
               contentPadding: EdgeInsets.zero,
               minTileHeight: Dimens.tapTarget,
-              title: Text(l10n.diagnosticsCreate),
-              subtitle: Text(l10n.diagnosticsHint),
+              title: Text(l10n.settingsLicences),
               trailing: const Icon(Icons.chevron_right),
-              onTap: () => showDiagnosticsSheet(context, viewModel),
-            ),
-          ListTile(
-            contentPadding: EdgeInsets.zero,
-            minTileHeight: Dimens.tapTarget,
-            title: Text(l10n.settingsLicences),
-            trailing: const Icon(Icons.chevron_right),
-            onTap: () => showLicensePage(
-              context: context,
-              applicationName: l10n.appTitle,
+              onTap: () => showLicensePage(
+                context: context,
+                applicationName: l10n.appTitle,
+              ),
             ),
           ),
         ],

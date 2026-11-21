@@ -15,6 +15,7 @@ private object Routes {
     const val START = "start"
     const val PAIR_QR = "pair/qr"
     const val PAIR_MANUAL = "pair/manual"
+    const val PRESENCE = "presence"
 }
 
 /** The screens of the app; swiping right goes back, as everywhere on Wear OS. */
@@ -37,11 +38,12 @@ fun WatchApp(viewModel: WatchViewModel = viewModel()) {
                         onPairWithPhone = { nav.navigate(Routes.PAIR_QR) },
                         onPairManually = { nav.navigate(Routes.PAIR_MANUAL) },
                     )
-                    is AppState.Paired -> PairedScreen(viewModel, state.session)
+                    is AppState.Paired -> PairedScreen(viewModel, state.session, onPresence = { nav.navigate(Routes.PRESENCE) })
                 }
             }
             composable(Routes.PAIR_QR) { QrPairingScreen(viewModel) }
             composable(Routes.PAIR_MANUAL) { ManualPairingScreen(viewModel) }
+            composable(Routes.PRESENCE) { PresenceScreen(viewModel, onDone = { nav.popBackStack() }) }
         }
     }
 }
