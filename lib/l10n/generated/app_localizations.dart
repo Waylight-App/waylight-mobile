@@ -4309,6 +4309,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No collections ahead'**
   String get compactNoCollections;
+
+  /// Heading of the first-start questions after the first sign-in (#287).
+  ///
+  /// In en, this message translates to:
+  /// **'Set up the app'**
+  String get firstStartTitle;
+
+  /// Position in the first-start questions (#287).
+  ///
+  /// In en, this message translates to:
+  /// **'Step {current} of {total}'**
+  String firstStartProgress(int current, int total);
+
+  /// Note below every first-start question (#287).
+  ///
+  /// In en, this message translates to:
+  /// **'You can change all of this later in the settings.'**
+  String get firstStartLater;
+
+  /// Button to the next first-start question (#287).
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get firstStartNext;
+
+  /// Button to the previous first-start question (#287).
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get firstStartBack;
+
+  /// Button on the last first-start question (#287).
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get firstStartDone;
+
+  /// Button that ends the first-start questions at once (#287).
+  ///
+  /// In en, this message translates to:
+  /// **'Skip all'**
+  String get firstStartSkipAll;
+
+  /// Explains the notifications question of the first start (#287).
+  ///
+  /// In en, this message translates to:
+  /// **'Get reminders and messages from your Waylight on this phone.'**
+  String get firstStartNotificationsText;
+
+  /// Explains the app lock question of the first start (#287).
+  ///
+  /// In en, this message translates to:
+  /// **'Ask for your fingerprint, face or device PIN whenever the app opens.'**
+  String get firstStartLockText;
+
+  /// Title of the addresses question of the first start (#287).
+  ///
+  /// In en, this message translates to:
+  /// **'At home and on the go'**
+  String get firstStartAddressesTitle;
+
+  /// Explains the addresses question of the first start (#287, #189).
+  ///
+  /// In en, this message translates to:
+  /// **'Does your Waylight have a second address, for example one in the home network and one for on the go? Add it here and the app uses whichever answers.'**
+  String get firstStartAddressesText;
+
+  /// Explains the look question of the first start (#287).
+  ///
+  /// In en, this message translates to:
+  /// **'Light, dark or as the system.'**
+  String get firstStartLookText;
 }
 
 class _AppLocalizationsDelegate

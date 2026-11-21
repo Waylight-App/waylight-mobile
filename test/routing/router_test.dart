@@ -9,6 +9,7 @@ import 'package:waylight_mobile/config/dependencies.dart';
 import 'package:waylight_mobile/data/repositories/appearance/theme_repository.dart';
 import 'package:waylight_mobile/data/repositories/device_controls/device_controls_repository.dart';
 import 'package:waylight_mobile/data/repositories/diagnostics/diagnostics_repository.dart';
+import 'package:waylight_mobile/data/repositories/first_start/first_start_repository.dart';
 import 'package:waylight_mobile/data/repositories/focus/focus_timer_repository.dart';
 import 'package:waylight_mobile/data/repositories/home_widgets/home_widgets_repository.dart';
 import 'package:waylight_mobile/data/repositories/kiosk/kiosk_repository.dart';
@@ -29,6 +30,7 @@ import 'package:waylight_mobile/routing/router.dart';
 import 'package:waylight_mobile/routing/routes.dart';
 import 'package:waylight_mobile/ui/connect_server/widgets/connect_server_screen.dart';
 import 'package:waylight_mobile/ui/dashboard/widgets/dashboard_screen.dart';
+import 'package:waylight_mobile/ui/first_start/widgets/first_start_screen.dart';
 import 'package:waylight_mobile/ui/settings/view_models/settings_area.dart';
 import 'package:waylight_mobile/ui/settings/view_models/settings_index.dart';
 import 'package:waylight_mobile/ui/settings/widgets/settings_area_screen.dart';
@@ -71,9 +73,10 @@ void main() {
   Future<GoRouter> pumpApp(
     WidgetTester tester,
     FakeServerRepository servers,
-    FakeSessionRepository sessions,
-  ) async {
-    final router = createRouter(servers, sessions);
+    FakeSessionRepository sessions, {
+    FirstStartRepository? firstStart,
+  }) async {
+    final router = createRouter(servers, sessions, firstStart: firstStart);
     await tester.pumpWidget(
       MultiProvider(
         providers: providers((
@@ -168,6 +171,9 @@ void main() {
             store: InMemoryKeyValueStore(),
             auth: FakeDeviceAuth(),
           ),
+          firstStart:
+              firstStart ??
+              FirstStartRepository(store: InMemoryKeyValueStore()),
           logs: FakeLogStore(),
           reminders: ReminderRepository(
             scheduler: FakeReminderScheduler(),
@@ -227,6 +233,29 @@ void main() {
     expect(find.byType(ConnectServerScreen), findsOneWidget);
   });
 
+  testWidgets('asks the first-start questions once per server (#287)', (
+    tester,
+  ) async {
+    final servers = FakeServerRepository(current: testServer());
+    final sessions = FakeSessionRepository();
+    final firstStart = FirstStartRepository(store: InMemoryKeyValueStore());
+    await pumpApp(tester, servers, sessions, firstStart: firstStart);
+
+    await sessions.signIn(testServer(), password: 'pw');
+    await tester.pumpAndSettle();
+    expect(find.byType(FirstStartScreen), findsOneWidget);
+
+    await tester.tap(find.byKey(const ValueKey('firstStart.skipAll')));
+    await tester.pumpAndSettle();
+    expect(find.byType(DashboardScreen), findsOneWidget);
+
+    await sessions.signOut();
+    await tester.pumpAndSettle();
+    await sessions.signIn(testServer(), password: 'pw');
+    await tester.pumpAndSettle();
+    expect(find.byType(DashboardScreen), findsOneWidget);
+  });
+
   testWidgets('opens a settings area and goes back to the start (#231)', (
     tester,
   ) async {
@@ -262,12 +291,17 @@ void main() {
     expect(router.state.uri.path, Routes.security);
   });
 
-  String? at(String location, {bool connected = true, bool signedIn = true}) =>
-      redirectFor(
-        uri: Uri.parse(location),
-        connected: connected,
-        signedIn: signedIn,
-      );
+  String? at(
+    String location, {
+    bool connected = true,
+    bool signedIn = true,
+    bool firstStart = false,
+  }) => redirectFor(
+    uri: Uri.parse(location),
+    connected: connected,
+    signedIn: signedIn,
+    firstStart: firstStart,
+  );
 
   test('redirects by server and session', () {
     expect(at(Routes.home, connected: false, signedIn: false), Routes.connect);
@@ -304,5 +338,17 @@ void main() {
       at('waylight://settings', connected: false, signedIn: false),
       '/connect?from=%2Fsettings',
     );
+  });
+
+  test('puts the first-start questions before the dashboard (#287)', () {
+    expect(at(Routes.home, firstStart: true), Routes.welcome);
+    expect(at(Routes.signIn, firstStart: true), Routes.welcome);
+    expect(at(Routes.welcome, firstStart: true), isNull);
+    expect(at(Routes.welcome), Routes.home);
+    // Links still open what they point to.
+    expect(at(Routes.settings, firstStart: true), isNull);
+    expect(at('/?tab=t1', firstStart: true), isNull);
+    expect(at('/sign-in?from=%2Fsettings', firstStart: true), Routes.settings);
+    expect(at(Routes.home, signedIn: false, firstStart: true), Routes.signIn);
   });
 }
