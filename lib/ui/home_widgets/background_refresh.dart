@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:waylight_mobile/data/repositories/device_controls/device_controls_repository.dart';
 import 'package:waylight_mobile/data/repositories/home_widgets/home_widgets_repository.dart';
 import 'package:waylight_mobile/data/repositories/preferences/preferences_repository.dart';
 import 'package:waylight_mobile/data/repositories/quick_tiles/quick_tiles_repository.dart';
@@ -7,9 +8,11 @@ import 'package:waylight_mobile/data/repositories/reminders/reminder_repository.
 import 'package:waylight_mobile/data/repositories/server/server_repository.dart';
 import 'package:waylight_mobile/data/repositories/session/session_repository.dart';
 import 'package:waylight_mobile/domain/models/appearance.dart';
+import 'package:waylight_mobile/domain/models/device_control.dart';
 import 'package:waylight_mobile/domain/models/quick_tile.dart';
 import 'package:waylight_mobile/l10n/generated/app_localizations.dart';
 import 'package:waylight_mobile/ui/core/reminder_texts.dart';
+import 'package:waylight_mobile/ui/home_widgets/device_control_texts.dart';
 import 'package:waylight_mobile/ui/home_widgets/home_widget_texts.dart';
 import 'package:waylight_mobile/ui/home_widgets/quick_tile_texts.dart';
 
@@ -93,6 +96,53 @@ Future<void> runQuickTileInBackground({
     if (session.expired) await quickTiles.clear();
   } finally {
     await quickTiles.finish();
+  }
+}
+
+/// A run of Android's device controls (#194) in a headless engine the
+/// controls start while the app may be closed: `refresh` reads every state,
+/// `act` with an entity id switches or presses it first. Signed out, the
+/// controls show as unavailable and lead into the app. It always reports
+/// the end, so the native side can stop the engine.
+Future<void> runDeviceControlsInBackground({
+  required ServerRepository server,
+  required SessionRepository session,
+  required PreferencesRepository preferences,
+  required DeviceControlsRepository deviceControls,
+  required List<String> args,
+  required Locale systemLocale,
+}) async {
+  try {
+    await server.restore();
+    final current = server.current;
+    await session.restore(current);
+    await preferences.restore();
+    final format = DeviceControlTexts(
+      lookupAppLocalizations(
+        _locale(preferences.appearance.language, systemLocale),
+      ),
+    );
+    if (current == null || !session.signedIn || session.expired) {
+      await deviceControls.unavailable(
+        DeviceControlsProblem.signedOut,
+        format: format,
+      );
+      return;
+    }
+    switch (args) {
+      case ['act', final id]:
+        await deviceControls.act(current, id, format: format);
+      default:
+        await deviceControls.refresh(current, format: format);
+    }
+    if (session.expired) {
+      await deviceControls.unavailable(
+        DeviceControlsProblem.signedOut,
+        format: format,
+      );
+    }
+  } finally {
+    await deviceControls.finish();
   }
 }
 

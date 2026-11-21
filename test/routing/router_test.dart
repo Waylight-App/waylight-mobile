@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:waylight_mobile/app.dart';
 import 'package:waylight_mobile/config/dependencies.dart';
 import 'package:waylight_mobile/data/repositories/appearance/theme_repository.dart';
+import 'package:waylight_mobile/data/repositories/device_controls/device_controls_repository.dart';
 import 'package:waylight_mobile/data/repositories/diagnostics/diagnostics_repository.dart';
 import 'package:waylight_mobile/data/repositories/focus/focus_timer_repository.dart';
 import 'package:waylight_mobile/data/repositories/home_widgets/home_widgets_repository.dart';
@@ -39,6 +40,7 @@ import '../testing/fakes/fake_bookmarks_repository.dart';
 import '../testing/fakes/fake_compact_state_repository.dart';
 import '../testing/fakes/fake_dashboard_repository.dart';
 import '../testing/fakes/fake_device_auth.dart';
+import '../testing/fakes/fake_device_controls_store.dart';
 import '../testing/fakes/fake_device_info.dart';
 import '../testing/fakes/fake_habits_repository.dart';
 import '../testing/fakes/fake_home_widget_store.dart';
@@ -97,6 +99,10 @@ void main() {
             smartHome: FakeSmartHomeRepository(),
             presence: FakePresenceRepository(),
             store: FakeQuickTileStore(),
+          ),
+          deviceControls: DeviceControlsRepository(
+            smartHome: FakeSmartHomeRepository(),
+            store: FakeDeviceControlsStore(),
           ),
           absences: FakeAbsencesRepository(),
           announcements: FakeAnnouncementsRepository(),

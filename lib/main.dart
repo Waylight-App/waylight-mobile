@@ -98,3 +98,20 @@ Future<void> quickTileAction(List<String> args) async {
     systemLocale: WidgetsBinding.instance.platformDispatcher.locale,
   );
 }
+
+/// Reads or changes Android's device controls in a headless engine the
+/// controls start (#194): `refresh`, or `act` and an entity id.
+@pragma('vm:entry-point')
+Future<void> deviceControlsAction(List<String> args) async {
+  WidgetsFlutterBinding.ensureInitialized();
+  setupLogging();
+  final repositories = createRepositories();
+  await runDeviceControlsInBackground(
+    server: repositories.server,
+    session: repositories.session,
+    preferences: repositories.preferences,
+    deviceControls: repositories.deviceControls,
+    args: args,
+    systemLocale: WidgetsBinding.instance.platformDispatcher.locale,
+  );
+}

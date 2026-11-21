@@ -3865,6 +3865,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Choose “Add another server” under Server & connection, then “Use as wall display” and paste the link of a kiosk display.'**
   String get settingsWallDisplayHint;
+
+  /// Device control: Home Assistant reports no state for the entity.
+  ///
+  /// In en, this message translates to:
+  /// **'No state'**
+  String get deviceControlNoState;
+
+  /// Device control while signed out.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Waylight to sign in'**
+  String get deviceControlSignIn;
 }
 
 class _AppLocalizationsDelegate
