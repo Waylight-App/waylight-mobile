@@ -26,7 +26,8 @@ data class NextEvent(val summary: String, val startMillis: Long, val allDay: Boo
 /**
  * The compact state of a module (`GET /api/<module>/compact`, the server's
  * `CompactState`). [title] and [detail] are translated when shown
- * ([ServerTexts]).
+ * ([ServerTexts]). [empty] is true when the module has nothing to show yet
+ * (server #619), such as a calendar that is not set up.
  */
 data class CompactGlance(
     val module: String,
@@ -35,6 +36,7 @@ data class CompactGlance(
     val level: Level,
     val count: Int?,
     val action: GlanceAction? = null,
+    val empty: Boolean = false,
 )
 
 /** My presence today (`GET /api/presence`): office, home, away or none. */
@@ -85,6 +87,7 @@ data class Snapshot(
                             put("level", c.level.name)
                             c.count?.let { put("count", it) }
                             c.action?.let { put("action", it.toJson()) }
+                            if (c.empty) put("empty", true)
                         },
                     )
                 }
@@ -116,6 +119,7 @@ data class Snapshot(
                             level = Level.entries.firstOrNull { it.name == c.optString("level") } ?: Level.NONE,
                             count = if (c.has("count")) c.getInt("count") else null,
                             action = GlanceAction.fromJson(c.optJSONObject("action")),
+                            empty = c.optBoolean("empty"),
                         )
                     }
                 }.orEmpty(),

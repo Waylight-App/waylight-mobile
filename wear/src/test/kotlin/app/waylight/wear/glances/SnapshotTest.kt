@@ -27,6 +27,7 @@ class SnapshotTest {
                     null,
                     GlanceAction("focus.start", GlanceText("Start"), "POST", "/api/focus/start", """{"minutes":25}""", emptyList()),
                 ),
+                CompactGlance("calendar", GlanceText("No calendar set up"), null, Level.NONE, null, empty = true),
             ),
             firstTodo = OpenTodo("2", "Milk", "", 3),
             devices = listOf(Device("switch.coffee", "Coffee", "off", DeviceAction.TOGGLE)),

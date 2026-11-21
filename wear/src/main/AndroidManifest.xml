@@ -49,6 +49,22 @@
                 android:resource="@mipmap/ic_launcher" />
         </service>
 
+        <!-- The status tile (#247): the most urgent compact states. -->
+        <service
+            android:name=".tile.StatusTileService"
+            android:description="@string/status_tile_description"
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/status_tile_label"
+            android:permission="com.google.android.wearable.permission.BIND_TILE_PROVIDER">
+            <intent-filter>
+                <action android:name="androidx.wear.tiles.action.BIND_TILE_PROVIDER" />
+            </intent-filter>
+            <meta-data
+                android:name="androidx.wear.tiles.PREVIEW"
+                android:resource="@mipmap/ic_launcher" />
+        </service>
+
         <!-- Complications for watch faces (#244). They draw the stored
              snapshot; the refresh asks for an update, so no period. -->
         <service

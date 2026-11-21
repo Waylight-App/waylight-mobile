@@ -36,9 +36,10 @@ data class GlanceText(
  * Translates the texts of compact states on the watch (#246). The server
  * sends English text plus the key of its template (`srv_` and the FNV-1a
  * hash of the English template, as in the web interface's catalogue). The
- * templates of the modules in [GlanceFetcher.COMPACT_MODULES] are string
- * resources here, in English and German; an unknown key, from a newer
- * server, falls back to the server's English text.
+ * templates of the compact states the watch shows are string resources
+ * here, in English and German; templates that are only placeholders or
+ * read the same in both languages are left out. An unknown key, from a
+ * newer server, falls back to the server's English text.
  */
 object ServerTexts {
     /** The string resource of each known template key. */
@@ -50,6 +51,37 @@ object ServerTexts {
         "srv_47c68f21f5a3748b" to R.string.srv_habits_done,
         "srv_cf0e9452be96913b" to R.string.srv_focus_minutes,
         "srv_74b44643f778ca81" to R.string.srv_focus_sessions,
+        "srv_4efa152402f99eaf" to R.string.srv_backups_none,
+        "srv_690e8b1d63e37e2e" to R.string.srv_backups_failed,
+        "srv_44460b43e14f12f1" to R.string.srv_backups_name_failed,
+        "srv_8ede15696ca60c31" to R.string.srv_backups_overdue,
+        "srv_654703b9e7d6cc6c" to R.string.srv_backups_name_overdue,
+        "srv_122bbf8d15074197" to R.string.srv_backups_waiting,
+        "srv_5533d9eb788ce382" to R.string.srv_backups_ok,
+        "srv_54022920e535da37" to R.string.srv_backup_ok,
+        "srv_dca29003ab21344d" to R.string.srv_backups_last_success,
+        "srv_e40289b4499ed164" to R.string.srv_services_none,
+        "srv_85ec6321e77d0b4a" to R.string.srv_services_running,
+        "srv_09bd02ddefc751e8" to R.string.srv_services_name_down,
+        "srv_ac66b193c5335c18" to R.string.srv_services_down,
+        "srv_f724ce57caa5bee3" to R.string.srv_disks_none,
+        "srv_26f374c0a67c8c36" to R.string.srv_disks_failing,
+        "srv_fdd6ac3006cff821" to R.string.srv_disks_device_failing,
+        "srv_2ac49ee2d1d4b8bc" to R.string.srv_disks_warning,
+        "srv_ccd2d42e76e2629c" to R.string.srv_disks_device_warning,
+        "srv_4590f8e90f51cb7d" to R.string.srv_disks_healthy,
+        "srv_4886a197fd6d3ced" to R.string.srv_disks_some_healthy,
+        "srv_a8b97fb3f9f0cd6b" to R.string.srv_disks_outdated,
+        "srv_19f48a82e61c671a" to R.string.srv_docker_running,
+        "srv_789f61f53fa5ac29" to R.string.srv_docker_unreachable,
+        "srv_2a91fd7383166bf0" to R.string.srv_docker_unhealthy,
+        "srv_da9839ea10b35eed" to R.string.srv_docker_stopped,
+        "srv_7bdfe10b53bb1afd" to R.string.srv_parcels_none,
+        "srv_75a6a213ce2bf505" to R.string.srv_parcels_on_the_way,
+        "srv_2af79387a021fa8c" to R.string.srv_parcels_problem,
+        "srv_f571f5204b6ac82d" to R.string.srv_parcels_today,
+        "srv_a61c7e4a9008bf06" to R.string.srv_speedtest_none,
+        "srv_91cee62ab90d375e" to R.string.srv_speedtest_unreachable,
     )
 
     /** [text] in the watch's language. */

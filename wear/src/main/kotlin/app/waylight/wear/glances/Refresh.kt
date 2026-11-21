@@ -10,12 +10,11 @@ import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.Worker
 import androidx.work.WorkerParameters
-import androidx.wear.tiles.TileService
 import app.waylight.wear.complications.Complications
 import app.waylight.wear.data.ApiException
 import app.waylight.wear.data.SessionStore
 import app.waylight.wear.data.WaylightApi
-import app.waylight.wear.tile.GlanceTileService
+import app.waylight.wear.tile.TileParts
 import java.io.IOException
 import java.time.Instant
 import java.time.ZoneId
@@ -46,7 +45,7 @@ object Refresh {
         } catch (e: IOException) {
             RefreshResult.OFFLINE
         }
-        TileService.getUpdater(context).requestUpdate(GlanceTileService::class.java)
+        TileParts.requestUpdate(context)
         Complications.requestUpdate(context)
         return result
     }
@@ -58,7 +57,7 @@ object Refresh {
         val work = WorkManager.getInstance(context)
         work.cancelUniqueWork(PERIODIC)
         work.cancelUniqueWork(NOW)
-        TileService.getUpdater(context).requestUpdate(GlanceTileService::class.java)
+        TileParts.requestUpdate(context)
         Complications.requestUpdate(context)
     }
 

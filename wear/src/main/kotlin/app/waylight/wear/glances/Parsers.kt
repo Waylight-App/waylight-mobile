@@ -16,6 +16,26 @@ object Parsers {
         return (0 until array.length()).map { array.optString(it) }.toSet()
     }
 
+    /**
+     * The modules with a compact state in `GET /api/modules` (server #634),
+     * in the server's order; `null` when the server does not send the list
+     * yet. Entries whose path is not a module's compact endpoint are left
+     * out, so the server cannot point the watch elsewhere.
+     */
+    fun compactEndpoints(json: String): List<CompactEndpoint>? {
+        val array = JSONObject(json).optJSONArray("compact") ?: return null
+        return (0 until array.length()).mapNotNull { i ->
+            val o = array.optJSONObject(i) ?: return@mapNotNull null
+            val module = o.optString("module")
+            val path = o.optString("path")
+            if (module.isEmpty() || !COMPACT_PATH.matches(path)) return@mapNotNull null
+            val params = o.optJSONArray("params")?.let { p -> (0 until p.length()).map { p.optString(it) } }.orEmpty()
+            CompactEndpoint(module, path, params)
+        }
+    }
+
+    private val COMPACT_PATH = Regex("^/api/[A-Za-z0-9_-]+/compact$")
+
     /** A `CompactState` of [module]. */
     fun compact(module: String, json: String): CompactGlance {
         val o = JSONObject(json)
@@ -26,6 +46,7 @@ object Parsers {
             level = Level.parse(o.optString("level")),
             count = if (o.has("count") && !o.isNull("count")) o.optInt("count") else null,
             action = GlanceAction.fromJson(o.optJSONObject("action")),
+            empty = o.optBoolean("empty"),
         )
     }
 
