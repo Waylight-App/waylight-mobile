@@ -13,7 +13,8 @@ import org.json.JSONException
  */
 class GlanceFetcher(private val api: WaylightApi) {
     fun fetch(now: Instant, zone: ZoneId): Snapshot {
-        val modules = optional { Parsers.modules(api.get("/api/modules")) }
+        val info = optional { api.get("/api/modules") }
+        val modules = info?.let { optional { Parsers.modules(it) } }
         // Without the list (older servers), every module is tried.
         fun enabled(module: String) = modules == null || module in modules
 
@@ -26,9 +27,13 @@ class GlanceFetcher(private val api: WaylightApi) {
         // The list gives the to-do to tick off (#245) and the count for
         // servers without the compact state.
         val todos = if (enabled("todos")) optional { api.get("/api/todos") } else null
-        val compact = COMPACT_MODULES.filter(::enabled).mapNotNull { module ->
-            optional { Parsers.compact(module, api.get("/api/$module/compact")) }
-                ?: if (module == "todos" && todos != null) optional { todosFallback(todos) } else null
+        // The server names its modules with a compact state (#247); older
+        // servers get the modules the watch knew before that list.
+        val endpoints = info?.let { optional { Parsers.compactEndpoints(it) } }
+            ?: DAY_MODULES.filter(::enabled).map { CompactEndpoint(it, "/api/$it/compact") }
+        val compact = endpoints.filter { it.params.isEmpty() && it.module !in SHOWN_ELSEWHERE }.mapNotNull { endpoint ->
+            optional { Parsers.compact(endpoint.module, api.get(endpoint.path)) }
+                ?: if (endpoint.module == "todos" && todos != null) optional { todosFallback(todos) } else null
         }
         val firstTodo = todos?.let { optional { Parsers.firstOpenTodo(it) } }
         val devices = if (enabled("smarthome")) {
@@ -58,9 +63,13 @@ class GlanceFetcher(private val api: WaylightApi) {
 
     companion object {
         /**
-         * Modules with a compact state (server #597), in display order. The
-         * server does not list them yet, so new ones are added here.
+         * The modules of the glances tile, in display order. On servers
+         * without the list of compact states (before server #634) these are
+         * the only ones the watch fetches.
          */
-        val COMPACT_MODULES = listOf("todos", "habits", "focus")
+        val DAY_MODULES = listOf("todos", "habits", "focus")
+
+        /** Modules whose compact state repeats a row of their own (the next event). */
+        val SHOWN_ELSEWHERE = setOf("calendar")
     }
 }

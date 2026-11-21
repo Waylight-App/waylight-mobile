@@ -46,6 +46,24 @@
     <string name="action_done">Done.</string>
     <string name="action_failed">That did not work. Try again in the app on the phone.</string>
     <string name="tile_tick_off">✓ %1$s</string>
+    <string name="status_tile_label">Waylight status</string>
+    <string name="status_tile_description">Services, backups, drives and more, problems first</string>
+    <string name="status_all_good">All good</string>
+    <plurals name="status_need_look">
+        <item quantity="one">%d needs a look</item>
+        <item quantity="other">%d need a look</item>
+    </plurals>
+    <string name="status_nothing">Nothing to report</string>
+    <!-- Names of the modules with a compact state; others show their id. -->
+    <string name="module_todos">To-dos</string>
+    <string name="module_habits">Habits</string>
+    <string name="module_focus">Focus</string>
+    <string name="module_services">Services</string>
+    <string name="module_backupmonitor">Backups</string>
+    <string name="module_diskhealth">Drives</string>
+    <string name="module_docker">Docker</string>
+    <string name="module_parcels">Parcels</string>
+    <string name="module_speedtest">Speed test</string>
     <!-- Templates of the server's compact states (#246); {name} is filled in. -->
     <string name="srv_todos_open">{count} open</string>
     <string name="srv_todos_nothing">Nothing to do</string>
@@ -54,4 +72,35 @@
     <string name="srv_habits_done">{done} of {total} today</string>
     <string name="srv_focus_minutes">{minutes} min focus today</string>
     <string name="srv_focus_sessions">{count} sessions</string>
+    <string name="srv_backups_none">No backups yet</string>
+    <string name="srv_backups_failed">{count} of {total} failed</string>
+    <string name="srv_backups_name_failed">{name} failed</string>
+    <string name="srv_backups_overdue">{count} of {total} overdue</string>
+    <string name="srv_backups_name_overdue">{name} is overdue</string>
+    <string name="srv_backups_waiting">Waiting for the first run</string>
+    <string name="srv_backups_ok">{total} backups OK</string>
+    <string name="srv_backup_ok">Backup OK</string>
+    <string name="srv_backups_last_success">Last success {time}</string>
+    <string name="srv_services_none">No services yet</string>
+    <string name="srv_services_running">{online} of {total} running</string>
+    <string name="srv_services_name_down">{name} is down</string>
+    <string name="srv_services_down">{count} services down</string>
+    <string name="srv_disks_none">No drive reports yet</string>
+    <string name="srv_disks_failing">{count} of {total} drives failing</string>
+    <string name="srv_disks_device_failing">{device} is failing</string>
+    <string name="srv_disks_warning">{count} of {total} drives need a look</string>
+    <string name="srv_disks_device_warning">{device} has warnings</string>
+    <string name="srv_disks_healthy">{total} drives healthy</string>
+    <string name="srv_disks_some_healthy">{healthy} of {total} drives healthy</string>
+    <string name="srv_disks_outdated">Some reports are out of date</string>
+    <string name="srv_docker_running">{running} of {total} running</string>
+    <string name="srv_docker_unreachable">Docker is not reachable</string>
+    <string name="srv_docker_unhealthy">{count} unhealthy</string>
+    <string name="srv_docker_stopped">{count} stopped</string>
+    <string name="srv_parcels_none">No parcels on the way</string>
+    <string name="srv_parcels_on_the_way">{count} on the way</string>
+    <string name="srv_parcels_problem">{count} with a problem</string>
+    <string name="srv_parcels_today">{count} arriving today</string>
+    <string name="srv_speedtest_none">No results yet</string>
+    <string name="srv_speedtest_unreachable">Speedtest Tracker is not reachable</string>
 </resources>

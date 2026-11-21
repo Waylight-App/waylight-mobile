@@ -76,6 +76,23 @@ stored data with its age and asks for fresh data when the last fetch is
 more than a quarter of an hour old. A tap on the to-do row ticks it off,
 a tap anywhere else opens the app.
 
+A second tile, *Waylight status*, gives an overview of the server: the
+compact states of services, backups, drives, Docker, parcels, the speed
+test and every other module the server lists, at most three, with what
+needs a look first. Problems come first, then states that ask for
+attention, in red and amber; the top line says how many need a look or
+that all is good. Modules with nothing to show yet are left out. The
+status modules are only visible to admins, so for other accounts the tile
+shows their own modules. It refreshes like the first tile, and a tap opens
+the app, where the main screen lists every state with its details.
+
+The watch asks `GET /api/modules` which modules have a compact state
+(server #634) and fetches those, so a module that gains one on the server
+shows up without an app update. The smart home's per-device state needs a
+device chosen on a widget and is not fetched; the next event has a row of
+its own. A server from before that list gets the to-dos, habits and focus
+states as before.
+
 Two complications put the data on the watch face: *Waylight: next event*
 (short: time and the start of the title; long: title and time) and
 *Waylight: open to-dos* (the number). Long-press the watch face, choose
@@ -137,6 +154,6 @@ APK for it. The version comes from `pubspec.yaml`.
 | `data/` | server address rules, the HTTP client, the session and its Keystore storage |
 | `pairing/` | the handover key, the small HTTP listener for the phone, Wi-Fi and the QR code |
 | `glances/` | fetching, parsing and storing the snapshot, background refresh, texts |
-| `tile/` | the tile |
+| `tile/` | the glances tile and the status tile |
 | `complications/` | the watch face complications |
 | `ui/` | the screens and their view model |

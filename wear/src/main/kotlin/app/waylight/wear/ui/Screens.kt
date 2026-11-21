@@ -128,7 +128,9 @@ fun PairedScreen(viewModel: WatchViewModel, session: Session, onPresence: () -> 
                 item {
                     GlanceChip(
                         label = GlanceFormat.compactTitle(context, glance),
-                        secondary = GlanceFormat.compactDetail(context, glance),
+                        // Without a detail the module's name says what "3 of 4 running" counts.
+                        secondary = GlanceFormat.compactDetail(context, glance)
+                            ?: GlanceFormat.moduleName(context, glance.module),
                         level = glance.level,
                     )
                 }

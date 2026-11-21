@@ -16,8 +16,8 @@ class ServerTextsTest {
 
     @Test
     fun `knows the keys of the server's compact templates`() {
-        // The English templates of the compact states of todos, habits and
-        // focus on the server; a new one needs a string resource here.
+        // The English templates of the compact states the watch translates;
+        // a new one needs a string resource here.
         val templates = listOf(
             "{count} open",
             "Nothing to do",
@@ -26,6 +26,37 @@ class ServerTextsTest {
             "{done} of {total} today",
             "{minutes} min focus today",
             "{count} sessions",
+            "No backups yet",
+            "{count} of {total} failed",
+            "{name} failed",
+            "{count} of {total} overdue",
+            "{name} is overdue",
+            "Waiting for the first run",
+            "{total} backups OK",
+            "Backup OK",
+            "Last success {time}",
+            "No services yet",
+            "{online} of {total} running",
+            "{name} is down",
+            "{count} services down",
+            "No drive reports yet",
+            "{count} of {total} drives failing",
+            "{device} is failing",
+            "{count} of {total} drives need a look",
+            "{device} has warnings",
+            "{total} drives healthy",
+            "{healthy} of {total} drives healthy",
+            "Some reports are out of date",
+            "{running} of {total} running",
+            "Docker is not reachable",
+            "{count} unhealthy",
+            "{count} stopped",
+            "No parcels on the way",
+            "{count} on the way",
+            "{count} with a problem",
+            "{count} arriving today",
+            "No results yet",
+            "Speedtest Tracker is not reachable",
         )
         assertEquals(templates.map(::messageKey).toSet(), ServerTexts.templates.keys)
     }

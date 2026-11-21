@@ -65,6 +65,24 @@ object GlanceFormat {
         else -> glance.module
     }
 
+    /** The name of [module] for a label; the module's id when the watch does not know it. */
+    fun moduleName(context: Context, module: String): String {
+        val id = MODULE_NAMES[module] ?: return module.replaceFirstChar { it.titlecase(Locale.getDefault()) }
+        return context.getString(id)
+    }
+
+    private val MODULE_NAMES = mapOf(
+        "todos" to R.string.module_todos,
+        "habits" to R.string.module_habits,
+        "focus" to R.string.module_focus,
+        "services" to R.string.module_services,
+        "backupmonitor" to R.string.module_backupmonitor,
+        "diskhealth" to R.string.module_diskhealth,
+        "docker" to R.string.module_docker,
+        "parcels" to R.string.module_parcels,
+        "speedtest" to R.string.module_speedtest,
+    )
+
     /** The second line of a compact state, if any. */
     fun compactDetail(context: Context, glance: CompactGlance): String? =
         glance.detail?.let { ServerTexts.resolve(context, it) }

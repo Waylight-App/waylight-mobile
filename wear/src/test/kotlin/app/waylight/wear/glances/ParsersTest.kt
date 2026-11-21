@@ -65,6 +65,31 @@ class ParsersTest {
     }
 
     @Test
+    fun `reads the modules with a compact state`() {
+        val json = """{"modules":["services","smarthome"],"compact":[
+            {"module":"services","path":"/api/services/compact","params":[]},
+            {"module":"smarthome","path":"/api/smarthome/compact","params":["entity"]},
+            {"module":"evil","path":"https://example.com/x","params":[]},
+            {"module":"","path":"/api/x/compact"}
+        ]}"""
+        assertEquals(
+            listOf(
+                CompactEndpoint("services", "/api/services/compact"),
+                CompactEndpoint("smarthome", "/api/smarthome/compact", listOf("entity")),
+            ),
+            Parsers.compactEndpoints(json),
+        )
+        // Servers from before the list (server #634).
+        assertNull(Parsers.compactEndpoints("""{"modules":["todos"]}"""))
+    }
+
+    @Test
+    fun `reads an empty compact state`() {
+        val glance = Parsers.compact("calendar", """{"title":{"key":"k","text":"No calendar set up"},"level":"none","empty":true}""")
+        assertEquals(true, glance.empty)
+    }
+
+    @Test
     fun `the next event is the earliest timed one that has not ended`() {
         val json = """{"events":[
             {"summary":"Holiday","start":"2026-11-21","end":"2026-11-22","allDay":true},
