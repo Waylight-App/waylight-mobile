@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:waylight_mobile/data/repositories/appearance/theme_repository.dart';
+import 'package:waylight_mobile/data/repositories/attention/attention_repository.dart';
 import 'package:waylight_mobile/data/repositories/diagnostics/diagnostics_repository.dart';
 import 'package:waylight_mobile/data/repositories/lock/app_lock_repository.dart';
 import 'package:waylight_mobile/data/repositories/preferences/preferences_repository.dart';
@@ -17,6 +18,8 @@ import 'package:waylight_mobile/domain/models/quick_tile.dart';
 import 'package:waylight_mobile/domain/models/reminder.dart';
 import 'package:waylight_mobile/domain/models/server_address.dart';
 import 'package:waylight_mobile/domain/models/server_status.dart';
+import 'package:waylight_mobile/ui/settings/view_models/settings_area.dart';
+import 'package:waylight_mobile/ui/settings/view_models/settings_index.dart';
 import 'package:waylight_mobile/utils/command.dart';
 import 'package:waylight_mobile/utils/result.dart';
 
@@ -43,7 +46,9 @@ class SettingsViewModel extends ChangeNotifier {
     QuickTilesRepository? quickTilesRepository,
     AppVersionReader appVersion = _platformVersion,
     DiagnosticsRepository? diagnosticsRepository,
+    AttentionRepository? attentionRepository,
   }) : _lock = lockRepository,
+       _attention = attentionRepository,
        _diagnostics = diagnosticsRepository,
        _readAppVersion = appVersion,
        _push = pushRepository,
@@ -62,6 +67,15 @@ class SettingsViewModel extends ChangeNotifier {
     _lock?.addListener(notifyListeners);
     _theme?.addListener(notifyListeners);
     _reminders?.addListener(notifyListeners);
+    _attention?.addListener(notifyListeners);
+    if ((_serverRepository.current, _attention) case (
+      final server?,
+      final attention?,
+    )) {
+      // After the first frame: the repository notifies the dashboard too,
+      // which must not happen while the router builds this screen.
+      Future.microtask(() => attention.refresh(server)).ignore();
+    }
     _lock?.available().then((available) {
       _lockAvailable = available;
       notifyListeners();
@@ -71,6 +85,11 @@ class SettingsViewModel extends ChangeNotifier {
   }
 
   final PushRepository? _push;
+  final AttentionRepository? _attention;
+
+  /// How many things on the server need the person's help (#229); the
+  /// start page shows a hint while there are any.
+  int get attentionCount => _attention?.items.length ?? 0;
   final DiagnosticsRepository? _diagnostics;
   final AppVersionReader _readAppVersion;
 
@@ -92,6 +111,10 @@ class SettingsViewModel extends ChangeNotifier {
   /// Whether this phone has Quick Settings tiles (#192).
   bool get quickTilesAvailable =>
       _quickTiles != null && defaultTargetPlatform == TargetPlatform.android;
+
+  /// Whether this phone can pair a Wear OS watch (#239, Android only).
+  bool get watchPairingAvailable =>
+      defaultTargetPlatform == TargetPlatform.android;
 
   /// Whether this phone has home screen widgets of the app (ADR 0009).
   bool get homeWidgetsAvailable =>
@@ -311,6 +334,37 @@ class SettingsViewModel extends ChangeNotifier {
     await _loadTileChoice();
   }
 
+  String _query = '';
+
+  /// What the person typed into the settings search (#232).
+  String get query => _query;
+
+  /// Filters the start page by [query]; empty shows the areas again.
+  void search(String query) {
+    _query = query;
+    notifyListeners();
+  }
+
+  /// Whether the start page and the search list [area]: an area without
+  /// anything this phone can set stays off; its link still opens.
+  bool showsArea(SettingsArea area) =>
+      area != SettingsArea.notifications || pushAvailable || remindersAvailable;
+
+  /// Whether this phone and account have [item], so the search may find
+  /// it.
+  bool available(SettingsItem item) => switch (item) {
+    SettingsItem.push || SettingsItem.battery => pushAvailable,
+    SettingsItem.reminders => remindersAvailable,
+    SettingsItem.lock => lockAvailable,
+    SettingsItem.homeWidgets => homeWidgetsAvailable,
+    SettingsItem.pairWatch => watchPairingAvailable,
+    SettingsItem.quickTiles => quickTilesAvailable,
+    SettingsItem.colours => wallpaperAvailable,
+    SettingsItem.diagnostics => diagnosticsAvailable,
+    SettingsItem.serverVersion => serverVersion.result is Ok,
+    _ => true,
+  };
+
   /// Whether another address can be added.
   bool get canAddAddress => addresses.length < ServerRepository.maxAddresses;
 
@@ -374,6 +428,7 @@ class SettingsViewModel extends ChangeNotifier {
     _lock?.removeListener(notifyListeners);
     _theme?.removeListener(notifyListeners);
     _reminders?.removeListener(notifyListeners);
+    _attention?.removeListener(notifyListeners);
     for (final c in [account, serverVersion, appVersion, signOut, disconnect]) {
       c.dispose();
     }

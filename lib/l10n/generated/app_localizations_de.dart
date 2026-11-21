@@ -2255,4 +2255,21 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get settingsWallDisplayHint =>
       'Wähle unter Server & Verbindung „Weiteren Server hinzufügen“, dann „Als Wandbildschirm nutzen“ und füge den Link einer Kiosk-Anzeige ein.';
+
+  @override
+  String get settingsSearch => 'Einstellungen durchsuchen';
+
+  @override
+  String settingsSearchEmpty(String query) {
+    return 'Keine Einstellung passt zu „$query“.';
+  }
+
+  @override
+  String get settingsSearchClear => 'Suche leeren';
+
+  @override
+  String get settingsSearchBattery => 'Akku-Hinweis';
+
+  @override
+  String get settingsAttentionShow => 'Anzeigen';
 }
