@@ -13,9 +13,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -32,9 +35,12 @@ import androidx.wear.compose.material.MaterialTheme
 import androidx.wear.compose.material.PositionIndicator
 import androidx.wear.compose.material.Scaffold
 import androidx.wear.compose.material.Text
+import androidx.wear.compose.material.TitleCard
 import androidx.wear.input.RemoteInputIntentHelper
 import app.waylight.wear.R
 import app.waylight.wear.data.Session
+import app.waylight.wear.glances.GlanceFormat
+import app.waylight.wear.glances.Level
 import app.waylight.wear.pairing.QrCode
 
 /** A scrolling list of chips with the position indicator of Wear OS. */
@@ -86,13 +92,84 @@ fun UnpairedScreen(onPairWithPhone: () -> Unit, onPairManually: () -> Unit) {
     }
 }
 
+/** The glances: next event, compact states, my status, and their age. */
 @Composable
-fun PairedScreen(session: Session, onSignOut: () -> Unit) {
+fun PairedScreen(viewModel: WatchViewModel, session: Session) {
+    val snapshot by viewModel.snapshot.collectAsStateWithLifecycle()
+    val refreshing by viewModel.refreshing.collectAsStateWithLifecycle()
+    val offline by viewModel.offline.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+    LaunchedEffect(Unit) { viewModel.refreshIfStale() }
     ScreenList {
         item { ListHeader { Text(stringResource(R.string.app_name)) } }
+        val s = snapshot
+        if (s == null) {
+            item { Message(stringResource(if (offline) R.string.error_unreachable else R.string.loading), error = offline) }
+        } else {
+            s.nextEvent?.let { event ->
+                item {
+                    TitleCard(
+                        onClick = {},
+                        title = { Text(GlanceFormat.eventWhen(context, event), color = MaterialTheme.colors.primary) },
+                        modifier = Modifier.fillMaxWidth(),
+                    ) {
+                        Text(event.summary, maxLines = 3)
+                    }
+                }
+            }
+            s.compact.forEach { glance ->
+                item {
+                    GlanceChip(
+                        label = GlanceFormat.compactTitle(context, glance),
+                        secondary = glance.detail,
+                        level = glance.level,
+                    )
+                }
+            }
+            s.presence?.let { presence ->
+                item {
+                    GlanceChip(
+                        label = stringResource(R.string.presence_label),
+                        secondary = GlanceFormat.presence(context, presence),
+                        level = Level.NONE,
+                    )
+                }
+            }
+            item {
+                Message(
+                    if (offline) stringResource(R.string.offline_since, GlanceFormat.updated(context, s.fetchedAt))
+                    else GlanceFormat.updated(context, s.fetchedAt),
+                    error = offline,
+                )
+            }
+        }
+        item {
+            ListChip(
+                stringResource(if (refreshing) R.string.refreshing else R.string.refresh),
+                viewModel::refresh,
+                enabled = !refreshing,
+            )
+        }
         item { Message(stringResource(R.string.connected_to, session.server.host)) }
-        item { ListChip(stringResource(R.string.sign_out), onSignOut) }
+        item { ListChip(stringResource(R.string.sign_out), viewModel::signOut) }
     }
+}
+
+/** A glance as chip; attention and problem get the warning colours. */
+@Composable
+private fun GlanceChip(label: String, secondary: String?, level: Level) {
+    val colors = when (level) {
+        Level.ATTENTION -> ChipDefaults.chipColors(backgroundColor = Color(0xFF5C4300), contentColor = Color(0xFFFFDEA6))
+        Level.PROBLEM -> ChipDefaults.chipColors(backgroundColor = Color(0xFF93000A), contentColor = Color(0xFFFFDAD6))
+        else -> ChipDefaults.secondaryChipColors()
+    }
+    Chip(
+        onClick = {},
+        label = { Text(label, maxLines = 2) },
+        secondaryLabel = if (secondary == null) null else { { Text(secondary, maxLines = 2) } },
+        colors = colors,
+        modifier = Modifier.fillMaxWidth(),
+    )
 }
 
 /** Shows the QR code for the phone and keeps the screen on meanwhile. */

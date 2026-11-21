@@ -66,6 +66,12 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.7")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")
+    // The tile and its layout.
+    implementation("androidx.wear.tiles:tiles:1.5.0")
+    implementation("androidx.wear.protolayout:protolayout:1.3.0")
+    implementation("androidx.concurrent:concurrent-futures:1.2.0")
+    // Refresh of the glances while the app is closed (ADR 0015).
+    implementation("androidx.work:work-runtime:2.10.0")
     // Text input of the typed pairing: the system keyboard or voice.
     implementation("androidx.wear:wear-input:1.1.0")
     // Draws the pairing QR code; the offline ZXing core the phone app uses

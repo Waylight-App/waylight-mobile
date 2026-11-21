@@ -16,4 +16,22 @@
     <string name="error_rejected">Der Kopplungscode ist ungültig oder abgelaufen.</string>
     <string name="error_unreachable">Der Server ist nicht erreichbar.</string>
     <string name="error_server">Der Server hat die Anfrage abgelehnt.</string>
+    <string name="loading">Lade …</string>
+    <string name="refresh">Aktualisieren</string>
+    <string name="refreshing">Aktualisiere …</string>
+    <string name="updated_at">Stand %1$s</string>
+    <string name="offline_since">Offline. %1$s</string>
+    <string name="today">Heute</string>
+    <string name="tomorrow">Morgen</string>
+    <string name="presence_label">Mein Status</string>
+    <string name="presence_office">Im Büro</string>
+    <string name="presence_home">Homeoffice</string>
+    <string name="presence_away">Abwesend</string>
+    <string name="presence_none">Nicht gesetzt</string>
+    <plurals name="todos_open">
+        <item quantity="one">%d offene Aufgabe</item>
+        <item quantity="other">%d offene Aufgaben</item>
+    </plurals>
+    <string name="tile_description">Nächster Termin, Aufgaben und mein Status</string>
+    <string name="tile_not_paired">Öffne Waylight, um die Uhr zu verbinden.</string>
 </resources>

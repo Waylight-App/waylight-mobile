@@ -40,6 +40,9 @@ class SessionStore(context: Context) {
         return Session(server, token)
     }
 
+    /** Whether a session is stored, without decrypting it (for the tile). */
+    fun hasSession(): Boolean = prefs.contains(KEY_TOKEN)
+
     /** Stores [session], replacing an earlier one. */
     fun save(session: Session) {
         prefs.edit()

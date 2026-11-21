@@ -17,4 +17,23 @@
     <string name="error_rejected">The pairing code is invalid or expired.</string>
     <string name="error_unreachable">The server cannot be reached.</string>
     <string name="error_server">The server refused the request.</string>
+    <string name="loading">Loading …</string>
+    <string name="refresh">Refresh</string>
+    <string name="refreshing">Refreshing …</string>
+    <string name="updated_at">Updated %1$s</string>
+    <string name="offline_since">Offline. %1$s</string>
+    <string name="today">Today</string>
+    <string name="tomorrow">Tomorrow</string>
+    <string name="presence_label">My status</string>
+    <string name="presence_office">In the office</string>
+    <string name="presence_home">Working from home</string>
+    <string name="presence_away">Away</string>
+    <string name="presence_none">Not set</string>
+    <plurals name="todos_open">
+        <item quantity="one">%d open to-do</item>
+        <item quantity="other">%d open to-dos</item>
+    </plurals>
+    <string name="tile_label">Waylight</string>
+    <string name="tile_description">Next event, to-dos and my status</string>
+    <string name="tile_not_paired">Open Waylight to connect the watch.</string>
 </resources>
