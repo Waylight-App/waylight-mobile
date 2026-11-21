@@ -1257,5 +1257,13 @@
   "settingsHomeWidgetsHint": "Touch and hold an empty spot on the home screen, choose Widgets and pick one from Waylight.",
   "@settingsHomeWidgetsHint": {"description": "How to add a home screen widget."},
   "settingsWallDisplayHint": "Choose “Add another server” under Server & connection, then “Use as wall display” and paste the link of a kiosk display.",
-  "@settingsWallDisplayHint": {"description": "How to turn the phone into a wall display."}
+  "@settingsWallDisplayHint": {"description": "How to turn the phone into a wall display."},
+  "settingsSearch": "Search settings",
+  "@settingsSearch": {"description": "Hint of the search field on the settings start page."},
+  "settingsSearchEmpty": "No setting matches “{query}”.",
+  "@settingsSearchEmpty": {"description": "The settings search found nothing.", "placeholders": {"query": {"type": "String", "example": "akku"}}},
+  "settingsSearchClear": "Clear search",
+  "@settingsSearchClear": {"description": "Tooltip of the button that empties the settings search."},
+  "settingsSearchBattery": "Battery hint",
+  "@settingsSearchBattery": {"description": "Search result: the hint to lift battery restrictions for push."}
 }

@@ -26,6 +26,7 @@ import 'package:waylight_mobile/routing/routes.dart';
 import 'package:waylight_mobile/ui/connect_server/widgets/connect_server_screen.dart';
 import 'package:waylight_mobile/ui/dashboard/widgets/dashboard_screen.dart';
 import 'package:waylight_mobile/ui/settings/view_models/settings_area.dart';
+import 'package:waylight_mobile/ui/settings/view_models/settings_index.dart';
 import 'package:waylight_mobile/ui/settings/widgets/settings_area_screen.dart';
 import 'package:waylight_mobile/ui/settings/widgets/settings_screen.dart';
 import 'package:waylight_mobile/ui/sign_in/widgets/sign_in_screen.dart';
@@ -219,6 +220,14 @@ void main() {
       find.byType(SettingsAreaScreen),
     );
     expect(screen.area, SettingsArea.server);
+    expect(screen.focus, isNull);
+
+    router.go('${Routes.settingsAbout}?focus=licences');
+    await tester.pumpAndSettle();
+    expect(
+      tester.widget<SettingsAreaScreen>(find.byType(SettingsAreaScreen)).focus,
+      SettingsItem.licences,
+    );
 
     router.pop();
     await tester.pumpAndSettle();

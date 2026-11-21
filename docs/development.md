@@ -64,6 +64,14 @@ a link leads to the start page. The areas are defined in
 The start page hides *Notifications & reminders* on phones that have
 neither push nor reminders; its link still opens and says so.
 
+The search on the start page (#232) uses the index in
+`lib/ui/settings/view_models/settings_index.dart`: every setting with its
+area and synonyms in English and German. A result opens
+`/settings/<area>?focus=<setting>`, which scrolls to the setting and
+highlights it briefly. Add a new setting to the index and wrap its row in
+a `SettingsTarget`; settings the phone or account does not have are left
+out by `SettingsViewModel.available`.
+
 ## Icons, launch screen and font
 
 The sources are in `assets/`:

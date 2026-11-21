@@ -30,6 +30,7 @@ import 'package:waylight_mobile/ui/search/view_models/search_view_model.dart';
 import 'package:waylight_mobile/ui/search/widgets/search_screen.dart';
 import 'package:waylight_mobile/ui/settings/view_models/security_view_model.dart';
 import 'package:waylight_mobile/ui/settings/view_models/settings_area.dart';
+import 'package:waylight_mobile/ui/settings/view_models/settings_index.dart';
 import 'package:waylight_mobile/ui/settings/view_models/settings_view_model.dart';
 import 'package:waylight_mobile/ui/settings/widgets/security_screen.dart';
 import 'package:waylight_mobile/ui/settings/widgets/settings_area_screen.dart';
@@ -111,7 +112,11 @@ GoRouter createRouter(
         for (final area in SettingsArea.values)
           GoRoute(
             path: area.segment,
-            builder: (context, state) => _settings(area),
+            builder: (context, state) => _settings(
+              area,
+              focus: SettingsItem.values
+                  .asNameMap()[state.uri.queryParameters['focus']],
+            ),
           ),
         GoRoute(
           path: Routes.security.substring(Routes.settings.length + 1),
@@ -308,8 +313,12 @@ GoRouter createRouter(
 );
 
 /// Hosts the settings start page (`null`) or one [area] with its own view
-/// model; all settings screens share the view model class (#231).
-ViewModelHost<SettingsViewModel> _settings(SettingsArea? area) => ViewModelHost(
+/// model; all settings screens share the view model class (#231). [focus]
+/// is the setting a search result pointed to (#232).
+ViewModelHost<SettingsViewModel> _settings(
+  SettingsArea? area, {
+  SettingsItem? focus,
+}) => ViewModelHost(
   create: (context) =>
       SettingsViewModel(
           serverRepository: context.read(),
@@ -326,7 +335,7 @@ ViewModelHost<SettingsViewModel> _settings(SettingsArea? area) => ViewModelHost(
         ..quickTileFormatter = QuickTileTexts(context.l10n),
   builder: (context, viewModel) => area == null
       ? SettingsScreen(viewModel: viewModel)
-      : SettingsAreaScreen(area: area, viewModel: viewModel),
+      : SettingsAreaScreen(area: area, viewModel: viewModel, focus: focus),
 );
 
 /// The app's scheme for links from outside, e.g. `waylight://settings`

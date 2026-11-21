@@ -3865,6 +3865,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Choose “Add another server” under Server & connection, then “Use as wall display” and paste the link of a kiosk display.'**
   String get settingsWallDisplayHint;
+
+  /// Hint of the search field on the settings start page.
+  ///
+  /// In en, this message translates to:
+  /// **'Search settings'**
+  String get settingsSearch;
+
+  /// The settings search found nothing.
+  ///
+  /// In en, this message translates to:
+  /// **'No setting matches “{query}”.'**
+  String settingsSearchEmpty(String query);
+
+  /// Tooltip of the button that empties the settings search.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear search'**
+  String get settingsSearchClear;
+
+  /// Search result: the hint to lift battery restrictions for push.
+  ///
+  /// In en, this message translates to:
+  /// **'Battery hint'**
+  String get settingsSearchBattery;
 }
 
 class _AppLocalizationsDelegate

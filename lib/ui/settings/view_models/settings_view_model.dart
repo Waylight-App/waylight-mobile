@@ -17,6 +17,8 @@ import 'package:waylight_mobile/domain/models/quick_tile.dart';
 import 'package:waylight_mobile/domain/models/reminder.dart';
 import 'package:waylight_mobile/domain/models/server_address.dart';
 import 'package:waylight_mobile/domain/models/server_status.dart';
+import 'package:waylight_mobile/ui/settings/view_models/settings_area.dart';
+import 'package:waylight_mobile/ui/settings/view_models/settings_index.dart';
 import 'package:waylight_mobile/utils/command.dart';
 import 'package:waylight_mobile/utils/result.dart';
 
@@ -310,6 +312,36 @@ class SettingsViewModel extends ChangeNotifier {
     await _loadPush();
     await _loadTileChoice();
   }
+
+  String _query = '';
+
+  /// What the person typed into the settings search (#232).
+  String get query => _query;
+
+  /// Filters the start page by [query]; empty shows the areas again.
+  void search(String query) {
+    _query = query;
+    notifyListeners();
+  }
+
+  /// Whether the start page and the search list [area]: an area without
+  /// anything this phone can set stays off; its link still opens.
+  bool showsArea(SettingsArea area) =>
+      area != SettingsArea.notifications || pushAvailable || remindersAvailable;
+
+  /// Whether this phone and account have [item], so the search may find
+  /// it.
+  bool available(SettingsItem item) => switch (item) {
+    SettingsItem.push || SettingsItem.battery => pushAvailable,
+    SettingsItem.reminders => remindersAvailable,
+    SettingsItem.lock => lockAvailable,
+    SettingsItem.homeWidgets => homeWidgetsAvailable,
+    SettingsItem.quickTiles => quickTilesAvailable,
+    SettingsItem.colours => wallpaperAvailable,
+    SettingsItem.diagnostics => diagnosticsAvailable,
+    SettingsItem.serverVersion => serverVersion.result is Ok,
+    _ => true,
+  };
 
   /// Whether another address can be added.
   bool get canAddAddress => addresses.length < ServerRepository.maxAddresses;

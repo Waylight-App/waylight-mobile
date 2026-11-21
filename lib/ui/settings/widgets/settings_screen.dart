@@ -6,13 +6,14 @@ import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
 import 'package:waylight_mobile/ui/core/widgets/command_button.dart';
 import 'package:waylight_mobile/ui/settings/view_models/settings_area.dart';
+import 'package:waylight_mobile/ui/settings/view_models/settings_index.dart';
 import 'package:waylight_mobile/ui/settings/view_models/settings_view_model.dart';
 import 'package:waylight_mobile/ui/settings/widgets/settings_area_screen.dart';
 import 'package:waylight_mobile/ui/settings/widgets/settings_texts.dart';
 import 'package:waylight_mobile/utils/result.dart';
 
-/// The start page of the settings (#231): who is signed in, one row per
-/// area with a line of status, and signing out.
+/// The start page of the settings (#231): who is signed in, the search
+/// (#232), one row per area with a line of status, and signing out.
 class SettingsScreen extends StatelessWidget {
   /// Creates the start page for [viewModel].
   const SettingsScreen({required this.viewModel, super.key});
@@ -35,24 +36,29 @@ class SettingsScreen extends StatelessWidget {
           children: [
             _Profile(viewModel: viewModel),
             const SizedBox(height: Dimens.gap),
-            Card(
-              clipBehavior: Clip.antiAlias,
-              child: Column(
-                children: [
-                  for (final area in SettingsArea.values)
-                    if (_shows(area))
-                      ListTile(
-                        key: ValueKey('settings.area.${area.segment}'),
-                        minTileHeight: Dimens.tapTarget,
-                        leading: Icon(_icon(area)),
-                        title: Text(areaTitle(l10n, area)),
-                        subtitle: Text(areaStatus(l10n, viewModel, area)),
-                        trailing: const Icon(Icons.chevron_right),
-                        onTap: () => _open(context, area).ignore(),
-                      ),
-                ],
+            _SearchField(viewModel: viewModel),
+            const SizedBox(height: Dimens.gap),
+            if (viewModel.query.trim().isNotEmpty)
+              _Results(viewModel: viewModel, onOpen: _open)
+            else
+              Card(
+                clipBehavior: Clip.antiAlias,
+                child: Column(
+                  children: [
+                    for (final area in SettingsArea.values)
+                      if (viewModel.showsArea(area))
+                        ListTile(
+                          key: ValueKey('settings.area.${area.segment}'),
+                          minTileHeight: Dimens.tapTarget,
+                          leading: Icon(_icon(area)),
+                          title: Text(areaTitle(l10n, area)),
+                          subtitle: Text(areaStatus(l10n, viewModel, area)),
+                          trailing: const Icon(Icons.chevron_right),
+                          onTap: () => _open(context, area.path).ignore(),
+                        ),
+                  ],
+                ),
               ),
-            ),
             const SizedBox(height: Dimens.gap),
             CommandButton(
               key: const ValueKey('settings.signOut'),
@@ -67,15 +73,8 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
-  // An area without anything this phone can set stays off the start page;
-  // its link still opens and says so.
-  bool _shows(SettingsArea area) =>
-      area != SettingsArea.notifications ||
-      viewModel.pushAvailable ||
-      viewModel.remindersAvailable;
-
-  Future<void> _open(BuildContext context, SettingsArea area) async {
-    await context.push(area.path);
+  Future<void> _open(BuildContext context, String location) async {
+    await context.push(location);
     // Push, battery and the tile choice have no repository that tells
     // this page about changes made in the area.
     await viewModel.refresh();
@@ -209,4 +208,104 @@ class _Profile extends StatelessWidget {
       ),
     );
   }
+}
+
+/// Filters the start page as the person types (#232).
+class _SearchField extends StatefulWidget {
+  const _SearchField({required this.viewModel});
+
+  final SettingsViewModel viewModel;
+
+  @override
+  State<_SearchField> createState() => _SearchFieldState();
+}
+
+class _SearchFieldState extends State<_SearchField> {
+  late final _controller = TextEditingController(text: widget.viewModel.query);
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    return TextField(
+      key: const ValueKey('settings.search'),
+      controller: _controller,
+      textInputAction: TextInputAction.search,
+      decoration: InputDecoration(
+        hintText: l10n.settingsSearch,
+        prefixIcon: const Icon(Icons.search),
+        suffixIcon: widget.viewModel.query.isEmpty
+            ? null
+            : IconButton(
+                tooltip: l10n.settingsSearchClear,
+                icon: const Icon(Icons.clear),
+                onPressed: () {
+                  _controller.clear();
+                  widget.viewModel.search('');
+                },
+              ),
+      ),
+      onChanged: widget.viewModel.search,
+    );
+  }
+}
+
+/// The areas and settings that match the search.
+class _Results extends StatelessWidget {
+  const _Results({required this.viewModel, required this.onOpen});
+
+  final SettingsViewModel viewModel;
+  final Future<void> Function(BuildContext context, String location) onOpen;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final hits = searchSettings(
+      viewModel.query,
+      available: viewModel.available,
+      title: (item) => itemTitle(l10n, item),
+      areaTitle: (area) => areaTitle(l10n, area),
+    );
+    if (hits.isEmpty) {
+      return Text(l10n.settingsSearchEmpty(viewModel.query.trim()));
+    }
+    return Card(
+      clipBehavior: Clip.antiAlias,
+      child: Column(
+        children: [
+          for (final hit in hits)
+            if (viewModel.showsArea(hit.area))
+              ListTile(
+                key: ValueKey(
+                  'settings.hit.${hit.area.segment}.${hit.item?.name ?? ''}',
+                ),
+                minTileHeight: Dimens.tapTarget,
+                title: Text(
+                  hit.item == null
+                      ? areaTitle(l10n, hit.area)
+                      : itemTitle(l10n, hit.item!),
+                ),
+                subtitle: hit.item == null
+                    ? null
+                    : Text(areaTitle(l10n, hit.area)),
+                trailing: const Icon(Icons.chevron_right),
+                onTap: () => onOpen(context, _location(hit)).ignore(),
+              ),
+        ],
+      ),
+    );
+  }
+
+  static String _location(SettingsHit hit) => Uri(
+    path: hit.area.path,
+    queryParameters: switch (hit.item) {
+      final item? => {'focus': item.name},
+      null => null,
+    },
+  ).toString();
 }
