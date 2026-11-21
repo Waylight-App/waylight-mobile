@@ -63,8 +63,12 @@ void main() {
       );
   });
 
-  Future<void> pump(WidgetTester tester, String kind) async {
-    final placement = WidgetPlacement(id: kind, kind: kind);
+  Future<void> pump(
+    WidgetTester tester,
+    String kind, {
+    Map<String, Object?> config = const {},
+  }) async {
+    final placement = WidgetPlacement(id: kind, kind: kind, config: config);
     await tester.pumpScreen(
       MultiProvider(
         providers: [
@@ -131,7 +135,27 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.text(l10nEn.dnsFilterPause(30)));
     await tester.pumpAndSettle();
-    expect(actions.calls.last, 'pause:30');
+    expect(actions.calls.last, 'pause:adguard:30');
+  });
+
+  testWidgets('a DNS filter set to Pi-hole reads and pauses Pi-hole (#280)', (
+    tester,
+  ) async {
+    await pump(tester, 'adguard', config: {'provider': 'pihole'});
+    expect(data.asked.last.path, '/api/adguard/stats');
+    expect(data.asked.last.query, {'provider': 'pihole'});
+    await tester.tap(find.text(l10nEn.dnsFilterOn));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text(l10nEn.dnsFilterPause(5)));
+    await tester.pumpAndSettle();
+    expect(actions.calls.last, 'pause:pihole:5');
+  });
+
+  testWidgets('a DNS filter without a provider reads AdGuard Home (#280)', (
+    tester,
+  ) async {
+    await pump(tester, 'adguard');
+    expect(data.asked.last.query, {'provider': 'adguard'});
   });
 
   testWidgets('members get no actions', (tester) async {

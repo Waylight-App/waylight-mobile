@@ -41,8 +41,13 @@ abstract interface class HomeServerActionsRepository {
     String action,
   );
 
-  /// Pauses blocking of the DNS filter for [minutes].
-  Future<Result<void>> pauseDnsFilter(ServerAddress server, int minutes);
+  /// Pauses blocking of the DNS filter [provider] (`adguard` or `pihole`)
+  /// for [minutes].
+  Future<Result<void>> pauseDnsFilter(
+    ServerAddress server,
+    int minutes, {
+    required String provider,
+  });
 }
 
 /// A [HomeServerActionsRepository] on the modules' endpoints.
@@ -116,8 +121,14 @@ class HomeServerActionsRepositoryRemote implements HomeServerActionsRepository {
   @override
   Future<Result<void>> pauseDnsFilter(
     ServerAddress server,
-    int minutes,
-  ) async => _done(
-    await _api.post(server, '/api/adguard/pause', body: {'minutes': minutes}),
+    int minutes, {
+    required String provider,
+  }) async => _done(
+    await _api.post(
+      server,
+      '/api/adguard/pause',
+      body: {'minutes': minutes},
+      query: {'provider': provider},
+    ),
   );
 }

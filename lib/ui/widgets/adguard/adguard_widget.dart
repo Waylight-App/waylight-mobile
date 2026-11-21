@@ -34,11 +34,15 @@ class AdguardWidget extends StatelessWidget {
         full: () => AdguardWidget(widget: widget, key: ValueKey(widget.id)),
       );
 
+  /// The configured DNS filter; every request names it, so a widget set to
+  /// Pi-hole neither shows nor pauses AdGuard Home (#280).
+  String get _provider => dnsFilterProvider(widget.config);
+
   @override
   Widget build(BuildContext context) => SimpleWidget<DnsFilterStats>(
     placement: widget,
     defaultTitle: context.l10n.dnsFilterTitle,
-    query: dnsFilterQuery,
+    query: dnsFilterQuery.withQuery({'provider': _provider}),
     builder: (context, stats) {
       final l10n = context.l10n;
       final number = NumberFormat.decimalPattern(
@@ -58,7 +62,9 @@ class AdguardWidget extends StatelessWidget {
                 ? l10n.dnsFilterOn
                 : l10n.dnsFilterPaused,
             subtitle: l10n.dnsFilterQueries(number.format(stats.queries)),
-            onTap: stats.protectionEnabled ? () => _pause(context) : null,
+            onTap: stats.protectionEnabled
+                ? () => _pause(context, _provider)
+                : null,
           ),
           MeterRow(
             label: l10n.dnsFilterBlocked(number.format(stats.blocked)),
@@ -71,7 +77,7 @@ class AdguardWidget extends StatelessWidget {
     },
   );
 
-  static Future<void> _pause(BuildContext context) async {
+  static Future<void> _pause(BuildContext context, String provider) async {
     final l10n = context.l10n;
     if (!await isAdmin(context) || !context.mounted) return;
     final repo = context.read<HomeServerActionsRepository>();
@@ -82,7 +88,8 @@ class AdguardWidget extends StatelessWidget {
           label: l10n.dnsFilterPause(minutes),
           onTap: () => runAction(
             context,
-            (server) => repo.pauseDnsFilter(server, minutes),
+            (server) =>
+                repo.pauseDnsFilter(server, minutes, provider: provider),
             done: l10n.dnsFilterPaused,
           ),
         ),

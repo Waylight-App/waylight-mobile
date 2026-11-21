@@ -40,12 +40,16 @@ class ModuleApi {
     }
   }
 
-  /// Sends `POST path` with a JSON [body].
+  /// Sends `POST path` with [query] and a JSON [body].
   Future<Result<Object?>> post(
     ServerAddress server,
     String path, {
     Object? body,
-  }) => _client.postJson(server.resolve(path), body: body);
+    Map<String, String> query = const {},
+  }) => _client.postJson(
+    server.resolve(path).replace(queryParameters: query.isEmpty ? null : query),
+    body: body,
+  );
 
   /// Sends `POST path` with a JSON [body] and reads a plain-text answer.
   Future<Result<String>> postText(
