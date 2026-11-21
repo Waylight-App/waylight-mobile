@@ -15,6 +15,7 @@ sealed class TagAction {
       ('habit', final id?, _) => HabitTag(id),
       ('smart', final id?, _) => SmartHomeTag(id, ask: query['ask'] != '0'),
       ('shop', _, final text?) => ShoppingTag(text),
+      ('tab', final id?, _) => TabTag(id),
       _ => null,
     };
   }
@@ -67,6 +68,19 @@ final class ShoppingTag extends TagAction {
 
   @override
   Map<String, String> get query => {'do': 'shop', 'text': text};
+}
+
+/// Opens a tab of the dashboard (#260). The router sends the link to the
+/// dashboard after sign-in and app lock; an unknown id opens the first tab.
+final class TabTag extends TagAction {
+  /// Creates the action for the tab [id].
+  const TabTag(this.id);
+
+  /// The server's id of the tab.
+  final String id;
+
+  @override
+  Map<String, String> get query => {'do': 'tab', 'id': id};
 }
 
 /// How writing a tag ended.

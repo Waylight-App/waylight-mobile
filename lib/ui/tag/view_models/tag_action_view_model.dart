@@ -135,6 +135,10 @@ class TagActionViewModel extends ChangeNotifier {
             if (ask) return _set(TagRunState.confirm);
             await _act(id);
         }
+      case TabTag():
+        // The router opens the dashboard for these links; the screen is
+        // only reached by a link that bypassed it.
+        return _fail(const ApiException(ApiFailure.invalid));
       case ShoppingTag(:final text):
         _subject = text;
         switch (await _shoppingRepository.overview(server)) {

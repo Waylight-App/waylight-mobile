@@ -40,6 +40,12 @@ class TagWritable extends StatelessWidget {
   }
 }
 
+/// Writes a tag that opens the dashboard tab [tabId] named [name] (#260).
+/// The router hands this to the dashboard, which must not import the
+/// widget features.
+Future<void> writeTabTag(BuildContext context, String tabId, String name) =>
+    showWriteTagSheet(context, TabTag(tabId), subject: name);
+
 /// Writes [action] onto an NFC tag the person holds to the phone.
 Future<void> showWriteTagSheet(
   BuildContext context,
