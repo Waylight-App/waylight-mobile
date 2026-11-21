@@ -1984,4 +1984,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get announcementNotify => 'Send to the notification channels';
+
+  @override
+  String get parcelsScan => 'Scan the label';
+
+  @override
+  String get parcelsScanPrompt =>
+      'Point the camera at the barcode of the shipping label';
+
+  @override
+  String get parcelsScanNoNumber =>
+      'No tracking number in this code. Type it, or scan the barcode next to the number.';
 }

@@ -1989,4 +1989,15 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get announcementNotify => 'An die Benachrichtigungskanäle senden';
+
+  @override
+  String get parcelsScan => 'Etikett scannen';
+
+  @override
+  String get parcelsScanPrompt =>
+      'Richte die Kamera auf den Barcode des Versandetiketts';
+
+  @override
+  String get parcelsScanNoNumber =>
+      'In diesem Code steht keine Sendungsnummer. Tippe sie ein oder scanne den Barcode neben der Nummer.';
 }

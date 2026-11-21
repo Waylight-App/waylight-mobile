@@ -36,6 +36,9 @@ report a vulnerability, see [SECURITY.md](../SECURITY.md).
    end on time, and `USE_EXACT_ALARM` is granted to timers from Android 13
    (`SCHEDULE_EXACT_ALARM` up to Android 12). Where the system refuses
    exact alarms the timer falls back to an inexact one.
+   The camera permission is asked when *Scan* is first used (#196,
+   ADR 0014); ZXing reads the code on the phone and only its text reaches
+   the app. No picture is stored or sent.
 5. **Wall displays.** A kiosk link (#193) signs the tablet in as the
    server's read-only kiosk account; the token is read from the link's
    fragment and sent only in the sign-in request. Leaving the wall display
