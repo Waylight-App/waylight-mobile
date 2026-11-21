@@ -1,0 +1,58 @@
+{
+  "items": [
+    {
+      "id": "module:immich",
+      "kind": "connection",
+      "integration": "immich",
+      "title": "immich",
+      "reason": {
+        "message": "The server rejected the login. Check user name, password or token.",
+        "messageKey": "srv_d6ecea29338eeff4",
+        "params": {}
+      },
+      "since": "2026-11-21T08:12:00Z",
+      "action": "fix"
+    },
+    {
+      "id": "module:grafana",
+      "kind": "connection",
+      "integration": "grafana",
+      "title": "grafana",
+      "reason": {
+        "message": "The service does not answer.",
+        "messageKey": "srv_5c1f0f6c0a3d2b11"
+      },
+      "since": "2026-11-21T09:00:00Z",
+      "action": "check"
+    },
+    {
+      "id": "widget:w-transit",
+      "kind": "setup",
+      "integration": "transit",
+      "widgetId": "w-transit",
+      "tabId": "t-home",
+      "title": "transit",
+      "reason": {
+        "message": "Please choose a stop in the widget settings.",
+        "messageKey": "srv_d92a0962a35bc0f4"
+      },
+      "since": "2026-11-21T09:30:00Z",
+      "action": "choose",
+      "field": "stopId"
+    },
+    {
+      "id": "module:nextcloud",
+      "kind": "setup",
+      "integration": "nextcloud",
+      "connectionId": "",
+      "title": "nextcloud",
+      "reason": {
+        "message": "Nextcloud is not connected yet.",
+        "messageKey": "srv_0000000000000000"
+      },
+      "since": "2026-11-21T09:40:00Z",
+      "action": "connect"
+    }
+  ],
+  "count": 4
+}

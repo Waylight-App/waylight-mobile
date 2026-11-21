@@ -23,6 +23,7 @@ encrypted through the Waylight relay; no Google service is involved.
 | Your tabs and every widget of the web interface | ✅ | built locally |
 | To-dos, notes, smart search with answers, quick capture | ✅ | built locally |
 | Offline copy of the dashboard | ✅ | built locally |
+| *Needs your attention*: broken connections and widgets that are not set up yet, each with its fix | ✅ | built locally |
 | Wall display for an old tablet, with a kiosk link from the server | ✅ | later |
 | Quick Settings tiles: add a to-do, switch a device, set your status | ✅ | – |
 | Up to three server addresses, e.g. home network and on the go; the one that answers is used | ✅ | built locally |

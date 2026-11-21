@@ -4,6 +4,7 @@ import 'package:waylight_mobile/data/repositories/home_widgets/home_widgets_repo
 import 'package:waylight_mobile/data/repositories/offline/offline_repository.dart';
 import 'package:waylight_mobile/data/services/api/offline_status.dart';
 import 'package:waylight_mobile/domain/models/api_exception.dart';
+import 'package:waylight_mobile/domain/models/attention.dart';
 import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/domain/models/home_snapshot.dart';
 import 'package:waylight_mobile/ui/core/link_opener.dart';
@@ -16,6 +17,7 @@ import 'package:waylight_mobile/ui/dashboard/widgets/widget_grid.dart';
 import 'package:waylight_mobile/ui/home_widgets/home_widget_texts.dart';
 import 'package:waylight_mobile/utils/result.dart';
 
+import '../../testing/fakes/fake_attention_repository.dart';
 import '../../testing/fakes/fake_dashboard_repository.dart';
 import '../../testing/fakes/fake_home_widget_store.dart';
 import '../../testing/fakes/fake_link_opener.dart';
@@ -72,6 +74,42 @@ void main() {
     servers = FakeServerRepository(current: testServer());
     offlineStatus = OfflineStatus();
     dashboards = FakeDashboardRepository()..result = const Result.ok(twoTabs);
+  });
+
+  testWidgets('shows a badge while something needs attention', (tester) async {
+    final attention = FakeAttentionRepository(
+      items: const [
+        AttentionItem(
+          id: 'module:immich',
+          kind: AttentionKind.connection,
+          integration: 'immich',
+          title: 'immich',
+          message: '',
+          action: AttentionAction.check,
+        ),
+      ],
+    );
+    await tester.pumpScreen(
+      DashboardScreen(
+        viewModel: DashboardViewModel(
+          serverRepository: servers,
+          dashboardRepository: dashboards,
+          attentionRepository: attention,
+        ),
+        registry: registry,
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(attention.refreshes, 1, reason: 'follows the dashboard load');
+    final badge = find.byKey(const ValueKey('dashboard.attention'));
+    expect(badge, findsOneWidget);
+    expect(find.text('1'), findsOneWidget);
+
+    attention.result = const Result.ok([]);
+    await attention.refresh(testServer());
+    await tester.pump();
+    expect(badge, findsNothing, reason: 'an empty list hides the badge');
   });
 
   testWidgets('shows the tabs and opens the default tab', (tester) async {
