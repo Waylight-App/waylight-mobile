@@ -9,8 +9,26 @@ abstract final class Routes {
   /// The screen that asks for account name and password.
   static const signIn = '/sign-in';
 
-  /// Server, account, appearance and about.
+  /// The start page of the settings with one row per area (#231).
   static const settings = '/settings';
+
+  /// Settings area: who is signed in, security, sign out.
+  static const settingsAccount = '/settings/account';
+
+  /// Settings area: addresses, other servers, disconnect.
+  static const settingsServer = '/settings/server';
+
+  /// Settings area: theme, colours, language.
+  static const settingsAppearance = '/settings/appearance';
+
+  /// Settings area: push notifications and reminders on the device.
+  static const settingsNotifications = '/settings/notifications';
+
+  /// Settings area: app lock, home screen widgets, Quick Settings tiles.
+  static const settingsPhone = '/settings/phone';
+
+  /// Settings area: versions, licences, privacy, diagnostic report.
+  static const settingsAbout = '/settings/about';
 
   /// Pairs the app from a QR code: `waylight://pair?server=…&code=…` (#43).
   static const pair = '/pair';
@@ -66,6 +84,12 @@ abstract final class Routes {
     connect,
     signIn,
     settings,
+    settingsAccount,
+    settingsServer,
+    settingsAppearance,
+    settingsNotifications,
+    settingsPhone,
+    settingsAbout,
     pair,
     auth,
     search,

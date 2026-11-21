@@ -30,6 +30,7 @@ encrypted through the Waylight relay; no Google service is involved.
 | Push notifications, end-to-end encrypted, without Google | ✅ | waits for the Apple account |
 | Reminders for to-dos, events and birthdays, shown by the phone itself, also offline | ✅ | later |
 | Home screen widgets, share sheet, background refresh | ✅ | waits for the Apple account |
+| Settings in six areas with a status line each, links straight to an area | ✅ | built locally |
 | Glances and a tile on Wear OS watches, without the phone in between | ✅ | – |
 | Store release | later | later |
 
