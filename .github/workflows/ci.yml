@@ -71,3 +71,33 @@ jobs:
             echo "::error::The APK contains Firebase or Play services classes (ADR 0008)."
             exit 1
           fi
+
+  # The Wear OS app is a Gradle build of its own in wear/ (ADR 0015); it
+  # needs no Flutter SDK and runs next to the other jobs.
+  wear:
+    name: Build Wear OS
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: wear
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-java@d1374f8ac74474200d16ef8ecee22c7ae7a51880 # v6.3.0
+        with:
+          distribution: temurin
+          java-version: 17
+      # Caches Gradle and checks wear/gradle/wrapper/gradle-wrapper.jar
+      # against the checksums Gradle publishes.
+      - uses: gradle/actions/setup-gradle@8da46b539cd8fe6ab27ca75128919a18d757604c # v6.4.1
+      - run: ./gradlew --no-daemon assembleDebug testDebugUnitTest
+      - name: The watch APK contains no Google services
+        # grep reads the whole dex (no -q), so an early exit cannot hide a
+        # match behind a broken pipe.
+        run: |
+          apk=$(ls build/outputs/apk/debug/*.apk)
+          matches=$(unzip -p "$apk" 'classes*.dex' | grep -acE 'com/google/(firebase|android/gms)' || true)
+          if [ "$matches" != "0" ]; then
+            echo "::error::The watch APK contains Firebase or Play services classes (ADR 0015)."
+            exit 1
+          fi

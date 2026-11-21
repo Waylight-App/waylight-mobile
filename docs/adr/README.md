@@ -24,3 +24,4 @@ status *Proposed*, and discuss it in the pull request.
 | [0012](0012-dashboard-grid.md) | Dashboard grid with widget sizes: four sizes, dense packing, sizes in the server's phone layout | Accepted |
 | [0013](0013-markdown-rendering.md) | Markdown parsed by the Dart team's package and rendered by our own small renderer; no images, links only in the browser | Accepted |
 | [0014](0014-barcode-scanning.md) | Barcode scanning on the device with ZXing; no Google library, no image kept | Accepted |
+| [0015](0015-standalone-wear-os-app.md) | A standalone Wear OS app in Kotlin with its own app session, paired from the phone; no Wearable Data Layer | Accepted |

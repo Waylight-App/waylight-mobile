@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Waylight</string>
+    <string name="not_paired">Not connected to a Waylight server yet.</string>
+</resources>
