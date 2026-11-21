@@ -3067,6 +3067,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Wallpaper'**
   String get settingsColoursWallpaper;
+
+  /// Settings, server: heading of the server's addresses.
+  ///
+  /// In en, this message translates to:
+  /// **'Addresses'**
+  String get addressesTitle;
+
+  /// Below the addresses heading.
+  ///
+  /// In en, this message translates to:
+  /// **'Tried in this order; the first that answers and knows your session is used, e.g. the home network first, then the address on the go.'**
+  String get addressesHint;
+
+  /// Address status.
+  ///
+  /// In en, this message translates to:
+  /// **'In use'**
+  String get addressInUse;
+
+  /// Address status.
+  ///
+  /// In en, this message translates to:
+  /// **'Not reachable right now'**
+  String get addressUnreachable;
+
+  /// Address status.
+  ///
+  /// In en, this message translates to:
+  /// **'Answers, but does not know your session – another server under this address?'**
+  String get addressRejected;
+
+  /// Tooltip: move address up.
+  ///
+  /// In en, this message translates to:
+  /// **'Try earlier'**
+  String get addressRaise;
+
+  /// Tooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove address'**
+  String get addressRemove;
+
+  /// Button and dialog title.
+  ///
+  /// In en, this message translates to:
+  /// **'Add address'**
+  String get addressAdd;
 }
 
 class _AppLocalizationsDelegate

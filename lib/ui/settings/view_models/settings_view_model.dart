@@ -7,6 +7,7 @@ import 'package:waylight_mobile/data/repositories/preferences/preferences_reposi
 import 'package:waylight_mobile/data/repositories/push/push_repository.dart';
 import 'package:waylight_mobile/data/repositories/server/server_repository.dart';
 import 'package:waylight_mobile/data/repositories/session/session_repository.dart';
+import 'package:waylight_mobile/domain/models/address_check.dart';
 import 'package:waylight_mobile/domain/models/appearance.dart';
 import 'package:waylight_mobile/domain/models/diagnostics.dart';
 import 'package:waylight_mobile/domain/models/server_address.dart';
@@ -199,6 +200,53 @@ class SettingsViewModel extends ChangeNotifier {
 
   /// The address of the connected server.
   String get server => _serverRepository.current?.toString() ?? '';
+
+  /// The addresses of the server in the order they are tried (#189).
+  List<ServerAddress> get addresses => _serverRepository.addresses;
+
+  /// The address in use right now; `null` when none answered.
+  ServerAddress? get activeAddress => _serverRepository.active;
+
+  /// What the last check of [address] found.
+  AddressCheck checkOf(ServerAddress address) =>
+      _serverRepository.checks[address] ?? AddressCheck.unknown;
+
+  /// Whether another address can be added.
+  bool get canAddAddress => addresses.length < ServerRepository.maxAddresses;
+
+  /// Adds [input] as the last address; returns why it was refused, if so.
+  Future<InvalidServerAddressReason?> addAddress(String input) async {
+    switch (ServerAddress.parse(input)) {
+      case Error(error: final InvalidServerAddress e):
+        return e.reason;
+      case Error():
+        return InvalidServerAddressReason.malformed;
+      case Ok(:final value):
+        if (addresses.contains(value) || !canAddAddress) return null;
+        await _serverRepository.setAddresses([...addresses, value]);
+        return null;
+    }
+  }
+
+  /// Removes [address]; the last one stays.
+  Future<void> removeAddress(ServerAddress address) async {
+    if (addresses.length < 2) return;
+    await _serverRepository.setAddresses([
+      for (final a in addresses)
+        if (a != address) a,
+    ]);
+  }
+
+  /// Moves [address] one place up, so it is tried earlier.
+  Future<void> raiseAddress(ServerAddress address) async {
+    final list = [...addresses];
+    final i = list.indexOf(address);
+    if (i < 1) return;
+    list
+      ..removeAt(i)
+      ..insert(i - 1, address);
+    await _serverRepository.setAddresses(list);
+  }
 
   /// The look of the app.
   Appearance get appearance => _preferencesRepository.appearance;

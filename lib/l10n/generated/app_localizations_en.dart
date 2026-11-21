@@ -1706,4 +1706,30 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsColoursWallpaper => 'Wallpaper';
+
+  @override
+  String get addressesTitle => 'Addresses';
+
+  @override
+  String get addressesHint =>
+      'Tried in this order; the first that answers and knows your session is used, e.g. the home network first, then the address on the go.';
+
+  @override
+  String get addressInUse => 'In use';
+
+  @override
+  String get addressUnreachable => 'Not reachable right now';
+
+  @override
+  String get addressRejected =>
+      'Answers, but does not know your session – another server under this address?';
+
+  @override
+  String get addressRaise => 'Try earlier';
+
+  @override
+  String get addressRemove => 'Remove address';
+
+  @override
+  String get addressAdd => 'Add address';
 }

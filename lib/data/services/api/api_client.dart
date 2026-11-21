@@ -6,6 +6,7 @@ import 'dart:typed_data';
 import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
 
+import 'package:waylight_mobile/data/services/api/address_routes.dart';
 import 'package:waylight_mobile/data/services/api/api_credentials.dart';
 import 'package:waylight_mobile/data/services/api/offline_status.dart';
 import 'package:waylight_mobile/data/services/cache/response_cache.dart';
@@ -22,7 +23,7 @@ final class ApiResponse {
     required this.headers,
   });
 
-  /// The HTTP status, 2xx.
+  /// The HTTP status: 2xx, except for [ApiClient.probe].
   final int statusCode;
 
   /// The decoded JSON body, or `null` if there is none.
@@ -44,11 +45,13 @@ class ApiClient {
   ApiClient({
     required this._client,
     ApiCredentials? credentials,
+    AddressRoutes? routes,
     this._cache,
     OfflineStatus? offline,
     this._now = DateTime.now,
     this.timeout = const Duration(seconds: 10),
   }) : _credentials = credentials ?? ApiCredentials(),
+       _routes = routes ?? AddressRoutes(),
        _offline = offline ?? OfflineStatus();
 
   /// The read endpoints whose last answer is kept for offline use (#23,
@@ -72,6 +75,7 @@ class ApiClient {
 
   final http.Client _client;
   final ApiCredentials _credentials;
+  final AddressRoutes _routes;
   final Logger _log = Logger('ApiClient');
 
   /// How long a request may take before it counts as unreachable.
@@ -231,15 +235,53 @@ class ApiClient {
     }
   }
 
+  /// Sends `GET` [uri] to the address [via] instead, with the credentials
+  /// of [uri]'s server, and returns status and body (#189). Used to check
+  /// whether another address of the same server answers and accepts the
+  /// session; nothing is cached and the offline state is not touched.
+  Future<Result<ApiResponse>> probe(
+    Uri uri, {
+    required Uri via,
+    Duration timeout = const Duration(seconds: 3),
+  }) async {
+    final request = http.Request('GET', via)
+      ..headers.addAll({
+        ..._jsonHeaders,
+        ..._credentials.headersFor('GET', uri),
+      });
+    try {
+      final response = await _client
+          .send(request)
+          .then(http.Response.fromStream)
+          .timeout(timeout);
+      return Result.ok(
+        ApiResponse(
+          statusCode: response.statusCode,
+          body: _decode(utf8.decode(response.bodyBytes, allowMalformed: true)),
+          headers: response.headers,
+        ),
+      );
+    } on TimeoutException {
+      // Falls through to unreachable.
+    } on http.ClientException {
+      // Falls through to unreachable.
+    } on SocketException {
+      // Falls through to unreachable.
+    }
+    return const Result.error(ApiException(ApiFailure.unreachable));
+  }
+
   /// Sends the request with the credentials; transport failures and
-  /// timeouts become `ApiFailure.unreachable`.
+  /// timeouts become `ApiFailure.unreachable`. The credentials and the
+  /// offline copy follow [uri]; the request goes to the address in use for
+  /// its server ([AddressRoutes]).
   Future<Result<http.Response>> _transport(
     String method,
     Uri uri, {
     required Map<String, String> headers,
     String? body,
   }) async {
-    final request = http.Request(method, uri)
+    final request = http.Request(method, _routes.rewrite(uri))
       ..headers.addAll({
         ..._jsonHeaders,
         ..._credentials.headersFor(method, uri),

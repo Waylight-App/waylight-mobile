@@ -27,6 +27,7 @@ class MainActivity : FlutterFragmentActivity() {
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
         push.register(flutterEngine)
+        NetworkChannel.register(applicationContext, flutterEngine)
         DeviceChannel(this).register(flutterEngine)
         ColorsChannel.register(applicationContext, flutterEngine)
         HomeWidgetChannel.register(this, flutterEngine.dartExecutor.binaryMessenger)

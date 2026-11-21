@@ -2,8 +2,11 @@ import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:waylight_mobile/data/repositories/lock/app_lock_repository.dart';
 import 'package:waylight_mobile/data/repositories/push/push_repository.dart';
+import 'package:waylight_mobile/domain/models/address_check.dart';
 import 'package:waylight_mobile/domain/models/appearance.dart';
+import 'package:waylight_mobile/domain/models/server_address.dart';
 import 'package:waylight_mobile/routing/routes.dart';
+import 'package:waylight_mobile/ui/core/address_errors.dart';
 import 'package:waylight_mobile/ui/core/error_messages.dart';
 import 'package:waylight_mobile/ui/core/link_opener.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
@@ -46,6 +49,7 @@ class SettingsScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   _Line(label: l10n.settingsAddress, value: viewModel.server),
+                  _Addresses(viewModel: viewModel),
                   _CommandLine(
                     label: l10n.settingsVersion,
                     command: viewModel.serverVersion,
@@ -460,3 +464,152 @@ Future<void> showDiagnosticsSheet(
     ),
   ),
 );
+
+/// The addresses of the server, tried in this order (#189).
+class _Addresses extends StatelessWidget {
+  const _Addresses({required this.viewModel});
+
+  final SettingsViewModel viewModel;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final addresses = viewModel.addresses;
+    if (addresses.isEmpty) return const SizedBox.shrink();
+    return Column(
+      key: const ValueKey('settings.addresses'),
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        const SizedBox(height: Dimens.gapSmall),
+        // A single address is already shown above; the list starts at two.
+        if (addresses.length > 1) ...[
+          Text(
+            l10n.addressesTitle,
+            style: Theme.of(context).textTheme.titleSmall,
+          ),
+          Text(
+            l10n.addressesHint,
+            style: Theme.of(context).textTheme.bodySmall,
+          ),
+        ],
+        for (final (i, a) in addresses.indexed)
+          if (addresses.length > 1)
+            ListTile(
+              contentPadding: EdgeInsets.zero,
+              minTileHeight: Dimens.tapTarget,
+              leading: Icon(
+                a == viewModel.activeAddress
+                    ? Icons.check_circle_outline
+                    : Icons.radio_button_unchecked,
+              ),
+              title: Text(a.toString()),
+              subtitle: switch ((
+                a == viewModel.activeAddress,
+                viewModel.checkOf(a),
+              )) {
+                (true, _) => Text(l10n.addressInUse),
+                (_, AddressCheck.unreachable) => Text(l10n.addressUnreachable),
+                (_, AddressCheck.rejected) => Text(l10n.addressRejected),
+                _ => null,
+              },
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (i > 0)
+                    IconButton(
+                      tooltip: l10n.addressRaise,
+                      icon: const Icon(Icons.arrow_upward),
+                      onPressed: () => viewModel.raiseAddress(a).ignore(),
+                    ),
+                  if (addresses.length > 1)
+                    IconButton(
+                      tooltip: l10n.addressRemove,
+                      icon: const Icon(Icons.delete_outline),
+                      onPressed: () => viewModel.removeAddress(a).ignore(),
+                    ),
+                ],
+              ),
+            ),
+        if (viewModel.canAddAddress)
+          Align(
+            alignment: AlignmentDirectional.centerStart,
+            child: TextButton.icon(
+              key: const ValueKey('settings.addAddress'),
+              icon: const Icon(Icons.add),
+              label: Text(l10n.addressAdd),
+              onPressed: () => _add(context),
+            ),
+          ),
+      ],
+    );
+  }
+
+  Future<void> _add(BuildContext context) => showDialog<void>(
+    context: context,
+    builder: (_) => _AddAddressDialog(viewModel: viewModel),
+  );
+}
+
+/// Asks for one more address of the server (#189). It owns its text
+/// controller, so the controller lives until the closing animation ends.
+class _AddAddressDialog extends StatefulWidget {
+  const _AddAddressDialog({required this.viewModel});
+
+  final SettingsViewModel viewModel;
+
+  @override
+  State<_AddAddressDialog> createState() => _AddAddressDialogState();
+}
+
+class _AddAddressDialogState extends State<_AddAddressDialog> {
+  final _controller = TextEditingController();
+  String? _error;
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  Future<void> _save() async {
+    final l10n = context.l10n;
+    final reason = await widget.viewModel.addAddress(_controller.text);
+    if (!mounted) return;
+    if (reason == null) {
+      Navigator.pop(context);
+    } else {
+      setState(() => _error = fieldError(l10n, InvalidServerAddress(reason)));
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final material = MaterialLocalizations.of(context);
+    return AlertDialog(
+      title: Text(l10n.addressAdd),
+      content: TextField(
+        key: const ValueKey('settings.addressField'),
+        controller: _controller,
+        autofocus: true,
+        keyboardType: TextInputType.url,
+        decoration: InputDecoration(
+          hintText: 'https://waylight.example.org',
+          errorText: _error,
+        ),
+        onSubmitted: (_) => _save(),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: Text(material.cancelButtonLabel),
+        ),
+        FilledButton(
+          key: const ValueKey('settings.addressSave'),
+          onPressed: _save,
+          child: Text(material.okButtonLabel),
+        ),
+      ],
+    );
+  }
+}

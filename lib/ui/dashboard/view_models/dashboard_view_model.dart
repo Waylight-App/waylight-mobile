@@ -113,10 +113,12 @@ class DashboardViewModel extends ChangeNotifier {
   }
 
   /// The address of [tabId] in the web interface, for widgets without a
-  /// native view; `null` without a server.
-  Uri? webUrl(String tabId) => _serverRepository.current
-      ?.resolve('/')
-      .replace(queryParameters: {'tab': tabId});
+  /// native view; `null` without a server. It uses the server address that
+  /// answers right now (#189).
+  Uri? webUrl(String tabId) =>
+      (_serverRepository.active ?? _serverRepository.current)
+          ?.resolve('/')
+          .replace(queryParameters: {'tab': tabId});
 
   Future<Result<Dashboard>> _load() async {
     final server = _serverRepository.current;

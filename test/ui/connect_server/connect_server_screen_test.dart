@@ -5,6 +5,7 @@ import 'package:waylight_mobile/domain/models/api_exception.dart';
 import 'package:waylight_mobile/domain/models/server_address.dart';
 import 'package:waylight_mobile/ui/connect_server/view_models/connect_server_view_model.dart';
 import 'package:waylight_mobile/ui/connect_server/widgets/connect_server_screen.dart';
+import 'package:waylight_mobile/ui/core/address_errors.dart';
 import 'package:waylight_mobile/utils/result.dart';
 
 import '../../testing/fakes/fake_server_repository.dart';
