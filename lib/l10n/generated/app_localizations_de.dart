@@ -1785,4 +1785,19 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get settingsReminderDenied =>
       'Benachrichtigungen für Waylight sind in den Systemeinstellungen ausgeschaltet.';
+
+  @override
+  String get focusStartBreak => 'Pause';
+
+  @override
+  String get focusPause => 'Anhalten';
+
+  @override
+  String get focusResume => 'Weiter';
+
+  @override
+  String get focusRunning => 'Fokus';
+
+  @override
+  String get focusBreak => 'Pause';
 }

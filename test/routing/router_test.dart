@@ -6,6 +6,7 @@ import 'package:waylight_mobile/app.dart';
 import 'package:waylight_mobile/config/dependencies.dart';
 import 'package:waylight_mobile/data/repositories/appearance/theme_repository.dart';
 import 'package:waylight_mobile/data/repositories/diagnostics/diagnostics_repository.dart';
+import 'package:waylight_mobile/data/repositories/focus/focus_timer_repository.dart';
 import 'package:waylight_mobile/data/repositories/home_widgets/home_widgets_repository.dart';
 import 'package:waylight_mobile/data/repositories/lock/app_lock_repository.dart';
 import 'package:waylight_mobile/data/repositories/offline/offline_repository.dart';
@@ -14,6 +15,7 @@ import 'package:waylight_mobile/data/repositories/todos/todos_repository_outbox.
 import 'package:waylight_mobile/data/services/api/api_client.dart';
 import 'package:waylight_mobile/data/services/api/module_api.dart';
 import 'package:waylight_mobile/data/services/api/offline_status.dart';
+import 'package:waylight_mobile/data/services/focus/focus_timer_service.dart';
 import 'package:waylight_mobile/routing/router.dart';
 import 'package:waylight_mobile/routing/routes.dart';
 import 'package:waylight_mobile/ui/connect_server/widgets/connect_server_screen.dart';
@@ -72,6 +74,11 @@ void main() {
           parcels: FakeParcelsRepository(),
           smartHome: FakeSmartHomeRepository(),
           focus: FakeFocusRepository(),
+          focusTimer: FocusTimerRepository(
+            timer: InAppFocusTimer(),
+            sessions: FakeFocusRepository(),
+            store: InMemoryKeyValueStore(),
+          ),
           homeServer: FakeHomeServerActions(),
           calendar: FakeCalendarRepository(),
           readLater: FakeReadLaterRepository(),

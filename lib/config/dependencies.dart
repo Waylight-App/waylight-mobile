@@ -20,6 +20,7 @@ import 'package:waylight_mobile/data/repositories/calendar/calendar_repository.d
 import 'package:waylight_mobile/data/repositories/dashboard/dashboard_repository.dart';
 import 'package:waylight_mobile/data/repositories/dashboard/dashboard_repository_remote.dart';
 import 'package:waylight_mobile/data/repositories/diagnostics/diagnostics_repository.dart';
+import 'package:waylight_mobile/data/repositories/focus/focus_timer_repository.dart';
 import 'package:waylight_mobile/data/repositories/habits/habits_repository.dart';
 import 'package:waylight_mobile/data/repositories/habits/habits_repository_remote.dart';
 import 'package:waylight_mobile/data/repositories/home_widgets/home_widgets_repository.dart';
@@ -70,6 +71,7 @@ import 'package:waylight_mobile/data/services/api/waste_api.dart';
 import 'package:waylight_mobile/data/services/api/weather_api.dart';
 import 'package:waylight_mobile/data/services/cache/response_cache.dart';
 import 'package:waylight_mobile/data/services/device/device_info.dart';
+import 'package:waylight_mobile/data/services/focus/focus_timer_service.dart';
 import 'package:waylight_mobile/data/services/home_widgets/home_widget_store.dart';
 import 'package:waylight_mobile/data/services/logging/log_store.dart';
 import 'package:waylight_mobile/data/services/network/network_changes.dart';
@@ -99,6 +101,7 @@ typedef Repositories = ({
   ParcelsRepository parcels,
   SmartHomeRepository smartHome,
   FocusRepository focus,
+  FocusTimerRepository focusTimer,
   HomeServerActionsRepository homeServer,
   CalendarRepository calendar,
   ReadLaterRepository readLater,
@@ -139,6 +142,9 @@ List<SingleChildWidget> providers(Repositories repositories) => [
   Provider<ParcelsRepository>.value(value: repositories.parcels),
   Provider<SmartHomeRepository>.value(value: repositories.smartHome),
   Provider<FocusRepository>.value(value: repositories.focus),
+  ChangeNotifierProvider<FocusTimerRepository>.value(
+    value: repositories.focusTimer,
+  ),
   Provider<HomeServerActionsRepository>.value(value: repositories.homeServer),
   Provider<CalendarRepository>.value(value: repositories.calendar),
   Provider<ReadLaterRepository>.value(value: repositories.readLater),
@@ -211,6 +217,7 @@ Repositories createRepositories() {
     store: MethodChannelHomeWidgetStore(),
   );
   final widgetData = WidgetDataRepositoryRemote(api: modules);
+  final focusSessions = FocusRepositoryRemote(api: modules);
   final reminders = ReminderRepository(
     scheduler: const MethodChannelReminderScheduler(),
     store: store,
@@ -252,7 +259,13 @@ Repositories createRepositories() {
     rss: RssRepositoryRemote(api: modules),
     parcels: ParcelsRepositoryRemote(api: modules),
     smartHome: SmartHomeRepositoryRemote(api: modules),
-    focus: FocusRepositoryRemote(api: modules),
+    focus: focusSessions,
+    focusTimer: FocusTimerRepository(
+      timer: MethodChannelFocusTimer(),
+      sessions: focusSessions,
+      store: store,
+      askPermission: const MethodChannelReminderScheduler().requestPermission,
+    ),
     homeServer: HomeServerActionsRepositoryRemote(api: modules),
     calendar: CalendarRepositoryRemote(api: modules),
     readLater: ReadLaterRepositoryRemote(api: modules),

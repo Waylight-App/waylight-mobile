@@ -1033,5 +1033,15 @@
   "settingsReminderBirthdays": "Birthdays, at 8:00",
   "@settingsReminderBirthdays": {"description": "Switch."},
   "settingsReminderDenied": "Notifications are turned off for Waylight in the system settings.",
-  "@settingsReminderDenied": {"description": "Shown when the permission was refused."}
+  "@settingsReminderDenied": {"description": "Shown when the permission was refused."},
+  "focusStartBreak": "Break",
+  "@focusStartBreak": {"description": "Starts a 5-minute break."},
+  "focusPause": "Pause",
+  "@focusPause": {"description": "Pauses the focus timer."},
+  "focusResume": "Resume",
+  "@focusResume": {"description": "Resumes the focus timer."},
+  "focusRunning": "Focus",
+  "@focusRunning": {"description": "Label while a focus phase runs."},
+  "focusBreak": "Break",
+  "@focusBreak": {"description": "Label while a break runs."}
 }

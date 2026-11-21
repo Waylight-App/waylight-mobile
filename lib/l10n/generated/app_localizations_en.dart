@@ -1784,4 +1784,19 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get settingsReminderDenied =>
       'Notifications are turned off for Waylight in the system settings.';
+
+  @override
+  String get focusStartBreak => 'Break';
+
+  @override
+  String get focusPause => 'Pause';
+
+  @override
+  String get focusResume => 'Resume';
+
+  @override
+  String get focusRunning => 'Focus';
+
+  @override
+  String get focusBreak => 'Break';
 }

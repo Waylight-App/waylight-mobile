@@ -3199,6 +3199,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Notifications are turned off for Waylight in the system settings.'**
   String get settingsReminderDenied;
+
+  /// Starts a 5-minute break.
+  ///
+  /// In en, this message translates to:
+  /// **'Break'**
+  String get focusStartBreak;
+
+  /// Pauses the focus timer.
+  ///
+  /// In en, this message translates to:
+  /// **'Pause'**
+  String get focusPause;
+
+  /// Resumes the focus timer.
+  ///
+  /// In en, this message translates to:
+  /// **'Resume'**
+  String get focusResume;
+
+  /// Label while a focus phase runs.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus'**
+  String get focusRunning;
+
+  /// Label while a break runs.
+  ///
+  /// In en, this message translates to:
+  /// **'Break'**
+  String get focusBreak;
 }
 
 class _AppLocalizationsDelegate

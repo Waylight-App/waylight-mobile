@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The focus timer's notifications (#191). -->
+<resources>
+    <string name="focus_channel_running">Focus timer</string>
+    <string name="focus_channel_end">Focus timer ended</string>
+    <string name="focus_running">Focus</string>
+    <string name="focus_rest_running">Break</string>
+    <string name="focus_paused">Paused, %1$d:%2$02d left</string>
+    <string name="focus_pause">Pause</string>
+    <string name="focus_resume">Resume</string>
+    <string name="focus_stop">Stop</string>
+    <string name="focus_done">Focus phase done</string>
+    <string name="focus_rest_done">Break is over</string>
+    <string name="focus_start_rest">Start break</string>
+    <string name="focus_start_focus">Start focus</string>
+</resources>
