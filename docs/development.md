@@ -90,7 +90,8 @@ settings.
 
 ### What CI builds
 
-Every pull request runs `make ci` and builds the Android app. GitHub
+Every pull request runs `make ci`, builds the Android app and builds and
+tests the Wear OS app in `wear/` ([Waylight on Wear OS](wear-os.md#build-it)). GitHub
 Actions never builds the iOS app (#171): the maintainer builds it locally on
 a Mac and confirms before each release that it builds. If you change native
 iOS code, build it locally with `flutter build ios --debug --no-codesign` and

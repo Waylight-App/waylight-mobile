@@ -99,3 +99,40 @@ session of a browser (phase 1). For both:
   work through *Sign in in the browser*: the server hands the sign-in back
   to the app with a code that only redeems with the app's PKCE verifier,
   and the app ignores answers to sign-ins it did not start.
+
+## Wear OS app
+
+The watch app ([ADR 0015](adr/0015-standalone-wear-os-app.md)) follows the
+same principles and talks only to your server.
+
+- **Own session.** The watch has its own app session with its own name on
+  the server, revoked there or with *Sign out* on the watch. Its bearer
+  token is encrypted with an AES-256-GCM key that the Android Keystore of
+  the watch creates and never hands out; the app's private preferences hold
+  only the ciphertext. Backups are off. A 401 from the server deletes the
+  session on the watch.
+- **Pairing through the phone.** The QR code on the watch carries its
+  address in the Wi-Fi and a random 256-bit key. The phone sends the server
+  address and a pairing code to that address, encrypted and authenticated
+  with AES-256-GCM under the key. Someone else in the network sees only the
+  ciphertext and cannot forge a handover without the key, which travels
+  only through the camera. The watch listens only while the QR code is
+  shown, stops after the first successful handover or ten requests, and
+  accepts bodies of at most 4 KB. Pairing codes are single-use and expire
+  after five minutes on the server.
+- **Permissions.** `INTERNET`, `ACCESS_NETWORK_STATE` and
+  `CHANGE_NETWORK_STATE`; the last one asks for Wi-Fi while the QR code is
+  shown, because a watch near its phone usually stays on Bluetooth. No
+  location, camera or body sensors.
+- **What is stored.** Besides the session, the last snapshot of the glances
+  (next event title and time, compact state texts, your status) stays in the
+  app's private preferences so the tile can draw without a request. Sign-out
+  deletes it.
+- **Transport.** The rules of ADR 0006 apply, with one convenience: an
+  address in the home network typed without a scheme is taken as
+  `http://`. Redirects are not followed, so the token cannot be sent to
+  another host.
+- **No Google services.** No Wearable Data Layer and nothing from Google
+  Play services or Firebase; CI checks the watch APK for it. The server and
+  your network see the watch's IP address and when it fetches data, every
+  30 minutes while it has a network.

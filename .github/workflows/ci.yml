@@ -90,7 +90,8 @@ jobs:
       # Caches Gradle and checks wear/gradle/wrapper/gradle-wrapper.jar
       # against the checksums Gradle publishes.
       - uses: gradle/actions/setup-gradle@8da46b539cd8fe6ab27ca75128919a18d757604c # v6.4.1
-      - run: ./gradlew --no-daemon assembleDebug testDebugUnitTest
+      # The release build runs R8, which the release workflow relies on.
+      - run: ./gradlew --no-daemon assembleDebug assembleRelease testDebugUnitTest
       - name: The watch APK contains no Google services
         # grep reads the whole dex (no -q), so an early exit cannot hide a
         # match behind a broken pipe.

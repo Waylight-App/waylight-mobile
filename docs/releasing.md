@@ -13,8 +13,10 @@ the version or the changelog by hand.
    `CHANGELOG.md`.
 2. When the maintainer merges it, release-please tags `vx.y.z` and creates
    the GitHub release with the changelog.
-3. The release workflow then builds the Android APK and attaches it to the
-   release as `waylight-vX.Y.Z.apk`.
+3. The release workflow then builds the Android APK and the Wear OS APK and
+   attaches them to the release as `waylight-vX.Y.Z.apk` and
+   `waylight-wear-vX.Y.Z.apk`. The watch app takes its version from
+   `pubspec.yaml`, so both carry the same version.
 
 Until there are store accounts (ADR 0010), GitHub Releases is how the app
 is distributed. Users install the APK by hand or with
@@ -36,6 +38,7 @@ Configuration: `release-please-config.json`,
 | Platform | Identifier |
 | --- | --- |
 | Android `applicationId` | `app.waylight.mobile` |
+| Wear OS `applicationId` | `app.waylight.mobile` (same as the phone, as stores expect for a watch app of the same listing) |
 | iOS bundle identifier | `app.waylight.mobile` |
 
 Store identifiers can never change after the first store release.
@@ -43,7 +46,8 @@ Store identifiers can never change after the first store release.
 ## Signing and stores
 
 Not set up yet ([#25](https://github.com/Waylight-App/waylight-mobile/issues/25)). Until then
-the release APK is signed with the debug key and meant for testers only,
+the release APKs (phone and watch) are signed with the debug key and meant
+for testers only,
 and iOS builds are unsigned.
 
 The plan:

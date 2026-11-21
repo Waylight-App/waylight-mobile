@@ -30,6 +30,7 @@ encrypted through the Waylight relay; no Google service is involved.
 | Push notifications, end-to-end encrypted, without Google | ✅ | waits for the Apple account |
 | Reminders for to-dos, events and birthdays, shown by the phone itself, also offline | ✅ | later |
 | Home screen widgets, share sheet, background refresh | ✅ | waits for the Apple account |
+| Glances and a tile on Wear OS watches, without the phone in between | ✅ | – |
 | Store release | later | later |
 
 ## Requirements
@@ -46,6 +47,9 @@ Download `waylight-vX.Y.Z.apk` from the latest
 no Google services. [Obtainium](https://github.com/ImranR98/Obtainium) installs
 it and keeps it up to date: add `https://github.com/Waylight-App/waylight-mobile`
 as an app.
+
+For a Wear OS watch, the same release has `waylight-wear-vX.Y.Z.apk`; see
+[Waylight on Wear OS](docs/wear-os.md) for installing and pairing it.
 
 ## Documentation
 
