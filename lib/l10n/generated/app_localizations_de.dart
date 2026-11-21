@@ -2257,6 +2257,12 @@ class AppLocalizationsDe extends AppLocalizations {
       'Wähle unter Server & Verbindung „Weiteren Server hinzufügen“, dann „Als Wandbildschirm nutzen“ und füge den Link einer Kiosk-Anzeige ein.';
 
   @override
+  String get absencePerson => 'Person';
+
+  @override
+  String get absenceMe => 'Ich';
+
+  @override
   String get settingsSearch => 'Einstellungen durchsuchen';
 
   @override

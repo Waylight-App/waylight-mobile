@@ -12,7 +12,8 @@ abstract interface class AbsencesRepository {
     required DateTime to,
   });
 
-  /// Enters an absence for the signed-in account.
+  /// Enters an absence for the signed-in account, or for
+  /// [AbsenceInput.accountId] when an admin enters it for someone else.
   Future<Result<void>> create(ServerAddress server, AbsenceInput input);
 
   /// Changes the absence [id].
@@ -24,6 +25,9 @@ abstract interface class AbsencesRepository {
 
   /// Deletes the absence [id].
   Future<Result<void>> delete(ServerAddress server, String id);
+
+  /// The active members and admins an admin can enter absences for.
+  Future<Result<List<AbsenceMember>>> members(ServerAddress server);
 }
 
 /// An [AbsencesRepository] on `/api/absences`.
@@ -47,7 +51,16 @@ class AbsencesRepositoryRemote implements AbsencesRepository {
 
   @override
   Future<Result<void>> create(ServerAddress server, AbsenceInput input) async =>
-      _void(await _api.post(server, '/api/absences', body: _body(input)));
+      _void(
+        await _api.post(
+          server,
+          '/api/absences',
+          body: {
+            ..._body(input),
+            if (input.accountId.isNotEmpty) 'accountId': input.accountId,
+          },
+        ),
+      );
 
   @override
   Future<Result<void>> update(
@@ -66,6 +79,11 @@ class AbsencesRepositoryRemote implements AbsencesRepository {
   Future<Result<void>> delete(ServerAddress server, String id) =>
       _api.delete(server, '/api/absences/${Uri.encodeComponent(id)}');
 
+  @override
+  Future<Result<List<AbsenceMember>>> members(ServerAddress server) =>
+      _api.read(server, '/api/auth/members', parseMembers);
+
+  // The person of an absence never changes: PUT has no accountId.
   static Map<String, Object?> _body(AbsenceInput i) => {
     'from': absenceDay(i.from),
     'to': absenceDay(i.to),
@@ -78,6 +96,23 @@ class AbsencesRepositoryRemote implements AbsencesRepository {
     Ok() => const Result.ok(null),
     Error(:final error) => Result.error(error),
   };
+}
+
+/// Maps `GET /api/auth/members` to the accounts an absence can be
+/// entered for; disabled accounts are left out. `null` for an answer of
+/// another shape.
+List<AbsenceMember>? parseMembers(Object? json) {
+  if (json case {'members': final List<Object?> members}) {
+    return [
+      for (final m in members)
+        if (m
+            case {'id': final String id, 'name': final String name} &&
+                final Map<String, Object?> o
+            when id.isNotEmpty && o['disabled'] != true)
+          AbsenceMember(id: id, name: name),
+    ];
+  }
+  return null;
 }
 
 /// A calendar day as the server writes it, e.g. "2026-11-21".

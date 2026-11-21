@@ -74,12 +74,48 @@ void main() {
       'note': 'flu',
       'private': true,
     });
-    await repo.update(testServer(), 'a1', input);
+    await repo.create(
+      testServer(),
+      AbsenceInput(
+        from: input.from,
+        to: input.to,
+        kind: input.kind,
+        accountId: 'm2',
+      ),
+    );
+    expect(
+      (jsonDecode(requests.last.body) as Map<String, Object?>)['accountId'],
+      'm2',
+    );
+    await repo.update(
+      testServer(),
+      'a1',
+      AbsenceInput(
+        from: input.from,
+        to: input.to,
+        kind: input.kind,
+        accountId: 'm2',
+      ),
+    );
+    expect(jsonDecode(requests.last.body), isNot(contains('accountId')));
     expect(
       (requests.last.method, requests.last.url.path),
       ('PUT', '/api/absences/a1'),
     );
     await repo.delete(testServer(), 'a1');
     expect(requests.last.method, 'DELETE');
+  });
+
+  test('lists active members for the person of an absence', () {
+    final members = parseMembers({
+      'available': true,
+      'members': [
+        {'id': 'm1', 'name': 'Anna', 'disabled': false},
+        {'id': 'm2', 'name': 'Ben', 'disabled': true},
+        {'name': 'no id'},
+      ],
+    })!;
+    expect(members.map((m) => m.id), ['m1']);
+    expect(parseMembers([]), isNull);
   });
 }

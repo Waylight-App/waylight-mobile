@@ -154,6 +154,7 @@ class _AbsenceFormState extends State<_AbsenceForm> {
   late DateTime _to;
   late AbsenceKind _kind;
   late bool _private;
+  String _accountId = '';
   late final TextEditingController _note;
   String? _fieldError;
   String _field = '';
@@ -217,6 +218,7 @@ class _AbsenceFormState extends State<_AbsenceForm> {
         kind: _kind,
         note: _note.text,
         private: _private,
+        accountId: widget.existing == null ? _accountId : '',
       ),
       existing: widget.existing,
     );
@@ -274,6 +276,21 @@ class _AbsenceFormState extends State<_AbsenceForm> {
                 : l10n.absenceEdit(widget.existing!.name),
             style: Theme.of(context).textTheme.titleMedium,
           ),
+          if (widget.existing == null && widget.viewModel.members.isNotEmpty)
+            DropdownButtonFormField<String>(
+              key: const ValueKey('absence.person'),
+              initialValue: _accountId,
+              decoration: InputDecoration(
+                labelText: l10n.absencePerson,
+                errorText: _errorFor('accountId'),
+              ),
+              items: [
+                DropdownMenuItem(value: '', child: Text(l10n.absenceMe)),
+                for (final m in widget.viewModel.members)
+                  DropdownMenuItem(value: m.id, child: Text(m.name)),
+              ],
+              onChanged: (id) => setState(() => _accountId = id ?? ''),
+            ),
           ListTile(
             key: const ValueKey('absence.from'),
             contentPadding: EdgeInsets.zero,

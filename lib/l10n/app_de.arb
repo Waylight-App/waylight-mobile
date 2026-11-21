@@ -658,6 +658,8 @@
   "settingsHomeWidgets": "Widgets auf dem Startbildschirm",
   "settingsHomeWidgetsHint": "Halte eine freie Stelle auf dem Startbildschirm gedrückt, wähle Widgets und such dir eines von Waylight aus.",
   "settingsWallDisplayHint": "Wähle unter Server & Verbindung „Weiteren Server hinzufügen“, dann „Als Wandbildschirm nutzen“ und füge den Link einer Kiosk-Anzeige ein.",
+  "absencePerson": "Person",
+  "absenceMe": "Ich",
   "settingsSearch": "Einstellungen durchsuchen",
   "settingsSearchEmpty": "Keine Einstellung passt zu „{query}“.",
   "settingsSearchClear": "Suche leeren",

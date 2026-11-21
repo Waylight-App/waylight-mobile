@@ -4040,6 +4040,18 @@ abstract class AppLocalizations {
   /// **'Choose “Add another server” under Server & connection, then “Use as wall display” and paste the link of a kiosk display.'**
   String get settingsWallDisplayHint;
 
+  /// Absence form, admins only: whom the absence is for.
+  ///
+  /// In en, this message translates to:
+  /// **'Person'**
+  String get absencePerson;
+
+  /// Absence form: the absence is for the signed-in account.
+  ///
+  /// In en, this message translates to:
+  /// **'Me'**
+  String get absenceMe;
+
   /// Hint of the search field on the settings start page.
   ///
   /// In en, this message translates to:
