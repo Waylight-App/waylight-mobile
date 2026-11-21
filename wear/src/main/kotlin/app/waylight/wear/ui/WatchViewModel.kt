@@ -12,7 +12,10 @@ import app.waylight.wear.data.ServerAddress
 import app.waylight.wear.data.Session
 import app.waylight.wear.data.SessionStore
 import app.waylight.wear.data.WaylightApi
+import app.waylight.wear.glances.ActionResult
+import app.waylight.wear.glances.Actions
 import app.waylight.wear.glances.GlanceStore
+import app.waylight.wear.glances.WatchAction
 import app.waylight.wear.glances.Refresh
 import app.waylight.wear.glances.RefreshResult
 import app.waylight.wear.glances.Snapshot
@@ -95,6 +98,16 @@ class WatchViewModel(application: Application) : AndroidViewModel(application) {
     /** Whether the last refresh could not reach the server. */
     val offline: StateFlow<Boolean> = _offline.asStateFlow()
 
+    private val _acting = MutableStateFlow(false)
+
+    /** Whether an action is being sent. */
+    val acting: StateFlow<Boolean> = _acting.asStateFlow()
+
+    private val _actionMessage = MutableStateFlow<Int?>(null)
+
+    /** The outcome of the last action as a text, until the next one. */
+    val actionMessage: StateFlow<Int?> = _actionMessage.asStateFlow()
+
     private var handover: Job? = null
 
     init {
@@ -128,6 +141,39 @@ class WatchViewModel(application: Application) : AndroidViewModel(application) {
                 }
             }
             _refreshing.value = false
+        }
+    }
+
+    /**
+     * Sends [action] with the watch's session (#245); the glances are
+     * fetched again afterwards, so the screen shows the new state.
+     */
+    fun act(action: WatchAction) {
+        if (_acting.value || _app.value !is AppState.Paired) return
+        _acting.value = true
+        _actionMessage.value = null
+        viewModelScope.launch {
+            val result = withContext(Dispatchers.IO) { Actions.run(getApplication(), action) }
+            when (result) {
+                ActionResult.DONE -> {
+                    _snapshot.value = withContext(Dispatchers.IO) { glances.load() }
+                    _offline.value = false
+                    _actionMessage.value = R.string.action_done
+                }
+                ActionResult.FAILED -> {
+                    _snapshot.value = withContext(Dispatchers.IO) { glances.load() }
+                    _actionMessage.value = R.string.action_failed
+                }
+                ActionResult.OFFLINE -> {
+                    _offline.value = true
+                    _actionMessage.value = R.string.error_unreachable
+                }
+                ActionResult.SIGNED_OUT -> {
+                    _snapshot.value = null
+                    _app.value = AppState.Unpaired
+                }
+            }
+            _acting.value = false
         }
     }
 

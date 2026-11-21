@@ -17,6 +17,7 @@ import androidx.wear.tiles.TileService
 import app.waylight.wear.MainActivity
 import app.waylight.wear.R
 import app.waylight.wear.data.SessionStore
+import app.waylight.wear.glances.Actions
 import app.waylight.wear.glances.GlanceFormat
 import app.waylight.wear.glances.GlanceStore
 import app.waylight.wear.glances.Level
@@ -28,12 +29,20 @@ import com.google.common.util.concurrent.ListenableFuture
  * The Waylight tile: next event, open to-dos, my status and the other
  * compact states, with the age of the data. It draws the stored snapshot
  * and asks for a refresh when that is stale, so it never waits for the
- * network. A tap opens the app.
+ * network. A tap on the first open to-do ticks it off in the background
+ * (#245); a tap anywhere else opens the app.
  */
 class GlanceTileService : TileService() {
     override fun onTileRequest(requestParams: RequestBuilders.TileRequest): ListenableFuture<TileBuilders.Tile> {
         val paired = SessionStore(this).hasSession()
-        val snapshot = if (paired) GlanceStore(this).load() else null
+        var snapshot = if (paired) GlanceStore(this).load() else null
+        // A tap on the to-do row reloads the tile with that row's id.
+        val todo = snapshot?.firstTodo
+        if (todo != null && requestParams.currentState.lastClickableId == TICK_OFF) {
+            Actions.completeTodoSoon(this, todo)
+            // Hidden until the refresh after the request shows the next one.
+            snapshot = snapshot?.copy(firstTodo = null)
+        }
         if (paired && (snapshot == null || System.currentTimeMillis() - snapshot.fetchedAt > Refresh.STALE_AFTER_MS)) {
             Refresh.soon(this)
         }
@@ -60,6 +69,7 @@ class GlanceTileService : TileService() {
 
     private companion object {
         const val RESOURCES_VERSION = "1"
+        const val TICK_OFF = "tick-off"
         const val MAX_COMPACT_ROWS = 3
 
         // The tile's colours: Wear OS tiles are always dark.
@@ -89,6 +99,9 @@ class GlanceTileService : TileService() {
                             else -> WHITE
                         }
                         column.addContent(text(GlanceFormat.compactTitle(context, glance), 13f, color))
+                    }
+                    snapshot.firstTodo?.let { todo ->
+                        column.addContent(tickOff(text(context.getString(R.string.tile_tick_off, todo.title), 13f, AMBER)))
                     }
                     snapshot.presence?.let { column.addContent(text(GlanceFormat.presence(context, it), 13f, WHITE)) }
                     column.addContent(spacer())
@@ -143,6 +156,24 @@ class GlanceTileService : TileService() {
                 .setFontStyle(style.build())
                 .build()
         }
+
+        /** Makes [content] tick off the first to-do: the tile reloads with [TICK_OFF]. */
+        fun tickOff(content: LayoutElementBuilders.LayoutElement): LayoutElementBuilders.LayoutElement =
+            LayoutElementBuilders.Box.Builder()
+                .setModifiers(
+                    ModifiersBuilders.Modifiers.Builder()
+                        .setClickable(
+                            ModifiersBuilders.Clickable.Builder()
+                                .setId(TICK_OFF)
+                                .setOnClick(ActionBuilders.LoadAction.Builder().build())
+                                .build(),
+                        )
+                        // A comfortable touch target on a small screen.
+                        .setPadding(ModifiersBuilders.Padding.Builder().setTop(dp(4f)).setBottom(dp(4f)).build())
+                        .build(),
+                )
+                .addContent(content)
+                .build()
 
         fun spacer(): LayoutElementBuilders.Spacer =
             LayoutElementBuilders.Spacer.Builder().setHeight(dp(4f)).build()

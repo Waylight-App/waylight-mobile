@@ -19,8 +19,17 @@ class SnapshotTest {
                     Level.ATTENTION,
                     3,
                 ),
-                CompactGlance("focus", GlanceText("Idle"), null, Level.NONE, null),
+                CompactGlance(
+                    "focus",
+                    GlanceText("Idle"),
+                    null,
+                    Level.NONE,
+                    null,
+                    GlanceAction("focus.start", GlanceText("Start"), "POST", "/api/focus/start", """{"minutes":25}""", emptyList()),
+                ),
             ),
+            firstTodo = OpenTodo("2", "Milk", "", 3),
+            devices = listOf(Device("switch.coffee", "Coffee", "off", DeviceAction.TOGGLE)),
         )
         assertEquals(snapshot, Snapshot.fromJson(snapshot.toJson()))
         val empty = Snapshot(5, null, null, emptyList())

@@ -42,6 +42,15 @@ class WaylightApi(private val server: ServerAddress, private val token: String? 
         return token
     }
 
+    /**
+     * Sends [method] to [path] with an optional JSON [body]; throws
+     * [ApiException] for an error status.
+     */
+    fun send(method: String, path: String, body: String?) {
+        val res = request(method, path, body)
+        if (res.status !in 200..299) throw ApiException(res.status)
+    }
+
     /** Ends the session the token belongs to (`POST /api/auth/logout`). */
     fun logout() {
         request("POST", "/api/auth/logout", null)
