@@ -70,6 +70,8 @@ dependencies {
     implementation("androidx.wear.tiles:tiles:1.5.0")
     implementation("androidx.wear.protolayout:protolayout:1.3.0")
     implementation("androidx.concurrent:concurrent-futures:1.2.0")
+    // Complications for watch faces (#244).
+    implementation("androidx.wear.watchface:watchface-complications-data-source-ktx:1.2.1")
     // Refresh of the glances while the app is closed (ADR 0015).
     implementation("androidx.work:work-runtime:2.10.0")
     // Text input of the typed pairing: the system keyboard or voice.
