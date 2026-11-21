@@ -27,6 +27,11 @@ class AbsencesViewModel extends ChangeNotifier {
   List<Absence> _all = const [];
   bool _off = false;
   bool _canEnter = false;
+  List<AbsenceMember> _members = const [];
+
+  /// The accounts an admin can enter absences for (#222); empty for
+  /// everyone else, and then the form has no choice of person.
+  List<AbsenceMember> get members => _members;
 
   /// Loads today and the rest of the week; run again to reload.
   late final Command0<void> load;
@@ -63,6 +68,14 @@ class AbsencesViewModel extends ChangeNotifier {
     if (await _serverRepository.status() case Ok(:final value)) {
       _canEnter = value.role != 'guest' && value.role != 'kiosk';
       notifyListeners();
+      final server = _serverRepository.current;
+      if ((value.role == 'owner' || value.role == 'admin') && server != null) {
+        // Without the list, the admin still enters their own absences.
+        if (await _absencesRepository.members(server) case Ok(:final value)) {
+          _members = value;
+          notifyListeners();
+        }
+      }
     }
   }
 

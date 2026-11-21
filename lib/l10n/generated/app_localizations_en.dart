@@ -2151,4 +2151,10 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get settingsWallDisplayHint =>
       'Choose “Add another server” under Server & connection, then “Use as wall display” and paste the link of a kiosk display.';
+
+  @override
+  String get absencePerson => 'Person';
+
+  @override
+  String get absenceMe => 'Me';
 }
