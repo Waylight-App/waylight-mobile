@@ -29,10 +29,26 @@ android {
         versionName = flutter.versionName
     }
 
+    // Release signing (#284): CI decodes the keystore from the secrets and
+    // points ANDROID_KEYSTORE_FILE at it. Without it (local builds, pull
+    // requests) the release build falls back to the debug key; the release
+    // workflow refuses to publish in that case.
+    val releaseKeystore = System.getenv("ANDROID_KEYSTORE_FILE")?.let { file(it) }?.takeIf { it.isFile }
+    signingConfigs {
+        if (releaseKeystore != null) {
+            create("release") {
+                storeFile = releaseKeystore
+                storeType = "pkcs12"
+                storePassword = System.getenv("ANDROID_KEYSTORE_PASSWORD")
+                keyAlias = System.getenv("ANDROID_KEY_ALIAS")
+                keyPassword = System.getenv("ANDROID_KEY_PASSWORD")
+            }
+        }
+    }
+
     buildTypes {
         release {
-            // Signed with the debug keys until store signing is set up (#25).
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.findByName("release") ?: signingConfigs.getByName("debug")
             // Keep rules for classes created by reflection (#174).
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
