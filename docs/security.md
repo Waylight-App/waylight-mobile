@@ -100,6 +100,26 @@ session of a browser (phase 1). For both:
   to the app with a code that only redeems with the app's PKCE verifier,
   and the app ignores answers to sign-ins it did not start.
 
+## Device controls
+
+Android 11 and newer show the smart home module in *Device controls* (#194).
+
+- **No new permission.** The app declares a `ControlsProviderService`
+  that only the system may bind (`BIND_CONTROLS`); the app itself asks for
+  nothing.
+- **Same path as the app.** Reading states and switching run in a
+  headless engine with the app's session and the server's smart home
+  endpoints, so the server's allow-list decides what may change. Entities
+  it does not let the app change appear read-only.
+- **What is stored.** The entity ids, names and last states stay in the
+  app's private preferences so the controls can draw before the server
+  answers. Signed out or with the server unreachable, the controls show as
+  unavailable instead of an old state. Sign-out deletes the list.
+- **Lock screen.** On Android 13 and newer the controls do not demand an
+  unlock themselves, so the system setting *Use device controls from the
+  lock screen* decides; it is off by default. Older versions always ask to
+  unlock.
+
 ## NFC tags
 
 A tag can run a Waylight action: tick off a habit, switch a smart home

@@ -109,11 +109,17 @@ class FakeSmartHomeRepository with _Calls implements SmartHomeRepository {
   /// The entities.
   List<SmartEntity> list = [];
 
+  /// The error reading the entities fails with, if any.
+  Exception? readFail;
+
   @override
   Future<Result<List<SmartEntity>>> entities(
     ServerAddress server, {
     List<String> ids = const [],
-  }) async => Result.ok(list);
+  }) async => switch (readFail) {
+    final e? => Result.error(e),
+    null => Result.ok(list),
+  };
 
   @override
   Future<Result<void>> act(ServerAddress server, String id) async =>

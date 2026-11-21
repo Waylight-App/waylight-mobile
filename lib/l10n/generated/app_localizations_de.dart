@@ -2354,6 +2354,18 @@ class AppLocalizationsDe extends AppLocalizations {
   String get tagShoppingItem => 'Artikel';
 
   @override
+  String get deviceControlNoState => 'Kein Zustand';
+
+  @override
+  String get deviceControlSignIn => 'Waylight öffnen und anmelden';
+
+  @override
+  String get absencePerson => 'Person';
+
+  @override
+  String get absenceMe => 'Ich';
+
+  @override
   String get settingsSearch => 'Einstellungen durchsuchen';
 
   @override

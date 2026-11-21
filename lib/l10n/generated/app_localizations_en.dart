@@ -2346,6 +2346,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tagShoppingItem => 'Item';
 
   @override
+  String get deviceControlNoState => 'No state';
+
+  @override
+  String get deviceControlSignIn => 'Open Waylight to sign in';
+
+  @override
+  String get absencePerson => 'Person';
+
+  @override
+  String get absenceMe => 'Me';
+
+  @override
   String get settingsSearch => 'Search settings';
 
   @override

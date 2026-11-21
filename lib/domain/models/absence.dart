@@ -86,6 +86,7 @@ final class AbsenceInput {
     required this.kind,
     this.note = '',
     this.private = false,
+    this.accountId = '',
   });
 
   /// The most characters of a note.
@@ -105,4 +106,21 @@ final class AbsenceInput {
 
   /// Whether others see only "away".
   final bool private;
+
+  /// The account the absence is for when an admin enters it for someone
+  /// else (#222); empty for the signed-in account. Only sent when entering:
+  /// a change keeps the person.
+  final String accountId;
+}
+
+/// An account an admin can enter absences for (#222).
+final class AbsenceMember {
+  /// Creates the member.
+  const AbsenceMember({required this.id, required this.name});
+
+  /// The account id the server expects as `accountId`.
+  final String id;
+
+  /// The name shown in the form.
+  final String name;
 }

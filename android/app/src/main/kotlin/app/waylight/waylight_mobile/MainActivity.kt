@@ -8,6 +8,7 @@ import app.waylight.waylight_mobile.focus.FocusChannel
 import app.waylight.waylight_mobile.home.HomeWidgetChannel
 import app.waylight.waylight_mobile.push.PushChannel
 import app.waylight.waylight_mobile.reminders.ReminderChannel
+import app.waylight.waylight_mobile.controls.ControlsChannel
 import app.waylight.waylight_mobile.tiles.TilesChannel
 import app.waylight.waylight_mobile.watch.WatchChannel
 import io.flutter.embedding.android.FlutterFragmentActivity
@@ -39,6 +40,7 @@ class MainActivity : FlutterFragmentActivity() {
         scan.register(flutterEngine)
         nfc.register(flutterEngine)
         TilesChannel.register(applicationContext, flutterEngine.dartExecutor.binaryMessenger)
+        ControlsChannel.register(applicationContext, flutterEngine.dartExecutor.binaryMessenger)
         FocusChannel.register(applicationContext, flutterEngine)
         NetworkChannel.register(applicationContext, flutterEngine)
         DeviceChannel(this).register(flutterEngine)

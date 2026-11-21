@@ -23,6 +23,7 @@ import 'package:waylight_mobile/data/repositories/calendar/calendar_repository.d
 import 'package:waylight_mobile/data/repositories/compact/compact_state_repository.dart';
 import 'package:waylight_mobile/data/repositories/dashboard/dashboard_repository.dart';
 import 'package:waylight_mobile/data/repositories/dashboard/dashboard_repository_remote.dart';
+import 'package:waylight_mobile/data/repositories/device_controls/device_controls_repository.dart';
 import 'package:waylight_mobile/data/repositories/diagnostics/diagnostics_repository.dart';
 import 'package:waylight_mobile/data/repositories/focus/focus_timer_repository.dart';
 import 'package:waylight_mobile/data/repositories/habits/habits_repository.dart';
@@ -82,6 +83,7 @@ import 'package:waylight_mobile/data/services/api/weather_api.dart';
 import 'package:waylight_mobile/data/services/cache/response_cache.dart';
 import 'package:waylight_mobile/data/services/device/device_info.dart';
 import 'package:waylight_mobile/data/services/device/wall_display.dart';
+import 'package:waylight_mobile/data/services/device_controls/device_controls_store.dart';
 import 'package:waylight_mobile/data/services/focus/focus_timer_service.dart';
 import 'package:waylight_mobile/data/services/home_widgets/home_widget_store.dart';
 import 'package:waylight_mobile/data/services/logging/log_store.dart';
@@ -134,6 +136,7 @@ typedef Repositories = ({
   SummaryRepository summary,
   HomeWidgetsRepository homeWidgets,
   QuickTilesRepository quickTiles,
+  DeviceControlsRepository deviceControls,
   NfcRepository nfc,
   ReminderRepository reminders,
   LogStore logs,
@@ -270,6 +273,10 @@ Repositories createRepositories() {
     store: MethodChannelQuickTileStore(),
     compact: compact,
   );
+  final deviceControls = DeviceControlsRepository(
+    smartHome: smartHome,
+    store: MethodChannelDeviceControlsStore(),
+  );
   final focusSessions = FocusRepositoryRemote(api: modules);
   final reminders = ReminderRepository(
     scheduler: const MethodChannelReminderScheduler(),
@@ -295,6 +302,7 @@ Repositories createRepositories() {
       theme.clear,
       homeWidgets.clear,
       quickTiles.clear,
+      deviceControls.clear,
       dashboard.clear,
       logs.clear,
     ],
@@ -358,6 +366,7 @@ Repositories createRepositories() {
     summary: SummaryRepositoryRemote(api: modules),
     homeWidgets: homeWidgets,
     quickTiles: quickTiles,
+    deviceControls: deviceControls,
     nfc: NfcRepository(writer: MethodChannelNfcWriter()),
     reminders: reminders,
     logs: logs,

@@ -6,6 +6,7 @@ import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 import 'package:waylight_mobile/data/repositories/absences/absences_repository.dart';
 import 'package:waylight_mobile/data/repositories/server/server_repository.dart';
+import 'package:waylight_mobile/domain/models/absence.dart';
 import 'package:waylight_mobile/domain/models/api_exception.dart';
 import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/domain/models/server_status.dart';
@@ -101,6 +102,41 @@ void main() {
     await tester.tap(find.byKey(const ValueKey('absence.delete')));
     await tester.pumpAndSettle();
     expect(absences.calls, ['delete:a1']);
+  });
+
+  testWidgets('admins enter absences for someone else (#222)', (tester) async {
+    servers.statusResult = const Result.ok(
+      ServerStatus(setupRequired: false, username: 'boss', role: 'admin'),
+    );
+    absences.membersResult = const Result.ok([
+      AbsenceMember(id: 'm2', name: 'Ben'),
+    ]);
+    await pump(tester);
+
+    await tester.tap(find.byKey(const ValueKey('absences.add')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const ValueKey('absence.person')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Ben').last);
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const ValueKey('absence.save')));
+    await tester.pumpAndSettle();
+    expect(absences.created.single.accountId, 'm2');
+
+    // A change keeps the person; the form offers no choice.
+    await tester.tap(find.byTooltip(l10nEn.absenceEdit('Anna')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const ValueKey('absence.person')), findsNothing);
+  });
+
+  testWidgets('members enter only their own absences', (tester) async {
+    absences.membersResult = const Result.ok([
+      AbsenceMember(id: 'm2', name: 'Ben'),
+    ]);
+    await pump(tester);
+    await tester.tap(find.byKey(const ValueKey('absences.add')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const ValueKey('absence.person')), findsNothing);
   });
 
   testWidgets('guests and kiosk displays only read', (tester) async {

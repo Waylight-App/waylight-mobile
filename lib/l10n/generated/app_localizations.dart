@@ -4196,6 +4196,30 @@ abstract class AppLocalizations {
   /// **'Item'**
   String get tagShoppingItem;
 
+  /// Device control: Home Assistant reports no state for the entity.
+  ///
+  /// In en, this message translates to:
+  /// **'No state'**
+  String get deviceControlNoState;
+
+  /// Device control while signed out.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Waylight to sign in'**
+  String get deviceControlSignIn;
+
+  /// Absence form, admins only: whom the absence is for.
+  ///
+  /// In en, this message translates to:
+  /// **'Person'**
+  String get absencePerson;
+
+  /// Absence form: the absence is for the signed-in account.
+  ///
+  /// In en, this message translates to:
+  /// **'Me'**
+  String get absenceMe;
+
   /// Hint of the search field on the settings start page.
   ///
   /// In en, this message translates to:
