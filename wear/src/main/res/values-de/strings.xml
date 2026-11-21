@@ -34,4 +34,21 @@
     </plurals>
     <string name="tile_description">Nächster Termin, Aufgaben und mein Status</string>
     <string name="tile_not_paired">Öffne Waylight, um die Uhr zu verbinden.</string>
+    <string name="complication_next_event">Waylight: nächster Termin</string>
+    <string name="complication_todos">Waylight: offene To-dos</string>
+    <string name="complication_todos_title">To-dos</string>
+    <string name="complication_preview_event">Standup</string>
+    <string name="todo_tick_off">Zum Abhaken tippen</string>
+    <string name="smart_home">Smart Home</string>
+    <string name="device_press">Zum Drücken tippen</string>
+    <string name="action_done">Erledigt.</string>
+    <string name="action_failed">Das hat nicht geklappt. Versuch es in der App auf dem Handy.</string>
+    <string name="tile_tick_off">✓ %1$s</string>
+    <string name="srv_todos_open">{count} offen</string>
+    <string name="srv_todos_nothing">Nichts zu tun</string>
+    <string name="srv_todos_overdue">{count} überfällig</string>
+    <string name="srv_habits_none">Noch keine Gewohnheiten</string>
+    <string name="srv_habits_done">{done} von {total} heute</string>
+    <string name="srv_focus_minutes">{minutes} Min. Fokus heute</string>
+    <string name="srv_focus_sessions">{count} Einheiten</string>
 </resources>

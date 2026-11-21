@@ -21,10 +21,11 @@ object Parsers {
         val o = JSONObject(json)
         return CompactGlance(
             module = module,
-            title = o.optJSONObject("title")?.optString("text").orEmpty(),
-            detail = o.optJSONObject("detail")?.optString("text")?.takeIf { it.isNotEmpty() },
+            title = GlanceText.fromJson(o.optJSONObject("title")) ?: GlanceText(""),
+            detail = GlanceText.fromJson(o.optJSONObject("detail"))?.takeIf { it.text.isNotEmpty() },
             level = Level.parse(o.optString("level")),
             count = if (o.has("count") && !o.isNull("count")) o.optInt("count") else null,
+            action = GlanceAction.fromJson(o.optJSONObject("action")),
         )
     }
 
@@ -33,6 +34,38 @@ object Parsers {
         val array = JSONArray(json)
         return (0 until array.length()).count { array.optJSONObject(it)?.optBoolean("done") == false }
     }
+
+    /** The first open to-do in `GET /api/todos`, in the server's order. */
+    fun firstOpenTodo(json: String): OpenTodo? {
+        val array = JSONArray(json)
+        for (i in 0 until array.length()) {
+            val t = array.optJSONObject(i) ?: continue
+            val id = t.optString("id")
+            if (t.optBoolean("done") || id.isEmpty()) continue
+            return OpenTodo(id, t.optString("title"), t.optString("due"), t.optInt("version"))
+        }
+        return null
+    }
+
+    /**
+     * The smart home entities of `GET /api/smarthome/entities` that the
+     * server lets this account switch or press, at most [limit].
+     */
+    fun devices(json: String, limit: Int = MAX_DEVICES): List<Device> {
+        val array = JSONArray(json)
+        return (0 until array.length()).asSequence().mapNotNull { i ->
+            val e = array.optJSONObject(i) ?: return@mapNotNull null
+            val action = when (e.optString("action")) {
+                "toggle" -> DeviceAction.TOGGLE
+                "press" -> DeviceAction.PRESS
+                else -> return@mapNotNull null
+            }
+            Device(e.optString("id"), e.optString("name").ifEmpty { e.optString("id") }, e.optString("state"), action)
+        }.filter { it.id.isNotEmpty() }.take(limit).toList()
+    }
+
+    /** A watch list stays short; the phone and the web show the rest. */
+    const val MAX_DEVICES = 6
 
     /** My status in `GET /api/presence`; `null` for guests and kiosk displays. */
     fun presence(json: String): Presence? {

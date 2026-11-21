@@ -53,6 +53,7 @@ class CompactStateWidget extends StatelessWidget {
   const CompactStateWidget({
     required this.widget,
     required this.title,
+    this.quickAction,
     super.key,
   });
 
@@ -62,6 +63,9 @@ class CompactStateWidget extends StatelessWidget {
   /// The title of the tile.
   final String title;
 
+  /// One action right on the tile (#226), e.g. starting the focus timer.
+  final Widget? quickAction;
+
   /// The compact state in small and strip tiles when the server offers one
   /// for the kind of [widget]; [full] everywhere else.
   static Widget orFull(
@@ -69,6 +73,7 @@ class CompactStateWidget extends StatelessWidget {
     WidgetPlacement widget, {
     required String title,
     required Widget Function() full,
+    Widget? quickAction,
   }) {
     final compact = context.read<CompactStateRepository?>();
     if (compact == null ||
@@ -79,6 +84,7 @@ class CompactStateWidget extends StatelessWidget {
     return CompactStateWidget(
       widget: widget,
       title: title,
+      quickAction: quickAction,
       key: ValueKey('compact.${widget.id}'),
     );
   }
@@ -95,8 +101,17 @@ class CompactStateWidget extends StatelessWidget {
       load: viewModel.load,
       builder: (context, state) =>
           CompactStateView(state: state, size: WidgetSize.medium),
-      compact: (context, state, size) =>
-          CompactStateView(state: state, size: size),
+      compact: (context, state, size) {
+        final view = CompactStateView(state: state, size: size);
+        final action = quickAction;
+        if (action == null) return view;
+        return Row(
+          children: [
+            Expanded(child: view),
+            action,
+          ],
+        );
+      },
     ),
   );
 }

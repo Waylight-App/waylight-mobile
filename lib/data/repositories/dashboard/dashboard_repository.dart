@@ -27,6 +27,14 @@ abstract interface class DashboardRepository {
     required int desktopRows,
   });
 
+  /// Replaces the configuration of widget [id], e.g. when a widget is set
+  /// up from the phone (#230).
+  Future<Result<void>> updateWidget(
+    ServerAddress server,
+    String id,
+    Map<String, Object?> config,
+  );
+
   /// Lets the phone layout of [tabId] follow the desktop grid again.
   Future<Result<void>> resetLayout(ServerAddress server, String tabId);
 }

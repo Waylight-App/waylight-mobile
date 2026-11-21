@@ -244,8 +244,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get weatherNoPlace =>
-      'Choose a place for this widget in the web interface.';
+  String get weatherNoPlace => 'No place chosen yet.';
 
   @override
   String get todosTitle => 'To-dos';
@@ -334,8 +333,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get transitTitle => 'Departures';
 
   @override
-  String get transitNoStop =>
-      'Choose a stop for this widget in the web interface.';
+  String get transitNoStop => 'No stop chosen yet.';
 
   @override
   String get transitEmpty => 'No departures in the next hours.';
@@ -365,8 +363,41 @@ class AppLocalizationsEn extends AppLocalizations {
   String get wasteTitle => 'Waste collection';
 
   @override
-  String get wasteNotConfigured =>
-      'Set up the waste calendar in the web interface.';
+  String get wasteNotConfigured => 'No waste calendar set up yet.';
+
+  @override
+  String get setUpAction => 'Set up';
+
+  @override
+  String get setUpMissing => 'This widget is not set up yet.';
+
+  @override
+  String get setUpSearchHint => 'Type at least two letters';
+
+  @override
+  String get setUpNoResults => 'Nothing found.';
+
+  @override
+  String get setUpStopTitle => 'Choose a stop';
+
+  @override
+  String get setUpPlaceTitle => 'Choose a place';
+
+  @override
+  String get setUpWasteTitle => 'Subscribe to a waste calendar';
+
+  @override
+  String get setUpWasteHint =>
+      'The address of the calendar (ICS) from your waste collection service, starting with https:// or webcal://.';
+
+  @override
+  String get setUpWasteLabel => 'Calendar address';
+
+  @override
+  String get setUpSave => 'Save';
+
+  @override
+  String get setUpCancel => 'Cancel';
 
   @override
   String get wasteEmpty => 'No collections ahead.';
@@ -473,6 +504,65 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get pairEnterManually => 'Enter the address instead';
+
+  @override
+  String get pairWatchTitle => 'Pair a watch';
+
+  @override
+  String get pairWatchEntry => 'Pair a watch';
+
+  @override
+  String get pairWatchIntro =>
+      'Open Waylight on your Wear OS watch and choose Pair with phone. The watch shows a QR code. Both devices need to be in the same Wi-Fi.';
+
+  @override
+  String get pairWatchScan => 'Scan the watch\'s code';
+
+  @override
+  String get pairWatchScanAgain => 'Scan another code';
+
+  @override
+  String get pairWatchScanPrompt =>
+      'Point the camera at the QR code on the watch';
+
+  @override
+  String pairWatchFound(String address) {
+    return 'Watch found at $address';
+  }
+
+  @override
+  String get pairWatchSend => 'Pair this watch';
+
+  @override
+  String get pairWatchDone =>
+      'The watch is paired. It shows up under Settings → Apps in Waylight, where you can revoke it.';
+
+  @override
+  String get pairWatchUnavailable => 'Pairing a watch needs the Android app.';
+
+  @override
+  String get pairWatchInvalidCode =>
+      'This is not the code of a Waylight watch. Open Pair with phone on the watch and scan the code it shows.';
+
+  @override
+  String get pairWatchUnreachable =>
+      'The watch does not answer. Check that the phone and the watch are in the same Wi-Fi and the code is still shown on the watch.';
+
+  @override
+  String get pairWatchNotDecryptable =>
+      'The watch could not read the message. Scan the code the watch shows now.';
+
+  @override
+  String get pairWatchRejected =>
+      'The server did not accept the pairing. Try again.';
+
+  @override
+  String get pairWatchInvalidServer =>
+      'The watch does not accept this server\'s address. Plain HTTP only works for addresses in the home network.';
+
+  @override
+  String get pairWatchServerUnreachable =>
+      'The watch cannot reach your server. Check its network connection.';
 
   @override
   String get connectQrHint =>
@@ -1589,6 +1679,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dashboardOpenWidget => 'open in full';
 
   @override
+  String get dashboardOpenDetails => 'open details';
+
+  @override
+  String get focusStartFocus => 'Start focus';
+
+  @override
   String get widgetSizeFull => 'Full width';
 
   @override
@@ -1711,10 +1807,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get gallerySearch => 'Search widgets';
 
   @override
-  String get galleryAdd => 'Add';
+  String get galleryAdded => 'Added';
 
   @override
-  String get galleryAdded => 'Added';
+  String galleryAddSized(String widget, String size) {
+    return 'Add $widget as $size tile';
+  }
 
   @override
   String get galleryEmpty => 'No widgets match.';
@@ -2157,4 +2255,21 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get deviceControlSignIn => 'Open Waylight to sign in';
+
+  @override
+  String get settingsSearch => 'Search settings';
+
+  @override
+  String settingsSearchEmpty(String query) {
+    return 'No setting matches “$query”.';
+  }
+
+  @override
+  String get settingsSearchClear => 'Clear search';
+
+  @override
+  String get settingsSearchBattery => 'Battery hint';
+
+  @override
+  String get settingsAttentionShow => 'Show';
 }

@@ -225,10 +225,10 @@ void main() {
       ]);
     });
 
-    test('adds widgets below each other as small tiles', () async {
+    test('adds widgets below each other in the chosen size', () async {
       final viewModel = arrange();
-      await viewModel.add.execute('clock');
-      await viewModel.add.execute('todos');
+      await viewModel.add.execute((kind: 'clock', size: WidgetSize.small));
+      await viewModel.add.execute((kind: 'todos', size: WidgetSize.large));
 
       expect(dashboards.added, [
         ('t', 'clock', 7),
@@ -238,7 +238,7 @@ void main() {
         ('b', null),
         ('c', null),
         ('new-clock', WidgetSize.small),
-        ('new-todos', WidgetSize.small),
+        ('new-todos', WidgetSize.large),
       ]);
       expect(viewModel.changed, isTrue);
     });
@@ -248,7 +248,7 @@ void main() {
       await viewModel.save.execute();
       await viewModel.reset.execute();
       await viewModel.kinds.execute();
-      await viewModel.add.execute('clock');
+      await viewModel.add.execute((kind: 'clock', size: WidgetSize.small));
 
       for (final command in [
         viewModel.save,
@@ -531,10 +531,20 @@ void main() {
         expect(find.text(l10nEn.galleryEmpty), findsOneWidget);
       });
 
-      testWidgets('adds a widget to the tab', (tester) async {
+      testWidgets('adds a widget in the size of the preview tapped', (
+        tester,
+      ) async {
         await openGallery(tester);
+        for (final size in WidgetSize.values) {
+          expect(
+            find.byKey(ValueKey('gallery.add.todos.${size.name}')),
+            findsOneWidget,
+          );
+        }
 
-        await tester.tap(find.byKey(const ValueKey('gallery.add.todos')));
+        await tester.tap(
+          find.byKey(const ValueKey('gallery.add.todos.medium')),
+        );
         await tester.pumpAndSettle();
 
         expect(dashboards.added, [('t', 'todos', 7)]);
@@ -544,13 +554,34 @@ void main() {
         await tester.tapAt(const Offset(10, 10));
         await tester.pumpAndSettle();
         expect(find.byKey(const ValueKey('grid.new-todos')), findsOneWidget);
+        expect(
+          tester.getSize(find.byKey(const ValueKey('grid.new-todos'))).width,
+          greaterThan(
+            tester.getSize(find.byKey(const ValueKey('grid.b'))).width / 2,
+          ),
+          reason: 'medium takes the full width',
+        );
+      });
+
+      testWidgets('describes each preview for screen readers', (tester) async {
+        final handle = tester.ensureSemantics();
+        await openGallery(tester);
+
+        expect(
+          find.bySemanticsLabel(
+            l10nEn.galleryAddSized('Todos', l10nEn.widgetSizeStrip),
+          ),
+          findsOneWidget,
+        );
+        await expectLater(tester, meetsGuideline(androidTapTargetGuideline));
+        handle.dispose();
       });
 
       testWidgets('says when adding fails', (tester) async {
         await openGallery(tester);
         dashboards.addError = const ApiException(ApiFailure.forbidden);
 
-        await tester.tap(find.byKey(const ValueKey('gallery.add.clock')));
+        await tester.tap(find.byKey(const ValueKey('gallery.add.clock.small')));
         await tester.pumpAndSettle();
 
         expect(

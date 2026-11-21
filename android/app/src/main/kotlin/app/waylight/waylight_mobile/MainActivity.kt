@@ -9,6 +9,7 @@ import app.waylight.waylight_mobile.push.PushChannel
 import app.waylight.waylight_mobile.reminders.ReminderChannel
 import app.waylight.waylight_mobile.controls.ControlsChannel
 import app.waylight.waylight_mobile.tiles.TilesChannel
+import app.waylight.waylight_mobile.watch.WatchChannel
 import io.flutter.embedding.android.FlutterFragmentActivity
 import io.flutter.embedding.engine.FlutterEngine
 
@@ -42,6 +43,7 @@ class MainActivity : FlutterFragmentActivity() {
         DeviceChannel(this).register(flutterEngine)
         ColorsChannel.register(applicationContext, flutterEngine)
         HomeWidgetChannel.register(this, flutterEngine.dartExecutor.binaryMessenger)
+        WatchChannel.register(flutterEngine)
     }
 
     override fun onRequestPermissionsResult(

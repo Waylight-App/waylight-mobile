@@ -6,6 +6,10 @@ import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/utils/command.dart';
 import 'package:waylight_mobile/utils/result.dart';
 
+/// A widget kind chosen in the gallery, in the size of the preview that
+/// was tapped (#227).
+typedef GalleryChoice = ({String kind, WidgetSize size});
+
 /// The edit mode of one tab, right on the dashboard (#209): order, hidden
 /// widgets and sizes (#208) of its phone layout, saved together; adding
 /// widgets (#210); or a reset to the desktop grid.
@@ -47,8 +51,8 @@ class ArrangeViewModel extends ChangeNotifier {
   /// Loads the widget kinds the server offers, for the gallery.
   late final Command0<List<String>> kinds;
 
-  /// Adds a widget of the given kind to the tab.
-  late final Command1<void, String> add;
+  /// Adds a widget of the given kind to the tab, in the given size.
+  late final Command1<void, GalleryChoice> add;
 
   /// The widgets in their phone order, hidden ones included.
   List<PhoneLayoutItem> get items => _items;
@@ -149,24 +153,22 @@ class ArrangeViewModel extends ChangeNotifier {
   }
 
   /// Adds the widget right away: the server stores it in the desktop grid
-  /// and the phone layout. Here it joins the end of the layout, as a small
-  /// tile, so the user sees it and can still arrange it before *Done*.
-  Future<Result<void>> _add(String kind) async {
+  /// and the phone layout. Here it joins the end of the layout in the
+  /// chosen size, so the user sees it and can still arrange it before
+  /// *Done*, which stores the size in the phone layout.
+  Future<Result<void>> _add(GalleryChoice choice) async {
     final server = _serverRepository.current;
     if (server == null) return const Result.error(NotConnectedException());
     final result = await _dashboardRepository.addWidget(
       server,
       tabId,
-      kind,
+      choice.kind,
       desktopRows: _desktopRows,
     );
     switch (result) {
       case Ok(:final value):
         _desktopRows += addedWidgetRows;
-        _update([
-          ..._items,
-          PhoneLayoutItem(widget: value, size: WidgetSize.small),
-        ]);
+        _update([..._items, PhoneLayoutItem(widget: value, size: choice.size)]);
         return const Result.ok(null);
       case Error(:final error):
         return Result.error(error);

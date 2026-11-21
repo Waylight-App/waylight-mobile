@@ -39,8 +39,12 @@ import androidx.wear.compose.material.TitleCard
 import androidx.wear.input.RemoteInputIntentHelper
 import app.waylight.wear.R
 import app.waylight.wear.data.Session
+import app.waylight.wear.glances.DeviceAction
 import app.waylight.wear.glances.GlanceFormat
 import app.waylight.wear.glances.Level
+import app.waylight.wear.glances.Presence
+import app.waylight.wear.glances.ServerTexts
+import app.waylight.wear.glances.WatchAction
 import app.waylight.wear.pairing.QrCode
 
 /** A scrolling list of chips with the position indicator of Wear OS. */
@@ -94,10 +98,12 @@ fun UnpairedScreen(onPairWithPhone: () -> Unit, onPairManually: () -> Unit) {
 
 /** The glances: next event, compact states, my status, and their age. */
 @Composable
-fun PairedScreen(viewModel: WatchViewModel, session: Session) {
+fun PairedScreen(viewModel: WatchViewModel, session: Session, onPresence: () -> Unit) {
     val snapshot by viewModel.snapshot.collectAsStateWithLifecycle()
     val refreshing by viewModel.refreshing.collectAsStateWithLifecycle()
     val offline by viewModel.offline.collectAsStateWithLifecycle()
+    val acting by viewModel.acting.collectAsStateWithLifecycle()
+    val actionMessage by viewModel.actionMessage.collectAsStateWithLifecycle()
     val context = LocalContext.current
     LaunchedEffect(Unit) { viewModel.refreshIfStale() }
     ScreenList {
@@ -117,22 +123,69 @@ fun PairedScreen(viewModel: WatchViewModel, session: Session) {
                     }
                 }
             }
+            actionMessage?.let { message -> item { Message(stringResource(message), error = message != R.string.action_done) } }
             s.compact.forEach { glance ->
                 item {
                     GlanceChip(
                         label = GlanceFormat.compactTitle(context, glance),
-                        secondary = glance.detail,
+                        secondary = GlanceFormat.compactDetail(context, glance),
                         level = glance.level,
+                    )
+                }
+                // The primary action of the compact state (server #598):
+                // one chip, or one per choice with the current one marked.
+                glance.action?.let { action ->
+                    if (action.choices.isEmpty()) {
+                        item {
+                            ListChip(ServerTexts.resolve(context, action.label), enabled = !acting, onClick = {
+                                viewModel.act(WatchAction.Compact(action.method, action.path, action.body))
+                            })
+                        }
+                    } else {
+                        action.choices.forEach { choice ->
+                            item {
+                                ListChip(
+                                    ServerTexts.resolve(context, choice.label),
+                                    primary = choice.selected,
+                                    enabled = !acting,
+                                    onClick = { viewModel.act(WatchAction.Compact(action.method, action.path, choice.body)) },
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+            s.firstTodo?.let { todo ->
+                item {
+                    ListChip(
+                        label = todo.title,
+                        secondary = stringResource(R.string.todo_tick_off),
+                        enabled = !acting,
+                        onClick = { viewModel.act(WatchAction.CompleteTodo(todo)) },
                     )
                 }
             }
             s.presence?.let { presence ->
                 item {
-                    GlanceChip(
+                    ListChip(
                         label = stringResource(R.string.presence_label),
                         secondary = GlanceFormat.presence(context, presence),
-                        level = Level.NONE,
+                        enabled = !acting,
+                        onClick = onPresence,
                     )
+                }
+            }
+            if (s.devices.isNotEmpty()) {
+                item { ListHeader { Text(stringResource(R.string.smart_home)) } }
+                s.devices.forEach { device ->
+                    item {
+                        ListChip(
+                            label = device.name,
+                            secondary = if (device.action == DeviceAction.PRESS) stringResource(R.string.device_press) else device.state,
+                            enabled = !acting,
+                            onClick = { viewModel.act(WatchAction.SwitchDevice(device)) },
+                        )
+                    }
                 }
             }
             item {
@@ -152,6 +205,30 @@ fun PairedScreen(viewModel: WatchViewModel, session: Session) {
         }
         item { Message(stringResource(R.string.connected_to, session.server.host)) }
         item { ListChip(stringResource(R.string.sign_out), viewModel::signOut) }
+    }
+}
+
+/** Sets my presence status for today (#245). */
+@Composable
+fun PresenceScreen(viewModel: WatchViewModel, onDone: () -> Unit) {
+    val snapshot by viewModel.snapshot.collectAsStateWithLifecycle()
+    val acting by viewModel.acting.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+    ScreenList {
+        item { ListHeader { Text(stringResource(R.string.presence_label)) } }
+        listOf(Presence.OFFICE, Presence.HOME, Presence.AWAY, Presence.NONE).forEach { status ->
+            item {
+                ListChip(
+                    GlanceFormat.presence(context, status),
+                    primary = snapshot?.presence == status,
+                    enabled = !acting,
+                    onClick = {
+                        viewModel.act(WatchAction.SetPresence(status))
+                        onDone()
+                    },
+                )
+            }
+        }
     }
 }
 

@@ -18,15 +18,18 @@ import 'package:waylight_mobile/data/repositories/quick_tiles/quick_tiles_reposi
 import 'package:waylight_mobile/data/repositories/reminders/reminder_repository.dart';
 import 'package:waylight_mobile/data/repositories/scanner/scanner_repository.dart';
 import 'package:waylight_mobile/data/repositories/todos/todos_repository_outbox.dart';
+import 'package:waylight_mobile/data/repositories/watch/watch_pairing_repository.dart';
 import 'package:waylight_mobile/data/services/api/api_client.dart';
 import 'package:waylight_mobile/data/services/api/module_api.dart';
 import 'package:waylight_mobile/data/services/api/offline_status.dart';
 import 'package:waylight_mobile/data/services/focus/focus_timer_service.dart';
+import 'package:waylight_mobile/data/services/watch/watch_handover.dart';
 import 'package:waylight_mobile/routing/router.dart';
 import 'package:waylight_mobile/routing/routes.dart';
 import 'package:waylight_mobile/ui/connect_server/widgets/connect_server_screen.dart';
 import 'package:waylight_mobile/ui/dashboard/widgets/dashboard_screen.dart';
 import 'package:waylight_mobile/ui/settings/view_models/settings_area.dart';
+import 'package:waylight_mobile/ui/settings/view_models/settings_index.dart';
 import 'package:waylight_mobile/ui/settings/widgets/settings_area_screen.dart';
 import 'package:waylight_mobile/ui/settings/widgets/settings_screen.dart';
 import 'package:waylight_mobile/ui/sign_in/widgets/sign_in_screen.dart';
@@ -43,6 +46,7 @@ import '../testing/fakes/fake_device_auth.dart';
 import '../testing/fakes/fake_device_controls_store.dart';
 import '../testing/fakes/fake_device_info.dart';
 import '../testing/fakes/fake_habits_repository.dart';
+import '../testing/fakes/fake_handover_sealer.dart';
 import '../testing/fakes/fake_home_widget_store.dart';
 import '../testing/fakes/fake_log_store.dart';
 import '../testing/fakes/fake_notes_repository.dart';
@@ -107,6 +111,16 @@ void main() {
           absences: FakeAbsencesRepository(),
           announcements: FakeAnnouncementsRepository(),
           scanner: ScannerRepository(scanner: FakeBarcodeScanner()),
+          watch: WatchPairingRepository(
+            api: ModuleApi(
+              ApiClient(
+                client: MockClient((_) async => http.Response('{}', 200)),
+              ),
+            ),
+            scanner: FakeBarcodeScanner(),
+            sealer: FakeHandoverSealer(),
+            watch: WatchClient(MockClient((_) async => http.Response('', 204))),
+          ),
           focusTimer: FocusTimerRepository(
             timer: InAppFocusTimer(),
             sessions: FakeFocusRepository(),
@@ -225,6 +239,14 @@ void main() {
       find.byType(SettingsAreaScreen),
     );
     expect(screen.area, SettingsArea.server);
+    expect(screen.focus, isNull);
+
+    router.go('${Routes.settingsAbout}?focus=licences');
+    await tester.pumpAndSettle();
+    expect(
+      tester.widget<SettingsAreaScreen>(find.byType(SettingsAreaScreen)).focus,
+      SettingsItem.licences,
+    );
 
     router.pop();
     await tester.pumpAndSettle();

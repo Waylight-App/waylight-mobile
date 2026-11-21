@@ -25,6 +25,19 @@ class WasteApi {
         return Result.error(error);
     }
   }
+
+  /// Subscribes to the calendar at [url] (https, http or webcal) while no
+  /// calendar is set up (`PUT /api/waste/settings`). The server loads it
+  /// first and rejects addresses it cannot read.
+  Future<Result<void>> subscribe(ServerAddress server, String url) async =>
+      switch (await _client.putJson(
+        server.resolve('/api/waste/settings'),
+        // Only offered while nothing is set up, so there are no rules to keep.
+        body: {'url': url, 'rules': <Object?>[]},
+      )) {
+        Ok() => const Result.ok(null),
+        Error(:final error) => Result.error(error),
+      };
 }
 
 /// Maps the JSON of `GET /api/waste/upcoming`; `null` if it does not match.

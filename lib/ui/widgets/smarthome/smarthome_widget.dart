@@ -37,6 +37,34 @@ class SmartHomeWidget extends StatelessWidget {
           ? widget.title
           : context.l10n.smartHomeTitle,
       interval: const Duration(seconds: 30),
+      // The first entity, with its switch as the tile's quick action (#226).
+      compact: (context, vm, size) {
+        final home = context.read<SmartHomeRepository>();
+        final e = vm.items.firstOrNull;
+        if (e == null) return Text(context.l10n.smartHomeEmpty, maxLines: 2);
+        final toggle = vm.canEdit && e.action == EntityAction.toggle;
+        return Row(
+          children: [
+            Expanded(
+              child: Text(
+                toggle || e.state.isEmpty ? e.name : '${e.name} · ${e.state}',
+                maxLines: size == WidgetSize.strip ? 1 : 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            if (toggle)
+              Switch(
+                key: const ValueKey('smartHome.quick'),
+                value: e.isOn,
+                onChanged: (on) => vm.change(
+                  e,
+                  e.withState(on ? 'on' : 'off'),
+                  (server) => home.act(server, e.id),
+                ),
+              ),
+          ],
+        );
+      },
       create: (context) {
         final home = context.read<SmartHomeRepository>();
         return ItemsViewModel(

@@ -245,8 +245,7 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
-  String get weatherNoPlace =>
-      'Wähle für dieses Widget in der Weboberfläche einen Ort.';
+  String get weatherNoPlace => 'Noch kein Ort gewählt.';
 
   @override
   String get todosTitle => 'To-dos';
@@ -335,8 +334,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get transitTitle => 'Abfahrten';
 
   @override
-  String get transitNoStop =>
-      'Wähle für dieses Widget in der Weboberfläche eine Haltestelle.';
+  String get transitNoStop => 'Noch keine Haltestelle gewählt.';
 
   @override
   String get transitEmpty => 'Keine Abfahrten in den nächsten Stunden.';
@@ -366,8 +364,41 @@ class AppLocalizationsDe extends AppLocalizations {
   String get wasteTitle => 'Müllabfuhr';
 
   @override
-  String get wasteNotConfigured =>
-      'Richte den Müllkalender in der Weboberfläche ein.';
+  String get wasteNotConfigured => 'Noch kein Müllkalender eingerichtet.';
+
+  @override
+  String get setUpAction => 'Einrichten';
+
+  @override
+  String get setUpMissing => 'Dieses Widget ist noch nicht eingerichtet.';
+
+  @override
+  String get setUpSearchHint => 'Mindestens zwei Buchstaben eingeben';
+
+  @override
+  String get setUpNoResults => 'Nichts gefunden.';
+
+  @override
+  String get setUpStopTitle => 'Haltestelle wählen';
+
+  @override
+  String get setUpPlaceTitle => 'Ort wählen';
+
+  @override
+  String get setUpWasteTitle => 'Müllkalender abonnieren';
+
+  @override
+  String get setUpWasteHint =>
+      'Die Adresse des Kalenders (ICS) deines Entsorgers, beginnend mit https:// oder webcal://.';
+
+  @override
+  String get setUpWasteLabel => 'Kalenderadresse';
+
+  @override
+  String get setUpSave => 'Speichern';
+
+  @override
+  String get setUpCancel => 'Abbrechen';
 
   @override
   String get wasteEmpty => 'Keine anstehenden Abholungen.';
@@ -474,6 +505,65 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get pairEnterManually => 'Adresse stattdessen eingeben';
+
+  @override
+  String get pairWatchTitle => 'Uhr koppeln';
+
+  @override
+  String get pairWatchEntry => 'Uhr koppeln';
+
+  @override
+  String get pairWatchIntro =>
+      'Öffne Waylight auf deiner Wear-OS-Uhr und wähle „Mit Handy koppeln“. Die Uhr zeigt einen QR-Code. Beide Geräte müssen im selben WLAN sein.';
+
+  @override
+  String get pairWatchScan => 'Code der Uhr scannen';
+
+  @override
+  String get pairWatchScanAgain => 'Anderen Code scannen';
+
+  @override
+  String get pairWatchScanPrompt => 'Richte die Kamera auf den QR-Code der Uhr';
+
+  @override
+  String pairWatchFound(String address) {
+    return 'Uhr gefunden unter $address';
+  }
+
+  @override
+  String get pairWatchSend => 'Diese Uhr koppeln';
+
+  @override
+  String get pairWatchDone =>
+      'Die Uhr ist gekoppelt. Sie erscheint in Waylight unter Einstellungen → Apps, wo du sie auch abmelden kannst.';
+
+  @override
+  String get pairWatchUnavailable =>
+      'Zum Koppeln einer Uhr brauchst du die Android-App.';
+
+  @override
+  String get pairWatchInvalidCode =>
+      'Das ist nicht der Code einer Waylight-Uhr. Öffne auf der Uhr „Mit Handy koppeln“ und scanne den Code, den sie zeigt.';
+
+  @override
+  String get pairWatchUnreachable =>
+      'Die Uhr antwortet nicht. Prüfe, ob Handy und Uhr im selben WLAN sind und die Uhr den Code noch zeigt.';
+
+  @override
+  String get pairWatchNotDecryptable =>
+      'Die Uhr konnte die Nachricht nicht lesen. Scanne den Code, den die Uhr jetzt zeigt.';
+
+  @override
+  String get pairWatchRejected =>
+      'Der Server hat das Koppeln nicht angenommen. Versuch es noch einmal.';
+
+  @override
+  String get pairWatchInvalidServer =>
+      'Die Uhr nimmt die Adresse dieses Servers nicht an. Unverschlüsseltes HTTP geht nur mit Adressen im Heimnetz.';
+
+  @override
+  String get pairWatchServerUnreachable =>
+      'Die Uhr erreicht deinen Server nicht. Prüfe ihre Netzwerkverbindung.';
 
   @override
   String get connectQrHint =>
@@ -1590,6 +1680,12 @@ class AppLocalizationsDe extends AppLocalizations {
   String get dashboardOpenWidget => 'in voller Größe öffnen';
 
   @override
+  String get dashboardOpenDetails => 'Details öffnen';
+
+  @override
+  String get focusStartFocus => 'Fokus starten';
+
+  @override
   String get widgetSizeFull => 'Volle Breite';
 
   @override
@@ -1712,10 +1808,12 @@ class AppLocalizationsDe extends AppLocalizations {
   String get gallerySearch => 'Widgets suchen';
 
   @override
-  String get galleryAdd => 'Hinzufügen';
+  String get galleryAdded => 'Hinzugefügt';
 
   @override
-  String get galleryAdded => 'Hinzugefügt';
+  String galleryAddSized(String widget, String size) {
+    return '$widget als Kachel „$size“ hinzufügen';
+  }
 
   @override
   String get galleryEmpty => 'Keine passenden Widgets.';
@@ -2163,4 +2261,21 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get deviceControlSignIn => 'Waylight öffnen und anmelden';
+
+  @override
+  String get settingsSearch => 'Einstellungen durchsuchen';
+
+  @override
+  String settingsSearchEmpty(String query) {
+    return 'Keine Einstellung passt zu „$query“.';
+  }
+
+  @override
+  String get settingsSearchClear => 'Suche leeren';
+
+  @override
+  String get settingsSearchBattery => 'Akku-Hinweis';
+
+  @override
+  String get settingsAttentionShow => 'Anzeigen';
 }
