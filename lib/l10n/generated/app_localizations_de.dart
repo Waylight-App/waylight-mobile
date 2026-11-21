@@ -1873,4 +1873,73 @@ class AppLocalizationsDe extends AppLocalizations {
   String presenceCounts(int office, int home, int away, int none) {
     return '$office im Büro · $home im Homeoffice · $away weg · $none nicht gesetzt';
   }
+
+  @override
+  String get absencesTitle => 'Abwesenheiten';
+
+  @override
+  String get absencesToday => 'Heute nicht da';
+
+  @override
+  String get absencesWeek => 'Später diese Woche';
+
+  @override
+  String get absencesNobodyToday => 'Heute sind alle da.';
+
+  @override
+  String get absencesNobodyWeek => 'Diese Woche keine weiteren Abwesenheiten.';
+
+  @override
+  String get absencesOff => 'Abwesenheiten gibt es auf diesem Server nicht.';
+
+  @override
+  String get absenceHoliday => 'Urlaub';
+
+  @override
+  String get absenceSick => 'Krank';
+
+  @override
+  String get absenceRemote => 'Remote';
+
+  @override
+  String get absenceAway => 'Abwesend';
+
+  @override
+  String absenceRange(String from, String to) {
+    return '$from – $to';
+  }
+
+  @override
+  String get absenceAdd => 'Abwesenheit eintragen';
+
+  @override
+  String absenceEdit(String name) {
+    return 'Abwesenheit von $name bearbeiten';
+  }
+
+  @override
+  String get absenceDelete => 'Löschen';
+
+  @override
+  String get absenceFrom => 'Von';
+
+  @override
+  String get absenceTo => 'Bis (einschließlich)';
+
+  @override
+  String get absenceKind => 'Art';
+
+  @override
+  String get absenceNote => 'Notiz (optional)';
+
+  @override
+  String get absencePrivate =>
+      'Privat: andere sehen nur, dass ich nicht da bin';
+
+  @override
+  String get absencePrivateBadge => 'privat';
+
+  @override
+  String get absenceErrorDates =>
+      'Der letzte Tag darf nicht vor dem ersten liegen.';
 }

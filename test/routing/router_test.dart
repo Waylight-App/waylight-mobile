@@ -23,6 +23,7 @@ import 'package:waylight_mobile/ui/connect_server/widgets/connect_server_screen.
 import 'package:waylight_mobile/ui/dashboard/widgets/dashboard_screen.dart';
 import 'package:waylight_mobile/ui/sign_in/widgets/sign_in_screen.dart';
 
+import '../testing/fakes/fake_absences_repository.dart';
 import '../testing/fakes/fake_action_repositories.dart';
 import '../testing/fakes/fake_bookmarks_repository.dart';
 import '../testing/fakes/fake_dashboard_repository.dart';
@@ -77,6 +78,7 @@ void main() {
           smartHome: FakeSmartHomeRepository(),
           focus: FakeFocusRepository(),
           presence: FakePresenceRepository(),
+          absences: FakeAbsencesRepository(),
           focusTimer: FocusTimerRepository(
             timer: InAppFocusTimer(),
             sessions: FakeFocusRepository(),

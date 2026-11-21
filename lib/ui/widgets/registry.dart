@@ -1,4 +1,5 @@
 import 'package:waylight_mobile/ui/core/widget_registry.dart';
+import 'package:waylight_mobile/ui/widgets/absences/absences_widget.dart';
 import 'package:waylight_mobile/ui/widgets/adguard/adguard_widget.dart';
 import 'package:waylight_mobile/ui/widgets/apps/apps_widgets.dart';
 import 'package:waylight_mobile/ui/widgets/backups/backups_widget.dart';
@@ -58,6 +59,7 @@ const nativeWidgets = WidgetRegistry({
   'electricity': ElectricityWidget.forPlacement,
   'focus': FocusWidget.forPlacement,
   'presence': PresenceWidget.forPlacement,
+  'absences': AbsencesWidget.forPlacement,
   'fritzbox': FritzboxWidget.forPlacement,
   'fritzbox-calls': CallsWidget.forPlacement,
   'fuel': FuelWidget.forPlacement,
