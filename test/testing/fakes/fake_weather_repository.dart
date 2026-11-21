@@ -1,4 +1,5 @@
 import 'package:waylight_mobile/data/repositories/weather/weather_repository.dart';
+import 'package:waylight_mobile/domain/models/place.dart';
 import 'package:waylight_mobile/domain/models/server_address.dart';
 import 'package:waylight_mobile/domain/models/weather.dart';
 import 'package:waylight_mobile/utils/result.dart';
@@ -24,6 +25,15 @@ class FakeWeatherRepository implements WeatherRepository {
     calls.add((lat, lon));
     return result;
   }
+
+  /// What [places] returns.
+  Result<List<Place>> placesResult = const Result.ok([]);
+
+  @override
+  Future<Result<List<Place>>> places(
+    ServerAddress server,
+    String query,
+  ) async => placesResult;
 }
 
 /// Weather with four forecast days from 19 November 2026, for tests.

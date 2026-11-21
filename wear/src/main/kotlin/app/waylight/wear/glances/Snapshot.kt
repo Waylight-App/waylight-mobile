@@ -25,14 +25,16 @@ data class NextEvent(val summary: String, val startMillis: Long, val allDay: Boo
 
 /**
  * The compact state of a module (`GET /api/<module>/compact`, the server's
- * `CompactState`). [title] and [detail] are the server's English texts.
+ * `CompactState`). [title] and [detail] are translated when shown
+ * ([ServerTexts]).
  */
 data class CompactGlance(
     val module: String,
-    val title: String,
-    val detail: String?,
+    val title: GlanceText,
+    val detail: GlanceText?,
     val level: Level,
     val count: Int?,
+    val action: GlanceAction? = null,
 )
 
 /** My presence today (`GET /api/presence`): office, home, away or none. */
@@ -62,6 +64,8 @@ data class Snapshot(
     val nextEvent: NextEvent?,
     val presence: Presence?,
     val compact: List<CompactGlance>,
+    val firstTodo: OpenTodo? = null,
+    val devices: List<Device> = emptyList(),
 ) {
     fun toJson(): String = JSONObject().apply {
         put("fetchedAt", fetchedAt)
@@ -76,15 +80,18 @@ data class Snapshot(
                     put(
                         JSONObject().apply {
                             put("module", c.module)
-                            put("title", c.title)
-                            c.detail?.let { put("detail", it) }
+                            put("title", c.title.toJson())
+                            c.detail?.let { put("detail", it.toJson()) }
                             put("level", c.level.name)
                             c.count?.let { put("count", it) }
+                            c.action?.let { put("action", it.toJson()) }
                         },
                     )
                 }
             },
         )
+        firstTodo?.let { put("firstTodo", it.toJson()) }
+        put("devices", JSONArray().apply { devices.forEach { put(it.toJson()) } })
     }.toString()
 
     companion object {
@@ -104,16 +111,26 @@ data class Snapshot(
                         val c = array.getJSONObject(i)
                         CompactGlance(
                             module = c.getString("module"),
-                            title = c.getString("title"),
-                            detail = c.optString("detail").takeIf { it.isNotEmpty() },
+                            title = storedText(c, "title") ?: GlanceText(""),
+                            detail = storedText(c, "detail"),
                             level = Level.entries.firstOrNull { it.name == c.optString("level") } ?: Level.NONE,
                             count = if (c.has("count")) c.getInt("count") else null,
+                            action = GlanceAction.fromJson(c.optJSONObject("action")),
                         )
                     }
+                }.orEmpty(),
+                firstTodo = OpenTodo.fromJson(o.optJSONObject("firstTodo")),
+                devices = o.optJSONArray("devices")?.let { array ->
+                    (0 until array.length()).mapNotNull { array.optJSONObject(it)?.let(Device::fromJson) }
                 }.orEmpty(),
             )
         } catch (e: org.json.JSONException) {
             null
         }
+
+        // Snapshots stored before #246 kept only the English text.
+        private fun storedText(o: JSONObject, name: String): GlanceText? =
+            GlanceText.fromJson(o.optJSONObject(name))
+                ?: o.optString(name).takeIf { it.isNotEmpty() }?.let { GlanceText(it) }
     }
 }

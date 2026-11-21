@@ -1,4 +1,5 @@
 import 'package:waylight_mobile/domain/models/departure.dart';
+import 'package:waylight_mobile/domain/models/place.dart';
 import 'package:waylight_mobile/domain/models/server_address.dart';
 import 'package:waylight_mobile/utils/result.dart';
 
@@ -10,4 +11,7 @@ abstract interface class TransitRepository {
     required String stop,
     required int count,
   });
+
+  /// The stops whose name matches [query], for choosing one (#230).
+  Future<Result<List<Stop>>> stops(ServerAddress server, String query);
 }

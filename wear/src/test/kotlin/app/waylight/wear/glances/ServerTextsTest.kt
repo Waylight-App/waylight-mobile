@@ -1,0 +1,47 @@
+package app.waylight.wear.glances
+
+import org.junit.Assert.assertEquals
+import org.junit.Test
+
+class ServerTextsTest {
+    /** The server's `kernel.MessageKey`: `srv_` and the FNV-1a 64 hash of the template. */
+    private fun messageKey(template: String): String {
+        var hash = -0x340d631b7bdddcdbL // 0xcbf29ce484222325, the FNV offset basis
+        for (b in template.toByteArray(Charsets.UTF_8)) {
+            hash = hash xor (b.toLong() and 0xff)
+            hash *= 0x100000001b3L
+        }
+        return "srv_%016x".format(hash)
+    }
+
+    @Test
+    fun `knows the keys of the server's compact templates`() {
+        // The English templates of the compact states of todos, habits and
+        // focus on the server; a new one needs a string resource here.
+        val templates = listOf(
+            "{count} open",
+            "Nothing to do",
+            "{count} overdue",
+            "No habits yet",
+            "{done} of {total} today",
+            "{minutes} min focus today",
+            "{count} sessions",
+        )
+        assertEquals(templates.map(::messageKey).toSet(), ServerTexts.templates.keys)
+    }
+
+    @Test
+    fun `fills in the parameters`() {
+        assertEquals("2 von 5 heute", ServerTexts.fill("{done} von {total} heute", mapOf("done" to "2", "total" to "5")))
+        assertEquals("Nichts zu tun", ServerTexts.fill("Nichts zu tun", emptyMap()))
+        assertEquals("{count} offen", ServerTexts.fill("{count} offen", mapOf("other" to "1")))
+    }
+
+    @Test
+    fun `reads a CompactText`() {
+        val json = org.json.JSONObject("""{"key":"k","text":"3 open","params":{"count":"3"}}""")
+        val text = GlanceText.fromJson(json)!!
+        assertEquals(GlanceText("3 open", "k", mapOf("count" to "3")), text)
+        assertEquals(text, GlanceText.fromJson(text.toJson()))
+    }
+}

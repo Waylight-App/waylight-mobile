@@ -515,7 +515,7 @@ abstract class AppLocalizations {
   /// Weather widget without a place.
   ///
   /// In en, this message translates to:
-  /// **'Choose a place for this widget in the web interface.'**
+  /// **'No place chosen yet.'**
   String get weatherNoPlace;
 
   /// Default title of the to-do widget.
@@ -677,7 +677,7 @@ abstract class AppLocalizations {
   /// Departures widget without a stop.
   ///
   /// In en, this message translates to:
-  /// **'Choose a stop for this widget in the web interface.'**
+  /// **'No stop chosen yet.'**
   String get transitNoStop;
 
   /// Departures widget without departures.
@@ -725,8 +725,74 @@ abstract class AppLocalizations {
   /// Waste widget while no calendar is set up.
   ///
   /// In en, this message translates to:
-  /// **'Set up the waste calendar in the web interface.'**
+  /// **'No waste calendar set up yet.'**
   String get wasteNotConfigured;
+
+  /// Button on a widget that misses its settings; opens the choice in the app or the web interface.
+  ///
+  /// In en, this message translates to:
+  /// **'Set up'**
+  String get setUpAction;
+
+  /// Fallback sentence on a widget that misses its settings, when the server gives no reason.
+  ///
+  /// In en, this message translates to:
+  /// **'This widget is not set up yet.'**
+  String get setUpMissing;
+
+  /// Hint in the search field of the stop or place choice.
+  ///
+  /// In en, this message translates to:
+  /// **'Type at least two letters'**
+  String get setUpSearchHint;
+
+  /// The stop or place search found nothing.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing found.'**
+  String get setUpNoResults;
+
+  /// Title of the stop search of a departures widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a stop'**
+  String get setUpStopTitle;
+
+  /// Title of the place search of a weather widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a place'**
+  String get setUpPlaceTitle;
+
+  /// Title of the dialog that asks for the address of a waste calendar.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscribe to a waste calendar'**
+  String get setUpWasteTitle;
+
+  /// Explanation in the waste calendar dialog.
+  ///
+  /// In en, this message translates to:
+  /// **'The address of the calendar (ICS) from your waste collection service, starting with https:// or webcal://.'**
+  String get setUpWasteHint;
+
+  /// Label of the waste calendar address field.
+  ///
+  /// In en, this message translates to:
+  /// **'Calendar address'**
+  String get setUpWasteLabel;
+
+  /// Saves the waste calendar address.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get setUpSave;
+
+  /// Closes the waste calendar dialog without saving.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get setUpCancel;
 
   /// Waste widget without dates.
   ///
@@ -919,6 +985,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Enter the address instead'**
   String get pairEnterManually;
+
+  /// Title of the screen that pairs a Wear OS watch.
+  ///
+  /// In en, this message translates to:
+  /// **'Pair a watch'**
+  String get pairWatchTitle;
+
+  /// Row in the phone settings that opens the watch pairing.
+  ///
+  /// In en, this message translates to:
+  /// **'Pair a watch'**
+  String get pairWatchEntry;
+
+  /// How to start pairing a watch.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Waylight on your Wear OS watch and choose Pair with phone. The watch shows a QR code. Both devices need to be in the same Wi-Fi.'**
+  String get pairWatchIntro;
+
+  /// Button that opens the camera for the watch's QR code.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan the watch\'s code'**
+  String get pairWatchScan;
+
+  /// Button to scan again after a watch was found.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan another code'**
+  String get pairWatchScanAgain;
+
+  /// Hint shown over the camera.
+  ///
+  /// In en, this message translates to:
+  /// **'Point the camera at the QR code on the watch'**
+  String get pairWatchScanPrompt;
+
+  /// Shown after scanning; the watch's address in the local network.
+  ///
+  /// In en, this message translates to:
+  /// **'Watch found at {address}'**
+  String pairWatchFound(String address);
+
+  /// Button that hands the server over to the watch.
+  ///
+  /// In en, this message translates to:
+  /// **'Pair this watch'**
+  String get pairWatchSend;
+
+  /// Shown after the watch accepted the handover.
+  ///
+  /// In en, this message translates to:
+  /// **'The watch is paired. It shows up under Settings → Apps in Waylight, where you can revoke it.'**
+  String get pairWatchDone;
+
+  /// Shown on phones that cannot pair a watch.
+  ///
+  /// In en, this message translates to:
+  /// **'Pairing a watch needs the Android app.'**
+  String get pairWatchUnavailable;
+
+  /// The scanned code is not a watch's pairing code.
+  ///
+  /// In en, this message translates to:
+  /// **'This is not the code of a Waylight watch. Open Pair with phone on the watch and scan the code it shows.'**
+  String get pairWatchInvalidCode;
+
+  /// The watch could not be reached in the local network.
+  ///
+  /// In en, this message translates to:
+  /// **'The watch does not answer. Check that the phone and the watch are in the same Wi-Fi and the code is still shown on the watch.'**
+  String get pairWatchUnreachable;
+
+  /// The watch could not decrypt the handover, e.g. an old QR code.
+  ///
+  /// In en, this message translates to:
+  /// **'The watch could not read the message. Scan the code the watch shows now.'**
+  String get pairWatchNotDecryptable;
+
+  /// The server rejected the pairing code the watch redeemed.
+  ///
+  /// In en, this message translates to:
+  /// **'The server did not accept the pairing. Try again.'**
+  String get pairWatchRejected;
+
+  /// The watch rejected the server address.
+  ///
+  /// In en, this message translates to:
+  /// **'The watch does not accept this server\'s address. Plain HTTP only works for addresses in the home network.'**
+  String get pairWatchInvalidServer;
+
+  /// The watch could not reach the server.
+  ///
+  /// In en, this message translates to:
+  /// **'The watch cannot reach your server. Check its network connection.'**
+  String get pairWatchServerUnreachable;
 
   /// Hint on the connect screen.
   ///
@@ -2912,6 +3074,18 @@ abstract class AppLocalizations {
   /// **'open in full'**
   String get dashboardOpenWidget;
 
+  /// Screen reader hint for a small dashboard tile: tapping opens a detail sheet.
+  ///
+  /// In en, this message translates to:
+  /// **'open details'**
+  String get dashboardOpenDetails;
+
+  /// Tooltip of the quick action on a small focus tile.
+  ///
+  /// In en, this message translates to:
+  /// **'Start focus'**
+  String get focusStartFocus;
+
   /// Size of a dashboard widget: full width at its natural height.
   ///
   /// In en, this message translates to:
@@ -3062,17 +3236,17 @@ abstract class AppLocalizations {
   /// **'Search widgets'**
   String get gallerySearch;
 
-  /// Adds a widget from the gallery to the tab.
-  ///
-  /// In en, this message translates to:
-  /// **'Add'**
-  String get galleryAdd;
-
   /// Shown in the gallery for a widget just added.
   ///
   /// In en, this message translates to:
   /// **'Added'**
   String get galleryAdded;
+
+  /// Screen reader label of a size preview in the widget gallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Add {widget} as {size} tile'**
+  String galleryAddSized(String widget, String size);
 
   /// The gallery search found nothing.
   ///

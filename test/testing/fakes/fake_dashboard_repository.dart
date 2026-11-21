@@ -57,6 +57,19 @@ class FakeDashboardRepository implements DashboardRepository {
     return Result.ok(WidgetPlacement(id: 'new-$kind', kind: kind));
   }
 
+  /// The configurations stored by [updateWidget], by widget id.
+  final Map<String, Map<String, Object?>> updated = {};
+
+  @override
+  Future<Result<void>> updateWidget(
+    ServerAddress server,
+    String id,
+    Map<String, Object?> config,
+  ) async {
+    updated[id] = config;
+    return const Result.ok(null);
+  }
+
   @override
   Future<Result<void>> resetLayout(ServerAddress server, String tabId) async {
     reset.add(tabId);

@@ -13,11 +13,38 @@ class ParsersTest {
     @Test
     fun `reads a compact state`() {
         val json = """{"title":{"key":"todos.open","text":"3 open","params":{"n":"3"}},"detail":{"key":"x","text":"1 overdue"},"level":"attention","count":3,"updatedAt":"2026-11-21T10:00:00Z"}"""
-        assertEquals(CompactGlance("todos", "3 open", "1 overdue", Level.ATTENTION, 3), Parsers.compact("todos", json))
         assertEquals(
-            CompactGlance("focus", "Idle", null, Level.NONE, null),
+            CompactGlance("todos", GlanceText("3 open", "todos.open", mapOf("n" to "3")), GlanceText("1 overdue", "x"), Level.ATTENTION, 3),
+            Parsers.compact("todos", json),
+        )
+        assertEquals(
+            CompactGlance("focus", GlanceText("Idle", "k"), null, Level.NONE, null),
             Parsers.compact("focus", """{"title":{"key":"k","text":"Idle"},"level":"none","updatedAt":"x"}"""),
         )
+    }
+
+    @Test
+    fun `finds the first open to-do`() {
+        val json = """[{"id":"1","title":"Done","done":true},{"id":"2","title":"Milk","due":"2026-11-22","done":false,"version":3}]"""
+        assertEquals(OpenTodo("2", "Milk", "2026-11-22", 3), Parsers.firstOpenTodo(json))
+        assertNull(Parsers.firstOpenTodo("""[{"id":"1","done":true}]"""))
+    }
+
+    @Test
+    fun `keeps only switchable devices`() {
+        val json = """[
+            {"id":"sensor.t","name":"Temperature","state":"21","action":""},
+            {"id":"switch.coffee","name":"Coffee","state":"off","action":"toggle"},
+            {"id":"button.door","name":"","state":"","action":"press"}
+        ]"""
+        assertEquals(
+            listOf(
+                Device("switch.coffee", "Coffee", "off", DeviceAction.TOGGLE),
+                Device("button.door", "button.door", "", DeviceAction.PRESS),
+            ),
+            Parsers.devices(json),
+        )
+        assertEquals(1, Parsers.devices(json, limit = 1).size)
     }
 
     @Test

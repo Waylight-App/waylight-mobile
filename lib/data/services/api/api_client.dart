@@ -135,6 +135,16 @@ class ApiClient {
     ),
   );
 
+  /// Sends a PATCH request with [body] encoded as JSON.
+  Future<Result<Object?>> patchJson(Uri uri, {Object? body}) async => _bodyOf(
+    await _send(
+      'PATCH',
+      uri,
+      headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+      body: jsonEncode(body),
+    ),
+  );
+
   /// Sends a DELETE request.
   Future<Result<void>> delete(Uri uri) async =>
       switch (await _send('DELETE', uri, headers: const {})) {

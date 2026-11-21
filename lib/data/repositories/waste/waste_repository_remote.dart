@@ -14,4 +14,8 @@ class WasteRepositoryRemote implements WasteRepository {
   @override
   Future<Result<List<WasteCollection>>> upcoming(ServerAddress server) =>
       _api.upcoming(server);
+
+  @override
+  Future<Result<void>> subscribe(ServerAddress server, String url) =>
+      _api.subscribe(server, url);
 }
