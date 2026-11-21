@@ -71,6 +71,13 @@ jobs:
             echo "::error::The APK contains Firebase or Play services classes (ADR 0008)."
             exit 1
           fi
+      # Test builds for real devices without a local Gradle build (#282).
+      - name: Keep the APK
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: waylight-debug-apk
+          path: build/app/outputs/flutter-apk/app-debug.apk
+          retention-days: 14
 
   # The Wear OS app is a Gradle build of its own in wear/ (ADR 0015); it
   # needs no Flutter SDK and runs next to the other jobs.
@@ -102,3 +109,10 @@ jobs:
             echo "::error::The watch APK contains Firebase or Play services classes (ADR 0015)."
             exit 1
           fi
+      - name: Keep the watch APK
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: waylight-wear-debug-apk
+          # upload-artifact ignores defaults.run.working-directory.
+          path: wear/build/outputs/apk/debug/*.apk
+          retention-days: 14

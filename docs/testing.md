@@ -82,3 +82,11 @@ sign in and open the dashboard. They find steps through the widget keys
 The public demo is served over HTTPS, so the tests need no exception for
 plain HTTP. Its data is reset every hour; tests must not depend on changes
 made by an earlier run.
+
+## Test builds on a real device
+
+Every CI run keeps the debug APKs for 14 days: `waylight-debug-apk` (phone)
+and `waylight-wear-debug-apk` (watch), under *Artifacts* on the run's summary
+page, or with `gh run download <run-id> -n waylight-debug-apk`. They are signed
+with a throwaway debug key, so uninstall a build with a different signature
+before installing one of these.
