@@ -3355,6 +3355,132 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{office} in the office · {home} at home · {away} away · {none} not set'**
   String presenceCounts(int office, int home, int away, int none);
+
+  /// Widget title.
+  ///
+  /// In en, this message translates to:
+  /// **'Absences'**
+  String get absencesTitle;
+
+  /// Section.
+  ///
+  /// In en, this message translates to:
+  /// **'Away today'**
+  String get absencesToday;
+
+  /// Section.
+  ///
+  /// In en, this message translates to:
+  /// **'Later this week'**
+  String get absencesWeek;
+
+  /// Empty.
+  ///
+  /// In en, this message translates to:
+  /// **'Everyone is here today.'**
+  String get absencesNobodyToday;
+
+  /// Empty.
+  ///
+  /// In en, this message translates to:
+  /// **'No other absences this week.'**
+  String get absencesNobodyWeek;
+
+  /// Module off.
+  ///
+  /// In en, this message translates to:
+  /// **'Absences are not available on this server.'**
+  String get absencesOff;
+
+  /// Kind.
+  ///
+  /// In en, this message translates to:
+  /// **'Holiday'**
+  String get absenceHoliday;
+
+  /// Kind.
+  ///
+  /// In en, this message translates to:
+  /// **'Sick'**
+  String get absenceSick;
+
+  /// Kind.
+  ///
+  /// In en, this message translates to:
+  /// **'Working remotely'**
+  String get absenceRemote;
+
+  /// Kind.
+  ///
+  /// In en, this message translates to:
+  /// **'Away'**
+  String get absenceAway;
+
+  /// Period.
+  ///
+  /// In en, this message translates to:
+  /// **'{from} – {to}'**
+  String absenceRange(String from, String to);
+
+  /// Button and form title.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter an absence'**
+  String get absenceAdd;
+
+  /// Edit button and form title.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit absence of {name}'**
+  String absenceEdit(String name);
+
+  /// Button.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get absenceDelete;
+
+  /// Field.
+  ///
+  /// In en, this message translates to:
+  /// **'From'**
+  String get absenceFrom;
+
+  /// Field.
+  ///
+  /// In en, this message translates to:
+  /// **'To (included)'**
+  String get absenceTo;
+
+  /// Field.
+  ///
+  /// In en, this message translates to:
+  /// **'Kind'**
+  String get absenceKind;
+
+  /// Field.
+  ///
+  /// In en, this message translates to:
+  /// **'Note (optional)'**
+  String get absenceNote;
+
+  /// Switch.
+  ///
+  /// In en, this message translates to:
+  /// **'Private: others only see that I am away'**
+  String get absencePrivate;
+
+  /// Badge.
+  ///
+  /// In en, this message translates to:
+  /// **'private'**
+  String get absencePrivateBadge;
+
+  /// Validation.
+  ///
+  /// In en, this message translates to:
+  /// **'The last day must not be before the first.'**
+  String get absenceErrorDates;
 }
 
 class _AppLocalizationsDelegate
