@@ -2,6 +2,7 @@ import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
 import 'package:waylight_mobile/data/repositories/actions/parcels_repository.dart';
+import 'package:waylight_mobile/data/repositories/scanner/scanner_repository.dart';
 import 'package:waylight_mobile/domain/models/actions.dart';
 import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/ui/core/link_opener.dart';
@@ -131,9 +132,16 @@ class ParcelsWidget extends StatelessWidget {
     ItemsViewModel<Parcel> vm,
     ParcelsRepository parcels,
   ) async {
+    // Read here, where the providers are; the dialog sits above them.
+    ScannerRepository? scanner;
+    try {
+      scanner = context.read<ScannerRepository>();
+    } on ProviderNotFoundException {
+      scanner = null;
+    }
     final entry = await showDialog<(String, String)>(
       context: context,
-      builder: (context) => const _AddParcelDialog(),
+      builder: (context) => _AddParcelDialog(scanner: scanner),
     );
     if (entry == null) return;
     final (number, label) = entry;
@@ -144,7 +152,10 @@ class ParcelsWidget extends StatelessWidget {
 /// Asks for a tracking number and an optional description; returns both,
 /// or `null` when cancelled or empty.
 class _AddParcelDialog extends StatefulWidget {
-  const _AddParcelDialog();
+  const _AddParcelDialog({this.scanner});
+
+  /// Scans the label (#196); `null` hides the button.
+  final ScannerRepository? scanner;
 
   @override
   State<_AddParcelDialog> createState() => _AddParcelDialogState();
@@ -153,6 +164,37 @@ class _AddParcelDialog extends StatefulWidget {
 class _AddParcelDialogState extends State<_AddParcelDialog> {
   final _number = TextEditingController();
   final _label = TextEditingController();
+  bool _canScan = false;
+  String? _scanHint;
+
+  ScannerRepository? get _scanner => widget.scanner;
+
+  @override
+  void initState() {
+    super.initState();
+    _scanner?.available().then((ok) {
+      if (mounted) setState(() => _canScan = ok);
+    }).ignore();
+  }
+
+  Future<void> _scan() async {
+    final l10n = context.l10n;
+    String? read;
+    final number = await _scanner?.scanTrackingNumber(
+      prompt: l10n.parcelsScanPrompt,
+      raw: (text) => read = text,
+    );
+    if (!mounted) return;
+    setState(() {
+      if (number != null) {
+        // Filled in, but the person still confirms or corrects it.
+        _number.text = number;
+        _scanHint = null;
+      } else if (read != null) {
+        _scanHint = l10n.parcelsScanNoNumber;
+      }
+    });
+  }
 
   @override
   void dispose() {
@@ -178,9 +220,21 @@ class _AddParcelDialogState extends State<_AddParcelDialog> {
         mainAxisSize: MainAxisSize.min,
         children: [
           TextField(
+            key: const ValueKey('parcels.number'),
             controller: _number,
             autofocus: true,
-            decoration: InputDecoration(labelText: l10n.parcelsNumber),
+            decoration: InputDecoration(
+              labelText: l10n.parcelsNumber,
+              helperText: _scanHint,
+              suffixIcon: _canScan
+                  ? IconButton(
+                      key: const ValueKey('parcels.scan'),
+                      tooltip: l10n.parcelsScan,
+                      icon: const Icon(Icons.qr_code_scanner),
+                      onPressed: () => _scan().ignore(),
+                    )
+                  : null,
+            ),
           ),
           TextField(
             controller: _label,

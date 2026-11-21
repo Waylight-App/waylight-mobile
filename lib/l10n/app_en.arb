@@ -1157,5 +1157,11 @@
   "announcementNoExpiry": "No expiry",
   "@announcementNoExpiry": {"description": "Announcements widget (#202)."},
   "announcementNotify": "Send to the notification channels",
-  "@announcementNotify": {"description": "Announcements widget (#202)."}
+  "@announcementNotify": {"description": "Announcements widget (#202)."},
+  "parcelsScan": "Scan the label",
+  "@parcelsScan": {"description": "Scan button tooltip."},
+  "parcelsScanPrompt": "Point the camera at the barcode of the shipping label",
+  "@parcelsScanPrompt": {"description": "Shown over the camera."},
+  "parcelsScanNoNumber": "No tracking number in this code. Type it, or scan the barcode next to the number.",
+  "@parcelsScanNoNumber": {"description": "Scanned code without a number."}
 }

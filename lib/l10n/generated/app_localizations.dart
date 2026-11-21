@@ -3571,6 +3571,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Send to the notification channels'**
   String get announcementNotify;
+
+  /// Scan button tooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan the label'**
+  String get parcelsScan;
+
+  /// Shown over the camera.
+  ///
+  /// In en, this message translates to:
+  /// **'Point the camera at the barcode of the shipping label'**
+  String get parcelsScanPrompt;
+
+  /// Scanned code without a number.
+  ///
+  /// In en, this message translates to:
+  /// **'No tracking number in this code. Type it, or scan the barcode next to the number.'**
+  String get parcelsScanNoNumber;
 }
 
 class _AppLocalizationsDelegate

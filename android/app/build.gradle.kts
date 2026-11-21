@@ -59,6 +59,9 @@ dependencies {
     // X25519 for decrypting push messages below Android 13 (ADR 0008); an
     // offline crypto library without network access.
     implementation("com.google.crypto.tink:tink-android:1.24.0")
+    // Barcode and QR code scanning on the device (ADR 0014): ZXing with its
+    // own camera screen, Apache 2.0, without Google Play services.
+    implementation("com.journeyapps:zxing-android-embedded:4.3.0")
     // JVM unit tests of the native push code; org.json is only a stub in
     // the Android SDK outside a device.
     testImplementation("junit:junit:4.13.2")

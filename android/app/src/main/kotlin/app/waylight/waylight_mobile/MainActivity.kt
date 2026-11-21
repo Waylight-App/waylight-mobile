@@ -17,6 +17,7 @@ class MainActivity : FlutterFragmentActivity() {
     // flavour's one talks to Firebase.
     private val push = PushChannel(this)
     private val reminders = ReminderChannel(this)
+    private val scan = ScanChannel(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         intent = asShareLink(intent)
@@ -31,6 +32,7 @@ class MainActivity : FlutterFragmentActivity() {
         super.configureFlutterEngine(flutterEngine)
         push.register(flutterEngine)
         reminders.register(flutterEngine)
+        scan.register(flutterEngine)
         FocusChannel.register(applicationContext, flutterEngine)
         NetworkChannel.register(applicationContext, flutterEngine)
         DeviceChannel(this).register(flutterEngine)

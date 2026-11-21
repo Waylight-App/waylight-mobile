@@ -578,5 +578,8 @@
   "announcementMarkdownHint": "Markdown: **fett**, *kursiv*, Listen und Links.",
   "announcementExpires": "Läuft ab",
   "announcementNoExpiry": "Kein Ablauf",
-  "announcementNotify": "An die Benachrichtigungskanäle senden"
+  "announcementNotify": "An die Benachrichtigungskanäle senden",
+  "parcelsScan": "Etikett scannen",
+  "parcelsScanPrompt": "Richte die Kamera auf den Barcode des Versandetiketts",
+  "parcelsScanNoNumber": "In diesem Code steht keine Sendungsnummer. Tippe sie ein oder scanne den Barcode neben der Nummer."
 }

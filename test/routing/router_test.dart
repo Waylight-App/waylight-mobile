@@ -12,6 +12,7 @@ import 'package:waylight_mobile/data/repositories/kiosk/kiosk_repository.dart';
 import 'package:waylight_mobile/data/repositories/lock/app_lock_repository.dart';
 import 'package:waylight_mobile/data/repositories/offline/offline_repository.dart';
 import 'package:waylight_mobile/data/repositories/reminders/reminder_repository.dart';
+import 'package:waylight_mobile/data/repositories/scanner/scanner_repository.dart';
 import 'package:waylight_mobile/data/repositories/todos/todos_repository_outbox.dart';
 import 'package:waylight_mobile/data/services/api/api_client.dart';
 import 'package:waylight_mobile/data/services/api/module_api.dart';
@@ -26,6 +27,7 @@ import 'package:waylight_mobile/ui/sign_in/widgets/sign_in_screen.dart';
 import '../testing/fakes/fake_absences_repository.dart';
 import '../testing/fakes/fake_action_repositories.dart';
 import '../testing/fakes/fake_announcements_repository.dart';
+import '../testing/fakes/fake_barcode_scanner.dart';
 import '../testing/fakes/fake_bookmarks_repository.dart';
 import '../testing/fakes/fake_dashboard_repository.dart';
 import '../testing/fakes/fake_device_auth.dart';
@@ -81,6 +83,7 @@ void main() {
           presence: FakePresenceRepository(),
           absences: FakeAbsencesRepository(),
           announcements: FakeAnnouncementsRepository(),
+          scanner: ScannerRepository(scanner: FakeBarcodeScanner()),
           focusTimer: FocusTimerRepository(
             timer: InAppFocusTimer(),
             sessions: FakeFocusRepository(),
