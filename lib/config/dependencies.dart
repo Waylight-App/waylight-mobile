@@ -31,6 +31,7 @@ import 'package:waylight_mobile/data/repositories/notes/notes_repository_remote.
 import 'package:waylight_mobile/data/repositories/offline/offline_repository.dart';
 import 'package:waylight_mobile/data/repositories/preferences/preferences_repository.dart';
 import 'package:waylight_mobile/data/repositories/preferences/preferences_repository_local.dart';
+import 'package:waylight_mobile/data/repositories/presence/presence_repository.dart';
 import 'package:waylight_mobile/data/repositories/push/push_repository.dart';
 import 'package:waylight_mobile/data/repositories/push/push_repository_remote.dart';
 import 'package:waylight_mobile/data/repositories/reminders/reminder_repository.dart';
@@ -103,6 +104,7 @@ typedef Repositories = ({
   ParcelsRepository parcels,
   SmartHomeRepository smartHome,
   FocusRepository focus,
+  PresenceRepository presence,
   FocusTimerRepository focusTimer,
   HomeServerActionsRepository homeServer,
   CalendarRepository calendar,
@@ -145,6 +147,7 @@ List<SingleChildWidget> providers(Repositories repositories) => [
   Provider<ParcelsRepository>.value(value: repositories.parcels),
   Provider<SmartHomeRepository>.value(value: repositories.smartHome),
   Provider<FocusRepository>.value(value: repositories.focus),
+  Provider<PresenceRepository>.value(value: repositories.presence),
   ChangeNotifierProvider<FocusTimerRepository>.value(
     value: repositories.focusTimer,
   ),
@@ -274,6 +277,7 @@ Repositories createRepositories() {
     parcels: ParcelsRepositoryRemote(api: modules),
     smartHome: SmartHomeRepositoryRemote(api: modules),
     focus: focusSessions,
+    presence: PresenceRepositoryRemote(api: modules),
     focusTimer: FocusTimerRepository(
       timer: MethodChannelFocusTimer(),
       sessions: focusSessions,

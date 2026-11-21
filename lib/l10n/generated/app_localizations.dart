@@ -3283,6 +3283,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Confirm to leave the wall display'**
   String get kioskLeaveReason;
+
+  /// Widget title.
+  ///
+  /// In en, this message translates to:
+  /// **'Presence'**
+  String get presenceTitle;
+
+  /// Status.
+  ///
+  /// In en, this message translates to:
+  /// **'Office'**
+  String get presenceOffice;
+
+  /// Status.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get presenceHome;
+
+  /// Status.
+  ///
+  /// In en, this message translates to:
+  /// **'Away'**
+  String get presenceAway;
+
+  /// Status.
+  ///
+  /// In en, this message translates to:
+  /// **'Not set'**
+  String get presenceNone;
+
+  /// Label above the status choice.
+  ///
+  /// In en, this message translates to:
+  /// **'My status today'**
+  String get presenceMine;
+
+  /// Date picker title.
+  ///
+  /// In en, this message translates to:
+  /// **'Back on'**
+  String get presenceReturnOn;
+
+  /// Day of return.
+  ///
+  /// In en, this message translates to:
+  /// **'back {date}'**
+  String presenceBack(String date);
+
+  /// An absence decided the status.
+  ///
+  /// In en, this message translates to:
+  /// **'from the absences'**
+  String get presenceFromAbsence;
+
+  /// Empty group.
+  ///
+  /// In en, this message translates to:
+  /// **'Nobody in this group.'**
+  String get presenceEmpty;
+
+  /// Module off.
+  ///
+  /// In en, this message translates to:
+  /// **'Presence is switched off for this organisation.'**
+  String get presenceOff;
+
+  /// Counts.
+  ///
+  /// In en, this message translates to:
+  /// **'{office} in the office · {home} at home · {away} away · {none} not set'**
+  String presenceCounts(int office, int home, int away, int none);
 }
 
 class _AppLocalizationsDelegate
