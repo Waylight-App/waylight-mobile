@@ -48,6 +48,12 @@ class FakeServerRepository extends ServerRepository {
 
   List<ServerAddress>? _addresses;
 
+  /// How often [selectAddress] was called.
+  int selectCalls = 0;
+
+  @override
+  Future<void> selectAddress() async => selectCalls++;
+
   @override
   List<ServerAddress> get addresses => _addresses ?? [?current];
 

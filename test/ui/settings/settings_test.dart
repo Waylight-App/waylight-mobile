@@ -7,10 +7,14 @@ import 'package:waylight_mobile/data/repositories/reminders/reminder_repository.
 import 'package:waylight_mobile/data/services/api/api_client.dart';
 import 'package:waylight_mobile/data/services/api/module_api.dart';
 import 'package:waylight_mobile/domain/models/appearance.dart';
+import 'package:waylight_mobile/domain/models/reminder.dart';
 import 'package:waylight_mobile/domain/models/server_status.dart';
 import 'package:waylight_mobile/ui/core/link_opener.dart';
+import 'package:waylight_mobile/ui/settings/view_models/settings_area.dart';
 import 'package:waylight_mobile/ui/settings/view_models/settings_view_model.dart';
+import 'package:waylight_mobile/ui/settings/widgets/settings_area_screen.dart';
 import 'package:waylight_mobile/ui/settings/widgets/settings_screen.dart';
+import 'package:waylight_mobile/ui/settings/widgets/settings_texts.dart';
 import 'package:waylight_mobile/utils/result.dart';
 
 import '../../testing/fakes/fake_action_repositories.dart';
@@ -48,41 +52,112 @@ void main() {
     opener = FakeLinkOpener();
   });
 
-  Future<void> pump(WidgetTester tester) async {
+  /// Shows the start page, or [area] when given.
+  Future<void> pump(WidgetTester tester, [SettingsArea? area]) async {
     // Tall enough for all sections, so the lazy list builds every one.
     tester.view.physicalSize = const Size(800, 2400);
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.reset);
+    final viewModel = create();
     await tester.pumpScreen(
       LinkOpenerScope(
         opener: opener,
-        child: SettingsScreen(viewModel: create()),
+        child: area == null
+            ? SettingsScreen(viewModel: viewModel)
+            : SettingsAreaScreen(area: area, viewModel: viewModel),
       ),
     );
     await tester.pumpAndSettle();
   }
 
-  testWidgets('shows server, account and versions', (tester) async {
+  testWidgets('starts with the account and one status per area (#231)', (
+    tester,
+  ) async {
     await pump(tester);
 
-    expect(find.text('https://home.example.org'), findsOneWidget);
+    expect(find.text('anna'), findsWidgets);
+    expect(find.text('Member · https://home.example.org'), findsOneWidget);
+    expect(find.text('anna · Member'), findsOneWidget);
+    expect(find.text('System · System'), findsOneWidget);
+    expect(find.text('Version 0.3.0 (7)'), findsOneWidget);
+    expect(find.text(l10nEn.settingsStatusPhone), findsOneWidget);
+    for (final area in SettingsArea.values) {
+      final row = find.byKey(ValueKey('settings.area.${area.segment}'));
+      // Without push or reminders there is nothing to set for them.
+      expect(
+        row,
+        area == SettingsArea.notifications ? findsNothing : findsOneWidget,
+      );
+    }
+  });
+
+  testWidgets('shows server, account and versions in their areas', (
+    tester,
+  ) async {
+    await pump(tester, SettingsArea.server);
+    expect(find.text('https://home.example.org'), findsNWidgets(2));
     expect(find.text('1.2.3'), findsOneWidget);
+
+    await pump(tester, SettingsArea.account);
     expect(find.text('anna'), findsOneWidget);
     expect(find.text(l10nEn.settingsRoleMember), findsOneWidget);
+
+    await pump(tester, SettingsArea.about);
     expect(find.text('0.3.0 (7)'), findsOneWidget);
+  });
+
+  testWidgets('shows push and reminders in the status of their area', (
+    tester,
+  ) async {
+    final push = FakePushRepository();
+    final viewModel = SettingsViewModel(
+      serverRepository: servers,
+      sessionRepository: sessions,
+      preferencesRepository: preferences,
+      pushRepository: push,
+      reminderRepository: ReminderRepository(
+        scheduler: FakeReminderScheduler(),
+        store: InMemoryKeyValueStore(),
+        todos: FakeTodosRepository(),
+        data: FakeWidgetDataRepository(),
+      ),
+      appVersion: () async => '0.3.0 (7)',
+    );
+    await tester.pumpScreen(SettingsScreen(viewModel: viewModel));
+    await tester.pumpAndSettle();
+    expect(find.text('Push off · Reminders off'), findsOneWidget);
+
+    await viewModel.setPush.execute(true);
+    await viewModel.setReminders(const ReminderSettings(birthdays: true));
+    await tester.pumpAndSettle();
+    expect(find.text('Push on · Reminders on'), findsOneWidget);
+  });
+
+  testWidgets('says when an area has nothing for this phone', (tester) async {
+    await pump(tester, SettingsArea.notifications);
+
+    expect(find.text(l10nEn.settingsAreaEmpty), findsOneWidget);
+  });
+
+  testWidgets('checks the addresses again on request', (tester) async {
+    await pump(tester, SettingsArea.server);
+
+    await tester.tap(find.byKey(const ValueKey('settings.checkAddresses')));
+    await tester.pump();
+    expect(servers.selectCalls, 1);
   });
 
   testWidgets('hides the server version when the account may not see it', (
     tester,
   ) async {
     servers.versionResult = const Result.error(FormatException('forbidden'));
-    await pump(tester);
+    await pump(tester, SettingsArea.server);
 
     expect(find.text(l10nEn.settingsVersion), findsNothing);
   });
 
   testWidgets('changes theme and language at once', (tester) async {
-    await pump(tester);
+    await pump(tester, SettingsArea.appearance);
 
     await tester.tap(find.text(l10nEn.settingsDark));
     await tester.pump();
@@ -97,19 +172,25 @@ void main() {
     tester,
   ) async {
     await pump(tester);
-
     await tester.tap(find.byKey(const ValueKey('settings.signOut')));
     await tester.pump();
     expect(sessions.signOutCalls, 1);
 
-    await tester.tap(find.byKey(const ValueKey('settings.disconnect')));
+    await pump(tester, SettingsArea.account);
+    await tester.tap(find.byKey(const ValueKey('settings.signOut')));
     await tester.pump();
     expect(sessions.signOutCalls, 2);
+
+    await pump(tester, SettingsArea.server);
+
+    await tester.tap(find.byKey(const ValueKey('settings.disconnect')));
+    await tester.pump();
+    expect(sessions.signOutCalls, 3);
     expect(servers.current, isNull);
   });
 
   testWidgets('opens the source code', (tester) async {
-    await pump(tester);
+    await pump(tester, SettingsArea.about);
 
     await tester.tap(find.text(l10nEn.settingsSource));
     await tester.pump();
@@ -119,11 +200,13 @@ void main() {
 
   testWidgets('meets the accessibility guidelines', (tester) async {
     final handle = tester.ensureSemantics();
-    await pump(tester);
+    for (final area in [null, ...SettingsArea.values]) {
+      await pump(tester, area);
 
-    await expectLater(tester, meetsGuideline(androidTapTargetGuideline));
-    await expectLater(tester, meetsGuideline(labeledTapTargetGuideline));
-    await expectLater(tester, meetsGuideline(textContrastGuideline));
+      await expectLater(tester, meetsGuideline(androidTapTargetGuideline));
+      await expectLater(tester, meetsGuideline(labeledTapTargetGuideline));
+      await expectLater(tester, meetsGuideline(textContrastGuideline));
+    }
     handle.dispose();
   });
 
@@ -135,7 +218,7 @@ void main() {
   testWidgets('switches to and removes other servers', (tester) async {
     final other = testServer('https://other.example.org');
     servers.known = [testServer(), other];
-    await pump(tester);
+    await pump(tester, SettingsArea.server);
 
     expect(find.text('https://other.example.org'), findsOneWidget);
     await tester.tap(find.text('https://other.example.org'));
@@ -149,7 +232,7 @@ void main() {
   });
 
   testWidgets('adds a server without signing out', (tester) async {
-    await pump(tester);
+    await pump(tester, SettingsArea.server);
 
     await tester.tap(find.byKey(const ValueKey('settings.addServer')));
     await tester.pumpAndSettle();
@@ -166,7 +249,8 @@ void main() {
     await tester.pumpScreen(
       LinkOpenerScope(
         opener: opener,
-        child: SettingsScreen(
+        child: SettingsAreaScreen(
+          area: SettingsArea.notifications,
           viewModel: SettingsViewModel(
             serverRepository: servers,
             sessionRepository: sessions,
@@ -193,7 +277,8 @@ void main() {
     tester,
   ) async {
     await tester.pumpScreen(
-      SettingsScreen(
+      SettingsAreaScreen(
+        area: SettingsArea.notifications,
         viewModel: SettingsViewModel(
           serverRepository: servers,
           sessionRepository: sessions,
@@ -225,7 +310,8 @@ void main() {
         return repo;
       }
 
-      SettingsScreen screen(ThemeRepository repo) => SettingsScreen(
+      Widget screen(ThemeRepository repo) => SettingsAreaScreen(
+        area: SettingsArea.appearance,
         viewModel: SettingsViewModel(
           serverRepository: servers,
           sessionRepository: sessions,
@@ -254,7 +340,9 @@ void main() {
     tester.view.physicalSize = const Size(800, 2400);
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.reset);
-    await tester.pumpScreen(SettingsScreen(viewModel: create()));
+    await tester.pumpScreen(
+      SettingsAreaScreen(area: SettingsArea.server, viewModel: create()),
+    );
     await tester.pumpAndSettle();
 
     await tester.tap(find.byKey(const ValueKey('settings.addAddress')));
@@ -302,7 +390,8 @@ void main() {
       data: FakeWidgetDataRepository(),
     );
     await tester.pumpScreen(
-      SettingsScreen(
+      SettingsAreaScreen(
+        area: SettingsArea.notifications,
         viewModel: SettingsViewModel(
           serverRepository: servers,
           sessionRepository: sessions,

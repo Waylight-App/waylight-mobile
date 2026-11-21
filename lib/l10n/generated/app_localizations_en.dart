@@ -2077,4 +2077,78 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get quickTileNoChoice => 'Not chosen yet';
+
+  @override
+  String get settingsAreaAccount => 'Account & security';
+
+  @override
+  String get settingsAreaServer => 'Server & connection';
+
+  @override
+  String get settingsAreaNotifications => 'Notifications & reminders';
+
+  @override
+  String get settingsAreaPhone => 'This phone';
+
+  @override
+  String get settingsAreaAbout => 'About & help';
+
+  @override
+  String get settingsAreaEmpty => 'Nothing to set here on this phone.';
+
+  @override
+  String get settingsStatusNoAddress => 'No address answers';
+
+  @override
+  String get settingsStatusPushOn => 'Push on';
+
+  @override
+  String get settingsStatusPushOff => 'Push off';
+
+  @override
+  String get settingsStatusRemindersOn => 'Reminders on';
+
+  @override
+  String get settingsStatusRemindersOff => 'Reminders off';
+
+  @override
+  String get settingsStatusLockOn => 'App lock on';
+
+  @override
+  String get settingsStatusLockOff => 'App lock off';
+
+  @override
+  String get settingsStatusPhone => 'Widgets and tiles';
+
+  @override
+  String settingsStatusVersion(String version) {
+    return 'Version $version';
+  }
+
+  @override
+  String get settingsConnection => 'Connection';
+
+  @override
+  String get settingsOtherServers => 'Other servers';
+
+  @override
+  String get settingsAdvanced => 'Advanced';
+
+  @override
+  String get settingsCheckNow => 'Check addresses now';
+
+  @override
+  String get settingsCheckNowHint =>
+      'Tries the addresses in order and uses the first that answers.';
+
+  @override
+  String get settingsHomeWidgets => 'Home screen widgets';
+
+  @override
+  String get settingsHomeWidgetsHint =>
+      'Touch and hold an empty spot on the home screen, choose Widgets and pick one from Waylight.';
+
+  @override
+  String get settingsWallDisplayHint =>
+      'Choose “Add another server” under Server & connection, then “Use as wall display” and paste the link of a kiosk display.';
 }

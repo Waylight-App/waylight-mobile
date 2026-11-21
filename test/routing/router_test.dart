@@ -1,4 +1,6 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 import 'package:provider/provider.dart';
@@ -23,6 +25,9 @@ import 'package:waylight_mobile/routing/router.dart';
 import 'package:waylight_mobile/routing/routes.dart';
 import 'package:waylight_mobile/ui/connect_server/widgets/connect_server_screen.dart';
 import 'package:waylight_mobile/ui/dashboard/widgets/dashboard_screen.dart';
+import 'package:waylight_mobile/ui/settings/view_models/settings_area.dart';
+import 'package:waylight_mobile/ui/settings/widgets/settings_area_screen.dart';
+import 'package:waylight_mobile/ui/settings/widgets/settings_screen.dart';
 import 'package:waylight_mobile/ui/sign_in/widgets/sign_in_screen.dart';
 
 import '../testing/fakes/fake_absences_repository.dart';
@@ -55,11 +60,12 @@ import '../testing/fakes/fake_widget_data_repository.dart';
 import '../testing/fakes/in_memory_key_value_store.dart';
 
 void main() {
-  Future<void> pumpApp(
+  Future<GoRouter> pumpApp(
     WidgetTester tester,
     FakeServerRepository servers,
     FakeSessionRepository sessions,
   ) async {
+    final router = createRouter(servers, sessions);
     await tester.pumpWidget(
       MultiProvider(
         providers: providers((
@@ -153,10 +159,11 @@ void main() {
             data: FakeWidgetDataRepository(),
           ),
         )),
-        child: WaylightApp(router: createRouter(servers, sessions)),
+        child: WaylightApp(router: router),
       ),
     );
     await tester.pumpAndSettle();
+    return router;
   }
 
   testWidgets('starts on the connect screen without a server', (tester) async {
@@ -197,6 +204,33 @@ void main() {
     expect(find.byType(ConnectServerScreen), findsOneWidget);
   });
 
+  testWidgets('opens a settings area and goes back to the start (#231)', (
+    tester,
+  ) async {
+    final router = await pumpApp(
+      tester,
+      FakeServerRepository(current: testServer()),
+      FakeSessionRepository(signedIn: true),
+    );
+
+    router.go(Routes.settingsServer);
+    await tester.pumpAndSettle();
+    final screen = tester.widget<SettingsAreaScreen>(
+      find.byType(SettingsAreaScreen),
+    );
+    expect(screen.area, SettingsArea.server);
+
+    router.pop();
+    await tester.pumpAndSettle();
+    expect(find.byType(SettingsScreen), findsOneWidget);
+
+    await tester.tap(find.byKey(const ValueKey('settings.area.account')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const ValueKey('settings.security')));
+    await tester.pumpAndSettle();
+    expect(router.state.uri.path, Routes.security);
+  });
+
   String? at(String location, {bool connected = true, bool signedIn = true}) =>
       redirectFor(
         uri: Uri.parse(location),
@@ -218,6 +252,9 @@ void main() {
   test('opens links from outside', () {
     expect(at('waylight://settings'), Routes.settings);
     expect(at('waylight://settings?tab=1'), '/settings?tab=1');
+    for (final area in SettingsArea.values) {
+      expect(at('waylight://settings/${area.segment}'), area.path);
+    }
     expect(at('waylight://nowhere'), Routes.home);
     expect(
       at('waylight://auth?code=c&state=s', signedIn: false),

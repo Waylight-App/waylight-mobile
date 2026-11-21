@@ -44,6 +44,26 @@ adb shell am start -a android.intent.action.VIEW -d "waylight://settings"
 xcrun simctl openurl booted "waylight://settings"
 ```
 
+### Settings areas
+
+The settings open on a start page with one row per area (#231). Each area
+is its own screen and has a link of its own; back from an area opened by
+a link leads to the start page. The areas are defined in
+`lib/ui/settings/view_models/settings_area.dart` and routed in
+`lib/routing/router.dart`.
+
+| Area | Link | Holds |
+| --- | --- | --- |
+| Account & security | `waylight://settings/account` | who is signed in, password and sign-in methods (`/settings/security`), sign out |
+| Server & connection | `waylight://settings/server` | address and version, addresses in the order they are tried, other servers, checking the addresses again, disconnecting |
+| Appearance | `waylight://settings/appearance` | theme, wallpaper colours, language |
+| Notifications & reminders | `waylight://settings/notifications` | push notifications with the battery hint, reminders on the phone |
+| This phone | `waylight://settings/phone` | app lock, home screen widgets, Quick Settings tiles, wall display |
+| About & help | `waylight://settings/about` | app version, licences, source code, privacy, diagnostic report |
+
+The start page hides *Notifications & reminders* on phones that have
+neither push nor reminders; its link still opens and says so.
+
 ## Icons, launch screen and font
 
 The sources are in `assets/`:

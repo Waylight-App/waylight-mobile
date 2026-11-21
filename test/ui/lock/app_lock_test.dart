@@ -1,13 +1,13 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
-
 import 'package:waylight_mobile/data/repositories/lock/app_lock_repository.dart';
 import 'package:waylight_mobile/routing/router.dart';
 import 'package:waylight_mobile/routing/routes.dart';
 import 'package:waylight_mobile/ui/lock/view_models/lock_view_model.dart';
 import 'package:waylight_mobile/ui/lock/widgets/lock_screen.dart';
+import 'package:waylight_mobile/ui/settings/view_models/settings_area.dart';
 import 'package:waylight_mobile/ui/settings/view_models/settings_view_model.dart';
-import 'package:waylight_mobile/ui/settings/widgets/settings_screen.dart';
+import 'package:waylight_mobile/ui/settings/widgets/settings_area_screen.dart';
 
 import '../../testing/fakes/fake_device_auth.dart';
 import '../../testing/fakes/fake_preferences_repository.dart';
@@ -115,7 +115,8 @@ void main() {
       tester.view.devicePixelRatio = 1;
       addTearDown(tester.view.reset);
       await tester.pumpScreen(
-        SettingsScreen(
+        SettingsAreaScreen(
+          area: SettingsArea.phone,
           viewModel: SettingsViewModel(
             serverRepository: FakeServerRepository(current: testServer()),
             sessionRepository: FakeSessionRepository(signedIn: true),
