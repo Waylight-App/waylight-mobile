@@ -21,6 +21,7 @@ Future<void> main() async {
   await repositories.theme.restore(server: repositories.server.current);
   await repositories.todos.restore();
   await repositories.reminders.restore();
+  await repositories.kiosk.restore();
   // The app lock counts the time in the background (#46).
   AppLifecycleListener(
     onHide: repositories.lock.onHidden,
@@ -31,6 +32,7 @@ Future<void> main() async {
     repositories.server,
     repositories.session,
     lock: repositories.lock,
+    kiosk: repositories.kiosk,
   );
   // Coming back to the app may mean another network: check which server
   // address answers (#189). The listener lives as long as the app.

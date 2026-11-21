@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:waylight_mobile/data/repositories/kiosk/kiosk_repository.dart';
 import 'package:waylight_mobile/data/repositories/lock/app_lock_repository.dart';
 import 'package:waylight_mobile/data/repositories/server/server_repository.dart';
 import 'package:waylight_mobile/data/repositories/session/session_repository.dart';
@@ -14,7 +15,9 @@ import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/reminder_texts.dart';
 import 'package:waylight_mobile/ui/core/widgets/view_model_host.dart';
 import 'package:waylight_mobile/ui/dashboard/view_models/dashboard_view_model.dart';
+import 'package:waylight_mobile/ui/dashboard/view_models/kiosk_view_model.dart';
 import 'package:waylight_mobile/ui/dashboard/widgets/dashboard_screen.dart';
+import 'package:waylight_mobile/ui/dashboard/widgets/kiosk_screen.dart';
 import 'package:waylight_mobile/ui/home_widgets/home_widget_texts.dart';
 import 'package:waylight_mobile/ui/lock/view_models/lock_view_model.dart';
 import 'package:waylight_mobile/ui/lock/widgets/lock_screen.dart';
@@ -55,18 +58,21 @@ GoRouter createRouter(
   ServerRepository serverRepository,
   SessionRepository sessionRepository, {
   AppLockRepository? lock,
+  KioskRepository? kiosk,
 }) => GoRouter(
   initialLocation: Routes.home,
   refreshListenable: Listenable.merge([
     serverRepository,
     sessionRepository,
     ?lock,
+    ?kiosk,
   ]),
   redirect: (context, state) => redirectFor(
     uri: state.uri,
     connected: serverRepository.current != null,
     signedIn: sessionRepository.signedIn,
     locked: lock?.locked ?? false,
+    kiosk: kiosk?.active ?? false,
   ),
   routes: [
     GoRoute(
@@ -254,8 +260,23 @@ GoRouter createRouter(
       builder: (context, state) => ViewModelHost(
         create: (context) =>
             ConnectServerViewModel(serverRepository: context.read()),
+        builder: (context, viewModel) => ConnectServerScreen(
+          viewModel: viewModel,
+          onKiosk: kiosk?.enter,
+          kioskLink: state.uri.queryParameters['kiosk'] ?? '',
+        ),
+      ),
+    ),
+    GoRoute(
+      path: Routes.kiosk,
+      builder: (context, state) => ViewModelHost(
+        create: (context) => KioskViewModel(
+          servers: context.read(),
+          dashboard: context.read(),
+          kiosk: context.read(),
+        ),
         builder: (context, viewModel) =>
-            ConnectServerScreen(viewModel: viewModel),
+            KioskScreen(viewModel: viewModel, registry: nativeWidgets),
       ),
     ),
     GoRoute(
@@ -299,9 +320,23 @@ String? redirectFor({
   required bool connected,
   required bool signedIn,
   bool locked = false,
+  bool kiosk = false,
 }) {
   final link = routeOf(uri);
   if (!Routes.all.contains(link.path)) return Routes.home;
+  // A wall display shows nothing but its tabs (#193).
+  if (kiosk && connected && signedIn) {
+    return link.path == Routes.kiosk && link == uri ? null : Routes.kiosk;
+  }
+  if (link.path == Routes.kiosk) {
+    // waylight://kiosk?link=… opens the connect screen with the link.
+    final kioskLink = link.queryParameters['link'];
+    if (kioskLink == null || kioskLink.isEmpty) return Routes.home;
+    return Uri(
+      path: Routes.connect,
+      queryParameters: {'kiosk': kioskLink},
+    ).toString();
+  }
   // The app lock comes first: nothing shows until it is unlocked (#46).
   if (locked) {
     if (link.path == Routes.locked) return link == uri ? null : link.toString();

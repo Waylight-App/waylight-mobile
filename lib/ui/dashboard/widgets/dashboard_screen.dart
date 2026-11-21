@@ -76,7 +76,7 @@ class DashboardScreen extends StatelessWidget {
           _ => TabBarView(
             children: [
               for (final tab in tabs)
-                _TabPage(
+                TabPage(
                   tab: tab,
                   registry: registry,
                   webUrl: viewModel.webUrl(tab.id),
@@ -193,16 +193,29 @@ class DashboardScreen extends StatelessWidget {
   }
 }
 
-class _TabPage extends StatelessWidget {
-  const _TabPage({
+/// The widgets of one tab, as on the dashboard; with [readOnly] (the wall
+/// display, #193) tapping a widget opens nothing.
+class TabPage extends StatelessWidget {
+  /// Creates the page of [tab].
+  const TabPage({
     required this.tab,
     required this.registry,
     this.webUrl,
     this.onArrange,
+    this.readOnly = false,
+    super.key,
   });
 
+  /// Shows widgets without opening them in full.
+  final bool readOnly;
+
+  /// The tab to show.
   final DashboardTab tab;
+
+  /// Builds the native views of the widgets.
   final WidgetRegistry registry;
+
+  /// The tab in the web interface, for widgets without a native view.
   final Uri? webUrl;
 
   /// Opens the edit mode; `null` for tabs the account may not change.
@@ -267,7 +280,9 @@ class _TabPage extends StatelessWidget {
             ],
             columns: gridColumns,
             builder: _card,
-            onOpen: (widget) => _open(context, widget),
+            onOpen: (widget) {
+              if (!readOnly) _open(context, widget);
+            },
             onArrange: onArrange,
           ),
         );

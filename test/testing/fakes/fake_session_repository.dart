@@ -59,6 +59,22 @@ class FakeSessionRepository extends SessionRepository {
     return pairResult;
   }
 
+  /// What [signInKiosk] returns; signed in by default.
+  Result<void> kioskResult = const Result.ok(null);
+
+  /// The tokens [signInKiosk] was called with.
+  final List<String> kioskCalls = [];
+
+  @override
+  Future<Result<void>> signInKiosk(ServerAddress server, String token) async {
+    kioskCalls.add(token);
+    if (kioskResult case Ok()) {
+      signedIn = true;
+      notifyListeners();
+    }
+    return kioskResult;
+  }
+
   /// Whether the server offers the browser sign-in.
   bool browserSupported = false;
 

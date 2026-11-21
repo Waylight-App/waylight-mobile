@@ -3229,6 +3229,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Break'**
   String get focusBreak;
+
+  /// Connect screen button and dialog title.
+  ///
+  /// In en, this message translates to:
+  /// **'Use as wall display'**
+  String get kioskUse;
+
+  /// Dialog text.
+  ///
+  /// In en, this message translates to:
+  /// **'Paste the link of a kiosk display from the web interface (Settings → Accounts → Kiosk displays).'**
+  String get kioskUseHint;
+
+  /// Starts the wall display.
+  ///
+  /// In en, this message translates to:
+  /// **'Start'**
+  String get kioskStart;
+
+  /// Error.
+  ///
+  /// In en, this message translates to:
+  /// **'This is not a kiosk link. It looks like https://…/kiosk#…'**
+  String get kioskLinkInvalid;
+
+  /// Error.
+  ///
+  /// In en, this message translates to:
+  /// **'The server does not know this link any more. Create a new one in the web interface.'**
+  String get kioskLinkRejected;
+
+  /// Error.
+  ///
+  /// In en, this message translates to:
+  /// **'The wall display could not start. Is the server reachable?'**
+  String get kioskLinkFailed;
+
+  /// Kiosk without tabs.
+  ///
+  /// In en, this message translates to:
+  /// **'No tabs for this display.'**
+  String get kioskNoTabs;
+
+  /// Tooltip of the leave control.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave wall display (hold)'**
+  String get kioskLeave;
+
+  /// Device credential prompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm to leave the wall display'**
+  String get kioskLeaveReason;
 }
 
 class _AppLocalizationsDelegate

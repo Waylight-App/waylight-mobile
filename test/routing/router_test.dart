@@ -8,6 +8,7 @@ import 'package:waylight_mobile/data/repositories/appearance/theme_repository.da
 import 'package:waylight_mobile/data/repositories/diagnostics/diagnostics_repository.dart';
 import 'package:waylight_mobile/data/repositories/focus/focus_timer_repository.dart';
 import 'package:waylight_mobile/data/repositories/home_widgets/home_widgets_repository.dart';
+import 'package:waylight_mobile/data/repositories/kiosk/kiosk_repository.dart';
 import 'package:waylight_mobile/data/repositories/lock/app_lock_repository.dart';
 import 'package:waylight_mobile/data/repositories/offline/offline_repository.dart';
 import 'package:waylight_mobile/data/repositories/reminders/reminder_repository.dart';
@@ -106,6 +107,17 @@ void main() {
           lock: AppLockRepository(
             auth: FakeDeviceAuth(),
             store: InMemoryKeyValueStore(),
+          ),
+          kiosk: KioskRepository(
+            servers: servers,
+            sessions: sessions,
+            api: ModuleApi(
+              ApiClient(
+                client: MockClient((_) async => http.Response('', 404)),
+              ),
+            ),
+            store: InMemoryKeyValueStore(),
+            auth: FakeDeviceAuth(),
           ),
           logs: FakeLogStore(),
           reminders: ReminderRepository(

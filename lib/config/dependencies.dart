@@ -24,6 +24,7 @@ import 'package:waylight_mobile/data/repositories/focus/focus_timer_repository.d
 import 'package:waylight_mobile/data/repositories/habits/habits_repository.dart';
 import 'package:waylight_mobile/data/repositories/habits/habits_repository_remote.dart';
 import 'package:waylight_mobile/data/repositories/home_widgets/home_widgets_repository.dart';
+import 'package:waylight_mobile/data/repositories/kiosk/kiosk_repository.dart';
 import 'package:waylight_mobile/data/repositories/lock/app_lock_repository.dart';
 import 'package:waylight_mobile/data/repositories/notes/notes_repository.dart';
 import 'package:waylight_mobile/data/repositories/notes/notes_repository_remote.dart';
@@ -71,6 +72,7 @@ import 'package:waylight_mobile/data/services/api/waste_api.dart';
 import 'package:waylight_mobile/data/services/api/weather_api.dart';
 import 'package:waylight_mobile/data/services/cache/response_cache.dart';
 import 'package:waylight_mobile/data/services/device/device_info.dart';
+import 'package:waylight_mobile/data/services/device/wall_display.dart';
 import 'package:waylight_mobile/data/services/focus/focus_timer_service.dart';
 import 'package:waylight_mobile/data/services/home_widgets/home_widget_store.dart';
 import 'package:waylight_mobile/data/services/logging/log_store.dart';
@@ -118,6 +120,7 @@ typedef Repositories = ({
   OfflineRepository offline,
   SearchRepository search,
   AppLockRepository lock,
+  KioskRepository kiosk,
 });
 
 /// The services and repositories of the app: the composition root.
@@ -160,6 +163,7 @@ List<SingleChildWidget> providers(Repositories repositories) => [
   Provider<DiagnosticsRepository>.value(value: repositories.diagnostics),
   Provider<SearchRepository>.value(value: repositories.search),
   ChangeNotifierProvider<AppLockRepository>.value(value: repositories.lock),
+  ChangeNotifierProvider<KioskRepository>.value(value: repositories.kiosk),
   ChangeNotifierProvider<PreferencesRepository>.value(
     value: repositories.preferences,
   ),
@@ -229,23 +233,33 @@ Repositories createRepositories() {
       '${(await getApplicationSupportDirectory()).path}/diagnostics.log',
     ),
   );
+  final session = SessionRepositoryRemote(
+    authApi: AuthApi(client),
+    credentials: credentials,
+    store: store,
+    deviceName: deviceName(),
+    cache: cache,
+    onForget: [
+      reminders.clear,
+      todos.clear,
+      theme.clear,
+      homeWidgets.clear,
+      dashboard.clear,
+      logs.clear,
+    ],
+  );
+  final lock = AppLockRepository(auth: LocalDeviceAuth(), store: store);
+  final kiosk = KioskRepository(
+    servers: server,
+    sessions: session,
+    api: modules,
+    store: store,
+    auth: LocalDeviceAuth(),
+    display: const PlatformWallDisplay(),
+  );
   return (
     server: server,
-    session: SessionRepositoryRemote(
-      authApi: AuthApi(client),
-      credentials: credentials,
-      store: store,
-      deviceName: deviceName(),
-      cache: cache,
-      onForget: [
-        reminders.clear,
-        todos.clear,
-        theme.clear,
-        homeWidgets.clear,
-        dashboard.clear,
-        logs.clear,
-      ],
-    ),
+    session: session,
     dashboard: dashboard,
     weather: WeatherRepositoryRemote(api: WeatherApi(client)),
     todos: todos,
@@ -291,6 +305,7 @@ Repositories createRepositories() {
     preferences: PreferencesRepositoryLocal(store: store),
     offline: OfflineRepository(offline),
     search: SearchRepositoryRemote(api: SearchApi(client)),
-    lock: AppLockRepository(auth: LocalDeviceAuth(), store: store),
+    lock: lock,
+    kiosk: kiosk,
   );
 }

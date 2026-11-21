@@ -7,8 +7,9 @@ import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 
 /**
- * The device for diagnostic reports (`app.waylight/device`, #197): the
- * system version and model, and the system share sheet for the report.
+ * The device (`app.waylight/device`): system version and model and the
+ * share sheet for diagnostic reports (#197), and keeping the screen on for
+ * the wall display (#193).
  */
 class DeviceChannel(private val activity: Activity) {
     fun register(engine: FlutterEngine) {
@@ -25,6 +26,12 @@ class DeviceChannel(private val activity: Activity) {
                         putExtra(Intent.EXTRA_TEXT, text)
                     }
                     activity.startActivity(Intent.createChooser(send, null))
+                    result.success(null)
+                }
+                // The wall display keeps the screen on (#193).
+                "keepScreenOn" -> {
+                    val flag = android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+                    if (call.argument<Boolean>("on") == true) activity.window.addFlags(flag) else activity.window.clearFlags(flag)
                     result.success(null)
                 }
                 else -> result.notImplemented()

@@ -23,6 +23,7 @@ encrypted through the Waylight relay; no Google service is involved.
 | Your tabs and every widget of the web interface | ✅ | built locally |
 | To-dos, notes, smart search with answers, quick capture | ✅ | built locally |
 | Offline copy of the dashboard | ✅ | built locally |
+| Wall display for an old tablet, with a kiosk link from the server | ✅ | later |
 | Up to three server addresses, e.g. home network and on the go; the one that answers is used | ✅ | built locally |
 | Push notifications, end-to-end encrypted, without Google | ✅ | waits for the Apple account |
 | Reminders for to-dos, events and birthdays, shown by the phone itself, also offline | ✅ | later |

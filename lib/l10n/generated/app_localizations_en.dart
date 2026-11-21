@@ -1799,4 +1799,35 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get focusBreak => 'Break';
+
+  @override
+  String get kioskUse => 'Use as wall display';
+
+  @override
+  String get kioskUseHint =>
+      'Paste the link of a kiosk display from the web interface (Settings → Accounts → Kiosk displays).';
+
+  @override
+  String get kioskStart => 'Start';
+
+  @override
+  String get kioskLinkInvalid =>
+      'This is not a kiosk link. It looks like https://…/kiosk#…';
+
+  @override
+  String get kioskLinkRejected =>
+      'The server does not know this link any more. Create a new one in the web interface.';
+
+  @override
+  String get kioskLinkFailed =>
+      'The wall display could not start. Is the server reachable?';
+
+  @override
+  String get kioskNoTabs => 'No tabs for this display.';
+
+  @override
+  String get kioskLeave => 'Leave wall display (hold)';
+
+  @override
+  String get kioskLeaveReason => 'Confirm to leave the wall display';
 }
