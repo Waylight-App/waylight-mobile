@@ -1268,8 +1268,6 @@
   "@quickTileSmartHomeChoice": {"description": "Settings row."},
   "quickTileNoChoice": "Not chosen yet",
   "@quickTileNoChoice": {"description": "No device chosen."},
-  "quickTileNoDevices": "The server allows no device to be switched.",
-  "@quickTileNoDevices": {"description": "Empty device list."},
   "settingsAreaAccount": "Account & security",
   "@settingsAreaAccount": {"description": "Settings area."},
   "settingsAreaServer": "Server & connection",

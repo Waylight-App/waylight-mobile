@@ -2161,7 +2161,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get quickTileNoDevices =>
-      'The server allows no device to be switched.';
+      'No device may be switched. The owner chooses them in the web interface.';
 
   @override
   String get quickTilesTitle => 'Quick Settings tiles';

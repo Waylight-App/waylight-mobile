@@ -634,7 +634,6 @@
   "quickTilesHint": "Füge Waylights Kacheln in den Schnelleinstellungen des Handys hinzu: Aufgabe anlegen, Gerät schalten, Status setzen.",
   "quickTileSmartHomeChoice": "Gerät der Smart-Home-Kachel",
   "quickTileNoChoice": "Noch nicht gewählt",
-  "quickTileNoDevices": "Der Server erlaubt kein Gerät zum Schalten.",
   "settingsAreaAccount": "Konto & Sicherheit",
   "settingsAreaServer": "Server & Verbindung",
   "settingsAreaNotifications": "Benachrichtigungen & Erinnerungen",

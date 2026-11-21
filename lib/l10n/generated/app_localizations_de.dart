@@ -2166,7 +2166,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get quickTileNoDevices =>
-      'Der Server erlaubt kein Gerät zum Schalten.';
+      'Kein Gerät darf geschaltet werden. Der Besitzer wählt sie in der Weboberfläche aus.';
 
   @override
   String get quickTilesTitle => 'Schnelleinstellungen';

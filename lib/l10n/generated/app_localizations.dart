@@ -3872,10 +3872,10 @@ abstract class AppLocalizations {
   /// **'The tile now switches {name}.'**
   String quickTileChosen(String name);
 
-  /// Empty device list.
+  /// Device picker of the Quick Settings tile without devices.
   ///
   /// In en, this message translates to:
-  /// **'The server allows no device to be switched.'**
+  /// **'No device may be switched. The owner chooses them in the web interface.'**
   String get quickTileNoDevices;
 
   /// Settings section.
