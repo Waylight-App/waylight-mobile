@@ -139,7 +139,7 @@ class GlanceTileService : TileService() {
             return LayoutElementBuilders.Text.Builder()
                 .setText(value)
                 .setMaxLines(maxLines)
-                .setOverflow(LayoutElementBuilders.TEXT_OVERFLOW_ELLIPSIZE_END)
+                .setOverflow(LayoutElementBuilders.TEXT_OVERFLOW_ELLIPSIZE)
                 .setFontStyle(style.build())
                 .build()
         }
