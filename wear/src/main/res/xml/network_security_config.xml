@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Plain HTTP is allowed by the platform because Android cannot express IP
+     ranges here; the app itself only accepts http:// for private addresses
+     (ServerAddress.parse, ADR 0006). User-installed CAs are not trusted. -->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+</network-security-config>
