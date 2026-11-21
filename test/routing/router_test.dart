@@ -31,6 +31,7 @@ import '../testing/fakes/fake_announcements_repository.dart';
 import '../testing/fakes/fake_attention_repository.dart';
 import '../testing/fakes/fake_barcode_scanner.dart';
 import '../testing/fakes/fake_bookmarks_repository.dart';
+import '../testing/fakes/fake_compact_state_repository.dart';
 import '../testing/fakes/fake_dashboard_repository.dart';
 import '../testing/fakes/fake_device_auth.dart';
 import '../testing/fakes/fake_device_info.dart';
@@ -85,6 +86,7 @@ void main() {
           focus: FakeFocusRepository(),
           presence: FakePresenceRepository(),
           attention: FakeAttentionRepository(),
+          compact: FakeCompactStateRepository(),
           quickTiles: QuickTilesRepository(
             smartHome: FakeSmartHomeRepository(),
             presence: FakePresenceRepository(),
