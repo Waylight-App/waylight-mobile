@@ -7,14 +7,18 @@ import 'package:waylight_mobile/domain/models/api_exception.dart';
 import 'package:waylight_mobile/domain/models/compact_state.dart';
 import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/ui/core/widget_size_scope.dart';
+import 'package:waylight_mobile/ui/widgets/adguard/adguard_widget.dart';
 import 'package:waylight_mobile/ui/widgets/backups/backups_widget.dart';
 import 'package:waylight_mobile/ui/widgets/calendar/calendar_widget.dart';
 import 'package:waylight_mobile/ui/widgets/diskhealth/diskhealth_widget.dart';
 import 'package:waylight_mobile/ui/widgets/docker/docker_widget.dart';
+import 'package:waylight_mobile/ui/widgets/electricity/electricity_widget.dart';
 import 'package:waylight_mobile/ui/widgets/parcels/parcels_widget.dart';
+import 'package:waylight_mobile/ui/widgets/proxmox/proxmox_widget.dart';
 import 'package:waylight_mobile/ui/widgets/services/services_widget.dart';
 import 'package:waylight_mobile/ui/widgets/smarthome/smarthome_widget.dart';
 import 'package:waylight_mobile/ui/widgets/speedtest/speedtest_widget.dart';
+import 'package:waylight_mobile/ui/widgets/wireguard/wireguard_widget.dart';
 import 'package:waylight_mobile/utils/result.dart';
 
 import '../../../testing/fakes/fake_compact_state_repository.dart';
@@ -24,7 +28,7 @@ import '../../../testing/pump_app.dart';
 typedef _Builder = Widget Function(BuildContext, WidgetPlacement);
 
 /// Small and strip tiles of the status widgets show the server's compact
-/// state (#274) and fit their tile.
+/// state (#274, #278) and fit their tile.
 void main() {
   const smallTile = Size(150, 150);
   const stripTile = Size(328, 70);
@@ -45,6 +49,21 @@ void main() {
       {
         'entities': ['light.desk'],
       },
+    ),
+    // Waylight-App/waylight#650 (#278).
+    ('proxmox', ProxmoxWidget.forPlacement, 'Proxmox VE', {}),
+    (
+      'adguard',
+      AdguardWidget.forPlacement,
+      'DNS filter',
+      {'provider': 'pihole'},
+    ),
+    ('wireguard', WireguardWidget.forPlacement, 'WireGuard', {}),
+    (
+      'electricity',
+      ElectricityWidget.forPlacement,
+      'Electricity',
+      {'zone': 'AT'},
     ),
   ];
 

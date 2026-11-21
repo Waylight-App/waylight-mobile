@@ -82,6 +82,12 @@ object ServerTexts {
         "srv_f571f5204b6ac82d" to R.string.srv_parcels_today,
         "srv_a61c7e4a9008bf06" to R.string.srv_speedtest_none,
         "srv_91cee62ab90d375e" to R.string.srv_speedtest_unreachable,
+        "srv_4f02e7bfc777a185" to R.string.srv_proxmox_running,
+        "srv_310b2c277042df51" to R.string.srv_proxmox_unreachable,
+        "srv_d0a400a5e85d849b" to R.string.srv_proxmox_nodes_offline,
+        "srv_d94ddd59412dba1f" to R.string.srv_wireguard_connected,
+        "srv_79255c3da312af57" to R.string.srv_wireguard_none,
+        "srv_a7f77e98c90729a9" to R.string.srv_wireguard_outdated,
     )
 
     /** [text] in the watch's language. */
