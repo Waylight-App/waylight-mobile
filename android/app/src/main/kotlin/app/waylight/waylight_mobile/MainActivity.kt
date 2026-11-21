@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import app.waylight.waylight_mobile.home.HomeWidgetChannel
 import app.waylight.waylight_mobile.push.PushChannel
+import app.waylight.waylight_mobile.reminders.ReminderChannel
 import io.flutter.embedding.android.FlutterFragmentActivity
 import io.flutter.embedding.engine.FlutterEngine
 
@@ -14,6 +15,7 @@ class MainActivity : FlutterFragmentActivity() {
     // The push channel exists in both flavours (ADR 0008); only the store
     // flavour's one talks to Firebase.
     private val push = PushChannel(this)
+    private val reminders = ReminderChannel(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         intent = asShareLink(intent)
@@ -27,6 +29,7 @@ class MainActivity : FlutterFragmentActivity() {
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
         push.register(flutterEngine)
+        reminders.register(flutterEngine)
         NetworkChannel.register(applicationContext, flutterEngine)
         DeviceChannel(this).register(flutterEngine)
         ColorsChannel.register(applicationContext, flutterEngine)
@@ -40,6 +43,7 @@ class MainActivity : FlutterFragmentActivity() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         push.onPermissionResult(requestCode, grantResults)
+        reminders.onPermissionResult(requestCode, grantResults)
     }
 }
 

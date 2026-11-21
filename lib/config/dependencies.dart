@@ -31,6 +31,7 @@ import 'package:waylight_mobile/data/repositories/preferences/preferences_reposi
 import 'package:waylight_mobile/data/repositories/preferences/preferences_repository_local.dart';
 import 'package:waylight_mobile/data/repositories/push/push_repository.dart';
 import 'package:waylight_mobile/data/repositories/push/push_repository_remote.dart';
+import 'package:waylight_mobile/data/repositories/reminders/reminder_repository.dart';
 import 'package:waylight_mobile/data/repositories/search/search_repository.dart';
 import 'package:waylight_mobile/data/repositories/search/search_repository_remote.dart';
 import 'package:waylight_mobile/data/repositories/server/address_selector.dart';
@@ -75,6 +76,7 @@ import 'package:waylight_mobile/data/services/network/network_changes.dart';
 import 'package:waylight_mobile/data/services/platform/device_auth.dart';
 import 'package:waylight_mobile/data/services/platform/device_name.dart';
 import 'package:waylight_mobile/data/services/push/push_device.dart';
+import 'package:waylight_mobile/data/services/reminders/reminder_scheduler.dart';
 import 'package:waylight_mobile/data/services/storage/key_value_store.dart';
 import 'package:waylight_mobile/data/services/system_colors/system_colors.dart';
 
@@ -106,6 +108,7 @@ typedef Repositories = ({
   ThemeRepository theme,
   SummaryRepository summary,
   HomeWidgetsRepository homeWidgets,
+  ReminderRepository reminders,
   LogStore logs,
   DiagnosticsRepository diagnostics,
   PreferencesRepository preferences,
@@ -145,6 +148,9 @@ List<SingleChildWidget> providers(Repositories repositories) => [
   ChangeNotifierProvider<ThemeRepository>.value(value: repositories.theme),
   Provider<SummaryRepository>.value(value: repositories.summary),
   Provider<HomeWidgetsRepository>.value(value: repositories.homeWidgets),
+  ChangeNotifierProvider<ReminderRepository>.value(
+    value: repositories.reminders,
+  ),
   Provider<DiagnosticsRepository>.value(value: repositories.diagnostics),
   Provider<SearchRepository>.value(value: repositories.search),
   ChangeNotifierProvider<AppLockRepository>.value(value: repositories.lock),
@@ -205,6 +211,12 @@ Repositories createRepositories() {
     store: MethodChannelHomeWidgetStore(),
   );
   final widgetData = WidgetDataRepositoryRemote(api: modules);
+  final reminders = ReminderRepository(
+    scheduler: const MethodChannelReminderScheduler(),
+    store: store,
+    todos: todos,
+    data: widgetData,
+  );
   final logs = FileLogStore(
     () async => File(
       '${(await getApplicationSupportDirectory()).path}/diagnostics.log',
@@ -219,6 +231,7 @@ Repositories createRepositories() {
       deviceName: deviceName(),
       cache: cache,
       onForget: [
+        reminders.clear,
         todos.clear,
         theme.clear,
         homeWidgets.clear,
@@ -254,6 +267,7 @@ Repositories createRepositories() {
     theme: theme,
     summary: SummaryRepositoryRemote(api: modules),
     homeWidgets: homeWidgets,
+    reminders: reminders,
     logs: logs,
     diagnostics: DiagnosticsRepository(
       logs: logs,

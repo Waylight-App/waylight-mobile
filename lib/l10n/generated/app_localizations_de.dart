@@ -1733,4 +1733,56 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get addressAdd => 'Adresse hinzufügen';
+
+  @override
+  String get reminderTodoBody => 'Heute fällig';
+
+  @override
+  String get reminderEventAllDay => 'Heute ganztägig';
+
+  @override
+  String reminderEventAt(String time, int minutes) {
+    return 'Um $time, in $minutes Min.';
+  }
+
+  @override
+  String reminderBirthdayTitle(String name) {
+    return '$name hat Geburtstag';
+  }
+
+  @override
+  String reminderBirthdayAge(int age) {
+    return 'Wird heute $age';
+  }
+
+  @override
+  String get reminderBirthdayBody => 'Geburtstag heute';
+
+  @override
+  String get settingsReminders => 'Erinnerungen auf diesem Handy';
+
+  @override
+  String get settingsRemindersHint =>
+      'Zeigt das Handy selbst an, auch offline. Wird aktualisiert, sobald die App das Dashboard lädt.';
+
+  @override
+  String get settingsReminderTodos => 'Aufgaben am Fälligkeitstag um 8:00';
+
+  @override
+  String get settingsReminderEvents => 'Termine';
+
+  @override
+  String get settingsReminderEventsOff => 'Aus';
+
+  @override
+  String settingsReminderMinutes(int minutes) {
+    return '$minutes Min. vorher';
+  }
+
+  @override
+  String get settingsReminderBirthdays => 'Geburtstage um 8:00';
+
+  @override
+  String get settingsReminderDenied =>
+      'Benachrichtigungen für Waylight sind in den Systemeinstellungen ausgeschaltet.';
 }

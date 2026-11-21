@@ -25,6 +25,7 @@ encrypted through the Waylight relay; no Google service is involved.
 | Offline copy of the dashboard | ✅ | built locally |
 | Up to three server addresses, e.g. home network and on the go; the one that answers is used | ✅ | built locally |
 | Push notifications, end-to-end encrypted, without Google | ✅ | waits for the Apple account |
+| Reminders for to-dos, events and birthdays, shown by the phone itself, also offline | ✅ | later |
 | Home screen widgets, share sheet, background refresh | ✅ | waits for the Apple account |
 | Store release | later | later |
 

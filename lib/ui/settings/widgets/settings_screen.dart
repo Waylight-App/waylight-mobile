@@ -4,6 +4,7 @@ import 'package:waylight_mobile/data/repositories/lock/app_lock_repository.dart'
 import 'package:waylight_mobile/data/repositories/push/push_repository.dart';
 import 'package:waylight_mobile/domain/models/address_check.dart';
 import 'package:waylight_mobile/domain/models/appearance.dart';
+import 'package:waylight_mobile/domain/models/reminder.dart';
 import 'package:waylight_mobile/domain/models/server_address.dart';
 import 'package:waylight_mobile/routing/routes.dart';
 import 'package:waylight_mobile/ui/core/address_errors.dart';
@@ -199,6 +200,10 @@ class SettingsScreen extends StatelessWidget {
                 ],
               ),
             ),
+            if (viewModel.remindersAvailable) ...[
+              const SizedBox(height: Dimens.gap),
+              _Reminders(viewModel: viewModel),
+            ],
             if (viewModel.pushAvailable) ...[
               const SizedBox(height: Dimens.gap),
               SectionCard(
@@ -610,6 +615,77 @@ class _AddAddressDialogState extends State<_AddAddressDialog> {
           child: Text(material.okButtonLabel),
         ),
       ],
+    );
+  }
+}
+
+/// Reminders the phone shows by itself (#190).
+class _Reminders extends StatelessWidget {
+  const _Reminders({required this.viewModel});
+
+  final SettingsViewModel viewModel;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final r = viewModel.reminders;
+    return SectionCard(
+      title: l10n.settingsReminders,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            l10n.settingsRemindersHint,
+            style: Theme.of(context).textTheme.bodySmall,
+          ),
+          if (viewModel.remindersDenied)
+            Padding(
+              padding: const EdgeInsets.only(top: Dimens.gapSmall),
+              child: Text(
+                l10n.settingsReminderDenied,
+                style: TextStyle(color: Theme.of(context).colorScheme.error),
+              ),
+            ),
+          SwitchListTile(
+            key: const ValueKey('settings.reminderTodos'),
+            contentPadding: EdgeInsets.zero,
+            title: Text(l10n.settingsReminderTodos),
+            value: r.todos,
+            onChanged: (v) =>
+                viewModel.setReminders(r.copyWith(todos: v)).ignore(),
+          ),
+          SwitchListTile(
+            key: const ValueKey('settings.reminderBirthdays'),
+            contentPadding: EdgeInsets.zero,
+            title: Text(l10n.settingsReminderBirthdays),
+            value: r.birthdays,
+            onChanged: (v) =>
+                viewModel.setReminders(r.copyWith(birthdays: v)).ignore(),
+          ),
+          ListTile(
+            contentPadding: EdgeInsets.zero,
+            title: Text(l10n.settingsReminderEvents),
+            trailing: DropdownButton<int>(
+              key: const ValueKey('settings.reminderEvents'),
+              value: r.eventMinutes,
+              items: [
+                DropdownMenuItem(
+                  value: 0,
+                  child: Text(l10n.settingsReminderEventsOff),
+                ),
+                for (final m in ReminderSettings.eventChoices)
+                  DropdownMenuItem(
+                    value: m,
+                    child: Text(l10n.settingsReminderMinutes(m)),
+                  ),
+              ],
+              onChanged: (v) => viewModel
+                  .setReminders(r.copyWith(eventMinutes: v ?? 0))
+                  .ignore(),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

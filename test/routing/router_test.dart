@@ -9,6 +9,7 @@ import 'package:waylight_mobile/data/repositories/diagnostics/diagnostics_reposi
 import 'package:waylight_mobile/data/repositories/home_widgets/home_widgets_repository.dart';
 import 'package:waylight_mobile/data/repositories/lock/app_lock_repository.dart';
 import 'package:waylight_mobile/data/repositories/offline/offline_repository.dart';
+import 'package:waylight_mobile/data/repositories/reminders/reminder_repository.dart';
 import 'package:waylight_mobile/data/repositories/todos/todos_repository_outbox.dart';
 import 'package:waylight_mobile/data/services/api/api_client.dart';
 import 'package:waylight_mobile/data/services/api/module_api.dart';
@@ -29,6 +30,7 @@ import '../testing/fakes/fake_home_widget_store.dart';
 import '../testing/fakes/fake_log_store.dart';
 import '../testing/fakes/fake_notes_repository.dart';
 import '../testing/fakes/fake_preferences_repository.dart';
+import '../testing/fakes/fake_reminder_scheduler.dart';
 import '../testing/fakes/fake_search_repository.dart';
 import '../testing/fakes/fake_server_repository.dart';
 import '../testing/fakes/fake_session_repository.dart';
@@ -99,6 +101,12 @@ void main() {
             store: InMemoryKeyValueStore(),
           ),
           logs: FakeLogStore(),
+          reminders: ReminderRepository(
+            scheduler: FakeReminderScheduler(),
+            store: InMemoryKeyValueStore(),
+            todos: FakeTodosRepository(),
+            data: FakeWidgetDataRepository(),
+          ),
           diagnostics: DiagnosticsRepository(
             logs: FakeLogStore(),
             device: FakeDeviceInfo(),

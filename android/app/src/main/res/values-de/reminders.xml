@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Notification channels of the reminders on the device (#190). -->
+<resources>
+    <string name="reminders_channel_todos">Erinnerungen an Aufgaben</string>
+    <string name="reminders_channel_events">Erinnerungen an Termine</string>
+    <string name="reminders_channel_birthdays">Erinnerungen an Geburtstage</string>
+</resources>

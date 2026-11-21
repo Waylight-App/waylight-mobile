@@ -11,6 +11,7 @@ import 'package:waylight_mobile/ui/auth_callback/widgets/auth_callback_screen.da
 import 'package:waylight_mobile/ui/connect_server/view_models/connect_server_view_model.dart';
 import 'package:waylight_mobile/ui/connect_server/widgets/connect_server_screen.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
+import 'package:waylight_mobile/ui/core/reminder_texts.dart';
 import 'package:waylight_mobile/ui/core/widgets/view_model_host.dart';
 import 'package:waylight_mobile/ui/dashboard/view_models/dashboard_view_model.dart';
 import 'package:waylight_mobile/ui/dashboard/widgets/dashboard_screen.dart';
@@ -76,6 +77,8 @@ GoRouter createRouter(
           themeRepository: context.read(),
           homeWidgetsRepository: context.read(),
           homeWidgetFormatter: HomeWidgetTexts(context.l10n),
+          reminderRepository: context.read(),
+          reminderFormatter: ReminderTexts(context.l10n),
           initialTabId: state.uri.queryParameters['tab'] ?? '',
           initialWidgetKind: state.uri.queryParameters['widget'] ?? '',
           serverRepository: context.read(),
@@ -97,7 +100,8 @@ GoRouter createRouter(
           lockRepository: context.read(),
           diagnosticsRepository: context.read(),
           themeRepository: context.read(),
-        ),
+          reminderRepository: context.read(),
+        )..reminderFormatter = ReminderTexts(context.l10n),
         builder: (context, viewModel) => SettingsScreen(viewModel: viewModel),
       ),
     ),

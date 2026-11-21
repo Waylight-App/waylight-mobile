@@ -4,9 +4,11 @@ import 'package:waylight_mobile/data/repositories/dashboard/dashboard_repository
 import 'package:waylight_mobile/data/repositories/home_widgets/home_widgets_repository.dart';
 import 'package:waylight_mobile/data/repositories/offline/offline_repository.dart';
 import 'package:waylight_mobile/data/repositories/push/push_repository.dart';
+import 'package:waylight_mobile/data/repositories/reminders/reminder_repository.dart';
 import 'package:waylight_mobile/data/repositories/server/server_repository.dart';
 import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/domain/models/home_snapshot.dart';
+import 'package:waylight_mobile/domain/models/reminder.dart';
 import 'package:waylight_mobile/ui/dashboard/view_models/arrange_view_model.dart';
 import 'package:waylight_mobile/utils/command.dart';
 import 'package:waylight_mobile/utils/result.dart';
@@ -24,10 +26,13 @@ class DashboardViewModel extends ChangeNotifier {
     ThemeRepository? themeRepository,
     HomeWidgetsRepository? homeWidgetsRepository,
     this._homeWidgetFormatter,
+    ReminderRepository? reminderRepository,
+    this._reminderFormatter,
   }) : _offline = offlineRepository,
        _push = pushRepository,
        _theme = themeRepository,
-       _homeWidgets = homeWidgetsRepository {
+       _homeWidgets = homeWidgetsRepository,
+       _reminders = reminderRepository {
     _offline?.addListener(notifyListeners);
     load = Command0(_load)..execute().ignore();
     _loadDemo().ignore();
@@ -40,6 +45,8 @@ class DashboardViewModel extends ChangeNotifier {
   final ThemeRepository? _theme;
   final HomeWidgetsRepository? _homeWidgets;
   final HomeWidgetFormatter? _homeWidgetFormatter;
+  final ReminderRepository? _reminders;
+  final ReminderFormatter? _reminderFormatter;
   bool _pushRefreshed = false;
 
   /// When the server cannot be reached: the time of the stored data shown.
@@ -142,6 +149,15 @@ class DashboardViewModel extends ChangeNotifier {
       final format?,
     )) {
       widgets.refresh(server, format: format, dashboard: value).ignore();
+    }
+    // Reminders on the device follow the loaded data (#190); the repository
+    // limits how often it reloads.
+    if ((result, _reminders, _reminderFormatter) case (
+      Ok(),
+      final reminders?,
+      final format?,
+    )) {
+      reminders.reschedule(server, format).ignore();
     }
     return result;
   }
