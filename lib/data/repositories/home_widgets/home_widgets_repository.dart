@@ -118,7 +118,10 @@ class HomeWidgetsRepository {
   /// otherwise or on error, so the card shows its lines only.
   Future<CompactState?> _serverState(ServerAddress server, String kind) async {
     final compact = _compact;
-    if (compact == null || !compact.supports(kind)) return null;
+    if (compact == null) return null;
+    // The background refresh starts without the module list (#274).
+    await compact.load(server, reuse: true);
+    if (!compact.supports(kind)) return null;
     return switch (await compact.state(server, kind)) {
       Ok(:final value) => value,
       Error() => null,

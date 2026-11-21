@@ -82,7 +82,7 @@ class CompactStateWidget extends StatelessWidget {
     final compact = context.read<CompactStateRepository?>();
     if (compact == null ||
         !isCompact(WidgetSizeScope.maybeOf(context)) ||
-        !compact.supports(widget.kind)) {
+        !compact.supports(widget.kind, config: widget.config)) {
       return full();
     }
     return CompactStateWidget(

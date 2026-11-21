@@ -19,6 +19,7 @@ import 'package:waylight_mobile/ui/home_widgets/home_widget_texts.dart';
 import 'package:waylight_mobile/utils/result.dart';
 
 import '../../testing/fakes/fake_attention_repository.dart';
+import '../../testing/fakes/fake_compact_state_repository.dart';
 import '../../testing/fakes/fake_dashboard_repository.dart';
 import '../../testing/fakes/fake_home_widget_store.dart';
 import '../../testing/fakes/fake_link_opener.dart';
@@ -561,6 +562,19 @@ void main() {
     await pumpEventQueue();
     expect(store.scheduled, isTrue);
     expect(store.cards.keys, containsAll(HomeWidgetKind.values));
+  });
+
+  test('every load reads the modules with a compact state (#274)', () async {
+    final compact = FakeCompactStateRepository();
+    final vm = DashboardViewModel(
+      serverRepository: servers,
+      dashboardRepository: dashboards,
+      compactRepository: compact,
+    );
+    addTearDown(vm.dispose);
+    await vm.load.execute();
+    expect(compact.loaded, isNotEmpty);
+    expect(compact.loaded.toSet(), {testServer()});
   });
 }
 
