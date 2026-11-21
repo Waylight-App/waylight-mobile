@@ -12,6 +12,7 @@ import 'package:waylight_mobile/ui/core/widget_registry.dart';
 import 'package:waylight_mobile/ui/core/widget_size_scope.dart';
 import 'package:waylight_mobile/ui/dashboard/view_models/dashboard_view_model.dart';
 import 'package:waylight_mobile/ui/dashboard/widgets/dashboard_screen.dart';
+import 'package:waylight_mobile/ui/dashboard/widgets/widget_detail_sheet.dart';
 import 'package:waylight_mobile/ui/dashboard/widgets/widget_full_screen.dart';
 import 'package:waylight_mobile/ui/dashboard/widgets/widget_grid.dart';
 import 'package:waylight_mobile/ui/home_widgets/home_widget_texts.dart';
@@ -401,8 +402,10 @@ void main() {
       expect(created, 1);
     });
 
-    testWidgets('opens a widget in full on tap and goes back', (tester) async {
-      dashboards.result = Result.ok(sized({'w0': WidgetSize.small}));
+    testWidgets('opens a medium widget in full on tap and goes back', (
+      tester,
+    ) async {
+      dashboards.result = Result.ok(sized({'w0': WidgetSize.medium}));
       await pump(tester);
 
       await tester.tap(find.byKey(const ValueKey('grid.w0')));
@@ -421,6 +424,90 @@ void main() {
       await tester.pageBack();
       await tester.pumpAndSettle();
       expect(find.byType(WidgetFullScreen), findsNothing);
+    });
+
+    testWidgets('small and strip tiles open a detail sheet (#226)', (
+      tester,
+    ) async {
+      registry = WidgetRegistry({
+        'kind0': (context, widget) => Text(
+          WidgetSizeScope.maybeOf(context) == null ? 'full w0' : 'tile w0',
+        ),
+        'kind1': (context, widget) => const Text('strip w1'),
+      });
+      dashboards.result = Result.ok(
+        sized({'w0': WidgetSize.small, 'w1': WidgetSize.strip}),
+      );
+      await pump(tester);
+
+      await tester.tap(find.byKey(const ValueKey('grid.w0')));
+      await tester.pumpAndSettle();
+      final sheet = find.byType(WidgetDetailSheet);
+      expect(sheet, findsOneWidget);
+      expect(find.byType(WidgetFullScreen), findsNothing);
+      expect(
+        find.descendant(of: sheet, matching: find.text('full w0')),
+        findsOneWidget,
+        reason: 'the sheet shows the full view',
+      );
+      expect(
+        find.descendant(of: sheet, matching: find.text('Kind0')),
+        findsOneWidget,
+      );
+
+      // Back closes the sheet.
+      await tester.binding.handlePopRoute();
+      await tester.pumpAndSettle();
+      expect(sheet, findsNothing);
+
+      await tester.tap(find.byKey(const ValueKey('grid.w1')));
+      await tester.pumpAndSettle();
+      expect(sheet, findsOneWidget);
+      // Swiping down closes it as well.
+      await tester.fling(
+        find.byKey(const ValueKey('widgetDetailSheet')),
+        const Offset(0, 800),
+        2000,
+      );
+      await tester.pumpAndSettle();
+      expect(sheet, findsNothing);
+    });
+
+    testWidgets('screen readers hear that small tiles open details', (
+      tester,
+    ) async {
+      final handle = tester.ensureSemantics();
+      dashboards.result = Result.ok(
+        sized({'w0': WidgetSize.small, 'w1': WidgetSize.medium}),
+      );
+      await pump(tester);
+
+      expect(
+        tester.getSemantics(find.byKey(const ValueKey('grid.w0'))),
+        matchesSemantics(
+          label: 'Kind0',
+          isButton: true,
+          hasTapAction: true,
+          onTapHint: l10nEn.dashboardOpenDetails,
+        ),
+      );
+      handle.dispose();
+    });
+
+    testWidgets('the wall display opens nothing', (tester) async {
+      dashboards.result = Result.ok(sized({'w0': WidgetSize.small}));
+      await tester.pumpScreen(
+        TabPage(
+          tab: sized({'w0': WidgetSize.small}).tabs.single,
+          registry: registry,
+          readOnly: true,
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byKey(const ValueKey('grid.w0')));
+      await tester.pumpAndSettle();
+      expect(find.byType(WidgetDetailSheet), findsNothing);
     });
 
     testWidgets('uses eight columns on tablets', (tester) async {

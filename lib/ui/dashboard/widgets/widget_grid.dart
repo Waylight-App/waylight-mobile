@@ -4,6 +4,7 @@ import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
 import 'package:waylight_mobile/ui/core/widget_size_scope.dart';
+import 'package:waylight_mobile/ui/core/widgets/compact_card.dart';
 import 'package:waylight_mobile/ui/core/widgets/sized_grid.dart';
 
 /// Builds the view of one widget on the dashboard.
@@ -157,11 +158,16 @@ class WidgetTileState extends State<WidgetTile> {
         ),
       ),
     );
+    final l10n = context.l10n;
     return Semantics(
       container: true,
+      button: true,
       label: widget.title,
       onTap: widget.onOpen,
-      onTapHint: context.l10n.dashboardOpenWidget,
+      // Small tiles open a detail sheet (#226), larger ones the full view.
+      onTapHint: isCompact(widget.size)
+          ? l10n.dashboardOpenDetails
+          : l10n.dashboardOpenWidget,
       child: GestureDetector(
         // Buttons inside the widget win their taps; the rest of the tile
         // opens the widget in full.

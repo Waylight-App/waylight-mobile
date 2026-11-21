@@ -8,6 +8,7 @@ import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/refresh.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
 import 'package:waylight_mobile/ui/core/widget_registry.dart';
+import 'package:waylight_mobile/ui/core/widgets/compact_card.dart';
 import 'package:waylight_mobile/ui/core/widgets/form_page.dart';
 import 'package:waylight_mobile/ui/core/widgets/message_banner.dart';
 import 'package:waylight_mobile/ui/core/widgets/sized_grid.dart';
@@ -17,6 +18,7 @@ import 'package:waylight_mobile/ui/dashboard/view_models/arrange_view_model.dart
 import 'package:waylight_mobile/ui/dashboard/view_models/dashboard_view_model.dart';
 import 'package:waylight_mobile/ui/dashboard/widgets/arrange_view.dart';
 import 'package:waylight_mobile/ui/dashboard/widgets/widget_card.dart';
+import 'package:waylight_mobile/ui/dashboard/widgets/widget_detail_sheet.dart';
 import 'package:waylight_mobile/ui/dashboard/widgets/widget_full_screen.dart';
 import 'package:waylight_mobile/ui/dashboard/widgets/widget_grid.dart';
 import 'package:waylight_mobile/utils/command.dart';
@@ -256,6 +258,21 @@ class TabPage extends StatelessWidget {
         : builder(context, widget);
   }
 
+  /// Small and strip tiles open the widget in a sheet over the dashboard
+  /// (#226); larger tiles open it full screen.
+  void _openTile(BuildContext context, WidgetPlacement widget) {
+    if (readOnly) return;
+    if (isCompact(tab.sizes[widget.id])) {
+      WidgetDetailSheet.show(
+        context,
+        placement: widget,
+        child: _card(context, widget),
+      ).ignore();
+    } else {
+      _open(context, widget);
+    }
+  }
+
   void _open(BuildContext context, WidgetPlacement widget) {
     Navigator.of(context)
         .push(
@@ -300,9 +317,7 @@ class TabPage extends StatelessWidget {
             ],
             columns: gridColumns,
             builder: _card,
-            onOpen: (widget) {
-              if (!readOnly) _open(context, widget);
-            },
+            onOpen: (widget) => _openTile(context, widget),
             onArrange: onArrange,
           ),
         );

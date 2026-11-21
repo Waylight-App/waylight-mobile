@@ -2978,6 +2978,18 @@ abstract class AppLocalizations {
   /// **'open in full'**
   String get dashboardOpenWidget;
 
+  /// Screen reader hint for a small dashboard tile: tapping opens a detail sheet.
+  ///
+  /// In en, this message translates to:
+  /// **'open details'**
+  String get dashboardOpenDetails;
+
+  /// Tooltip of the quick action on a small focus tile.
+  ///
+  /// In en, this message translates to:
+  /// **'Start focus'**
+  String get focusStartFocus;
+
   /// Size of a dashboard widget: full width at its natural height.
   ///
   /// In en, this message translates to:

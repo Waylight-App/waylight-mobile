@@ -1621,6 +1621,12 @@ class AppLocalizationsDe extends AppLocalizations {
   String get dashboardOpenWidget => 'in voller Größe öffnen';
 
   @override
+  String get dashboardOpenDetails => 'Details öffnen';
+
+  @override
+  String get focusStartFocus => 'Fokus starten';
+
+  @override
   String get widgetSizeFull => 'Volle Breite';
 
   @override

@@ -48,6 +48,15 @@ class PresenceWidget extends StatelessWidget {
       load: viewModel.load,
       // As often as the web widget, which refreshes every 30 seconds.
       interval: const Duration(seconds: 30),
+      compact: (context, _, size) => ErrorSnackListener(
+        listenable: viewModel,
+        takeError: viewModel.takeLastError,
+        child: ListenableBuilder(
+          listenable: viewModel,
+          builder: (context, _) =>
+              _QuickStatus(viewModel: viewModel, size: size),
+        ),
+      ),
       builder: (context, _) => ErrorSnackListener(
         listenable: viewModel,
         takeError: viewModel.takeLastError,
@@ -156,6 +165,82 @@ class _Board extends StatelessWidget {
           ),
           style: Theme.of(context).textTheme.bodySmall,
         ),
+      ],
+    );
+  }
+}
+
+/// My status in a small or strip tile (#226): three buttons that set it
+/// with one tap; guests and kiosk displays, who cannot set one, see the
+/// counts instead. Away is set without a day of return here; the detail
+/// view asks for it.
+class _QuickStatus extends StatelessWidget {
+  const _QuickStatus({required this.viewModel, required this.size});
+
+  final PresenceViewModel viewModel;
+  final WidgetSize size;
+
+  static const _icons = {
+    PresenceStatus.office: Icons.business_outlined,
+    PresenceStatus.home: Icons.home_outlined,
+    PresenceStatus.away: Icons.flight_takeoff_outlined,
+  };
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    if (viewModel.off) return Text(l10n.presenceOff, maxLines: 2);
+    final board = viewModel.board;
+    if (board == null) return const SizedBox.shrink();
+    if (board.mine == null) {
+      final c = board.counts;
+      return Text(
+        l10n.presenceCounts(
+          c[PresenceStatus.office] ?? 0,
+          c[PresenceStatus.home] ?? 0,
+          c[PresenceStatus.away] ?? 0,
+          c[PresenceStatus.none] ?? 0,
+        ),
+        maxLines: 2,
+        overflow: TextOverflow.ellipsis,
+      );
+    }
+    final buttons = Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        for (final MapEntry(key: status, value: icon) in _icons.entries)
+          IconButton(
+            key: ValueKey('presence.quick.${status.name}'),
+            tooltip: presenceLabel(l10n, status),
+            isSelected: viewModel.mine == status,
+            icon: Icon(icon),
+            selectedIcon: Icon(icon),
+            style: IconButton.styleFrom(visualDensity: VisualDensity.compact),
+            onPressed: viewModel.canSet
+                ? () => viewModel.choose(status).ignore()
+                : null,
+          ),
+      ],
+    );
+    final mine = Text(
+      presenceLabel(l10n, viewModel.mine),
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+    );
+    if (size == WidgetSize.strip) {
+      return Row(
+        children: [
+          Expanded(child: mine),
+          buttons,
+        ],
+      );
+    }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        mine,
+        FittedBox(fit: BoxFit.scaleDown, child: buttons),
       ],
     );
   }
