@@ -2251,6 +2251,12 @@ class AppLocalizationsEn extends AppLocalizations {
       'Choose “Add another server” under Server & connection, then “Use as wall display” and paste the link of a kiosk display.';
 
   @override
+  String get deviceControlNoState => 'No state';
+
+  @override
+  String get deviceControlSignIn => 'Open Waylight to sign in';
+
+  @override
   String get absencePerson => 'Person';
 
   @override

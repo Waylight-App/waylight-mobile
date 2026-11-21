@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Android's device controls (#194). -->
+<resources>
+    <string name="device_controls_subtitle">Waylight</string>
+    <string name="device_controls_sign_in">Open Waylight to sign in</string>
+</resources>

@@ -82,6 +82,14 @@
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
             <intent-filter><action android:name="android.service.quicksettings.action.QS_TILE" /></intent-filter>
         </service>
+        <!-- The smart home in Android's device controls (#194, Android 11+).
+             Only the system may bind it (BIND_CONTROLS); the app asks for
+             no permission. -->
+        <service android:name=".controls.WaylightControlsService" android:exported="true"
+            android:label="@string/device_controls_subtitle"
+            android:permission="android.permission.BIND_CONTROLS">
+            <intent-filter><action android:name="android.service.controls.ControlsProviderService" /></intent-filter>
+        </service>
         <!-- The focus timer's alarm and notification buttons (#191). -->
         <receiver android:name=".focus.FocusReceiver" android:exported="false" />
         <!-- Shows reminders on the device when their alarm fires (#190). -->
