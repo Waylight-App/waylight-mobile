@@ -49,9 +49,12 @@ Open Waylight on the watch and choose one of the two ways.
 
 **Pair with phone.** The watch turns on Wi-Fi and shows a QR code. The
 phone app scans it and sends the server address and a fresh pairing code to
-the watch, encrypted with a key that only the QR code carries. The phone
-app does not offer this yet; it is planned in
-[#239](https://github.com/Waylight-App/waylight-mobile/issues/239).
+the watch, encrypted with a key that only the QR code carries. In the
+phone app, open *Settings → This phone → Pair a watch*, tap *Scan the
+watch's code*, check the address it found and tap *Pair this watch*. The
+phone sends the server address shown under *Settings → Server &
+connection*; a watch that should also work outside the home network needs
+an address it can reach from there.
 
 **Enter code.** Type the server address and a pairing code. An address in
 the home network without a scheme, such as `192.168.178.115:8090`, is taken

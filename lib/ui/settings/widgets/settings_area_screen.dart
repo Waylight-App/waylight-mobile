@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:waylight_mobile/data/repositories/lock/app_lock_repository.dart';
@@ -86,6 +87,8 @@ class SettingsAreaScreen extends StatelessWidget {
           text: context.l10n.settingsHomeWidgetsHint,
         ),
       if (viewModel.quickTilesAvailable) _QuickTiles(viewModel: viewModel),
+      // Watches are paired through the Android app only (#239, #185).
+      if (defaultTargetPlatform == TargetPlatform.android) const _PairWatch(),
       _Hint(
         title: context.l10n.kioskUse,
         text: context.l10n.settingsWallDisplayHint,
@@ -93,6 +96,28 @@ class SettingsAreaScreen extends StatelessWidget {
     ],
     SettingsArea.about => [_About(viewModel: viewModel)],
   };
+}
+
+/// Opens the pairing of a Wear OS watch (#239).
+class _PairWatch extends StatelessWidget {
+  const _PairWatch();
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    return SectionCard(
+      title: l10n.pairWatchTitle,
+      child: ListTile(
+        key: const ValueKey('settings.pairWatch'),
+        contentPadding: EdgeInsets.zero,
+        minTileHeight: Dimens.tapTarget,
+        leading: const Icon(Icons.watch),
+        title: Text(l10n.pairWatchEntry),
+        trailing: const Icon(Icons.chevron_right),
+        onTap: () => context.push(Routes.pairWatch),
+      ),
+    );
+  }
 }
 
 /// The scrolling frame of every settings screen; narrow enough on tablets
