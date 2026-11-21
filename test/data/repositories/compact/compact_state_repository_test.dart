@@ -9,9 +9,13 @@ import 'package:waylight_mobile/data/services/api/api_client.dart';
 import 'package:waylight_mobile/data/services/api/module_api.dart';
 import 'package:waylight_mobile/data/services/api/offline_status.dart';
 import 'package:waylight_mobile/domain/models/compact_state.dart';
+import 'package:waylight_mobile/domain/models/waste_collection.dart';
 import 'package:waylight_mobile/utils/result.dart';
 
 import '../../../testing/fakes/fake_server_repository.dart';
+import '../../../testing/fakes/fake_transit_repository.dart';
+import '../../../testing/fakes/fake_waste_repository.dart';
+import '../../../testing/fakes/fake_weather_repository.dart';
 import '../../../testing/fakes/in_memory_response_cache.dart';
 
 /// The compact state of a widget (#228), in the server's shape.
@@ -91,5 +95,93 @@ void main() {
       (offline as Ok<CompactState>).value.title.text,
       '3 open · 1 overdue',
     );
+  });
+
+  group('derived states (#242)', () {
+    late FakeWeatherRepository weather;
+    late FakeTransitRepository transit;
+    late FakeWasteRepository waste;
+    late CompactStateRepositoryRemote repo;
+
+    setUp(() {
+      weather = FakeWeatherRepository();
+      transit = FakeTransitRepository();
+      waste = FakeWasteRepository()
+        ..result = const Result.ok([
+          WasteCollection(label: 'Paper', dates: [], daysUntil: 1),
+        ]);
+      repo = CompactStateRepositoryRemote(
+        api: ModuleApi(
+          ApiClient(
+            client: MockClient((_) async => http.Response('', 500)),
+            cache: InMemoryResponseCache(),
+            offline: OfflineStatus(),
+          ),
+        ),
+        weather: weather,
+        transit: transit,
+        waste: waste,
+        clock: () => DateTime(2026, 11, 19, 10),
+      );
+    });
+
+    test('weather, transit and waste have one', () {
+      expect(repo.supports('weather'), isTrue);
+      expect(repo.supports('transit'), isTrue);
+      expect(repo.supports('waste'), isTrue);
+      expect(repo.supports('clock'), isFalse);
+    });
+
+    test('weather reads the configured place', () async {
+      final state = await repo.state(
+        testServer(),
+        'weather',
+        config: {'lat': 53.1, 'lon': 8.2},
+      );
+      expect(weather.calls.single, (53.1, 8.2));
+      expect(
+        (state as Ok<CompactState>).value.title.text,
+        '14 °C, feels like 13 °C',
+      );
+    });
+
+    test('transit reads the configured stop', () async {
+      final state = await repo.state(
+        testServer(),
+        'transit',
+        config: {'stopId': 'de:1'},
+      );
+      expect(transit.calls.single, (
+        'de:1',
+        CompactStateRepositoryRemote.departureCount,
+      ));
+      expect((state as Ok<CompactState>).value.title.text, 'No departures');
+    });
+
+    test('waste reads the next collection', () async {
+      final state = await repo.state(testServer(), 'waste');
+      expect((state as Ok<CompactState>).value.level, CompactLevel.attention);
+    });
+
+    test('a missing place or stop is an error without a request', () async {
+      expect(
+        (await repo.state(testServer(), 'weather') as Error).error,
+        isA<CompactConfigMissing>(),
+      );
+      expect(
+        (await repo.state(testServer(), 'transit') as Error).error,
+        isA<CompactConfigMissing>(),
+      );
+      expect(weather.calls, isEmpty);
+      expect(transit.calls, isEmpty);
+    });
+
+    test('a failed read passes the error on', () async {
+      waste.result = const Result.error(CompactConfigMissing());
+      expect(
+        await repo.state(testServer(), 'waste'),
+        isA<Error<CompactState>>(),
+      );
+    });
   });
 }

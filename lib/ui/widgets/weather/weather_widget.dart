@@ -11,6 +11,8 @@ import 'package:waylight_mobile/ui/core/themes/dimens.dart';
 import 'package:waylight_mobile/ui/core/widgets/choice_search_sheet.dart';
 import 'package:waylight_mobile/ui/core/widgets/view_model_host.dart';
 import 'package:waylight_mobile/ui/core/widgets/widget_frame.dart';
+import 'package:waylight_mobile/ui/core/widgets/widget_preview.dart';
+import 'package:waylight_mobile/ui/widgets/weather/weather_example.dart';
 import 'package:waylight_mobile/ui/widgets/weather/weather_extras.dart';
 import 'package:waylight_mobile/ui/widgets/weather/weather_view_model.dart';
 import 'package:waylight_mobile/utils/result.dart';
@@ -26,6 +28,18 @@ class WeatherWidget extends StatelessWidget {
   /// The builder for the widget registry.
   static Widget forPlacement(BuildContext context, WidgetPlacement widget) =>
       WeatherWidget(widget: widget, key: ValueKey(widget.id));
+
+  /// The gallery preview from example data (#251); the extras (warnings,
+  /// pollen) need a place and stay out.
+  static Widget preview(BuildContext context, String title, WidgetSize size) {
+    final weather = exampleWeather(DateTime.now());
+    return WidgetPreview(
+      title: title,
+      size: size,
+      compact: (context) => _WeatherCompact(weather: weather, size: size),
+      full: (context) => _WeatherContent(weather: weather),
+    );
+  }
 
   /// Lets the user search a place and stores it on the widget (#230).
   static Future<void> _choosePlace(

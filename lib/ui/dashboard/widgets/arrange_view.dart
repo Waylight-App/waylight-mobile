@@ -483,15 +483,19 @@ class SizeSheet extends StatelessWidget {
 /// The widget kinds the server offers, to add one to the tab (#210,
 /// docs/design: *Add a widget*).
 class WidgetGallerySheet extends StatefulWidget {
-  const WidgetGallerySheet._({required this.viewModel});
+  const WidgetGallerySheet._({required this.viewModel, required this.registry});
 
   /// The edit mode the widgets are added to.
   final ArrangeViewModel viewModel;
+
+  /// The native views, whose previews the gallery shows (#251).
+  final WidgetRegistry registry;
 
   /// Shows the gallery for the tab of [viewModel].
   static Future<void> show(
     BuildContext context, {
     required ArrangeViewModel viewModel,
+    required WidgetRegistry registry,
   }) {
     if (viewModel.kinds.result is! Ok<List<String>>) {
       viewModel.kinds.execute().ignore();
@@ -500,7 +504,8 @@ class WidgetGallerySheet extends StatefulWidget {
       context: context,
       showDragHandle: true,
       isScrollControlled: true,
-      builder: (context) => WidgetGallerySheet._(viewModel: viewModel),
+      builder: (context) =>
+          WidgetGallerySheet._(viewModel: viewModel, registry: registry),
     );
   }
 
@@ -582,6 +587,7 @@ class _WidgetGallerySheetState extends State<WidgetGallerySheet> {
     ];
     if (shown.isEmpty) return Text(l10n.galleryEmpty);
     final busy = widget.viewModel.add.running;
+    final registry = widget.registry;
     return ListView.builder(
       itemCount: shown.length,
       itemBuilder: (context, i) {
@@ -613,6 +619,9 @@ class _WidgetGallerySheetState extends State<WidgetGallerySheet> {
                       key: ValueKey('gallery.add.$kind.${size.name}'),
                       title: title,
                       size: size,
+                      preview: registry
+                          .previewFor(kind)
+                          ?.call(context, title, size),
                       onTap: busy ? null : () => _add(kind, size).ignore(),
                     ),
                 ],
@@ -629,17 +638,27 @@ class _WidgetGallerySheetState extends State<WidgetGallerySheet> {
 }
 
 /// A small picture of a widget in one size, for the gallery (#227): the
-/// tile's shape on the phone grid with the widget's title and example
-/// lines, and the size's name below. Tapping it adds the widget in that
-/// size.
+/// widget's real view from example data (#251) scaled down to the tile's
+/// shape on the phone grid, or for widgets without example data the
+/// widget's title and placeholder lines; the size's name below. Tapping
+/// it adds the widget in that size.
 class SizePreview extends StatelessWidget {
   /// Creates the preview of the widget [title] in [size].
   const SizePreview({
     required this.title,
     required this.size,
     required this.onTap,
+    this.preview,
     super.key,
   });
+
+  /// The widget's view from example data, drawn at the size of a phone
+  /// tile and scaled down; `null` draws placeholder lines.
+  final Widget? preview;
+
+  /// The side of one grid cell on a phone, at which [preview] is laid out
+  /// before it is scaled down to [cell].
+  static const phoneCell = 88.0;
 
   /// The widget's title.
   final String title;
@@ -653,6 +672,39 @@ class SizePreview extends StatelessWidget {
   /// The side of one grid cell in the preview; a large tile is four cells
   /// wide, so four previews fit next to each other on a phone.
   static const cell = 18.0;
+
+  /// [preview] laid out as on a phone and scaled down to the tile; it
+  /// takes no taps, so a tap anywhere adds the widget.
+  Widget _scaled(Widget preview) {
+    final height = size.rows * phoneCell;
+    return SizedBox(
+      width: size.columns * cell,
+      height: size.rows * cell,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(Dimens.radiusSmall),
+        child: FittedBox(
+          alignment: AlignmentDirectional.topStart,
+          child: SizedBox(
+            width: size.columns * phoneCell,
+            height: height,
+            // AbsorbPointer, not IgnorePointer: the tap still reaches the
+            // InkWell around the preview, but nothing inside reacts.
+            child: AbsorbPointer(
+              // Taller content is cut at the tile's edge, as on the grid.
+              child: SingleChildScrollView(
+                physics: const NeverScrollableScrollPhysics(),
+                primary: false,
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(minHeight: height),
+                  child: preview,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -680,48 +732,51 @@ class SizePreview extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Container(
-                  width: size.columns * cell,
-                  height: size.rows * cell,
-                  padding: const EdgeInsets.all(Dimens.gapTiny),
-                  decoration: BoxDecoration(
-                    color: scheme.surfaceContainerHighest,
-                    borderRadius: BorderRadius.circular(Dimens.radiusSmall),
-                  ),
-                  // Clipped instead of overflowing: a strip is lower than
-                  // a line of text plus its padding.
-                  child: ClipRect(
-                    child: OverflowBox(
-                      alignment: AlignmentDirectional.topStart,
-                      maxHeight: double.infinity,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            title,
-                            maxLines: 1,
-                            overflow: TextOverflow.clip,
-                            style: theme.textTheme.labelSmall?.copyWith(
-                              height: 1,
-                            ),
-                          ),
-                          for (var i = 0; i < lines; i++)
-                            Container(
-                              margin: const EdgeInsets.only(
-                                top: Dimens.gapTiny,
+                if (preview case final preview?)
+                  _scaled(preview)
+                else
+                  Container(
+                    width: size.columns * cell,
+                    height: size.rows * cell,
+                    padding: const EdgeInsets.all(Dimens.gapTiny),
+                    decoration: BoxDecoration(
+                      color: scheme.surfaceContainerHighest,
+                      borderRadius: BorderRadius.circular(Dimens.radiusSmall),
+                    ),
+                    // Clipped instead of overflowing: a strip is lower than
+                    // a line of text plus its padding.
+                    child: ClipRect(
+                      child: OverflowBox(
+                        alignment: AlignmentDirectional.topStart,
+                        maxHeight: double.infinity,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              title,
+                              maxLines: 1,
+                              overflow: TextOverflow.clip,
+                              style: theme.textTheme.labelSmall?.copyWith(
+                                height: 1,
                               ),
-                              width:
-                                  (size.columns * cell) *
-                                  (i.isEven ? 0.7 : 0.5),
-                              height: Dimens.gapTiny,
-                              color: scheme.outlineVariant,
                             ),
-                        ],
+                            for (var i = 0; i < lines; i++)
+                              Container(
+                                margin: const EdgeInsets.only(
+                                  top: Dimens.gapTiny,
+                                ),
+                                width:
+                                    (size.columns * cell) *
+                                    (i.isEven ? 0.7 : 0.5),
+                                height: Dimens.gapTiny,
+                                color: scheme.outlineVariant,
+                              ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
                 const SizedBox(height: Dimens.gapTiny),
                 Text(name, style: theme.textTheme.labelSmall),
               ],

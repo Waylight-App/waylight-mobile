@@ -2,5 +2,7 @@
 <resources>
     <color name="home_widget_background">#1B2238</color>
     <color name="home_widget_text">#F5EEDC</color>
+    <color name="home_widget_attention">#F2B84B</color>
+    <color name="home_widget_problem">#F2B8B5</color>
     <color name="home_widget_muted">#B8AE96</color>
 </resources>

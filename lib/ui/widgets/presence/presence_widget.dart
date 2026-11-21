@@ -7,7 +7,9 @@ import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
 import 'package:waylight_mobile/ui/core/widgets/view_model_host.dart';
 import 'package:waylight_mobile/ui/core/widgets/widget_frame.dart';
+import 'package:waylight_mobile/ui/core/widgets/widget_preview.dart';
 import 'package:waylight_mobile/ui/widgets/common/error_snack_listener.dart';
+import 'package:waylight_mobile/ui/widgets/presence/presence_example.dart';
 import 'package:waylight_mobile/ui/widgets/presence/presence_view_model.dart';
 
 /// The words for a status, as on the server's widget.
@@ -18,6 +20,12 @@ String presenceLabel(AppLocalizations l10n, PresenceStatus s) => switch (s) {
   PresenceStatus.away => l10n.presenceAway,
   PresenceStatus.none => l10n.presenceNone,
 };
+
+/// Sets the viewer's status, with the day of return for away.
+typedef ChooseStatus = Future<void> Function(
+  PresenceStatus status, {
+  DateTime? returnOn,
+});
 
 /// The native view of the presence widget (#200).
 class PresenceWidget extends StatelessWidget {
@@ -30,6 +38,26 @@ class PresenceWidget extends StatelessWidget {
   /// The builder for the widget registry.
   static Widget forPlacement(BuildContext context, WidgetPlacement widget) =>
       PresenceWidget(widget: widget, key: ValueKey(widget.id));
+
+  /// The gallery preview from example data (#251).
+  static Widget preview(BuildContext context, String title, WidgetSize size) {
+    final board = examplePresence(DateTime.now());
+    final mine = board.mine!.status;
+    Future<void> choose(PresenceStatus _, {DateTime? returnOn}) async {}
+    return WidgetPreview(
+      title: title,
+      size: size,
+      compact: (context) => _QuickStatus(
+        board: board,
+        mine: mine,
+        canSet: true,
+        choose: choose,
+        size: size,
+      ),
+      full: (context) =>
+          _Board(board: board, mine: mine, canSet: true, choose: choose),
+    );
+  }
 
   @override
   Widget build(BuildContext context) => ViewModelHost(
@@ -53,8 +81,14 @@ class PresenceWidget extends StatelessWidget {
         takeError: viewModel.takeLastError,
         child: ListenableBuilder(
           listenable: viewModel,
-          builder: (context, _) =>
-              _QuickStatus(viewModel: viewModel, size: size),
+          builder: (context, _) => _QuickStatus(
+            board: viewModel.board,
+            off: viewModel.off,
+            mine: viewModel.mine,
+            canSet: viewModel.canSet,
+            choose: viewModel.choose,
+            size: size,
+          ),
         ),
       ),
       builder: (context, _) => ErrorSnackListener(
@@ -62,7 +96,13 @@ class PresenceWidget extends StatelessWidget {
         takeError: viewModel.takeLastError,
         child: ListenableBuilder(
           listenable: viewModel,
-          builder: (context, _) => _Board(viewModel: viewModel),
+          builder: (context, _) => _Board(
+            board: viewModel.board,
+            off: viewModel.off,
+            mine: viewModel.mine,
+            canSet: viewModel.canSet,
+            choose: viewModel.choose,
+          ),
         ),
       ),
     ),
@@ -70,17 +110,27 @@ class PresenceWidget extends StatelessWidget {
 }
 
 class _Board extends StatelessWidget {
-  const _Board({required this.viewModel});
+  const _Board({
+    required this.board,
+    required this.mine,
+    required this.canSet,
+    required this.choose,
+    this.off = false,
+  });
 
-  final PresenceViewModel viewModel;
+  final PresenceBoard? board;
+  final bool off;
+  final PresenceStatus mine;
+  final bool canSet;
+  final ChooseStatus choose;
 
   String _day(BuildContext context, DateTime d) =>
       MaterialLocalizations.of(context).formatShortMonthDay(d);
 
   Future<void> _away(BuildContext context) async {
     // Choosing Away again clears it; no date is asked then.
-    if (viewModel.mine == PresenceStatus.away) {
-      return viewModel.choose(PresenceStatus.away);
+    if (mine == PresenceStatus.away) {
+      return choose(PresenceStatus.away);
     }
     final now = DateTime.now();
     final back = await showDatePicker(
@@ -90,14 +140,14 @@ class _Board extends StatelessWidget {
       lastDate: now.add(const Duration(days: 365)),
     );
     // Cancelling the date still sets Away, without a day of return.
-    await viewModel.choose(PresenceStatus.away, returnOn: back);
+    await choose(PresenceStatus.away, returnOn: back);
   }
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    if (viewModel.off) return Text(l10n.presenceOff);
-    final board = viewModel.board;
+    if (off) return Text(l10n.presenceOff);
+    final board = this.board;
     if (board == null) return const SizedBox.shrink();
     final c = board.counts;
     return Column(
@@ -121,19 +171,15 @@ class _Board extends StatelessWidget {
               ])
                 ButtonSegment(value: s, label: Text(presenceLabel(l10n, s))),
             ],
-            selected: {
-              if (viewModel.mine != PresenceStatus.none) viewModel.mine,
-            },
-            onSelectionChanged: viewModel.canSet
+            selected: {if (mine != PresenceStatus.none) mine},
+            onSelectionChanged: canSet
                 ? (selection) {
                     // A tap on the active segment empties the selection.
-                    final tapped = selection.isEmpty
-                        ? viewModel.mine
-                        : selection.single;
+                    final tapped = selection.isEmpty ? mine : selection.single;
                     if (tapped == PresenceStatus.away) {
                       _away(context).ignore();
                     } else {
-                      viewModel.choose(tapped).ignore();
+                      choose(tapped).ignore();
                     }
                   }
                 : null,
@@ -175,9 +221,20 @@ class _Board extends StatelessWidget {
 /// counts instead. Away is set without a day of return here; the detail
 /// view asks for it.
 class _QuickStatus extends StatelessWidget {
-  const _QuickStatus({required this.viewModel, required this.size});
+  const _QuickStatus({
+    required this.board,
+    required this.mine,
+    required this.canSet,
+    required this.choose,
+    required this.size,
+    this.off = false,
+  });
 
-  final PresenceViewModel viewModel;
+  final PresenceBoard? board;
+  final bool off;
+  final PresenceStatus mine;
+  final bool canSet;
+  final ChooseStatus choose;
   final WidgetSize size;
 
   static const _icons = {
@@ -189,8 +246,8 @@ class _QuickStatus extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    if (viewModel.off) return Text(l10n.presenceOff, maxLines: 2);
-    final board = viewModel.board;
+    if (off) return Text(l10n.presenceOff, maxLines: 2);
+    final board = this.board;
     if (board == null) return const SizedBox.shrink();
     if (board.mine == null) {
       final c = board.counts;
@@ -212,25 +269,23 @@ class _QuickStatus extends StatelessWidget {
           IconButton(
             key: ValueKey('presence.quick.${status.name}'),
             tooltip: presenceLabel(l10n, status),
-            isSelected: viewModel.mine == status,
+            isSelected: mine == status,
             icon: Icon(icon),
             selectedIcon: Icon(icon),
             style: IconButton.styleFrom(visualDensity: VisualDensity.compact),
-            onPressed: viewModel.canSet
-                ? () => viewModel.choose(status).ignore()
-                : null,
+            onPressed: canSet ? () => choose(status).ignore() : null,
           ),
       ],
     );
-    final mine = Text(
-      presenceLabel(l10n, viewModel.mine),
+    final label = Text(
+      presenceLabel(l10n, mine),
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
     );
     if (size == WidgetSize.strip) {
       return Row(
         children: [
-          Expanded(child: mine),
+          Expanded(child: label),
           buttons,
         ],
       );
@@ -239,7 +294,7 @@ class _QuickStatus extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        mine,
+        label,
         FittedBox(fit: BoxFit.scaleDown, child: buttons),
       ],
     );

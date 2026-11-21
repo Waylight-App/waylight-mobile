@@ -1,7 +1,10 @@
+import 'package:waylight_mobile/data/repositories/compact/compact_state_repository.dart';
 import 'package:waylight_mobile/data/repositories/dashboard/dashboard_repository.dart';
 import 'package:waylight_mobile/data/repositories/todos/todos_repository.dart';
 import 'package:waylight_mobile/data/repositories/transit/transit_repository.dart';
 import 'package:waylight_mobile/data/services/home_widgets/home_widget_store.dart';
+import 'package:waylight_mobile/domain/models/compact_derived.dart';
+import 'package:waylight_mobile/domain/models/compact_state.dart';
 import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/domain/models/home_snapshot.dart';
 import 'package:waylight_mobile/domain/models/server_address.dart';
@@ -17,6 +20,7 @@ class HomeWidgetsRepository {
     required this._todos,
     required this._transit,
     required this._store,
+    this._compact,
     DateTime Function()? clock,
   }) : _clock = clock ?? DateTime.now;
 
@@ -24,6 +28,7 @@ class HomeWidgetsRepository {
   final TodosRepository _todos;
   final TransitRepository _transit;
   final HomeWidgetStore _store;
+  final CompactStateRepository? _compact;
   final DateTime Function() _clock;
   DateTime? _last;
 
@@ -49,7 +54,10 @@ class HomeWidgetsRepository {
     _last = now;
     var saved = false;
     if (await _today(server, now) case final today?) {
-      await _store.save(HomeWidgetKind.todos, format.todos(today, now));
+      await _store.save(
+        HomeWidgetKind.todos,
+        format.todos(today, now, compact: await _serverState(server, 'todos')),
+      );
       saved = true;
     }
     final board =
@@ -79,7 +87,12 @@ class HomeWidgetsRepository {
         case Ok(:final value)) {
       await _store.save(
         HomeWidgetKind.departures,
-        format.departures(name, value, now),
+        format.departures(
+          name,
+          value,
+          now,
+          compact: compactDepartures(value, now),
+        ),
       );
       saved = true;
     }
@@ -100,6 +113,17 @@ class HomeWidgetsRepository {
 
   /// Tells the native job that the background refresh has ended.
   Future<void> finishBackground() => _store.finished();
+
+  /// The compact state of [kind] when the server offers one (#242); `null`
+  /// otherwise or on error, so the card shows its lines only.
+  Future<CompactState?> _serverState(ServerAddress server, String kind) async {
+    final compact = _compact;
+    if (compact == null || !compact.supports(kind)) return null;
+    return switch (await compact.state(server, kind)) {
+      Ok(:final value) => value,
+      Error() => null,
+    };
+  }
 
   /// Open to-dos due today or overdue, at most [maxLines]; `null` on error.
   Future<List<Todo>?> _today(ServerAddress server, DateTime now) async {

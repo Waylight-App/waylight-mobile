@@ -3,6 +3,8 @@
 <resources>
     <color name="home_widget_background">#FFF3D6</color>
     <color name="home_widget_text">#1A1206</color>
+    <color name="home_widget_attention">#8A5A00</color>
+    <color name="home_widget_problem">#B3261E</color>
     <color name="home_widget_muted">#6B5A3A</color>
     <string name="home_widget_open_app">Open Waylight once to show your data here.</string>
     <string name="home_widget_todos">Waylight: to-dos today</string>

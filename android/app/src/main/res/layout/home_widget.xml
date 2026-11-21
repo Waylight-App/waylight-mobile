@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- One card of the home screen widgets (#42): title, entries, age. -->
+<!-- One card of the home screen widgets (#42): title, compact state line (#242), entries, age. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/root"
     android:layout_width="match_parent"
@@ -16,6 +16,16 @@
         android:textColor="@color/home_widget_text"
         android:textSize="15sp"
         android:textStyle="bold" />
+    <TextView
+        android:id="@+id/summary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/home_widget_muted"
+        android:textSize="13sp"
+        android:visibility="gone" />
     <TextView
         android:id="@+id/body"
         android:layout_width="match_parent"
