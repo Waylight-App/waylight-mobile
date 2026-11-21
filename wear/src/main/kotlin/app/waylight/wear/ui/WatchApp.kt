@@ -37,7 +37,7 @@ fun WatchApp(viewModel: WatchViewModel = viewModel()) {
                         onPairWithPhone = { nav.navigate(Routes.PAIR_QR) },
                         onPairManually = { nav.navigate(Routes.PAIR_MANUAL) },
                     )
-                    is AppState.Paired -> PairedScreen(state.session, onSignOut = viewModel::signOut)
+                    is AppState.Paired -> PairedScreen(viewModel, state.session)
                 }
             }
             composable(Routes.PAIR_QR) { QrPairingScreen(viewModel) }

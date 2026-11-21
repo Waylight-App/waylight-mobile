@@ -12,6 +12,10 @@ import app.waylight.wear.data.ServerAddress
 import app.waylight.wear.data.Session
 import app.waylight.wear.data.SessionStore
 import app.waylight.wear.data.WaylightApi
+import app.waylight.wear.glances.GlanceStore
+import app.waylight.wear.glances.Refresh
+import app.waylight.wear.glances.RefreshResult
+import app.waylight.wear.glances.Snapshot
 import app.waylight.wear.pairing.HandoverKey
 import app.waylight.wear.pairing.HandoverServer
 import app.waylight.wear.pairing.wifiAddress
@@ -76,13 +80,61 @@ class WatchViewModel(application: Application) : AndroidViewModel(application) {
     private val _manual = MutableStateFlow(ManualState())
     val manual: StateFlow<ManualState> = _manual.asStateFlow()
 
+    private val glances = GlanceStore(application)
+
+    private val _snapshot = MutableStateFlow<Snapshot?>(null)
+
+    /** The last glances; `null` until the first refresh after pairing. */
+    val snapshot: StateFlow<Snapshot?> = _snapshot.asStateFlow()
+
+    private val _refreshing = MutableStateFlow(false)
+    val refreshing: StateFlow<Boolean> = _refreshing.asStateFlow()
+
+    private val _offline = MutableStateFlow(false)
+
+    /** Whether the last refresh could not reach the server. */
+    val offline: StateFlow<Boolean> = _offline.asStateFlow()
+
     private var handover: Job? = null
 
     init {
         viewModelScope.launch {
             val session = withContext(Dispatchers.IO) { store.load() }
-            _app.value = if (session == null) AppState.Unpaired else AppState.Paired(session)
+            if (session == null) {
+                _app.value = AppState.Unpaired
+            } else {
+                _snapshot.value = withContext(Dispatchers.IO) { glances.load() }
+                _app.value = AppState.Paired(session)
+                Refresh.schedule(getApplication())
+            }
         }
+    }
+
+    /** Fetches the glances now, unless a refresh is running. */
+    fun refresh() {
+        if (_refreshing.value || _app.value !is AppState.Paired) return
+        _refreshing.value = true
+        viewModelScope.launch {
+            val result = withContext(Dispatchers.IO) { Refresh.run(getApplication()) }
+            when (result) {
+                RefreshResult.UPDATED -> {
+                    _snapshot.value = withContext(Dispatchers.IO) { glances.load() }
+                    _offline.value = false
+                }
+                RefreshResult.OFFLINE -> _offline.value = true
+                RefreshResult.SIGNED_OUT -> {
+                    _snapshot.value = null
+                    _app.value = AppState.Unpaired
+                }
+            }
+            _refreshing.value = false
+        }
+    }
+
+    /** Refreshes when the glances are missing or older than a quarter of an hour. */
+    fun refreshIfStale() {
+        val fetchedAt = _snapshot.value?.fetchedAt ?: 0L
+        if (System.currentTimeMillis() - fetchedAt > Refresh.STALE_AFTER_MS) refresh()
     }
 
     /**
@@ -159,13 +211,14 @@ class WatchViewModel(application: Application) : AndroidViewModel(application) {
     fun signOut() {
         val state = _app.value as? AppState.Paired ?: return
         _app.value = AppState.Unpaired
+        _snapshot.value = null
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 WaylightApi(state.session.server, state.session.token).logout()
             } catch (e: IOException) {
                 // Offline: see above.
             }
-            store.clear()
+            Refresh.signOutLocally(getApplication())
         }
     }
 
@@ -182,7 +235,10 @@ class WatchViewModel(application: Application) : AndroidViewModel(application) {
         }
         val session = Session(server, token)
         store.save(session)
+        Refresh.schedule(getApplication())
         _app.value = AppState.Paired(session)
+        // The first glances come right away instead of with the periodic job.
+        viewModelScope.launch { refresh() }
         return Outcome.PAIRED
     }
 
