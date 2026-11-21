@@ -264,6 +264,9 @@ void main() {
   group('edit mode on the dashboard (#209)', () {
     late FakeDashboardRepository dashboards;
     late DashboardViewModel viewModel;
+    TabTagWriter? writeTabTag;
+
+    setUp(() => writeTabTag = null);
 
     Future<void> pumpDashboard(
       WidgetTester tester, {
@@ -285,6 +288,7 @@ void main() {
             child: DashboardScreen(
               viewModel: viewModel,
               registry: const WidgetRegistry({}),
+              writeTabTag: writeTabTag,
             ),
           ),
         ),
@@ -443,6 +447,30 @@ void main() {
 
       expect(dashboards.reset, ['t']);
       expect(viewModel.arranging, isNull);
+    });
+
+    testWidgets('writes an NFC tag for the tab from the menu (#260)', (
+      tester,
+    ) async {
+      final written = <(String, String)>[];
+      writeTabTag = (context, id, name) async => written.add((id, name));
+      await edit(tester);
+
+      await tester.tap(find.byKey(const ValueKey('editTab.more')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.byKey(const ValueKey('editTab.tag')));
+      await tester.pumpAndSettle();
+
+      expect(written.single.$1, 't');
+    });
+
+    testWidgets('offers no tag where the phone cannot write one', (
+      tester,
+    ) async {
+      await edit(tester);
+      await tester.tap(find.byKey(const ValueKey('editTab.more')));
+      await tester.pumpAndSettle();
+      expect(find.byKey(const ValueKey('editTab.tag')), findsNothing);
     });
 
     testWidgets('asks before leaving with changes', (tester) async {

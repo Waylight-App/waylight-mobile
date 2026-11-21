@@ -27,6 +27,7 @@ void main() {
         SmartHomeTag('light.hall'),
         SmartHomeTag('light.hall', ask: false),
         ShoppingTag('Coffee'),
+        TabTag('t1'),
       ]) {
         final link = action.link;
         expect(link.scheme, 'waylight');
@@ -44,6 +45,7 @@ void main() {
       expect(TagAction.parse({'do': 'habit'}), isNull);
       expect(TagAction.parse({'do': 'shop', 'text': '  '}), isNull);
       expect(TagAction.parse({'do': 'rm', 'id': 'x'}), isNull);
+      expect(TagAction.parse({'do': 'tab'}), isNull);
     });
   });
 
@@ -140,6 +142,69 @@ void main() {
       redirectFor(uri: link, connected: true, signedIn: true),
       '${Routes.tag}?do=habit&id=h1',
     );
+  });
+
+  group('a tab tag (#260)', () {
+    test('writes the link of the tab', () {
+      expect(const TabTag('t1').link.toString(), 'waylight://tag?do=tab&id=t1');
+    });
+
+    test('opens the tab after the sign-in and the app lock', () {
+      final link = Uri.parse('waylight://tag?do=tab&id=t1');
+      expect(
+        redirectFor(uri: link, connected: true, signedIn: false),
+        '/sign-in?from=%2F%3Ftab%3Dt1',
+      );
+      expect(
+        redirectFor(uri: link, connected: true, signedIn: true, locked: true),
+        '/locked?from=%2F%3Ftab%3Dt1',
+      );
+      expect(
+        redirectFor(uri: link, connected: true, signedIn: true),
+        '/?tab=t1',
+      );
+      // After the sign-in, the dashboard opens on the tab.
+      expect(
+        redirectFor(
+          uri: Uri.parse('/sign-in?from=%2F%3Ftab%3Dt1'),
+          connected: true,
+          signedIn: true,
+        ),
+        '/?tab=t1',
+      );
+    });
+
+    test('a link without a tab opens the dashboard', () {
+      expect(
+        redirectFor(
+          uri: Uri.parse('waylight://tag?do=tab&id=%20'),
+          connected: true,
+          signedIn: true,
+        ),
+        Routes.home,
+      );
+    });
+
+    testWidgets('writes the tag from the sheet', (tester) async {
+      final writer = FakeNfcWriter();
+      await tester.pumpScreen(
+        Provider<NfcRepository>.value(
+          value: NfcRepository(writer: writer),
+          child: Builder(
+            builder: (context) => TextButton(
+              onPressed: () => writeTabTag(context, 't1', 'Home'),
+              child: const Text('open'),
+            ),
+          ),
+        ),
+      );
+      await tester.tap(find.text('open'));
+      await tester.pumpAndSettle();
+      expect(find.text('Home'), findsOneWidget);
+      await tester.tap(find.byKey(const ValueKey('tag.write')));
+      await tester.pumpAndSettle();
+      expect(writer.written.single.toString(), 'waylight://tag?do=tab&id=t1');
+    });
   });
 
   group('writing a tag', () {

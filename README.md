@@ -27,7 +27,7 @@ encrypted through the Waylight relay; no Google service is involved.
 | Wall display for an old tablet, with a kiosk link from the server | ✅ | later |
 | Quick Settings tiles: add a to-do, switch a device, set your status | ✅ | – |
 | Smart home in Android's device controls, Android 11+ | ✅ | – |
-| NFC tags that tick off a habit, switch a device or add to the shopping list | ✅ | – |
+| NFC tags that tick off a habit, switch a device, add to the shopping list or open a tab | ✅ | – |
 | Up to three server addresses, e.g. home network and on the go; the one that answers is used | ✅ | built locally |
 | Push notifications, end-to-end encrypted, without Google | ✅ | waits for the Apple account |
 | Reminders for to-dos, events and birthdays, shown by the phone itself, also offline | ✅ | later |

@@ -123,7 +123,8 @@ Android 11 and newer show the smart home module in *Device controls* (#194).
 ## NFC tags
 
 A tag can run a Waylight action: tick off a habit, switch a smart home
-device or add an item to the shopping list (#195).
+device, add an item to the shopping list (#195) or open a dashboard tab
+(#260).
 
 - **Permission.** `NFC`, a normal permission granted at install; there is
   nothing to ask at runtime. Phones without NFC can still install the app.
@@ -133,8 +134,8 @@ device or add an item to the shopping list (#195).
 - **No secret on the tag.** A tag holds a link such as
   `waylight://tag?do=habit&id=…`. It runs nothing on a phone without a
   session for your server, and the router asks to sign in or unlock the app
-  lock first. Anyone with the tag learns the habit or entity id and the
-  item text.
+  lock first. Anyone with the tag learns the habit, entity or tab id and
+  the item text.
 - **Changes to other systems.** A tag that switches a smart home device asks
   before it does, unless that was turned off when the tag was written. The
   server's allow-list applies as in the app.

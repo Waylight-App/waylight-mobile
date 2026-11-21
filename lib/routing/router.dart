@@ -46,6 +46,7 @@ import 'package:waylight_mobile/ui/tag/widgets/tag_action_screen.dart';
 import 'package:waylight_mobile/ui/widgets/calendar/calendar_screen.dart';
 import 'package:waylight_mobile/ui/widgets/calendar/calendar_view_model.dart';
 import 'package:waylight_mobile/ui/widgets/common/remote_widget.dart';
+import 'package:waylight_mobile/ui/widgets/common/tag_writer.dart';
 import 'package:waylight_mobile/ui/widgets/notes/note_editor_screen.dart';
 import 'package:waylight_mobile/ui/widgets/notes/note_editor_view_model.dart';
 import 'package:waylight_mobile/ui/widgets/readlater/article_screen.dart';
@@ -104,8 +105,13 @@ GoRouter createRouter(
           offlineRepository: context.read(),
           attentionRepository: context.read(),
         ),
-        builder: (context, viewModel) =>
-            DashboardScreen(viewModel: viewModel, registry: nativeWidgets),
+        builder: (context, viewModel) => DashboardScreen(
+          viewModel: viewModel,
+          registry: nativeWidgets,
+          writeTabTag: defaultTargetPlatform == TargetPlatform.android
+              ? writeTabTag
+              : null,
+        ),
       ),
     ),
     GoRoute(
@@ -397,8 +403,16 @@ String? redirectFor({
   bool locked = false,
   bool kiosk = false,
 }) {
-  final link = routeOf(uri);
+  var link = routeOf(uri);
   if (!Routes.all.contains(link.path)) return Routes.home;
+  // A tag that opens a tab is a link to the dashboard (#260); it passes the
+  // app lock and sign-in below like any other link.
+  if (link.path == Routes.tag && link.queryParameters['do'] == 'tab') {
+    final tab = link.queryParameters['id']?.trim() ?? '';
+    link = tab.isEmpty
+        ? Uri(path: Routes.home)
+        : Uri(path: Routes.home, queryParameters: {'tab': tab});
+  }
   // A wall display shows nothing but its tabs (#193).
   if (kiosk && connected && signedIn) {
     return link.path == Routes.kiosk && link == uri ? null : Routes.kiosk;
@@ -415,7 +429,8 @@ String? redirectFor({
   // The app lock comes first: nothing shows until it is unlocked (#46).
   if (locked) {
     if (link.path == Routes.locked) return link == uri ? null : link.toString();
-    final keep = link.path != Routes.home;
+    // The dashboard with a tab (#260) is worth returning to as well.
+    final keep = link.toString() != Routes.home;
     return Uri(
       path: Routes.locked,
       queryParameters: keep ? {'from': link.toString()} : null,

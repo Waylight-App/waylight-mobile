@@ -24,6 +24,13 @@ import 'package:waylight_mobile/ui/dashboard/widgets/widget_grid.dart';
 import 'package:waylight_mobile/utils/command.dart';
 import 'package:waylight_mobile/utils/result.dart';
 
+/// Writes an NFC tag that opens the tab with the given id and name.
+typedef TabTagWriter = Future<void> Function(
+  BuildContext context,
+  String tabId,
+  String name,
+);
+
 /// The tabs of the dashboard, one page per tab (docs/design/screens/
 /// dashboard.png).
 class DashboardScreen extends StatelessWidget {
@@ -31,8 +38,14 @@ class DashboardScreen extends StatelessWidget {
   const DashboardScreen({
     required this.viewModel,
     required this.registry,
+    this.writeTabTag,
     super.key,
   });
+
+  /// Writes an NFC tag that opens a tab (#260); `null` where the phone
+  /// cannot write tags. Handed in by the router, as the tag writer belongs
+  /// to another feature.
+  final TabTagWriter? writeTabTag;
 
   /// The state and actions of this screen.
   final DashboardViewModel viewModel;
@@ -101,6 +114,7 @@ class DashboardScreen extends StatelessWidget {
                   viewModel: viewModel,
                   arranging: arranging,
                   registry: registry,
+                  writeTabTag: writeTabTag,
                 )
               : Scaffold(
                   appBar: AppBar(
@@ -405,11 +419,13 @@ class _ArrangeScaffold extends StatelessWidget {
     required this.viewModel,
     required this.arranging,
     required this.registry,
+    this.writeTabTag,
   });
 
   final DashboardViewModel viewModel;
   final ArrangeViewModel arranging;
   final WidgetRegistry registry;
+  final TabTagWriter? writeTabTag;
 
   /// Runs [command], then leaves the edit mode and shows the new layout;
   /// on an error the edit mode stays, with the message.
@@ -519,6 +535,16 @@ class _ArrangeScaffold extends StatelessWidget {
                       onTap: () => _finish(context, arranging.reset).ignore(),
                       child: Text(l10n.editTabReset),
                     ),
+                    if (writeTabTag case final write?)
+                      PopupMenuItem<void>(
+                        key: const ValueKey('editTab.tag'),
+                        onTap: () => write(
+                          context,
+                          arranging.tabId,
+                          arranging.name,
+                        ).ignore(),
+                        child: Text(l10n.tagWrite),
+                      ),
                   ],
                 ),
                 Padding(
