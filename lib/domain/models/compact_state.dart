@@ -126,3 +126,24 @@ final class CompactState {
   /// The one primary action, if the widget offers one.
   final CompactAction? action;
 }
+
+/// A module's compact state endpoint as `GET /api/modules` lists it
+/// (Waylight-App/waylight#634).
+final class CompactEndpoint {
+  /// Creates the endpoint.
+  const CompactEndpoint({
+    required this.module,
+    required this.path,
+    this.params = const [],
+  });
+
+  /// The module, such as `backupmonitor`.
+  final String module;
+
+  /// The API path, such as `/api/backupmonitor/compact`.
+  final String path;
+
+  /// The query parameters the state depends on, such as `entity` for one
+  /// smart home device; a widget without them has no compact state.
+  final List<String> params;
+}

@@ -207,6 +207,15 @@ widgets sit on a grid of square cells, 4 wide on phones and 8 on tablets:
   on `WidgetFrame` passes `compact:` and gets the card, its title and the
   loading and error states for free; a view without a compact form shows
   *tap to see everything* there instead of overflowing.
+- Widgets whose module has a server compact state wrap their view in
+  `CompactStateWidget.orFull`. Which modules have one comes from the
+  `compact` list of `GET /api/modules`: the dashboard reads it with the
+  tabs (`CompactStateRepository.load`), so the synchronous `supports()`
+  can answer while tiles are built; offline the stored answer counts, and
+  servers without the list keep to-dos, habits and focus (#274). Kinds
+  named differently from their module (`backup-status`,
+  `status-overview`) are mapped in the repository, and parameters such as
+  the smart home `entity` come from the widget's configuration.
 - The tree of a tile does not change when its content starts or stops to
   overflow (the fade is always there, only its gradient changes), so the
   view and its view model are never created again — otherwise a view that

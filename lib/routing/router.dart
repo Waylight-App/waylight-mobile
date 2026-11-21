@@ -104,6 +104,7 @@ GoRouter createRouter(
           dashboardRepository: context.read(),
           offlineRepository: context.read(),
           attentionRepository: context.read(),
+          compactRepository: context.read(),
         ),
         builder: (context, viewModel) => DashboardScreen(
           viewModel: viewModel,
@@ -328,6 +329,7 @@ GoRouter createRouter(
           servers: context.read(),
           dashboard: context.read(),
           kiosk: context.read(),
+          compact: context.read(),
         ),
         builder: (context, viewModel) =>
             KioskScreen(viewModel: viewModel, registry: nativeWidgets),

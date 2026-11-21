@@ -13,12 +13,20 @@ import 'package:waylight_mobile/utils/result.dart';
 /// Quick Settings tiles and the watch say the same. For kinds without a
 /// server endpoint the app derives it from the full data (#242).
 abstract interface class CompactStateRepository {
-  /// Whether a compact state exists for widgets of [kind].
-  bool supports(String kind);
+  /// Reads which modules of [server] have a compact state
+  /// (`GET /api/modules`, #274), so [supports] can answer while tiles are
+  /// built. Offline it keeps the stored answer. With [reuse] a list
+  /// already read for [server] is kept without a request.
+  Future<void> load(ServerAddress server, {bool reuse = false});
+
+  /// Whether a compact state exists for a widget of [kind] with [config],
+  /// on the server last passed to [load].
+  bool supports(String kind, {Map<String, Object?> config});
 
   /// The compact state of the widget kind [kind]; the offline copy when
   /// the server cannot be reached. [config] is the widget's configuration,
-  /// which derived states need (e.g. the stop of a transit widget).
+  /// which some states need (e.g. the stop of a transit widget or the
+  /// device of a smart home tile).
   Future<Result<CompactState>> state(
     ServerAddress server,
     String kind, {
@@ -46,16 +54,51 @@ class CompactStateRepositoryRemote implements CompactStateRepository {
   final WasteRepository? _waste;
   final DateTime Function() _clock;
 
-  /// The widget kinds whose module answers `GET /api/<kind>/compact`
-  /// (Waylight-App/waylight#604). Kind and module share their name.
-  static const kinds = {'todos', 'habits', 'focus'};
+  /// The modules with a compact state on servers older than
+  /// Waylight-App/waylight#634, whose module list does not name them.
+  static const fallbackModules = {'todos', 'habits', 'focus'};
+
+  /// The module behind each widget kind whose name differs; every other
+  /// kind is served by the module of the same name.
+  static const moduleOfKind = {
+    'backup-status': 'backupmonitor',
+    'status-overview': 'services',
+  };
 
   /// How many departures a derived transit state reads.
   static const departureCount = 3;
 
+  ServerAddress? _server;
+  Map<String, CompactEndpoint> _endpoints = _fallback;
+
+  static final Map<String, CompactEndpoint> _fallback = {
+    for (final m in fallbackModules)
+      m: CompactEndpoint(module: m, path: '/api/$m/compact'),
+  };
+
   @override
-  bool supports(String kind) =>
-      kinds.contains(kind) ||
+  Future<void> load(ServerAddress server, {bool reuse = false}) async {
+    if (reuse && server == _server) return;
+    final result = await _api.read(server, '/api/modules', parseCompactModules);
+    switch (result) {
+      case Ok(:final value):
+        _endpoints = {
+          for (final e in value.endpoints ?? _fallback.values) e.module: e,
+        };
+        _server = server;
+      case Error():
+        // Without an answer or a stored copy, another server's list says
+        // nothing about this one.
+        if (server != _server) {
+          _endpoints = _fallback;
+          _server = server;
+        }
+    }
+  }
+
+  @override
+  bool supports(String kind, {Map<String, Object?> config = const {}}) =>
+      _query(kind, config) != null ||
       switch (kind) {
         'weather' => _weather != null,
         'transit' => _transit != null,
@@ -63,21 +106,40 @@ class CompactStateRepositoryRemote implements CompactStateRepository {
         _ => false,
       };
 
+  /// The server endpoint and query for a widget of [kind] with [config];
+  /// `null` when the server has none or the widget lacks a parameter.
+  (CompactEndpoint, Map<String, String>)? _query(
+    String kind,
+    Map<String, Object?> config,
+  ) {
+    // A to-do widget on another source (CalDAV, Microsoft To Do) shows
+    // lists the server's to-do state does not count.
+    if (kind == 'todos' && (config['source'] ?? '') != '') return null;
+    final endpoint = _endpoints[moduleOfKind[kind] ?? kind];
+    if (endpoint == null) return null;
+    final query = <String, String>{};
+    for (final param in endpoint.params) {
+      final value = compactParam(kind, param, config);
+      if (value == null) return null;
+      query[param] = value;
+    }
+    return (endpoint, query);
+  }
+
   @override
   Future<Result<CompactState>> state(
     ServerAddress server,
     String kind, {
     Map<String, Object?> config = const {},
   }) async {
-    // The kind becomes part of the path, so only known names go there.
-    assert(supports(kind), 'No compact state for $kind.');
-    if (kinds.contains(kind)) {
-      return _api.read(server, '/api/$kind/compact', parseCompactState);
+    await load(server, reuse: true);
+    if (_query(kind, config) case (final endpoint, final query)) {
+      return _api.read(server, endpoint.path, parseCompactState, query: query);
     }
     return switch (kind) {
-      'weather' => _weatherState(server, config),
-      'transit' => _transitState(server, config),
-      'waste' => _wasteState(server),
+      'weather' when _weather != null => _weatherState(server, config),
+      'transit' when _transit != null => _transitState(server, config),
+      'waste' when _waste != null => _wasteState(server),
       _ => const Result.error(ApiException(ApiFailure.notFound)),
     };
   }
@@ -131,6 +193,56 @@ final class CompactConfigMissing implements Exception {
   /// Creates the error.
   const CompactConfigMissing();
 }
+
+/// The value of the compact query parameter [param] for a widget of
+/// [kind] with [config]; `null` when the widget does not set it. A smart
+/// home tile has a state only with exactly one device, as on the web.
+String? compactParam(String kind, String param, Map<String, Object?> config) {
+  if ((kind, param) == ('smarthome', 'entity')) {
+    return switch (config['entities']) {
+      [final String id] when id.isNotEmpty => id,
+      _ => null,
+    };
+  }
+  return switch (config[param]) {
+    final String s when s.isNotEmpty => s,
+    final num n => '$n',
+    _ => null,
+  };
+}
+
+/// Maps the `compact` list of `GET /api/modules` (Waylight-App/waylight#634):
+/// `endpoints` is `null` when an older server has no list; the whole
+/// answer is `null` when it has another shape. Entries without a module or
+/// with a path outside the API are skipped.
+({List<CompactEndpoint>? endpoints})? parseCompactModules(Object? json) =>
+    switch (json) {
+      {'compact': final List<Object?> list} => (
+        endpoints: [
+          for (final e in list)
+            if (e
+                case {
+                      'module': final String module,
+                      'path': final String path,
+                    } &&
+                    final Map<String, Object?> o
+                when module.isNotEmpty && path.startsWith('/api/'))
+              CompactEndpoint(
+                module: module,
+                path: path,
+                params: switch (o['params']) {
+                  final List<Object?> p => [
+                    for (final name in p)
+                      if (name is String && name.isNotEmpty) name,
+                  ],
+                  _ => const [],
+                },
+              ),
+        ],
+      ),
+      {'modules': List<Object?>()} => (endpoints: null),
+      _ => null,
+    };
 
 /// Maps `GET /api/<module>/compact`; `null` for an answer of another
 /// shape.

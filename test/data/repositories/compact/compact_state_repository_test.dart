@@ -87,7 +87,7 @@ void main() {
     expect(repo.supports('weather'), isFalse);
 
     expect(await repo.state(testServer(), 'todos'), isA<Ok<CompactState>>());
-    expect(requests.single.path, '/api/todos/compact');
+    expect(requests.last.path, '/api/todos/compact');
 
     online = false;
     final offline = await repo.state(testServer(), 'todos');
@@ -95,6 +95,150 @@ void main() {
       (offline as Ok<CompactState>).value.title.text,
       '3 open · 1 overdue',
     );
+  });
+
+  group('modules with a compact state (#274)', () {
+    const modules = {
+      'modules': ['services', 'backupmonitor', 'smarthome', 'todos'],
+      'compact': [
+        {
+          'module': 'services',
+          'path': '/api/services/compact',
+          'params': <String>[],
+        },
+        {
+          'module': 'backupmonitor',
+          'path': '/api/backupmonitor/compact',
+          'params': <String>[],
+        },
+        {
+          'module': 'smarthome',
+          'path': '/api/smarthome/compact',
+          'params': ['entity'],
+        },
+        {'module': 'todos', 'path': '/api/todos/compact', 'params': <String>[]},
+      ],
+    };
+    final state = {
+      'title': {'text': 'All 4 online'},
+    };
+    late bool online;
+    late Object listed;
+    late List<Uri> requests;
+    late CompactStateRepositoryRemote repo;
+
+    setUp(() {
+      online = true;
+      listed = modules;
+      requests = [];
+      repo = CompactStateRepositoryRemote(
+        api: ModuleApi(
+          ApiClient(
+            client: MockClient((r) async {
+              requests.add(r.url);
+              if (!online) throw const SocketException('offline');
+              final body = r.url.path == '/api/modules' ? listed : state;
+              return http.Response(jsonEncode(body), 200);
+            }),
+            cache: InMemoryResponseCache(),
+            offline: OfflineStatus(),
+          ),
+        ),
+      );
+    });
+
+    test('parses the list and skips broken entries', () {
+      final parsed = parseCompactModules({
+        'compact': [
+          {'module': 'docker', 'path': '/api/docker/compact'},
+          {'module': '', 'path': '/api/x/compact'},
+          {'module': 'y', 'path': 'https://evil.example/compact'},
+          'z',
+        ],
+      })!;
+      expect(parsed.endpoints!.single.module, 'docker');
+      expect(parsed.endpoints!.single.params, isEmpty);
+      expect(parseCompactModules({'modules': <Object?>[]})!.endpoints, isNull);
+      expect(parseCompactModules('x'), isNull);
+    });
+
+    test('the fixed modules count until the list is read', () {
+      expect(repo.supports('todos'), isTrue);
+      expect(repo.supports('services'), isFalse);
+    });
+
+    test('the server list decides, kinds map to their module', () async {
+      await repo.load(testServer());
+
+      expect(repo.supports('services'), isTrue);
+      expect(repo.supports('status-overview'), isTrue);
+      expect(repo.supports('backup-status'), isTrue);
+      expect(repo.supports('habits'), isFalse);
+      expect(repo.supports('clock'), isFalse);
+
+      await repo.state(testServer(), 'backup-status');
+      expect(requests.last.path, '/api/backupmonitor/compact');
+    });
+
+    test('to-dos from another source have none', () async {
+      await repo.load(testServer());
+      expect(repo.supports('todos'), isTrue);
+      expect(repo.supports('todos', config: {'source': 'caldav'}), isFalse);
+    });
+
+    test('a smart home tile passes its one device', () async {
+      await repo.load(testServer());
+      const one = {
+        'entities': ['light.desk'],
+      };
+      expect(repo.supports('smarthome'), isFalse);
+      expect(
+        repo.supports(
+          'smarthome',
+          config: {
+            'entities': ['light.desk', 'switch.fan'],
+          },
+        ),
+        isFalse,
+      );
+      expect(repo.supports('smarthome', config: one), isTrue);
+
+      final result = await repo.state(testServer(), 'smarthome', config: one);
+      expect((result as Ok<CompactState>).value.title.text, 'All 4 online');
+      expect(requests.last.path, '/api/smarthome/compact');
+      expect(requests.last.queryParameters, {'entity': 'light.desk'});
+    });
+
+    test('older servers without the list keep the fixed modules', () async {
+      listed = {
+        'modules': ['todos', 'services'],
+      };
+      await repo.load(testServer());
+      expect(repo.supports('habits'), isTrue);
+      expect(repo.supports('services'), isFalse);
+    });
+
+    test('offline the stored list is used', () async {
+      await repo.load(testServer());
+      online = false;
+      await repo.load(testServer());
+      expect(repo.supports('services'), isTrue);
+
+      // Another server without a stored list knows only the fixed set.
+      await repo.load(testServer('https://other.example.org'));
+      expect(repo.supports('services'), isFalse);
+      expect(repo.supports('todos'), isTrue);
+    });
+
+    test('a list read for the server is reused on request', () async {
+      await repo.load(testServer());
+      await repo.load(testServer(), reuse: true);
+      await repo.state(testServer(), 'services');
+      expect(requests.map((u) => u.path), [
+        '/api/modules',
+        '/api/services/compact',
+      ]);
+    });
   });
 
   group('derived states (#242)', () {

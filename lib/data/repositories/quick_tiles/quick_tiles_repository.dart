@@ -170,7 +170,10 @@ class QuickTilesRepository {
   /// Tiles have no colours, so only its title line is shown.
   Future<CompactState?> _statusState(ServerAddress server) async {
     final compact = _compact;
-    if (compact == null || !compact.supports(statusKind)) return null;
+    if (compact == null) return null;
+    // The background refresh starts without the module list (#274).
+    await compact.load(server, reuse: true);
+    if (!compact.supports(statusKind)) return null;
     return switch (await compact.state(server, statusKind)) {
       Ok(:final value) => value,
       Error() => null,

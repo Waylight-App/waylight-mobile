@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:waylight_mobile/data/repositories/appearance/theme_repository.dart';
 import 'package:waylight_mobile/data/repositories/attention/attention_repository.dart';
+import 'package:waylight_mobile/data/repositories/compact/compact_state_repository.dart';
 import 'package:waylight_mobile/data/repositories/dashboard/dashboard_repository.dart';
 import 'package:waylight_mobile/data/repositories/home_widgets/home_widgets_repository.dart';
 import 'package:waylight_mobile/data/repositories/offline/offline_repository.dart';
@@ -35,7 +36,9 @@ class DashboardViewModel extends ChangeNotifier {
     QuickTilesRepository? quickTilesRepository,
     this._quickTileFormatter,
     AttentionRepository? attentionRepository,
+    CompactStateRepository? compactRepository,
   }) : _offline = offlineRepository,
+       _compact = compactRepository,
        _attention = attentionRepository,
        _quickTiles = quickTilesRepository,
        _push = pushRepository,
@@ -60,6 +63,7 @@ class DashboardViewModel extends ChangeNotifier {
   final AttentionRepository? _attention;
   final QuickTilesRepository? _quickTiles;
   final QuickTileFormatter? _quickTileFormatter;
+  final CompactStateRepository? _compact;
   bool _pushRefreshed = false;
 
   /// When the server cannot be reached: the time of the stored data shown.
@@ -181,7 +185,12 @@ class DashboardViewModel extends ChangeNotifier {
         _quickTiles?.refresh(server, format: format).ignore();
       }
     }
-    final result = await _dashboardRepository.dashboard(server);
+    // Small tiles ask synchronously which widgets have a compact state, so
+    // the module list is read before the tiles are built (#274).
+    final (result, _) = await (
+      _dashboardRepository.dashboard(server),
+      _compact?.load(server) ?? Future<void>.value(),
+    ).wait;
     // The attention badge follows every load; a failure keeps the old one.
     _attention?.refresh(server).ignore();
     // The home screen widgets follow every load of the dashboard (#42).

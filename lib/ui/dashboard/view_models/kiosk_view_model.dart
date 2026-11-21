@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 
+import 'package:waylight_mobile/data/repositories/compact/compact_state_repository.dart';
 import 'package:waylight_mobile/data/repositories/dashboard/dashboard_repository.dart';
 import 'package:waylight_mobile/data/repositories/kiosk/kiosk_repository.dart';
 import 'package:waylight_mobile/data/repositories/server/server_repository.dart';
@@ -17,6 +18,7 @@ class KioskViewModel extends ChangeNotifier {
     required this._servers,
     required this._dashboard,
     required this._kiosk,
+    this._compact,
     DateTime Function()? now,
     this.reload = const Duration(minutes: 10),
   }) : _now = now ?? DateTime.now {
@@ -35,6 +37,7 @@ class KioskViewModel extends ChangeNotifier {
   final ServerRepository _servers;
   final DashboardRepository _dashboard;
   final KioskRepository _kiosk;
+  final CompactStateRepository? _compact;
   final DateTime Function() _now;
 
   /// How often tabs and options are read again.
@@ -75,7 +78,11 @@ class KioskViewModel extends ChangeNotifier {
   Future<Result<Dashboard>> _load() async {
     final server = _servers.current;
     if (server == null) return const Result.error(NotConnectedException());
-    final result = await _dashboard.dashboard(server);
+    // The module list decides which small tiles show a compact state.
+    final (result, _) = await (
+      _dashboard.dashboard(server),
+      _compact?.load(server) ?? Future<void>.value(),
+    ).wait;
     if (_index >= tabs.length) _index = 0;
     notifyListeners();
     return result;
