@@ -6,4 +6,7 @@ import 'package:waylight_mobile/utils/result.dart';
 abstract interface class WasteRepository {
   /// The next collections on [server].
   Future<Result<List<WasteCollection>>> upcoming(ServerAddress server);
+
+  /// Subscribes to the waste calendar at [url] while none is set up (#230).
+  Future<Result<void>> subscribe(ServerAddress server, String url);
 }

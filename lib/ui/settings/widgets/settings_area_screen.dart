@@ -115,6 +115,9 @@ class SettingsAreaScreen extends StatelessWidget {
           item: SettingsItem.quickTiles,
           child: _QuickTiles(viewModel: viewModel),
         ),
+      // Watches are paired through the Android app only (#239, #185).
+      if (viewModel.watchPairingAvailable)
+        const SettingsTarget(item: SettingsItem.pairWatch, child: _PairWatch()),
       SettingsTarget(
         item: SettingsItem.wallDisplay,
         child: _Hint(
@@ -125,6 +128,28 @@ class SettingsAreaScreen extends StatelessWidget {
     ],
     SettingsArea.about => [_About(viewModel: viewModel)],
   };
+}
+
+/// Opens the pairing of a Wear OS watch (#239).
+class _PairWatch extends StatelessWidget {
+  const _PairWatch();
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    return SectionCard(
+      title: l10n.pairWatchTitle,
+      child: ListTile(
+        key: const ValueKey('settings.pairWatch'),
+        contentPadding: EdgeInsets.zero,
+        minTileHeight: Dimens.tapTarget,
+        leading: const Icon(Icons.watch),
+        title: Text(l10n.pairWatchEntry),
+        trailing: const Icon(Icons.chevron_right),
+        onTap: () => context.push(Routes.pairWatch),
+      ),
+    );
+  }
 }
 
 /// The scrolling frame of every settings screen; narrow enough on tablets

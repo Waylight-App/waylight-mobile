@@ -51,6 +51,7 @@ String itemTitle(AppLocalizations l10n, SettingsItem item) => switch (item) {
   SettingsItem.lock => l10n.settingsLock,
   SettingsItem.homeWidgets => l10n.settingsHomeWidgets,
   SettingsItem.quickTiles => l10n.quickTilesTitle,
+  SettingsItem.pairWatch => l10n.pairWatchEntry,
   SettingsItem.wallDisplay => l10n.kioskUse,
   SettingsItem.appVersion => l10n.settingsAppVersion,
   SettingsItem.source => l10n.settingsSource,

@@ -121,7 +121,7 @@ fun PairedScreen(viewModel: WatchViewModel, session: Session) {
                 item {
                     GlanceChip(
                         label = GlanceFormat.compactTitle(context, glance),
-                        secondary = glance.detail,
+                        secondary = GlanceFormat.compactDetail(context, glance),
                         level = glance.level,
                     )
                 }

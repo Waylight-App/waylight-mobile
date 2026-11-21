@@ -112,6 +112,10 @@ class SettingsViewModel extends ChangeNotifier {
   bool get quickTilesAvailable =>
       _quickTiles != null && defaultTargetPlatform == TargetPlatform.android;
 
+  /// Whether this phone can pair a Wear OS watch (#239, Android only).
+  bool get watchPairingAvailable =>
+      defaultTargetPlatform == TargetPlatform.android;
+
   /// Whether this phone has home screen widgets of the app (ADR 0009).
   bool get homeWidgetsAvailable =>
       defaultTargetPlatform == TargetPlatform.android;
@@ -353,6 +357,7 @@ class SettingsViewModel extends ChangeNotifier {
     SettingsItem.reminders => remindersAvailable,
     SettingsItem.lock => lockAvailable,
     SettingsItem.homeWidgets => homeWidgetsAvailable,
+    SettingsItem.pairWatch => watchPairingAvailable,
     SettingsItem.quickTiles => quickTilesAvailable,
     SettingsItem.colours => wallpaperAvailable,
     SettingsItem.diagnostics => diagnosticsAvailable,

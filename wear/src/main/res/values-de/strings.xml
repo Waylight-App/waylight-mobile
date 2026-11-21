@@ -34,4 +34,11 @@
     </plurals>
     <string name="tile_description">Nächster Termin, Aufgaben und mein Status</string>
     <string name="tile_not_paired">Öffne Waylight, um die Uhr zu verbinden.</string>
+    <string name="srv_todos_open">{count} offen</string>
+    <string name="srv_todos_nothing">Nichts zu tun</string>
+    <string name="srv_todos_overdue">{count} überfällig</string>
+    <string name="srv_habits_none">Noch keine Gewohnheiten</string>
+    <string name="srv_habits_done">{done} von {total} heute</string>
+    <string name="srv_focus_minutes">{minutes} Min. Fokus heute</string>
+    <string name="srv_focus_sessions">{count} Einheiten</string>
 </resources>

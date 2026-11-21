@@ -184,6 +184,16 @@ enum SettingsItem {
     'kachel',
   ]),
 
+  /// Pairing a Wear OS watch (#239).
+  pairWatch(SettingsArea.phone, [
+    'watch',
+    'uhr',
+    'smartwatch',
+    'wear os',
+    'pair',
+    'koppeln',
+  ]),
+
   /// How to start a wall display (#193).
   wallDisplay(SettingsArea.phone, [
     'wall',

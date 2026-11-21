@@ -57,6 +57,7 @@ import 'package:waylight_mobile/data/repositories/transit/transit_repository.dar
 import 'package:waylight_mobile/data/repositories/transit/transit_repository_remote.dart';
 import 'package:waylight_mobile/data/repositories/waste/waste_repository.dart';
 import 'package:waylight_mobile/data/repositories/waste/waste_repository_remote.dart';
+import 'package:waylight_mobile/data/repositories/watch/watch_pairing_repository.dart';
 import 'package:waylight_mobile/data/repositories/weather/weather_repository.dart';
 import 'package:waylight_mobile/data/repositories/weather/weather_repository_remote.dart';
 import 'package:waylight_mobile/data/repositories/widget_data/widget_data_repository.dart';
@@ -92,6 +93,7 @@ import 'package:waylight_mobile/data/services/reminders/reminder_scheduler.dart'
 import 'package:waylight_mobile/data/services/scanner/barcode_scanner.dart';
 import 'package:waylight_mobile/data/services/storage/key_value_store.dart';
 import 'package:waylight_mobile/data/services/system_colors/system_colors.dart';
+import 'package:waylight_mobile/data/services/watch/watch_handover.dart';
 
 /// The repositories of the app. Server and session are needed by the
 /// router before the app starts.
@@ -118,6 +120,7 @@ typedef Repositories = ({
   AbsencesRepository absences,
   AnnouncementsRepository announcements,
   ScannerRepository scanner,
+  WatchPairingRepository watch,
   FocusTimerRepository focusTimer,
   HomeServerActionsRepository homeServer,
   CalendarRepository calendar,
@@ -166,6 +169,7 @@ List<SingleChildWidget> providers(Repositories repositories) => [
   Provider<CompactStateRepository>.value(value: repositories.compact),
   Provider<AbsencesRepository>.value(value: repositories.absences),
   Provider<ScannerRepository>.value(value: repositories.scanner),
+  Provider<WatchPairingRepository>.value(value: repositories.watch),
   Provider<AnnouncementsRepository>.value(value: repositories.announcements),
   ChangeNotifierProvider<FocusTimerRepository>.value(
     value: repositories.focusTimer,
@@ -313,6 +317,12 @@ Repositories createRepositories() {
     absences: AbsencesRepositoryRemote(api: modules),
     announcements: AnnouncementsRepositoryRemote(api: modules),
     scanner: const ScannerRepository(scanner: MethodChannelBarcodeScanner()),
+    watch: WatchPairingRepository(
+      api: modules,
+      scanner: const MethodChannelBarcodeScanner(),
+      sealer: const MethodChannelHandoverSealer(),
+      watch: WatchClient(http.Client()),
+    ),
     focusTimer: FocusTimerRepository(
       timer: MethodChannelFocusTimer(),
       sessions: focusSessions,
