@@ -2255,4 +2255,21 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get absenceMe => 'Me';
+
+  @override
+  String get settingsSearch => 'Search settings';
+
+  @override
+  String settingsSearchEmpty(String query) {
+    return 'No setting matches “$query”.';
+  }
+
+  @override
+  String get settingsSearchClear => 'Clear search';
+
+  @override
+  String get settingsSearchBattery => 'Battery hint';
+
+  @override
+  String get settingsAttentionShow => 'Show';
 }

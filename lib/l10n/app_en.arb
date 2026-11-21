@@ -1319,5 +1319,15 @@
   "absencePerson": "Person",
   "@absencePerson": {"description": "Absence form, admins only: whom the absence is for."},
   "absenceMe": "Me",
-  "@absenceMe": {"description": "Absence form: the absence is for the signed-in account."}
+  "@absenceMe": {"description": "Absence form: the absence is for the signed-in account."},
+  "settingsSearch": "Search settings",
+  "@settingsSearch": {"description": "Hint of the search field on the settings start page."},
+  "settingsSearchEmpty": "No setting matches “{query}”.",
+  "@settingsSearchEmpty": {"description": "The settings search found nothing.", "placeholders": {"query": {"type": "String", "example": "akku"}}},
+  "settingsSearchClear": "Clear search",
+  "@settingsSearchClear": {"description": "Tooltip of the button that empties the settings search."},
+  "settingsSearchBattery": "Battery hint",
+  "@settingsSearchBattery": {"description": "Search result: the hint to lift battery restrictions for push."},
+  "settingsAttentionShow": "Show",
+  "@settingsAttentionShow": {"description": "Opens the list of things that need attention, from the settings start page."}
 }

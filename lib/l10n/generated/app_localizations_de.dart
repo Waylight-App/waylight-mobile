@@ -2261,4 +2261,21 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get absenceMe => 'Ich';
+
+  @override
+  String get settingsSearch => 'Einstellungen durchsuchen';
+
+  @override
+  String settingsSearchEmpty(String query) {
+    return 'Keine Einstellung passt zu „$query“.';
+  }
+
+  @override
+  String get settingsSearchClear => 'Suche leeren';
+
+  @override
+  String get settingsSearchBattery => 'Akku-Hinweis';
+
+  @override
+  String get settingsAttentionShow => 'Anzeigen';
 }
