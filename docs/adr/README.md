@@ -22,3 +22,4 @@ status *Proposed*, and discuss it in the pull request.
 | [0010](0010-distribution-without-store-accounts.md) | Distribution without store accounts for now: Android through GitHub Releases and Obtainium, iOS waits | Accepted |
 | [0011](0011-push-over-the-relay-stream.md) | Push over the relay's Server-Sent Events stream; one Android build without Google services | Accepted |
 | [0012](0012-dashboard-grid.md) | Dashboard grid with widget sizes: four sizes, dense packing, sizes in the server's phone layout | Accepted |
+| [0013](0013-markdown-rendering.md) | Markdown parsed by the Dart team's package and rendered by our own small renderer; no images, links only in the browser | Accepted |

@@ -563,5 +563,20 @@
   "absenceNote": "Notiz (optional)",
   "absencePrivate": "Privat: andere sehen nur, dass ich nicht da bin",
   "absencePrivateBadge": "privat",
-  "absenceErrorDates": "Der letzte Tag darf nicht vor dem ersten liegen."
+  "absenceErrorDates": "Der letzte Tag darf nicht vor dem ersten liegen.",
+  "announcementsTitle": "Ankündigungen",
+  "announcementsEmpty": "Keine Ankündigungen.",
+  "announcementsOff": "Ankündigungen gibt es auf diesem Server nicht.",
+  "announcementUnread": "ungelesen",
+  "announcementPinned": "Angeheftet",
+  "announcementWrite": "Ankündigung schreiben",
+  "announcementEdit": "Ankündigung bearbeiten",
+  "announcementDelete": "Löschen",
+  "announcementPublish": "Veröffentlichen",
+  "announcementTitleField": "Titel",
+  "announcementBodyField": "Text",
+  "announcementMarkdownHint": "Markdown: **fett**, *kursiv*, Listen und Links.",
+  "announcementExpires": "Läuft ab",
+  "announcementNoExpiry": "Kein Ablauf",
+  "announcementNotify": "An die Benachrichtigungskanäle senden"
 }

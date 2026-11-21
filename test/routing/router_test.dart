@@ -25,6 +25,7 @@ import 'package:waylight_mobile/ui/sign_in/widgets/sign_in_screen.dart';
 
 import '../testing/fakes/fake_absences_repository.dart';
 import '../testing/fakes/fake_action_repositories.dart';
+import '../testing/fakes/fake_announcements_repository.dart';
 import '../testing/fakes/fake_bookmarks_repository.dart';
 import '../testing/fakes/fake_dashboard_repository.dart';
 import '../testing/fakes/fake_device_auth.dart';
@@ -79,6 +80,7 @@ void main() {
           focus: FakeFocusRepository(),
           presence: FakePresenceRepository(),
           absences: FakeAbsencesRepository(),
+          announcements: FakeAnnouncementsRepository(),
           focusTimer: FocusTimerRepository(
             timer: InAppFocusTimer(),
             sessions: FakeFocusRepository(),
