@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:waylight_mobile/data/repositories/first_start/first_start_repository.dart';
 import 'package:waylight_mobile/data/repositories/kiosk/kiosk_repository.dart';
 import 'package:waylight_mobile/data/repositories/lock/app_lock_repository.dart';
 import 'package:waylight_mobile/data/repositories/server/server_repository.dart';
@@ -20,6 +21,8 @@ import 'package:waylight_mobile/ui/dashboard/view_models/dashboard_view_model.da
 import 'package:waylight_mobile/ui/dashboard/view_models/kiosk_view_model.dart';
 import 'package:waylight_mobile/ui/dashboard/widgets/dashboard_screen.dart';
 import 'package:waylight_mobile/ui/dashboard/widgets/kiosk_screen.dart';
+import 'package:waylight_mobile/ui/first_start/view_models/first_start_view_model.dart';
+import 'package:waylight_mobile/ui/first_start/widgets/first_start_screen.dart';
 import 'package:waylight_mobile/ui/home_widgets/home_widget_texts.dart';
 import 'package:waylight_mobile/ui/home_widgets/quick_tile_texts.dart';
 import 'package:waylight_mobile/ui/lock/view_models/lock_view_model.dart';
@@ -62,7 +65,8 @@ import 'package:waylight_mobile/ui/widgets/timeline/timeline_screen.dart';
 /// Creates the router of the app.
 ///
 /// Redirects follow the repositories: without a server every route leads to
-/// [Routes.connect], without a session to [Routes.signIn]. Each route hosts
+/// [Routes.connect], without a session to [Routes.signIn], and the first
+/// time on a server to [Routes.welcome]. Each route hosts
 /// its view model in a [ViewModelHost], so the view model lives exactly as
 /// long as the screen.
 GoRouter createRouter(
@@ -70,6 +74,7 @@ GoRouter createRouter(
   SessionRepository sessionRepository, {
   AppLockRepository? lock,
   KioskRepository? kiosk,
+  FirstStartRepository? firstStart,
 }) => GoRouter(
   initialLocation: Routes.home,
   refreshListenable: Listenable.merge([
@@ -77,6 +82,7 @@ GoRouter createRouter(
     sessionRepository,
     ?lock,
     ?kiosk,
+    ?firstStart,
   ]),
   redirect: (context, state) => redirectFor(
     uri: state.uri,
@@ -84,6 +90,10 @@ GoRouter createRouter(
     signedIn: sessionRepository.signedIn,
     locked: lock?.locked ?? false,
     kiosk: kiosk?.active ?? false,
+    firstStart: switch ((firstStart, serverRepository.current)) {
+      (final repository?, final server?) => !repository.isDone(server),
+      _ => false,
+    },
   ),
   routes: [
     GoRoute(
@@ -336,6 +346,20 @@ GoRouter createRouter(
       ),
     ),
     GoRoute(
+      path: Routes.welcome,
+      builder: (context, state) => ViewModelHost(
+        create: (context) => FirstStartViewModel(
+          serverRepository: context.read(),
+          firstStartRepository: context.read(),
+          preferencesRepository: context.read(),
+          pushRepository: context.read(),
+          lockRepository: context.read(),
+          themeRepository: context.read(),
+        ),
+        builder: (context, viewModel) => FirstStartScreen(viewModel: viewModel),
+      ),
+    ),
+    GoRoute(
       path: Routes.signIn,
       builder: (context, state) => ViewModelHost(
         create: (context) => SignInViewModel(
@@ -396,7 +420,9 @@ Uri routeOf(Uri uri) {
 /// Where the router sends the user for [uri]: the connect screen without a
 /// server, the sign-in screen without a session, otherwise away from both.
 /// The location the user wanted travels along in `?from=` and is opened
-/// after the sign-in. Unknown paths open the dashboard. `null` keeps [uri].
+/// after the sign-in. While [firstStart] is due, the dashboard gives way to
+/// the first-start questions (#287). Unknown paths open the dashboard.
+/// `null` keeps [uri].
 @visibleForTesting
 String? redirectFor({
   required Uri uri,
@@ -404,6 +430,7 @@ String? redirectFor({
   required bool signedIn,
   bool locked = false,
   bool kiosk = false,
+  bool firstStart = false,
 }) {
   var link = routeOf(uri);
   if (!Routes.all.contains(link.path)) return Routes.home;
@@ -461,7 +488,14 @@ String? redirectFor({
       queryParameters: keep ? {'from': from} : null,
     ).toString();
   }
-  if (onEntry) return _isLocal(from) ? from : Routes.home;
+  if (onEntry) {
+    final target = _isLocal(from) ? from! : Routes.home;
+    return firstStart && target == Routes.home ? Routes.welcome : target;
+  }
+  if (link.path == Routes.welcome && !firstStart) return Routes.home;
+  // Only the plain dashboard: a link to a tab or a screen opens as asked,
+  // and the questions follow on the next way home.
+  if (firstStart && link.toString() == Routes.home) return Routes.welcome;
   return link == uri ? null : link.toString();
 }
 

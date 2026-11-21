@@ -2419,4 +2419,46 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get compactNoCollections => 'No collections ahead';
+
+  @override
+  String get firstStartTitle => 'Set up the app';
+
+  @override
+  String firstStartProgress(int current, int total) {
+    return 'Step $current of $total';
+  }
+
+  @override
+  String get firstStartLater =>
+      'You can change all of this later in the settings.';
+
+  @override
+  String get firstStartNext => 'Next';
+
+  @override
+  String get firstStartBack => 'Back';
+
+  @override
+  String get firstStartDone => 'Done';
+
+  @override
+  String get firstStartSkipAll => 'Skip all';
+
+  @override
+  String get firstStartNotificationsText =>
+      'Get reminders and messages from your Waylight on this phone.';
+
+  @override
+  String get firstStartLockText =>
+      'Ask for your fingerprint, face or device PIN whenever the app opens.';
+
+  @override
+  String get firstStartAddressesTitle => 'At home and on the go';
+
+  @override
+  String get firstStartAddressesText =>
+      'Does your Waylight have a second address, for example one in the home network and one for on the go? Add it here and the app uses whichever answers.';
+
+  @override
+  String get firstStartLookText => 'Light, dark or as the system.';
 }

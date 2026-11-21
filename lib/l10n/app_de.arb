@@ -701,5 +701,17 @@
   "compactWasteToday": "{label} heute",
   "compactWasteTomorrow": "{label} morgen",
   "compactWasteInDays": "{label} in {days} Tagen",
-  "compactNoCollections": "Keine Abholung geplant"
+  "compactNoCollections": "Keine Abholung geplant",
+  "firstStartTitle": "App einrichten",
+  "firstStartProgress": "Schritt {current} von {total}",
+  "firstStartLater": "Alles lässt sich später in den Einstellungen ändern.",
+  "firstStartNext": "Weiter",
+  "firstStartBack": "Zurück",
+  "firstStartDone": "Fertig",
+  "firstStartSkipAll": "Alle überspringen",
+  "firstStartNotificationsText": "Erinnerungen und Nachrichten deines Waylight auf diesem Handy bekommen.",
+  "firstStartLockText": "Beim Öffnen der App nach Fingerabdruck, Gesicht oder Geräte-PIN fragen.",
+  "firstStartAddressesTitle": "Zu Hause und unterwegs",
+  "firstStartAddressesText": "Hat dein Waylight eine zweite Adresse, etwa eine im Heimnetz und eine für unterwegs? Trag sie hier ein, dann nimmt die App die, die antwortet.",
+  "firstStartLookText": "Hell, dunkel oder wie das System."
 }

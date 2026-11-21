@@ -81,6 +81,9 @@ abstract final class Routes {
   /// The wall display (#193); also opened by `waylight://kiosk?link=…`.
   static const kiosk = '/kiosk';
 
+  /// The questions of the first start on a server (#287).
+  static const welcome = '/welcome';
+
   /// Runs the action of an NFC tag: `waylight://tag?do=habit&id=…` (#195).
   static const tag = '/tag';
 
@@ -114,5 +117,6 @@ abstract final class Routes {
     share,
     kiosk,
     tag,
+    welcome,
   };
 }
