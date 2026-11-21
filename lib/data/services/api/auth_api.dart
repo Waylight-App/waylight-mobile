@@ -99,6 +99,26 @@ class AuthApi {
     );
   }
 
+  /// Signs a kiosk display in with the token of its link
+  /// (`POST /api/auth/kiosk/login`, #193). The answer is a browser session.
+  Future<Result<Session>> kioskLogin(
+    ServerAddress server, {
+    required String token,
+  }) async {
+    final result = await _client.postJsonResponse(
+      server.resolve('/api/auth/kiosk/login'),
+      body: {'token': token},
+    );
+    return switch (result) {
+      Ok(value: final response) => switch (_parse(server, response)) {
+        Ok(value: LoginSession(:final session)) => Result.ok(session),
+        Ok() => const Result.error(ApiException(ApiFailure.server)),
+        Error(:final error) => Result.error(error),
+      },
+      Error(:final error) => Result.error(error),
+    };
+  }
+
   /// Creates an app session (`POST /api/auth/app-sessions`, server #559)
   /// for [device]. Servers without app sessions answer with
   /// `ApiFailure.notFound`; then [login] is the way in.

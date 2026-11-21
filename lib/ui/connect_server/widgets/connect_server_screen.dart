@@ -1,6 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 
 import 'package:waylight_mobile/domain/models/api_exception.dart';
+import 'package:waylight_mobile/domain/models/kiosk.dart';
 import 'package:waylight_mobile/domain/models/server_address.dart';
 import 'package:waylight_mobile/ui/connect_server/view_models/connect_server_view_model.dart';
 import 'package:waylight_mobile/ui/core/address_errors.dart';
@@ -20,10 +21,22 @@ import 'package:waylight_mobile/utils/result.dart';
 /// listens to the server repository.
 class ConnectServerScreen extends StatefulWidget {
   /// Creates the screen for [viewModel].
-  const ConnectServerScreen({required this.viewModel, super.key});
+  const ConnectServerScreen({
+    required this.viewModel,
+    this.onKiosk,
+    this.kioskLink = '',
+    super.key,
+  });
 
   /// The state and actions of this screen.
   final ConnectServerViewModel viewModel;
+
+  /// Turns the app into a wall display with a kiosk link (#193); `null`
+  /// hides the option.
+  final Future<Result<void>> Function(String link)? onKiosk;
+
+  /// A kiosk link from a deep link; the dialog opens with it.
+  final String kioskLink;
 
   @override
   State<ConnectServerScreen> createState() => _ConnectServerScreenState();
@@ -31,6 +44,22 @@ class ConnectServerScreen extends StatefulWidget {
 
 class _ConnectServerScreenState extends State<ConnectServerScreen> {
   final _address = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.kioskLink.isNotEmpty && widget.onKiosk != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) _kiosk(widget.kioskLink).ignore();
+      });
+    }
+  }
+
+  Future<void> _kiosk([String initial = '']) => showDialog<void>(
+    context: context,
+    builder: (_) =>
+        KioskLinkDialog(onSubmit: widget.onKiosk!, initial: initial),
+  );
 
   @override
   void dispose() {
@@ -116,6 +145,16 @@ class _ConnectServerScreenState extends State<ConnectServerScreen> {
               label: Text(l10n.connectTryDemo),
             ),
           ),
+          if (widget.onKiosk != null)
+            Align(
+              alignment: AlignmentDirectional.centerStart,
+              child: TextButton.icon(
+                key: const ValueKey('connect.kiosk'),
+                onPressed: () => _kiosk().ignore(),
+                icon: const Icon(Icons.tv_outlined),
+                label: Text(l10n.kioskUse),
+              ),
+            ),
           const SizedBox(height: Dimens.gapLarge),
           Text(
             l10n.connectPrivacy,
@@ -140,3 +179,90 @@ String? bannerError(AppLocalizations l10n, Exception error) => switch (error) {
     l10n.connectErrorNotWaylight,
   _ => l10n.errorMessage(error),
 };
+
+/// Asks for the link of a kiosk display (#193).
+@visibleForTesting
+class KioskLinkDialog extends StatefulWidget {
+  /// Creates the dialog.
+  const KioskLinkDialog({required this.onSubmit, this.initial = '', super.key});
+
+  /// Signs in as the kiosk; an error is shown in the dialog.
+  final Future<Result<void>> Function(String link) onSubmit;
+
+  /// The link to start with.
+  final String initial;
+
+  @override
+  State<KioskLinkDialog> createState() => _KioskLinkDialogState();
+}
+
+class _KioskLinkDialogState extends State<KioskLinkDialog> {
+  late final _link = TextEditingController(text: widget.initial);
+  String? _error;
+  bool _busy = false;
+
+  @override
+  void dispose() {
+    _link.dispose();
+    super.dispose();
+  }
+
+  Future<void> _submit() async {
+    final l10n = context.l10n;
+    setState(() => _busy = true);
+    final result = await widget.onSubmit(_link.text);
+    if (!mounted) return;
+    switch (result) {
+      case Ok():
+        Navigator.pop(context);
+      case Error(:final error):
+        setState(() {
+          _busy = false;
+          _error = switch (error) {
+            InvalidKioskLink() => l10n.kioskLinkInvalid,
+            ApiException(failure: ApiFailure.unauthorized) =>
+              l10n.kioskLinkRejected,
+            _ => fieldError(l10n, error) ?? l10n.kioskLinkFailed,
+          };
+        });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final material = MaterialLocalizations.of(context);
+    return AlertDialog(
+      title: Text(l10n.kioskUse),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(l10n.kioskUseHint),
+          const SizedBox(height: Dimens.gapSmall),
+          TextField(
+            key: const ValueKey('connect.kioskLink'),
+            controller: _link,
+            keyboardType: TextInputType.url,
+            decoration: InputDecoration(
+              hintText: 'https://waylight.example.org/kiosk#…',
+              errorText: _error,
+            ),
+            onSubmitted: (_) => _submit(),
+          ),
+        ],
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: Text(material.cancelButtonLabel),
+        ),
+        FilledButton(
+          key: const ValueKey('connect.kioskStart'),
+          onPressed: _busy ? null : _submit,
+          child: Text(l10n.kioskStart),
+        ),
+      ],
+    );
+  }
+}

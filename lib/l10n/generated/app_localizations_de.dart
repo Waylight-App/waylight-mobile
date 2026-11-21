@@ -1800,4 +1800,36 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get focusBreak => 'Pause';
+
+  @override
+  String get kioskUse => 'Als Wandbildschirm nutzen';
+
+  @override
+  String get kioskUseHint =>
+      'Füge den Link eines Kiosk-Bildschirms aus der Weboberfläche ein (Einstellungen → Konten → Kiosk-Bildschirme).';
+
+  @override
+  String get kioskStart => 'Starten';
+
+  @override
+  String get kioskLinkInvalid =>
+      'Das ist kein Kiosk-Link. Er sieht so aus: https://…/kiosk#…';
+
+  @override
+  String get kioskLinkRejected =>
+      'Der Server kennt diesen Link nicht mehr. Erstelle in der Weboberfläche einen neuen.';
+
+  @override
+  String get kioskLinkFailed =>
+      'Der Wandbildschirm konnte nicht starten. Ist der Server erreichbar?';
+
+  @override
+  String get kioskNoTabs => 'Keine Tabs für diesen Bildschirm.';
+
+  @override
+  String get kioskLeave => 'Wandbildschirm verlassen (gedrückt halten)';
+
+  @override
+  String get kioskLeaveReason =>
+      'Bestätige, um den Wandbildschirm zu verlassen';
 }

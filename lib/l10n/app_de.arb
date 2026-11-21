@@ -521,5 +521,14 @@
   "focusPause": "Anhalten",
   "focusResume": "Weiter",
   "focusRunning": "Fokus",
-  "focusBreak": "Pause"
+  "focusBreak": "Pause",
+  "kioskUse": "Als Wandbildschirm nutzen",
+  "kioskUseHint": "Füge den Link eines Kiosk-Bildschirms aus der Weboberfläche ein (Einstellungen → Konten → Kiosk-Bildschirme).",
+  "kioskStart": "Starten",
+  "kioskLinkInvalid": "Das ist kein Kiosk-Link. Er sieht so aus: https://…/kiosk#…",
+  "kioskLinkRejected": "Der Server kennt diesen Link nicht mehr. Erstelle in der Weboberfläche einen neuen.",
+  "kioskLinkFailed": "Der Wandbildschirm konnte nicht starten. Ist der Server erreichbar?",
+  "kioskNoTabs": "Keine Tabs für diesen Bildschirm.",
+  "kioskLeave": "Wandbildschirm verlassen (gedrückt halten)",
+  "kioskLeaveReason": "Bestätige, um den Wandbildschirm zu verlassen"
 }

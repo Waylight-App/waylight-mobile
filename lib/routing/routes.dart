@@ -54,6 +54,9 @@ abstract final class Routes {
   /// Saves content shared from another app: `/share?text=…` (#21).
   static const share = '/share';
 
+  /// The wall display (#193); also opened by `waylight://kiosk?link=…`.
+  static const kiosk = '/kiosk';
+
   /// Every path the router knows; links to others open the dashboard.
   static const all = {
     home,
@@ -74,5 +77,6 @@ abstract final class Routes {
     service,
     security,
     share,
+    kiosk,
   };
 }

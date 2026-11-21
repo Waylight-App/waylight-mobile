@@ -55,6 +55,9 @@ abstract class SessionRepository extends ChangeNotifier {
   /// Signs in on [server] with the pairing [code] of a QR code (#43).
   Future<Result<void>> pair(ServerAddress server, String code);
 
+  /// Signs in as a kiosk display with the [token] of its link (#193).
+  Future<Result<void>> signInKiosk(ServerAddress server, String token);
+
   /// Deletes the stored session of [server], e.g. when it is removed from
   /// the list of servers (#51).
   Future<void> discard(ServerAddress server);

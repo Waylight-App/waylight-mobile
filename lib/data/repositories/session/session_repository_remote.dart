@@ -143,6 +143,13 @@ class SessionRepositoryRemote extends SessionRepository {
     }
   }
 
+  @override
+  Future<Result<void>> signInKiosk(ServerAddress server, String token) async =>
+      switch (await _authApi.kioskLogin(server, token: token)) {
+        Ok(value: final session) => _keep(session),
+        Error(:final error) => Result.error(error),
+      };
+
   /// The key of a browser sign-in that waits for the server's answer.
   static const pendingKey = 'session.browserSignIn';
 

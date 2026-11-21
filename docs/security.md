@@ -36,7 +36,12 @@ report a vulnerability, see [SECURITY.md](../SECURITY.md).
    end on time, and `USE_EXACT_ALARM` is granted to timers from Android 13
    (`SCHEDULE_EXACT_ALARM` up to Android 12). Where the system refuses
    exact alarms the timer falls back to an inexact one.
-5. **Same rules as the server.** The server's network allow-list
+5. **Wall displays.** A kiosk link (#193) signs the tablet in as the
+   server's read-only kiosk account; the token is read from the link's
+   fragment and sent only in the sign-in request. Leaving the wall display
+   needs the device credential. A link disabled or renewed on the server
+   ends the session; the tablet then forgets the server.
+6. **Same rules as the server.** The server's network allow-list
    (`ALLOWED_CIDRS`), lockouts, two-factor authentication and security log
    apply to the app exactly as to the browser. The app never weakens them.
 
