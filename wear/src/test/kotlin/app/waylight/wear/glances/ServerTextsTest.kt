@@ -57,6 +57,12 @@ class ServerTextsTest {
             "{count} arriving today",
             "No results yet",
             "Speedtest Tracker is not reachable",
+            "{running} of {total} guests running",
+            "Proxmox VE is not reachable",
+            "{offline} of {total} nodes offline",
+            "{online} of {total} peers connected",
+            "No peers",
+            "The export is out of date",
         )
         assertEquals(templates.map(::messageKey).toSet(), ServerTexts.templates.keys)
     }

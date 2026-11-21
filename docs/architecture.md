@@ -215,7 +215,11 @@ widgets sit on a grid of square cells, 4 wide on phones and 8 on tablets:
   servers without the list keep to-dos, habits and focus (#274). Kinds
   named differently from their module (`backup-status`,
   `status-overview`) are mapped in the repository, and parameters such as
-  the smart home `entity` come from the widget's configuration.
+  the smart home `entity` come from the widget's configuration; the DNS
+  filter `provider` and the electricity `zone` fall back to the widgets'
+  defaults (AdGuard Home, DE-LU) as on the web (#278). Weather takes the
+  server's state when the server lists it and derives its own otherwise;
+  the weather tile itself keeps its own small view from the full forecast.
 - The tree of a tile does not change when its content starts or stops to
   overflow (the fade is always there, only its gradient changes), so the
   view and its view model are never created again — otherwise a view that

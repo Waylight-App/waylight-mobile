@@ -64,6 +64,8 @@
     <string name="module_docker">Docker</string>
     <string name="module_parcels">Parcels</string>
     <string name="module_speedtest">Speed test</string>
+    <string name="module_proxmox">Proxmox VE</string>
+    <string name="module_wireguard">WireGuard</string>
     <!-- Templates of the server's compact states (#246); {name} is filled in. -->
     <string name="srv_todos_open">{count} open</string>
     <string name="srv_todos_nothing">Nothing to do</string>
@@ -103,4 +105,10 @@
     <string name="srv_parcels_today">{count} arriving today</string>
     <string name="srv_speedtest_none">No results yet</string>
     <string name="srv_speedtest_unreachable">Speedtest Tracker is not reachable</string>
+    <string name="srv_proxmox_running">{running} of {total} guests running</string>
+    <string name="srv_proxmox_unreachable">Proxmox VE is not reachable</string>
+    <string name="srv_proxmox_nodes_offline">{offline} of {total} nodes offline</string>
+    <string name="srv_wireguard_connected">{online} of {total} peers connected</string>
+    <string name="srv_wireguard_none">No peers</string>
+    <string name="srv_wireguard_outdated">The export is out of date</string>
 </resources>

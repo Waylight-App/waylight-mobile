@@ -61,6 +61,8 @@
     <string name="module_docker">Docker</string>
     <string name="module_parcels">Pakete</string>
     <string name="module_speedtest">Speedtest</string>
+    <string name="module_proxmox">Proxmox VE</string>
+    <string name="module_wireguard">WireGuard</string>
     <string name="srv_todos_open">{count} offen</string>
     <string name="srv_todos_nothing">Nichts zu tun</string>
     <string name="srv_todos_overdue">{count} überfällig</string>
@@ -99,4 +101,10 @@
     <string name="srv_parcels_today">{count} kommen heute</string>
     <string name="srv_speedtest_none">Noch keine Ergebnisse</string>
     <string name="srv_speedtest_unreachable">Speedtest Tracker ist nicht erreichbar</string>
+    <string name="srv_proxmox_running">{running} von {total} Gästen laufen</string>
+    <string name="srv_proxmox_unreachable">Proxmox VE ist nicht erreichbar</string>
+    <string name="srv_proxmox_nodes_offline">{offline} von {total} Knoten offline</string>
+    <string name="srv_wireguard_connected">{online} von {total} Peers verbunden</string>
+    <string name="srv_wireguard_none">Keine Peers</string>
+    <string name="srv_wireguard_outdated">Der Export ist veraltet</string>
 </resources>

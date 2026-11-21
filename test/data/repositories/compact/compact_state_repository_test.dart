@@ -241,6 +241,167 @@ void main() {
     });
   });
 
+  group('compact states of Waylight-App/waylight#650 (#278)', () {
+    const modules = {
+      'compact': [
+        {
+          'module': 'proxmox',
+          'path': '/api/proxmox/compact',
+          'params': <String>[],
+        },
+        {
+          'module': 'adguard',
+          'path': '/api/adguard/compact',
+          'params': ['provider'],
+        },
+        {
+          'module': 'wireguard',
+          'path': '/api/wireguard/compact',
+          'params': <String>[],
+        },
+        {
+          'module': 'weather',
+          'path': '/api/weather/compact',
+          'params': ['lat', 'lon'],
+        },
+        {
+          'module': 'electricity',
+          'path': '/api/electricity/compact',
+          'params': ['zone'],
+        },
+      ],
+    };
+    late Object listed;
+    late List<Uri> requests;
+    late FakeWeatherRepository weather;
+    late CompactStateRepositoryRemote repo;
+
+    setUp(() {
+      listed = modules;
+      requests = [];
+      weather = FakeWeatherRepository();
+      repo = CompactStateRepositoryRemote(
+        api: ModuleApi(
+          ApiClient(
+            client: MockClient((r) async {
+              requests.add(r.url);
+              final body = r.url.path == '/api/modules'
+                  ? listed
+                  : {
+                      'title': {
+                        'text': '7°',
+                        'key': 'srv_d72ab051081647bd',
+                        'params': {'temp': '7'},
+                      },
+                      'detail': {'text': 'Overcast'},
+                    };
+              // The degree sign needs UTF-8 bytes.
+              return http.Response.bytes(utf8.encode(jsonEncode(body)), 200);
+            }),
+            cache: InMemoryResponseCache(),
+            offline: OfflineStatus(),
+          ),
+        ),
+        weather: weather,
+        clock: () => DateTime(2026, 11, 19, 10),
+      );
+    });
+
+    Future<Uri> query(
+      String kind, [
+      Map<String, Object?> config = const {},
+    ]) async {
+      await repo.state(testServer(), kind, config: config);
+      return requests.last;
+    }
+
+    test('proxmox and wireguard need no setting', () async {
+      await repo.load(testServer());
+      expect(repo.supports('proxmox'), isTrue);
+      expect(repo.supports('wireguard'), isTrue);
+      expect((await query('proxmox')).path, '/api/proxmox/compact');
+      expect((await query('wireguard')).queryParameters, isEmpty);
+    });
+
+    test(
+      'the dns filter passes its provider, AdGuard Home by default',
+      () async {
+        await repo.load(testServer());
+        expect(repo.supports('adguard'), isTrue);
+        expect((await query('adguard')).queryParameters, {
+          'provider': 'adguard',
+        });
+        expect(
+          (await query('adguard', {'provider': 'pihole'})).queryParameters,
+          {'provider': 'pihole'},
+        );
+        expect(
+          (await query('adguard', {'provider': 'other'})).queryParameters,
+          {'provider': 'adguard'},
+        );
+      },
+    );
+
+    test('electricity passes its zone, DE-LU by default', () async {
+      await repo.load(testServer());
+      expect(repo.supports('electricity'), isTrue);
+      final uri = await query('electricity');
+      expect(uri.path, '/api/electricity/compact');
+      expect(uri.queryParameters, {'zone': 'DE-LU'});
+      expect((await query('electricity', {'zone': 'AT'})).queryParameters, {
+        'zone': 'AT',
+      });
+    });
+
+    test('weather takes the server state once the server lists it', () async {
+      await repo.load(testServer());
+      final state = await repo.state(
+        testServer(),
+        'weather',
+        config: {'lat': 53.1, 'lon': 8},
+      );
+      expect(requests.last.path, '/api/weather/compact');
+      expect(requests.last.queryParameters, {'lat': '53.1', 'lon': '8'});
+      expect((state as Ok<CompactState>).value.title.text, '7°');
+      expect(weather.calls, isEmpty);
+    });
+
+    test('weather without a place still asks for one', () async {
+      await repo.load(testServer());
+      expect(
+        (await repo.state(testServer(), 'weather') as Error).error,
+        isA<CompactConfigMissing>(),
+      );
+      expect(requests.map((u) => u.path), ['/api/modules']);
+    });
+
+    test(
+      'weather derives its state while the server does not list it',
+      () async {
+        listed = {
+          'compact': [
+            {
+              'module': 'proxmox',
+              'path': '/api/proxmox/compact',
+              'params': <String>[],
+            },
+          ],
+        };
+        final state = await repo.state(
+          testServer(),
+          'weather',
+          config: {'lat': 53.1, 'lon': 8.2},
+        );
+        expect(requests.map((u) => u.path), ['/api/modules']);
+        expect(weather.calls.single, (53.1, 8.2));
+        expect(
+          (state as Ok<CompactState>).value.title.text,
+          '14 °C, feels like 13 °C',
+        );
+      },
+    );
+  });
+
   group('derived states (#242)', () {
     late FakeWeatherRepository weather;
     late FakeTransitRepository transit;

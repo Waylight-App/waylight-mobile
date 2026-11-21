@@ -226,12 +226,21 @@ final class CompactConfigMissing implements Exception {
 /// The value of the compact query parameter [param] for a widget of
 /// [kind] with [config]; `null` when the widget does not set it. A smart
 /// home tile has a state only with exactly one device, as on the web.
+/// The DNS filter and the electricity price fall back to the defaults of
+/// their widgets (AdGuard Home, the zone DE-LU), as the web does, so
+/// widgets saved without the setting still have a state
+/// (Waylight-App/waylight#650).
 String? compactParam(String kind, String param, Map<String, Object?> config) {
-  if ((kind, param) == ('smarthome', 'entity')) {
-    return switch (config['entities']) {
-      [final String id] when id.isNotEmpty => id,
-      _ => null,
-    };
+  switch ((kind, param)) {
+    case ('smarthome', 'entity'):
+      return switch (config['entities']) {
+        [final String id] when id.isNotEmpty => id,
+        _ => null,
+      };
+    case ('adguard', 'provider'):
+      return config['provider'] == 'pihole' ? 'pihole' : 'adguard';
+    case ('electricity', 'zone'):
+      return config['zone'] == 'AT' ? 'AT' : 'DE-LU';
   }
   return switch (config[param]) {
     final String s when s.isNotEmpty => s,

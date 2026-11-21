@@ -4,6 +4,7 @@ import 'package:waylight_mobile/data/repositories/widget_data/queries/network.da
 import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/domain/models/network.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
+import 'package:waylight_mobile/ui/widgets/common/compact_state_widget.dart';
 import 'package:waylight_mobile/ui/widgets/common/simple_widget.dart';
 import 'package:waylight_mobile/ui/widgets/common/widget_rows.dart';
 
@@ -16,8 +17,14 @@ class WireguardWidget extends StatelessWidget {
   final WidgetPlacement widget;
 
   /// The builder for the widget registry.
+  /// Small and strip tiles show the server's compact state (#278).
   static Widget forPlacement(BuildContext context, WidgetPlacement widget) =>
-      WireguardWidget(widget: widget, key: ValueKey(widget.id));
+      CompactStateWidget.orFull(
+        context,
+        widget,
+        title: widget.title.isNotEmpty ? widget.title : 'WireGuard',
+        full: () => WireguardWidget(widget: widget, key: ValueKey(widget.id)),
+      );
 
   @override
   Widget build(BuildContext context) => SimpleWidget<List<WireguardPeer>>(

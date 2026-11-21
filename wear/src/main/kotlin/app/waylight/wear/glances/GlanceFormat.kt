@@ -81,6 +81,8 @@ object GlanceFormat {
         "docker" to R.string.module_docker,
         "parcels" to R.string.module_parcels,
         "speedtest" to R.string.module_speedtest,
+        "proxmox" to R.string.module_proxmox,
+        "wireguard" to R.string.module_wireguard,
     )
 
     /** The second line of a compact state, if any. */

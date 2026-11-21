@@ -6,6 +6,7 @@ import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/domain/models/everyday.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
+import 'package:waylight_mobile/ui/widgets/common/compact_state_widget.dart';
 import 'package:waylight_mobile/ui/widgets/common/remote_widget.dart';
 import 'package:waylight_mobile/ui/widgets/common/widget_rows.dart';
 
@@ -22,8 +23,16 @@ class ElectricityWidget extends StatelessWidget {
   final DateTime Function()? now;
 
   /// The builder for the widget registry.
+  /// Small and strip tiles show the server's compact state (#278).
   static Widget forPlacement(BuildContext context, WidgetPlacement widget) =>
-      ElectricityWidget(widget: widget, key: ValueKey(widget.id));
+      CompactStateWidget.orFull(
+        context,
+        widget,
+        title: widget.title.isNotEmpty
+            ? widget.title
+            : context.l10n.electricityTitle,
+        full: () => ElectricityWidget(widget: widget, key: ValueKey(widget.id)),
+      );
 
   @override
   Widget build(BuildContext context) {
