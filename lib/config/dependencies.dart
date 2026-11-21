@@ -36,6 +36,7 @@ import 'package:waylight_mobile/data/repositories/preferences/preferences_reposi
 import 'package:waylight_mobile/data/repositories/presence/presence_repository.dart';
 import 'package:waylight_mobile/data/repositories/push/push_repository.dart';
 import 'package:waylight_mobile/data/repositories/push/push_repository_remote.dart';
+import 'package:waylight_mobile/data/repositories/quick_tiles/quick_tiles_repository.dart';
 import 'package:waylight_mobile/data/repositories/reminders/reminder_repository.dart';
 import 'package:waylight_mobile/data/repositories/scanner/scanner_repository.dart';
 import 'package:waylight_mobile/data/repositories/search/search_repository.dart';
@@ -84,6 +85,7 @@ import 'package:waylight_mobile/data/services/network/network_changes.dart';
 import 'package:waylight_mobile/data/services/platform/device_auth.dart';
 import 'package:waylight_mobile/data/services/platform/device_name.dart';
 import 'package:waylight_mobile/data/services/push/push_device.dart';
+import 'package:waylight_mobile/data/services/quick_tiles/quick_tile_store.dart';
 import 'package:waylight_mobile/data/services/reminders/reminder_scheduler.dart';
 import 'package:waylight_mobile/data/services/scanner/barcode_scanner.dart';
 import 'package:waylight_mobile/data/services/storage/key_value_store.dart';
@@ -122,6 +124,7 @@ typedef Repositories = ({
   ThemeRepository theme,
   SummaryRepository summary,
   HomeWidgetsRepository homeWidgets,
+  QuickTilesRepository quickTiles,
   ReminderRepository reminders,
   LogStore logs,
   DiagnosticsRepository diagnostics,
@@ -170,6 +173,7 @@ List<SingleChildWidget> providers(Repositories repositories) => [
   ChangeNotifierProvider<ThemeRepository>.value(value: repositories.theme),
   Provider<SummaryRepository>.value(value: repositories.summary),
   Provider<HomeWidgetsRepository>.value(value: repositories.homeWidgets),
+  Provider<QuickTilesRepository>.value(value: repositories.quickTiles),
   ChangeNotifierProvider<ReminderRepository>.value(
     value: repositories.reminders,
   ),
@@ -234,6 +238,13 @@ Repositories createRepositories() {
     store: MethodChannelHomeWidgetStore(),
   );
   final widgetData = WidgetDataRepositoryRemote(api: modules);
+  final smartHome = SmartHomeRepositoryRemote(api: modules);
+  final presence = PresenceRepositoryRemote(api: modules);
+  final quickTiles = QuickTilesRepository(
+    smartHome: smartHome,
+    presence: presence,
+    store: MethodChannelQuickTileStore(),
+  );
   final focusSessions = FocusRepositoryRemote(api: modules);
   final reminders = ReminderRepository(
     scheduler: const MethodChannelReminderScheduler(),
@@ -257,6 +268,7 @@ Repositories createRepositories() {
       todos.clear,
       theme.clear,
       homeWidgets.clear,
+      quickTiles.clear,
       dashboard.clear,
       logs.clear,
     ],
@@ -285,9 +297,9 @@ Repositories createRepositories() {
     habits: HabitsRepositoryRemote(api: modules),
     rss: RssRepositoryRemote(api: modules),
     parcels: ParcelsRepositoryRemote(api: modules),
-    smartHome: SmartHomeRepositoryRemote(api: modules),
+    smartHome: smartHome,
     focus: focusSessions,
-    presence: PresenceRepositoryRemote(api: modules),
+    presence: presence,
     absences: AbsencesRepositoryRemote(api: modules),
     announcements: AnnouncementsRepositoryRemote(api: modules),
     scanner: const ScannerRepository(scanner: MethodChannelBarcodeScanner()),
@@ -311,6 +323,7 @@ Repositories createRepositories() {
     theme: theme,
     summary: SummaryRepositoryRemote(api: modules),
     homeWidgets: homeWidgets,
+    quickTiles: quickTiles,
     reminders: reminders,
     logs: logs,
     diagnostics: DiagnosticsRepository(

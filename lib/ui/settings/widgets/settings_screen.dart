@@ -200,6 +200,34 @@ class SettingsScreen extends StatelessWidget {
                 ],
               ),
             ),
+            if (viewModel.quickTilesAvailable) ...[
+              const SizedBox(height: Dimens.gap),
+              SectionCard(
+                title: l10n.quickTilesTitle,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Text(
+                      l10n.quickTilesHint,
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                    ListTile(
+                      key: const ValueKey('settings.tileEntity'),
+                      contentPadding: EdgeInsets.zero,
+                      minTileHeight: Dimens.tapTarget,
+                      title: Text(l10n.quickTileSmartHomeChoice),
+                      subtitle: Text(
+                        viewModel.tileEntity.isEmpty
+                            ? l10n.quickTileNoChoice
+                            : viewModel.tileEntity,
+                      ),
+                      trailing: const Icon(Icons.chevron_right),
+                      onTap: () => _chooseTileEntity(context).ignore(),
+                    ),
+                  ],
+                ),
+              ),
+            ],
             if (viewModel.remindersAvailable) ...[
               const SizedBox(height: Dimens.gap),
               _Reminders(viewModel: viewModel),
@@ -326,6 +354,39 @@ class SettingsScreen extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+/// Lets the person pick the device of the smart home tile (#192).
+extension on SettingsScreen {
+  Future<void> _chooseTileEntity(BuildContext context) async {
+    final l10n = context.l10n;
+    final entities = await viewModel.tileChoices();
+    if (!context.mounted) return;
+    await showModalBottomSheet<void>(
+      context: context,
+      builder: (context) => SafeArea(
+        child: entities.isEmpty
+            ? Padding(
+                padding: const EdgeInsets.all(Dimens.gap),
+                child: Text(l10n.quickTileNoDevices),
+              )
+            : ListView(
+                shrinkWrap: true,
+                children: [
+                  for (final e in entities)
+                    ListTile(
+                      title: Text(e.name),
+                      subtitle: Text(e.id),
+                      onTap: () {
+                        Navigator.pop(context);
+                        viewModel.chooseTileEntity(e).ignore();
+                      },
+                    ),
+                ],
+              ),
       ),
     );
   }

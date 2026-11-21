@@ -2000,4 +2000,45 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get parcelsScanNoNumber =>
       'In diesem Code steht keine Sendungsnummer. Tippe sie ein oder scanne den Barcode neben der Nummer.';
+
+  @override
+  String get quickTileStatus => 'Mein Status';
+
+  @override
+  String get quickTileOn => 'An';
+
+  @override
+  String get quickTileOff => 'Aus';
+
+  @override
+  String get quickTileUnreachable => 'Nicht erreichbar';
+
+  @override
+  String get quickTileChooseTitle => 'Smart-Home-Kachel';
+
+  @override
+  String get quickTileChooseHint =>
+      'Wähle das Gerät, das die Waylight-Kachel in den Schnelleinstellungen schaltet.';
+
+  @override
+  String quickTileChosen(String name) {
+    return 'Die Kachel schaltet jetzt $name.';
+  }
+
+  @override
+  String get quickTileNoDevices =>
+      'Der Server erlaubt kein Gerät zum Schalten.';
+
+  @override
+  String get quickTilesTitle => 'Schnelleinstellungen';
+
+  @override
+  String get quickTilesHint =>
+      'Füge Waylights Kacheln in den Schnelleinstellungen des Handys hinzu: Aufgabe anlegen, Gerät schalten, Status setzen.';
+
+  @override
+  String get quickTileSmartHomeChoice => 'Gerät der Smart-Home-Kachel';
+
+  @override
+  String get quickTileNoChoice => 'Noch nicht gewählt';
 }

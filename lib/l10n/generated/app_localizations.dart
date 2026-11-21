@@ -3589,6 +3589,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No tracking number in this code. Type it, or scan the barcode next to the number.'**
   String get parcelsScanNoNumber;
+
+  /// Quick Settings tile for the presence status.
+  ///
+  /// In en, this message translates to:
+  /// **'My status'**
+  String get quickTileStatus;
+
+  /// Quick Settings tile, device switched on.
+  ///
+  /// In en, this message translates to:
+  /// **'On'**
+  String get quickTileOn;
+
+  /// Quick Settings tile, device switched off.
+  ///
+  /// In en, this message translates to:
+  /// **'Off'**
+  String get quickTileOff;
+
+  /// Quick Settings tile, the server did not answer.
+  ///
+  /// In en, this message translates to:
+  /// **'Not reachable'**
+  String get quickTileUnreachable;
+
+  /// Title of the screen that picks the device of the Quick Settings tile.
+  ///
+  /// In en, this message translates to:
+  /// **'Smart home tile'**
+  String get quickTileChooseTitle;
+
+  /// Explains the device picker of the Quick Settings tile.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the device the Waylight tile in Quick Settings switches.'**
+  String get quickTileChooseHint;
+
+  /// Confirmation after picking the tile's device.
+  ///
+  /// In en, this message translates to:
+  /// **'The tile now switches {name}.'**
+  String quickTileChosen(String name);
+
+  /// Empty device list.
+  ///
+  /// In en, this message translates to:
+  /// **'The server allows no device to be switched.'**
+  String get quickTileNoDevices;
+
+  /// Settings section.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick Settings tiles'**
+  String get quickTilesTitle;
+
+  /// Section hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Waylight\'s tiles in the phone\'s Quick Settings: add a to-do, switch a device, set your status.'**
+  String get quickTilesHint;
+
+  /// Settings row.
+  ///
+  /// In en, this message translates to:
+  /// **'Device of the smart home tile'**
+  String get quickTileSmartHomeChoice;
+
+  /// No device chosen.
+  ///
+  /// In en, this message translates to:
+  /// **'Not chosen yet'**
+  String get quickTileNoChoice;
 }
 
 class _AppLocalizationsDelegate

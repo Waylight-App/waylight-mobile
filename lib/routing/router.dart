@@ -19,6 +19,7 @@ import 'package:waylight_mobile/ui/dashboard/view_models/kiosk_view_model.dart';
 import 'package:waylight_mobile/ui/dashboard/widgets/dashboard_screen.dart';
 import 'package:waylight_mobile/ui/dashboard/widgets/kiosk_screen.dart';
 import 'package:waylight_mobile/ui/home_widgets/home_widget_texts.dart';
+import 'package:waylight_mobile/ui/home_widgets/quick_tile_texts.dart';
 import 'package:waylight_mobile/ui/lock/view_models/lock_view_model.dart';
 import 'package:waylight_mobile/ui/lock/widgets/lock_screen.dart';
 import 'package:waylight_mobile/ui/pair/view_models/pair_view_model.dart';
@@ -85,6 +86,8 @@ GoRouter createRouter(
           homeWidgetFormatter: HomeWidgetTexts(context.l10n),
           reminderRepository: context.read(),
           reminderFormatter: ReminderTexts(context.l10n),
+          quickTilesRepository: context.read(),
+          quickTileFormatter: QuickTileTexts(context.l10n),
           initialTabId: state.uri.queryParameters['tab'] ?? '',
           initialWidgetKind: state.uri.queryParameters['widget'] ?? '',
           serverRepository: context.read(),
@@ -98,16 +101,20 @@ GoRouter createRouter(
     GoRoute(
       path: Routes.settings,
       builder: (context, state) => ViewModelHost(
-        create: (context) => SettingsViewModel(
-          serverRepository: context.read(),
-          sessionRepository: context.read(),
-          preferencesRepository: context.read(),
-          pushRepository: context.read(),
-          lockRepository: context.read(),
-          diagnosticsRepository: context.read(),
-          themeRepository: context.read(),
-          reminderRepository: context.read(),
-        )..reminderFormatter = ReminderTexts(context.l10n),
+        create: (context) =>
+            SettingsViewModel(
+                serverRepository: context.read(),
+                sessionRepository: context.read(),
+                preferencesRepository: context.read(),
+                pushRepository: context.read(),
+                lockRepository: context.read(),
+                diagnosticsRepository: context.read(),
+                themeRepository: context.read(),
+                reminderRepository: context.read(),
+                quickTilesRepository: context.read(),
+              )
+              ..reminderFormatter = ReminderTexts(context.l10n)
+              ..quickTileFormatter = QuickTileTexts(context.l10n),
         builder: (context, viewModel) => SettingsScreen(viewModel: viewModel),
       ),
     ),

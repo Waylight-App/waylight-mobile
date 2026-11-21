@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Names of the Quick Settings tiles (#192). -->
+<resources>
+    <string name="quick_tile_capture">Aufgabe hinzufügen</string>
+    <string name="quick_tile_smart_home">Smart Home</string>
+    <string name="quick_tile_status">Mein Status</string>
+</resources>

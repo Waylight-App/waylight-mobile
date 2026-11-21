@@ -1995,4 +1995,45 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get parcelsScanNoNumber =>
       'No tracking number in this code. Type it, or scan the barcode next to the number.';
+
+  @override
+  String get quickTileStatus => 'My status';
+
+  @override
+  String get quickTileOn => 'On';
+
+  @override
+  String get quickTileOff => 'Off';
+
+  @override
+  String get quickTileUnreachable => 'Not reachable';
+
+  @override
+  String get quickTileChooseTitle => 'Smart home tile';
+
+  @override
+  String get quickTileChooseHint =>
+      'Choose the device the Waylight tile in Quick Settings switches.';
+
+  @override
+  String quickTileChosen(String name) {
+    return 'The tile now switches $name.';
+  }
+
+  @override
+  String get quickTileNoDevices =>
+      'The server allows no device to be switched.';
+
+  @override
+  String get quickTilesTitle => 'Quick Settings tiles';
+
+  @override
+  String get quickTilesHint =>
+      'Add Waylight\'s tiles in the phone\'s Quick Settings: add a to-do, switch a device, set your status.';
+
+  @override
+  String get quickTileSmartHomeChoice => 'Device of the smart home tile';
+
+  @override
+  String get quickTileNoChoice => 'Not chosen yet';
 }
