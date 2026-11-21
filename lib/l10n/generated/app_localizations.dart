@@ -3115,6 +3115,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Add address'**
   String get addressAdd;
+
+  /// Reminder text of a to-do.
+  ///
+  /// In en, this message translates to:
+  /// **'Due today'**
+  String get reminderTodoBody;
+
+  /// Reminder text of an all-day event.
+  ///
+  /// In en, this message translates to:
+  /// **'All day today'**
+  String get reminderEventAllDay;
+
+  /// Reminder text of an event.
+  ///
+  /// In en, this message translates to:
+  /// **'At {time}, in {minutes} min'**
+  String reminderEventAt(String time, int minutes);
+
+  /// Reminder title of a birthday.
+  ///
+  /// In en, this message translates to:
+  /// **'{name}\'s birthday'**
+  String reminderBirthdayTitle(String name);
+
+  /// Reminder text of a birthday with a known year.
+  ///
+  /// In en, this message translates to:
+  /// **'Turns {age} today'**
+  String reminderBirthdayAge(int age);
+
+  /// Reminder text of a birthday.
+  ///
+  /// In en, this message translates to:
+  /// **'Birthday today'**
+  String get reminderBirthdayBody;
+
+  /// Settings section.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders on this phone'**
+  String get settingsReminders;
+
+  /// Below the reminders heading.
+  ///
+  /// In en, this message translates to:
+  /// **'Shown by the phone itself, also offline. Updated whenever the app loads the dashboard.'**
+  String get settingsRemindersHint;
+
+  /// Switch.
+  ///
+  /// In en, this message translates to:
+  /// **'To-dos on their due day, at 8:00'**
+  String get settingsReminderTodos;
+
+  /// Label of the lead time choice.
+  ///
+  /// In en, this message translates to:
+  /// **'Events'**
+  String get settingsReminderEvents;
+
+  /// Lead time choice.
+  ///
+  /// In en, this message translates to:
+  /// **'Off'**
+  String get settingsReminderEventsOff;
+
+  /// Lead time choice.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} min before'**
+  String settingsReminderMinutes(int minutes);
+
+  /// Switch.
+  ///
+  /// In en, this message translates to:
+  /// **'Birthdays, at 8:00'**
+  String get settingsReminderBirthdays;
+
+  /// Shown when the permission was refused.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications are turned off for Waylight in the system settings.'**
+  String get settingsReminderDenied;
 }
 
 class _AppLocalizationsDelegate

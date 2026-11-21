@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:waylight_mobile/data/repositories/appearance/theme_repository.dart';
+import 'package:waylight_mobile/data/repositories/reminders/reminder_repository.dart';
 import 'package:waylight_mobile/data/services/api/api_client.dart';
 import 'package:waylight_mobile/data/services/api/module_api.dart';
 import 'package:waylight_mobile/domain/models/appearance.dart';
@@ -15,9 +16,12 @@ import 'package:waylight_mobile/utils/result.dart';
 import '../../testing/fakes/fake_action_repositories.dart';
 import '../../testing/fakes/fake_link_opener.dart';
 import '../../testing/fakes/fake_preferences_repository.dart';
+import '../../testing/fakes/fake_reminder_scheduler.dart';
 import '../../testing/fakes/fake_server_repository.dart';
 import '../../testing/fakes/fake_session_repository.dart';
 import '../../testing/fakes/fake_system_colors.dart';
+import '../../testing/fakes/fake_todos_repository.dart';
+import '../../testing/fakes/fake_widget_data_repository.dart';
 import '../../testing/fakes/in_memory_key_value_store.dart';
 import '../../testing/pump_app.dart';
 
@@ -282,5 +286,53 @@ void main() {
     await tester.pumpAndSettle();
     expect(servers.addresses, [testServer()]);
     expect(find.byTooltip('Remove address'), findsNothing);
+  });
+
+  testWidgets('turns reminders on and asks for the permission (#190)', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(800, 3000);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+    final scheduler = FakeReminderScheduler()..permission = false;
+    final reminders = ReminderRepository(
+      scheduler: scheduler,
+      store: InMemoryKeyValueStore(),
+      todos: FakeTodosRepository(),
+      data: FakeWidgetDataRepository(),
+    );
+    await tester.pumpScreen(
+      SettingsScreen(
+        viewModel: SettingsViewModel(
+          serverRepository: servers,
+          sessionRepository: sessions,
+          preferencesRepository: preferences,
+          reminderRepository: reminders,
+          appVersion: () async => '0.3.0 (7)',
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byKey(const ValueKey('settings.reminderTodos')));
+    await tester.pumpAndSettle();
+    expect(reminders.settings.todos, isFalse);
+    expect(
+      find.text(
+        'Notifications are turned off for Waylight in the system settings.',
+      ),
+      findsOneWidget,
+    );
+
+    scheduler.permission = true;
+    await tester.tap(find.byKey(const ValueKey('settings.reminderTodos')));
+    await tester.pumpAndSettle();
+    expect(reminders.settings.todos, isTrue);
+
+    await tester.tap(find.byKey(const ValueKey('settings.reminderEvents')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('15 min before').last);
+    await tester.pumpAndSettle();
+    expect(reminders.settings.eventMinutes, 15);
   });
 }

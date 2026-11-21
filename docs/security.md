@@ -27,6 +27,11 @@ report a vulnerability, see [SECURITY.md](../SECURITY.md).
    Every further permission (notifications, camera for QR codes) needs an
    issue that explains why, and is requested when the feature is first
    used, not at start.
+   Reminders on the device (#190) use inexact alarms
+   (`setAndAllowWhileIdle`), so they need no exact-alarm permission; the
+   notification permission is asked when the first kind is turned on. The
+   planned reminders (title, text, time) are kept in the app's private
+   storage so they survive a reboot, and are deleted on sign-out.
 5. **Same rules as the server.** The server's network allow-list
    (`ALLOWED_CIDRS`), lockouts, two-factor authentication and security log
    apply to the app exactly as to the browser. The app never weakens them.

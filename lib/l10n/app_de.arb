@@ -502,5 +502,19 @@
   "addressRejected": "Antwortet, kennt deine Sitzung aber nicht – ein anderer Server unter dieser Adresse?",
   "addressRaise": "Früher probieren",
   "addressRemove": "Adresse entfernen",
-  "addressAdd": "Adresse hinzufügen"
+  "addressAdd": "Adresse hinzufügen",
+  "reminderTodoBody": "Heute fällig",
+  "reminderEventAllDay": "Heute ganztägig",
+  "reminderEventAt": "Um {time}, in {minutes} Min.",
+  "reminderBirthdayTitle": "{name} hat Geburtstag",
+  "reminderBirthdayAge": "Wird heute {age}",
+  "reminderBirthdayBody": "Geburtstag heute",
+  "settingsReminders": "Erinnerungen auf diesem Handy",
+  "settingsRemindersHint": "Zeigt das Handy selbst an, auch offline. Wird aktualisiert, sobald die App das Dashboard lädt.",
+  "settingsReminderTodos": "Aufgaben am Fälligkeitstag um 8:00",
+  "settingsReminderEvents": "Termine",
+  "settingsReminderEventsOff": "Aus",
+  "settingsReminderMinutes": "{minutes} Min. vorher",
+  "settingsReminderBirthdays": "Geburtstage um 8:00",
+  "settingsReminderDenied": "Benachrichtigungen für Waylight sind in den Systemeinstellungen ausgeschaltet."
 }

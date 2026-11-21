@@ -60,6 +60,8 @@
             android:name=".push.PushService"
             android:exported="false"
             android:foregroundServiceType="remoteMessaging" />
+        <!-- Shows reminders on the device when their alarm fires (#190). -->
+        <receiver android:name=".reminders.ReminderReceiver" android:exported="false" />
         <receiver android:name=".push.BootReceiver" android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />

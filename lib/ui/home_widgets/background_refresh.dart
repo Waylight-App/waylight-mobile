@@ -2,10 +2,12 @@ import 'dart:ui';
 
 import 'package:waylight_mobile/data/repositories/home_widgets/home_widgets_repository.dart';
 import 'package:waylight_mobile/data/repositories/preferences/preferences_repository.dart';
+import 'package:waylight_mobile/data/repositories/reminders/reminder_repository.dart';
 import 'package:waylight_mobile/data/repositories/server/server_repository.dart';
 import 'package:waylight_mobile/data/repositories/session/session_repository.dart';
 import 'package:waylight_mobile/domain/models/appearance.dart';
 import 'package:waylight_mobile/l10n/generated/app_localizations.dart';
+import 'package:waylight_mobile/ui/core/reminder_texts.dart';
 import 'package:waylight_mobile/ui/home_widgets/home_widget_texts.dart';
 
 /// The background refresh of the home screen widgets (#48): restores the
@@ -17,6 +19,7 @@ Future<void> refreshHomeWidgetsInBackground({
   required SessionRepository session,
   required PreferencesRepository preferences,
   required HomeWidgetsRepository homeWidgets,
+  ReminderRepository? reminders,
   required Locale systemLocale,
 }) async {
   try {
@@ -28,15 +31,20 @@ Future<void> refreshHomeWidgetsInBackground({
       await homeWidgets.clear();
       return;
     }
+    final l10n = lookupAppLocalizations(
+      _locale(preferences.appearance.language, systemLocale),
+    );
     await homeWidgets.refresh(
       current,
-      format: HomeWidgetTexts(
-        lookupAppLocalizations(
-          _locale(preferences.appearance.language, systemLocale),
-        ),
-      ),
+      format: HomeWidgetTexts(l10n),
       force: true,
     );
+    // Reminders follow the same data, so changes made elsewhere reach the
+    // phone's schedule while the app stays closed (#190).
+    if (reminders != null) {
+      await reminders.restore();
+      await reminders.reschedule(current, ReminderTexts(l10n), force: true);
+    }
     if (session.expired) await homeWidgets.clear();
   } finally {
     await homeWidgets.finishBackground();

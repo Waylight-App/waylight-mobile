@@ -5,11 +5,13 @@ import 'package:waylight_mobile/data/repositories/diagnostics/diagnostics_reposi
 import 'package:waylight_mobile/data/repositories/lock/app_lock_repository.dart';
 import 'package:waylight_mobile/data/repositories/preferences/preferences_repository.dart';
 import 'package:waylight_mobile/data/repositories/push/push_repository.dart';
+import 'package:waylight_mobile/data/repositories/reminders/reminder_repository.dart';
 import 'package:waylight_mobile/data/repositories/server/server_repository.dart';
 import 'package:waylight_mobile/data/repositories/session/session_repository.dart';
 import 'package:waylight_mobile/domain/models/address_check.dart';
 import 'package:waylight_mobile/domain/models/appearance.dart';
 import 'package:waylight_mobile/domain/models/diagnostics.dart';
+import 'package:waylight_mobile/domain/models/reminder.dart';
 import 'package:waylight_mobile/domain/models/server_address.dart';
 import 'package:waylight_mobile/domain/models/server_status.dart';
 import 'package:waylight_mobile/utils/command.dart';
@@ -33,13 +35,15 @@ class SettingsViewModel extends ChangeNotifier {
     AppLockRepository? lockRepository,
     PushRepository? pushRepository,
     ThemeRepository? themeRepository,
+    ReminderRepository? reminderRepository,
     AppVersionReader appVersion = _platformVersion,
     DiagnosticsRepository? diagnosticsRepository,
   }) : _lock = lockRepository,
        _diagnostics = diagnosticsRepository,
        _readAppVersion = appVersion,
        _push = pushRepository,
-       _theme = themeRepository {
+       _theme = themeRepository,
+       _reminders = reminderRepository {
     account = Command0(_serverRepository.status)..execute().ignore();
     serverVersion = Command0(_serverRepository.version)..execute().ignore();
     this.appVersion = Command0(() async => Result.ok(await appVersion()))
@@ -50,6 +54,7 @@ class SettingsViewModel extends ChangeNotifier {
     _serverRepository.addListener(notifyListeners);
     _lock?.addListener(notifyListeners);
     _theme?.addListener(notifyListeners);
+    _reminders?.addListener(notifyListeners);
     _lock?.available().then((available) {
       _lockAvailable = available;
       notifyListeners();
@@ -73,6 +78,35 @@ class SettingsViewModel extends ChangeNotifier {
   Future<void> shareDiagnostics(DiagnosticReport report) async =>
       _diagnostics?.share(report);
   final ThemeRepository? _theme;
+  final ReminderRepository? _reminders;
+  bool _remindersDenied = false;
+
+  /// Whether this build can schedule reminders on the device (#190).
+  bool get remindersAvailable => _reminders != null;
+
+  /// The reminders the person chose.
+  ReminderSettings get reminders =>
+      _reminders?.settings ?? const ReminderSettings();
+
+  /// Whether the last attempt to turn reminders on was refused by the
+  /// system's notification permission.
+  bool get remindersDenied => _remindersDenied;
+
+  /// Stores [settings]; the first kind turned on asks for the permission.
+  Future<void> setReminders(ReminderSettings settings) async {
+    final reminders = _reminders;
+    if (reminders == null) return;
+    _remindersDenied = !await reminders.update(settings);
+    notifyListeners();
+    final server = _serverRepository.current;
+    final format = reminderFormatter;
+    if (!_remindersDenied && server != null && format != null) {
+      await reminders.reschedule(server, format, force: true);
+    }
+  }
+
+  /// The words of the reminders; set by the screen, which has the texts.
+  ReminderFormatter? reminderFormatter;
 
   /// Whether the system offers wallpaper colours (#198, Android 12+).
   bool get wallpaperAvailable => _theme?.wallpaperAvailable ?? false;
@@ -273,6 +307,7 @@ class SettingsViewModel extends ChangeNotifier {
     _serverRepository.removeListener(notifyListeners);
     _lock?.removeListener(notifyListeners);
     _theme?.removeListener(notifyListeners);
+    _reminders?.removeListener(notifyListeners);
     for (final c in [account, serverVersion, appVersion, signOut, disconnect]) {
       c.dispose();
     }

@@ -20,6 +20,7 @@ Future<void> main() async {
   await repositories.lock.restore();
   await repositories.theme.restore(server: repositories.server.current);
   await repositories.todos.restore();
+  await repositories.reminders.restore();
   // The app lock counts the time in the background (#46).
   AppLifecycleListener(
     onHide: repositories.lock.onHidden,
@@ -69,6 +70,7 @@ Future<void> backgroundRefresh() async {
     session: repositories.session,
     preferences: repositories.preferences,
     homeWidgets: repositories.homeWidgets,
+    reminders: repositories.reminders,
     systemLocale: WidgetsBinding.instance.platformDispatcher.locale,
   );
 }
