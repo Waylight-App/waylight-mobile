@@ -19,12 +19,20 @@ class FakeCompactStateRepository implements CompactStateRepository {
   /// The kinds asked for.
   final List<String> asked = [];
 
+  /// The configurations passed along with [asked].
+  final List<Map<String, Object?>> configs = [];
+
   @override
   bool supports(String kind) => kinds.contains(kind);
 
   @override
-  Future<Result<CompactState>> state(ServerAddress server, String kind) async {
+  Future<Result<CompactState>> state(
+    ServerAddress server,
+    String kind, {
+    Map<String, Object?> config = const {},
+  }) async {
     asked.add(kind);
+    configs.add(config);
     return result;
   }
 }

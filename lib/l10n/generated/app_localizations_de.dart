@@ -2272,4 +2272,50 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get settingsAttentionShow => 'Anzeigen';
+
+  @override
+  String compactWeather(String temp, String feels) {
+    return '$temp °C, gefühlt $feels °C';
+  }
+
+  @override
+  String compactWeatherToday(String min, String max, String rain) {
+    return '$min bis $max °C, $rain % Regen';
+  }
+
+  @override
+  String compactDeparture(String line, String headsign, String minutes) {
+    return '$line nach $headsign in $minutes min';
+  }
+
+  @override
+  String compactDepartureCancelled(String line, String headsign) {
+    return '$line nach $headsign fällt aus';
+  }
+
+  @override
+  String compactDepartureDelay(String delay) {
+    return '$delay min später';
+  }
+
+  @override
+  String get compactNoDepartures => 'Keine Abfahrten';
+
+  @override
+  String compactWasteToday(String label) {
+    return '$label heute';
+  }
+
+  @override
+  String compactWasteTomorrow(String label) {
+    return '$label morgen';
+  }
+
+  @override
+  String compactWasteInDays(String label, String days) {
+    return '$label in $days Tagen';
+  }
+
+  @override
+  String get compactNoCollections => 'Keine Abholung geplant';
 }

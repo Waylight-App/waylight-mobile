@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:waylight_mobile/data/repositories/home_widgets/home_widgets_repository.dart';
 import 'package:waylight_mobile/domain/models/api_exception.dart';
+import 'package:waylight_mobile/domain/models/compact_state.dart';
 import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/domain/models/departure.dart';
 import 'package:waylight_mobile/domain/models/home_snapshot.dart';
@@ -9,6 +10,7 @@ import 'package:waylight_mobile/domain/models/todo.dart';
 import 'package:waylight_mobile/ui/home_widgets/home_widget_texts.dart';
 import 'package:waylight_mobile/utils/result.dart';
 
+import '../../../testing/fakes/fake_compact_state_repository.dart';
 import '../../../testing/fakes/fake_dashboard_repository.dart';
 import '../../../testing/fakes/fake_home_widget_store.dart';
 import '../../../testing/fakes/fake_server_repository.dart';
@@ -95,6 +97,43 @@ void main() {
     expect(departures.title, 'Main Station');
     expect(departures.lines, ['10:52 S1 Airport +2', '10:55 7 Zoo cancelled']);
     expect(departures.toJson()['link'], 'waylight://');
+  });
+
+  test('cards carry the compact state line and level (#242)', () async {
+    final compact = FakeCompactStateRepository(kinds: {'todos'})
+      ..result = const Result.ok(
+        CompactState(
+          title: CompactText(text: '2 open · 1 overdue'),
+          level: CompactLevel.attention,
+        ),
+      );
+    repo = HomeWidgetsRepository(
+      dashboard: dashboard,
+      todos: todos,
+      transit: transit,
+      store: store,
+      compact: compact,
+      clock: () => clock,
+    );
+    await repo.refresh(testServer(), format: format);
+
+    final today = store.cards[HomeWidgetKind.todos]!.toJson();
+    expect(compact.asked, ['todos']);
+    expect(today['summary'], '2 open · 1 overdue');
+    expect(today['level'], 'attention');
+
+    // Derived from the departures already read, without another request.
+    final departures = store.cards[HomeWidgetKind.departures]!;
+    expect(transit.calls, hasLength(1));
+    expect(departures.summary, 'S1 to Airport in 10 min');
+    expect(departures.level, CompactLevel.attention);
+  });
+
+  test('without a compact state the cards have no summary', () async {
+    await repo.refresh(testServer(), format: format);
+    final today = store.cards[HomeWidgetKind.todos]!;
+    expect(today.summary, isEmpty);
+    expect(today.level, CompactLevel.none);
   });
 
   test('without a transit widget the card asks for one', () async {

@@ -662,5 +662,15 @@
   "settingsSearchEmpty": "Keine Einstellung passt zu „{query}“.",
   "settingsSearchClear": "Suche leeren",
   "settingsSearchBattery": "Akku-Hinweis",
-  "settingsAttentionShow": "Anzeigen"
+  "settingsAttentionShow": "Anzeigen",
+  "compactWeather": "{temp} °C, gefühlt {feels} °C",
+  "compactWeatherToday": "{min} bis {max} °C, {rain} % Regen",
+  "compactDeparture": "{line} nach {headsign} in {minutes} min",
+  "compactDepartureCancelled": "{line} nach {headsign} fällt aus",
+  "compactDepartureDelay": "{delay} min später",
+  "compactNoDepartures": "Keine Abfahrten",
+  "compactWasteToday": "{label} heute",
+  "compactWasteTomorrow": "{label} morgen",
+  "compactWasteInDays": "{label} in {days} Tagen",
+  "compactNoCollections": "Keine Abholung geplant"
 }

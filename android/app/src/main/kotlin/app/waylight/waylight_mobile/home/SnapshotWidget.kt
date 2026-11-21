@@ -30,6 +30,7 @@ abstract class SnapshotWidget(private val kind: String) : AppWidgetProvider() {
                 views.setTextViewText(R.id.title, "Waylight")
                 views.setTextViewText(R.id.body, context.getString(R.string.home_widget_open_app))
                 views.setViewVisibility(R.id.footer, View.GONE)
+                views.setViewVisibility(R.id.summary, View.GONE)
             } else {
                 val lines = card.optJSONArray("lines")
                 val text = (0 until (lines?.length() ?: 0)).joinToString("\n") { lines!!.optString(it) }
@@ -37,6 +38,7 @@ abstract class SnapshotWidget(private val kind: String) : AppWidgetProvider() {
                 views.setTextViewText(R.id.body, text.ifEmpty { card.optString("empty") })
                 views.setTextViewText(R.id.footer, card.optString("footer"))
                 views.setViewVisibility(R.id.footer, View.VISIBLE)
+                drawSummary(context, views, card)
             }
             val link = card?.optString("link")?.takeIf { it.startsWith("waylight:") } ?: "waylight://"
             val open = Intent(Intent.ACTION_VIEW, Uri.parse(link), context, MainActivity::class.java)
@@ -50,6 +52,26 @@ abstract class SnapshotWidget(private val kind: String) : AppWidgetProvider() {
                 ),
             )
             manager.updateAppWidget(ids, views)
+        }
+
+        /**
+         * The title line of the widget's compact state (#242), coloured only
+         * when it needs attention, as in the app's small tiles.
+         */
+        private fun drawSummary(context: Context, views: RemoteViews, card: JSONObject) {
+            val summary = card.optString("summary")
+            if (summary.isEmpty()) {
+                views.setViewVisibility(R.id.summary, View.GONE)
+                return
+            }
+            val color = when (card.optString("level")) {
+                "attention" -> R.color.home_widget_attention
+                "problem" -> R.color.home_widget_problem
+                else -> R.color.home_widget_muted
+            }
+            views.setTextViewText(R.id.summary, summary)
+            views.setTextColor(R.id.summary, context.getColor(color))
+            views.setViewVisibility(R.id.summary, View.VISIBLE)
         }
     }
 }

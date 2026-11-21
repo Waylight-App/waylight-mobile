@@ -19,6 +19,7 @@ class CompactStateViewModel extends ChangeNotifier {
   CompactStateViewModel({
     required this.kind,
     required this._serverRepository,
+    this.config = const {},
     required this._compactRepository,
   }) {
     load = Command0(_load)..execute().ignore();
@@ -26,6 +27,9 @@ class CompactStateViewModel extends ChangeNotifier {
 
   /// The widget kind.
   final String kind;
+
+  /// The widget's configuration, which derived states need (#242).
+  final Map<String, Object?> config;
 
   final ServerRepository _serverRepository;
   final CompactStateRepository _compactRepository;
@@ -36,7 +40,7 @@ class CompactStateViewModel extends ChangeNotifier {
   Future<Result<CompactState>> _load() async {
     final server = _serverRepository.current;
     if (server == null) return const Result.error(NotConnectedException());
-    return _compactRepository.state(server, kind);
+    return _compactRepository.state(server, kind, config: config);
   }
 
   @override
@@ -93,6 +97,7 @@ class CompactStateWidget extends StatelessWidget {
   Widget build(BuildContext context) => ViewModelHost(
     create: (context) => CompactStateViewModel(
       kind: widget.kind,
+      config: widget.config,
       serverRepository: context.read(),
       compactRepository: context.read(),
     ),

@@ -1,7 +1,9 @@
+import 'package:waylight_mobile/domain/models/compact_state.dart';
 import 'package:waylight_mobile/domain/models/departure.dart';
 import 'package:waylight_mobile/domain/models/home_snapshot.dart';
 import 'package:waylight_mobile/domain/models/todo.dart';
 import 'package:waylight_mobile/l10n/generated/app_localizations.dart';
+import 'package:waylight_mobile/ui/core/compact_texts.dart';
 
 /// Formats the home screen widgets in the app's language (#42). Times are
 /// absolute, so a card stays right while the phone shows it unchanged.
@@ -19,21 +21,31 @@ class HomeWidgetTexts implements HomeWidgetFormatter {
 
   String _footer(DateTime at) => l10n.homeWidgetUpdated(_time(at));
 
+  String _summary(CompactState? compact) =>
+      compact == null ? '' : compactTextOf(l10n, compact.title);
+
   @override
-  HomeWidgetCard todos(List<Todo> today, DateTime at) => HomeWidgetCard(
+  HomeWidgetCard todos(
+    List<Todo> today,
+    DateTime at, {
+    CompactState? compact,
+  }) => HomeWidgetCard(
     title: l10n.homeWidgetTodos,
     lines: [for (final t in today) t.overdue ? '! ${t.title}' : t.title],
     empty: l10n.homeWidgetTodosEmpty,
     footer: _footer(at),
     link: 'waylight://',
+    summary: _summary(compact),
+    level: compact?.level ?? CompactLevel.none,
   );
 
   @override
   HomeWidgetCard departures(
     String stopName,
     List<Departure>? departures,
-    DateTime at,
-  ) => HomeWidgetCard(
+    DateTime at, {
+    CompactState? compact,
+  }) => HomeWidgetCard(
     title: stopName.isEmpty ? l10n.homeWidgetDepartures : stopName,
     lines: [
       for (final d in departures ?? const <Departure>[])
@@ -52,5 +64,7 @@ class HomeWidgetTexts implements HomeWidgetFormatter {
         : l10n.homeWidgetNoDepartures,
     footer: _footer(at),
     link: 'waylight://',
+    summary: _summary(compact),
+    level: compact?.level ?? CompactLevel.none,
   );
 }
