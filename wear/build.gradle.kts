@@ -62,4 +62,17 @@ dependencies {
     implementation("androidx.activity:activity-compose:1.10.1")
     implementation("androidx.wear.compose:compose-foundation:1.5.0")
     implementation("androidx.wear.compose:compose-material:1.5.0")
+    implementation("androidx.wear.compose:compose-navigation:1.5.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.7")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2")
+    // Text input of the typed pairing: the system keyboard or voice.
+    implementation("androidx.wear:wear-input:1.1.0")
+    // Draws the pairing QR code; the offline ZXing core the phone app uses
+    // for scanning (ADR 0014), not a Google service.
+    implementation("com.google.zxing:core:3.5.3")
+
+    testImplementation("junit:junit:4.13.2")
+    // org.json is only a stub in the Android SDK outside a device.
+    testImplementation("org.json:json:20260814")
 }
