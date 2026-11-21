@@ -12,6 +12,8 @@ import 'package:waylight_mobile/ui/core/themes/status_colors.dart';
 import 'package:waylight_mobile/ui/core/widgets/choice_search_sheet.dart';
 import 'package:waylight_mobile/ui/core/widgets/view_model_host.dart';
 import 'package:waylight_mobile/ui/core/widgets/widget_frame.dart';
+import 'package:waylight_mobile/ui/core/widgets/widget_preview.dart';
+import 'package:waylight_mobile/ui/widgets/transit/transit_example.dart';
 import 'package:waylight_mobile/ui/widgets/transit/transit_view_model.dart';
 import 'package:waylight_mobile/utils/result.dart';
 
@@ -26,6 +28,24 @@ class TransitWidget extends StatelessWidget {
   /// The builder for the widget registry.
   static Widget forPlacement(BuildContext context, WidgetPlacement widget) =>
       TransitWidget(widget: widget, key: ValueKey(widget.id));
+
+  /// The gallery preview from example data (#251).
+  static Widget preview(BuildContext context, String title, WidgetSize size) {
+    final now = DateTime.now();
+    final departures = exampleDepartures(now);
+    int minutesUntil(Departure d) => d.expected.difference(now).inMinutes;
+    return WidgetPreview(
+      title: title,
+      size: size,
+      compact: (context) => _TransitCompact(
+        departures: departures,
+        size: size,
+        minutesUntil: minutesUntil,
+      ),
+      full: (context) =>
+          _DepartureList(departures: departures, minutesUntil: minutesUntil),
+    );
+  }
 
   /// Lets the user search a stop and stores it on the widget (#230).
   static Future<void> _chooseStop(
@@ -85,54 +105,84 @@ class TransitWidget extends StatelessWidget {
               onSetUp: () => _chooseStop(context, viewModel).ignore(),
             )
           : null,
-      compact: (context, departures, size) {
-        final next = [
-          for (final d in departures)
-            if (!d.cancelled) d,
-        ];
-        if (next.isEmpty) return Text(l10n.transitEmpty);
-        final first = next.first;
-        final minutes = viewModel.minutesUntil(first);
-        final when = minutes == 0
-            ? l10n.transitNow
-            : l10n.transitInMinutes(minutes);
-        final line = '${first.line} ${first.headsign}';
-        if (size == WidgetSize.strip) return Text('$line · $when');
-        final time = DateFormat.Hm(
-          Localizations.localeOf(context).toLanguageTag(),
-        );
-        final later = [
-          for (final d in next.skip(1).take(2)) time.format(d.expected),
-        ];
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(when, style: Theme.of(context).textTheme.headlineSmall),
-            Text(line, maxLines: 2, overflow: TextOverflow.ellipsis),
-            if (later.isNotEmpty)
-              Text(
-                l10n.transitThen(later.join(', ')),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
-          ],
-        );
-      },
-      builder: (context, departures) => departures.isEmpty
-          ? Text(l10n.transitEmpty)
-          : Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                for (final d in departures)
-                  _DepartureRow(
-                    departure: d,
-                    minutes: viewModel.minutesUntil(d),
-                  ),
-              ],
-            ),
+      compact: (context, departures, size) => _TransitCompact(
+        departures: departures,
+        size: size,
+        minutesUntil: viewModel.minutesUntil,
+      ),
+      builder: (context, departures) => _DepartureList(
+        departures: departures,
+        minutesUntil: viewModel.minutesUntil,
+      ),
     );
   }
+}
+
+/// The next departure in a small or strip tile, with the two after it.
+class _TransitCompact extends StatelessWidget {
+  const _TransitCompact({
+    required this.departures,
+    required this.size,
+    required this.minutesUntil,
+  });
+
+  final List<Departure> departures;
+  final WidgetSize size;
+  final int Function(Departure departure) minutesUntil;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final next = [
+      for (final d in departures)
+        if (!d.cancelled) d,
+    ];
+    if (next.isEmpty) return Text(l10n.transitEmpty);
+    final first = next.first;
+    final minutes = minutesUntil(first);
+    final when = minutes == 0
+        ? l10n.transitNow
+        : l10n.transitInMinutes(minutes);
+    final line = '${first.line} ${first.headsign}';
+    if (size == WidgetSize.strip) return Text('$line · $when');
+    final time = DateFormat.Hm(Localizations.localeOf(context).toLanguageTag());
+    final later = [
+      for (final d in next.skip(1).take(2)) time.format(d.expected),
+    ];
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(when, style: Theme.of(context).textTheme.headlineSmall),
+        Text(line, maxLines: 2, overflow: TextOverflow.ellipsis),
+        if (later.isNotEmpty)
+          Text(
+            l10n.transitThen(later.join(', ')),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: Theme.of(context).textTheme.bodySmall,
+          ),
+      ],
+    );
+  }
+}
+
+/// Every departure, one row each.
+class _DepartureList extends StatelessWidget {
+  const _DepartureList({required this.departures, required this.minutesUntil});
+
+  final List<Departure> departures;
+  final int Function(Departure departure) minutesUntil;
+
+  @override
+  Widget build(BuildContext context) => departures.isEmpty
+      ? Text(context.l10n.transitEmpty)
+      : Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            for (final d in departures)
+              _DepartureRow(departure: d, minutes: minutesUntil(d)),
+          ],
+        );
 }
 
 class _DepartureRow extends StatelessWidget {
