@@ -9,6 +9,7 @@ import 'package:waylight_mobile/ui/core/error_messages.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
 import 'package:waylight_mobile/ui/core/widgets/message_banner.dart';
+import 'package:waylight_mobile/ui/core/widgets/rows.dart';
 import 'package:waylight_mobile/ui/core/widgets/view_model_host.dart';
 import 'package:waylight_mobile/ui/core/widgets/widget_frame.dart';
 import 'package:waylight_mobile/ui/core/widgets/widget_preview.dart';
@@ -283,8 +284,9 @@ class _TodoRow extends StatelessWidget {
             : Text(
                 due,
                 style: theme.textTheme.bodySmall?.copyWith(
+                  // Overdue is attention, not a failure: amber, not red.
                   color: todo.overdue && !todo.done
-                      ? theme.colorScheme.error
+                      ? toneColor(context, Tone.warning)
                       : theme.colorScheme.onSurfaceVariant,
                 ),
               ),

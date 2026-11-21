@@ -89,7 +89,7 @@ class _List extends StatelessWidget {
                 : Icon(
                     Icons.circle,
                     size: 10,
-                    color: theme.colorScheme.primary,
+                    color: theme.colorScheme.onSurfaceVariant,
                   ),
             onTap: () => showAnnouncement(context, viewModel, a).ignore(),
           ),

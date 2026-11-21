@@ -2419,4 +2419,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get compactNoCollections => 'No collections ahead';
+
+  @override
+  String get dashboardNothingToShow => 'Nothing to show on this tab right now.';
 }

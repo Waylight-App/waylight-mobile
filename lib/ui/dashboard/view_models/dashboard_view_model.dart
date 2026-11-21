@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:waylight_mobile/data/repositories/appearance/theme_repository.dart';
 import 'package:waylight_mobile/data/repositories/attention/attention_repository.dart';
@@ -10,8 +12,10 @@ import 'package:waylight_mobile/data/repositories/quick_tiles/quick_tiles_reposi
 import 'package:waylight_mobile/data/repositories/reminders/reminder_repository.dart';
 import 'package:waylight_mobile/data/repositories/server/server_repository.dart';
 import 'package:waylight_mobile/domain/models/attention.dart';
+import 'package:waylight_mobile/domain/models/compact_state.dart';
 import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/domain/models/home_snapshot.dart';
+import 'package:waylight_mobile/domain/models/server_address.dart';
 import 'package:waylight_mobile/domain/models/quick_tile.dart';
 import 'package:waylight_mobile/domain/models/reminder.dart';
 import 'package:waylight_mobile/ui/dashboard/view_models/arrange_view_model.dart';
@@ -115,6 +119,39 @@ class DashboardViewModel extends ChangeNotifier {
         ?.message;
   }
 
+  Set<String> _emptyWidgets = {};
+
+  /// Whether [widget] has nothing to show, as its compact state says
+  /// (#288); the dashboard hides it, the edit mode still lists it.
+  bool isEmptyWidget(WidgetPlacement widget) =>
+      _emptyWidgets.contains(widget.id);
+
+  /// Asks the compact state of every widget that has one whether it is
+  /// empty. Widgets with the same kind and settings share one request.
+  Future<void> _loadEmpty(ServerAddress server, Dashboard dashboard) async {
+    final compact = _compact;
+    if (compact == null) return;
+    final checks = <String, Future<bool>>{};
+    final keyOf = <String, String>{};
+    for (final tab in dashboard.tabs) {
+      for (final w in tab.widgets) {
+        if (!compact.supports(w.kind, config: w.config)) continue;
+        final key = '${w.kind} ${jsonEncode(w.config)}';
+        keyOf[w.id] = key;
+        checks[key] ??= compact
+            .state(server, w.kind, config: w.config)
+            .then((r) => r is Ok<CompactState> && r.value.empty);
+      }
+    }
+    final empty = {
+      for (final MapEntry(key: id, value: key) in keyOf.entries)
+        if (await checks[key]!) id,
+    };
+    if (setEquals(empty, _emptyWidgets)) return;
+    _emptyWidgets = empty;
+    notifyListeners();
+  }
+
   bool _demo = false;
 
   /// Whether the server is the public demo, whose data is reset.
@@ -191,6 +228,7 @@ class DashboardViewModel extends ChangeNotifier {
       _dashboardRepository.dashboard(server),
       _compact?.load(server) ?? Future<void>.value(),
     ).wait;
+    if (result case Ok(:final value)) _loadEmpty(server, value).ignore();
     // The attention badge follows every load; a failure keeps the old one.
     _attention?.refresh(server).ignore();
     // The home screen widgets follow every load of the dashboard (#42).

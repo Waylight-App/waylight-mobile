@@ -52,7 +52,7 @@ class ReadLaterWidget extends StatelessWidget {
           for (final a in articles.take(shown))
             InfoRow(
               leading: a.status == ArticleStatus.unread
-                  ? StatusDot(tone: Tone.warning, label: l10n.readLaterUnread)
+                  ? StatusDot(tone: Tone.neutral, label: l10n.readLaterUnread)
                   : null,
               title: a.title,
               subtitle: [

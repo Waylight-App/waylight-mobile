@@ -701,5 +701,6 @@
   "compactWasteToday": "{label} heute",
   "compactWasteTomorrow": "{label} morgen",
   "compactWasteInDays": "{label} in {days} Tagen",
-  "compactNoCollections": "Keine Abholung geplant"
+  "compactNoCollections": "Keine Abholung geplant",
+  "dashboardNothingToShow": "Auf diesem Tab gibt es gerade nichts zu sehen."
 }

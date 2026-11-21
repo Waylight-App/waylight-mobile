@@ -2427,4 +2427,8 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get compactNoCollections => 'Keine Abholung geplant';
+
+  @override
+  String get dashboardNothingToShow =>
+      'Auf diesem Tab gibt es gerade nichts zu sehen.';
 }

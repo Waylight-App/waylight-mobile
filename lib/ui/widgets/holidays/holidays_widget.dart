@@ -41,7 +41,6 @@ class HolidaysWidget extends StatelessWidget {
               trailing: h.current
                   ? l10n.holidaysNow
                   : daysText(context, h.daysUntil),
-              trailingTone: h.current || h.daysUntil <= 7 ? Tone.warning : null,
             ),
         ],
       );

@@ -1403,5 +1403,7 @@
   "compactWasteInDays": "{label} in {days} days",
   "@compactWasteInDays": {"description": "Derived compact state: next collection in some days (#242).", "placeholders": {"label": {"type": "String"}, "days": {"type": "String"}}},
   "compactNoCollections": "No collections ahead",
-  "@compactNoCollections": {"description": "Derived compact state: no collections (#242)."}
+  "@compactNoCollections": {"description": "Derived compact state: no collections (#242)."},
+  "dashboardNothingToShow": "Nothing to show on this tab right now.",
+  "@dashboardNothingToShow": {"description": "Shown on a tab whose widgets all have nothing to show (#288)."}
 }
