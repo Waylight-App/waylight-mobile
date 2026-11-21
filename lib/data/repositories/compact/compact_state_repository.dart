@@ -5,6 +5,7 @@ import 'package:waylight_mobile/data/services/api/module_api.dart';
 import 'package:waylight_mobile/domain/models/api_exception.dart';
 import 'package:waylight_mobile/domain/models/compact_derived.dart';
 import 'package:waylight_mobile/domain/models/compact_state.dart';
+import 'package:waylight_mobile/domain/models/network.dart';
 import 'package:waylight_mobile/domain/models/server_address.dart';
 import 'package:waylight_mobile/utils/result.dart';
 
@@ -238,7 +239,7 @@ String? compactParam(String kind, String param, Map<String, Object?> config) {
         _ => null,
       };
     case ('adguard', 'provider'):
-      return config['provider'] == 'pihole' ? 'pihole' : 'adguard';
+      return dnsFilterProvider(config);
     case ('electricity', 'zone'):
       return config['zone'] == 'AT' ? 'AT' : 'DE-LU';
   }

@@ -133,6 +133,12 @@ final class PhoneCall {
   final int durationMinutes;
 }
 
+/// The DNS filter a widget with [config] reads: `pihole` when set, otherwise
+/// `adguard`, the default of the widget on the web. The server's endpoints
+/// take it as the query parameter `provider`.
+String dnsFilterProvider(Map<String, Object?> config) =>
+    config['provider'] == 'pihole' ? 'pihole' : 'adguard';
+
 /// Statistics of AdGuard Home or Pi-hole (`GET /api/adguard/stats`).
 final class DnsFilterStats {
   /// Creates the statistics.

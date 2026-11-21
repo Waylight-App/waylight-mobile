@@ -169,8 +169,9 @@ class FakeHomeServerActions with _Calls implements HomeServerActionsRepository {
   @override
   Future<Result<void>> pauseDnsFilter(
     ServerAddress server,
-    int minutes,
-  ) async => _record('pause:$minutes');
+    int minutes, {
+    required String provider,
+  }) async => _record('pause:$provider:$minutes');
 }
 
 /// A [CalendarRepository] in memory.
