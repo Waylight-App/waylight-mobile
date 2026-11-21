@@ -1808,10 +1808,12 @@ class AppLocalizationsDe extends AppLocalizations {
   String get gallerySearch => 'Widgets suchen';
 
   @override
-  String get galleryAdd => 'Hinzufügen';
+  String get galleryAdded => 'Hinzugefügt';
 
   @override
-  String get galleryAdded => 'Hinzugefügt';
+  String galleryAddSized(String widget, String size) {
+    return '$widget als Kachel „$size“ hinzufügen';
+  }
 
   @override
   String get galleryEmpty => 'Keine passenden Widgets.';

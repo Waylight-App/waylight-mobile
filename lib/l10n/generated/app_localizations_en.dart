@@ -1807,10 +1807,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get gallerySearch => 'Search widgets';
 
   @override
-  String get galleryAdd => 'Add';
+  String get galleryAdded => 'Added';
 
   @override
-  String get galleryAdded => 'Added';
+  String galleryAddSized(String widget, String size) {
+    return 'Add $widget as $size tile';
+  }
 
   @override
   String get galleryEmpty => 'No widgets match.';
