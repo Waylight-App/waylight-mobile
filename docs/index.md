@@ -10,6 +10,10 @@
 - [Design](design/README.md): mockups of every screen and the design decisions
 - [Testing](testing.md): what is tested where, fakes, accessibility, coverage
 
+## Using
+
+- [Waylight on Wear OS](wear-os.md): install, pair, glances and the tile; building the watch app
+
 ## Working together
 
 - [Workflow](workflow.md): issues, branches, commits, pull requests, reviews, repository settings
