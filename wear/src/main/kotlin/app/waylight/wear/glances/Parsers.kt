@@ -21,8 +21,8 @@ object Parsers {
         val o = JSONObject(json)
         return CompactGlance(
             module = module,
-            title = o.optJSONObject("title")?.optString("text").orEmpty(),
-            detail = o.optJSONObject("detail")?.optString("text")?.takeIf { it.isNotEmpty() },
+            title = GlanceText.fromJson(o.optJSONObject("title")) ?: GlanceText(""),
+            detail = GlanceText.fromJson(o.optJSONObject("detail"))?.takeIf { it.text.isNotEmpty() },
             level = Level.parse(o.optString("level")),
             count = if (o.has("count") && !o.isNull("count")) o.optInt("count") else null,
         )

@@ -12,13 +12,27 @@ class SnapshotTest {
             nextEvent = NextEvent("Standup", 1_763_720_000_000, allDay = false),
             presence = Presence.OFFICE,
             compact = listOf(
-                CompactGlance("todos", "3 open", "1 overdue", Level.ATTENTION, 3),
-                CompactGlance("focus", "Idle", null, Level.NONE, null),
+                CompactGlance(
+                    "todos",
+                    GlanceText("3 open", "srv_fe19a87a4c31a1ac", mapOf("count" to "3")),
+                    GlanceText("1 overdue"),
+                    Level.ATTENTION,
+                    3,
+                ),
+                CompactGlance("focus", GlanceText("Idle"), null, Level.NONE, null),
             ),
         )
         assertEquals(snapshot, Snapshot.fromJson(snapshot.toJson()))
         val empty = Snapshot(5, null, null, emptyList())
         assertEquals(empty, Snapshot.fromJson(empty.toJson()))
+    }
+
+    @Test
+    fun `reads snapshots stored with English text only`() {
+        val old = """{"fetchedAt":5,"compact":[{"module":"habits","title":"1 of 2 today","detail":"x","level":"OK"}]}"""
+        val glance = Snapshot.fromJson(old)!!.compact.single()
+        assertEquals(GlanceText("1 of 2 today"), glance.title)
+        assertEquals(GlanceText("x"), glance.detail)
     }
 
     @Test

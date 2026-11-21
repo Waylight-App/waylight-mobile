@@ -36,4 +36,12 @@
     <string name="tile_label">Waylight</string>
     <string name="tile_description">Next event, to-dos and my status</string>
     <string name="tile_not_paired">Open Waylight to connect the watch.</string>
+    <!-- Templates of the server's compact states (#246); {name} is filled in. -->
+    <string name="srv_todos_open">{count} open</string>
+    <string name="srv_todos_nothing">Nothing to do</string>
+    <string name="srv_todos_overdue">{count} overdue</string>
+    <string name="srv_habits_none">No habits yet</string>
+    <string name="srv_habits_done">{done} of {total} today</string>
+    <string name="srv_focus_minutes">{minutes} min focus today</string>
+    <string name="srv_focus_sessions">{count} sessions</string>
 </resources>

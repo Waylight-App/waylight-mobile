@@ -34,7 +34,7 @@ class GlanceFetcher(private val api: WaylightApi) {
     // to-dos; the title is then left to the watch's own translation.
     private fun todosFallback(): CompactGlance {
         val open = Parsers.openTodos(api.get("/api/todos"))
-        return CompactGlance("todos", title = "", detail = null, level = Level.NONE, count = open)
+        return CompactGlance("todos", title = GlanceText(""), detail = null, level = Level.NONE, count = open)
     }
 
     /** [block]'s result, or `null` when the server refuses it or answers garbage. */
