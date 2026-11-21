@@ -5,12 +5,15 @@ import 'package:waylight_mobile/data/repositories/diagnostics/diagnostics_reposi
 import 'package:waylight_mobile/data/repositories/lock/app_lock_repository.dart';
 import 'package:waylight_mobile/data/repositories/preferences/preferences_repository.dart';
 import 'package:waylight_mobile/data/repositories/push/push_repository.dart';
+import 'package:waylight_mobile/data/repositories/quick_tiles/quick_tiles_repository.dart';
 import 'package:waylight_mobile/data/repositories/reminders/reminder_repository.dart';
 import 'package:waylight_mobile/data/repositories/server/server_repository.dart';
 import 'package:waylight_mobile/data/repositories/session/session_repository.dart';
+import 'package:waylight_mobile/domain/models/actions.dart';
 import 'package:waylight_mobile/domain/models/address_check.dart';
 import 'package:waylight_mobile/domain/models/appearance.dart';
 import 'package:waylight_mobile/domain/models/diagnostics.dart';
+import 'package:waylight_mobile/domain/models/quick_tile.dart';
 import 'package:waylight_mobile/domain/models/reminder.dart';
 import 'package:waylight_mobile/domain/models/server_address.dart';
 import 'package:waylight_mobile/domain/models/server_status.dart';
@@ -36,6 +39,7 @@ class SettingsViewModel extends ChangeNotifier {
     PushRepository? pushRepository,
     ThemeRepository? themeRepository,
     ReminderRepository? reminderRepository,
+    QuickTilesRepository? quickTilesRepository,
     AppVersionReader appVersion = _platformVersion,
     DiagnosticsRepository? diagnosticsRepository,
   }) : _lock = lockRepository,
@@ -43,7 +47,9 @@ class SettingsViewModel extends ChangeNotifier {
        _readAppVersion = appVersion,
        _push = pushRepository,
        _theme = themeRepository,
-       _reminders = reminderRepository {
+       _reminders = reminderRepository,
+       _quickTiles = quickTilesRepository {
+    _loadTileChoice().ignore();
     account = Command0(_serverRepository.status)..execute().ignore();
     serverVersion = Command0(_serverRepository.version)..execute().ignore();
     this.appVersion = Command0(() async => Result.ok(await appVersion()))
@@ -79,6 +85,44 @@ class SettingsViewModel extends ChangeNotifier {
       _diagnostics?.share(report);
   final ThemeRepository? _theme;
   final ReminderRepository? _reminders;
+  final QuickTilesRepository? _quickTiles;
+  String _tileEntity = '';
+
+  /// Whether this phone has Quick Settings tiles (#192).
+  bool get quickTilesAvailable =>
+      _quickTiles != null && defaultTargetPlatform == TargetPlatform.android;
+
+  /// The name of the device the smart home tile switches; empty when none.
+  String get tileEntity => _tileEntity;
+
+  Future<void> _loadTileChoice() async {
+    final choice = await _quickTiles?.choice();
+    _tileEntity = choice?.name ?? '';
+    notifyListeners();
+  }
+
+  /// The devices the smart home tile may switch.
+  Future<List<SmartEntity>> tileChoices() async {
+    final server = _serverRepository.current;
+    final tiles = _quickTiles;
+    if (server == null || tiles == null) return const [];
+    return switch (await tiles.choices(server)) {
+      Ok(:final value) => value,
+      Error() => const [],
+    };
+  }
+
+  /// Makes the smart home tile switch [entity].
+  Future<void> chooseTileEntity(SmartEntity entity) async {
+    final format = quickTileFormatter;
+    if (format == null) return;
+    await _quickTiles?.choose(entity, format);
+    _tileEntity = entity.name;
+    notifyListeners();
+  }
+
+  /// The words of the tiles; set by the screen, which has the texts.
+  QuickTileFormatter? quickTileFormatter;
   bool _remindersDenied = false;
 
   /// Whether this build can schedule reminders on the device (#190).

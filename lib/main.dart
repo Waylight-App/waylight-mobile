@@ -77,6 +77,24 @@ Future<void> backgroundRefresh() async {
     preferences: repositories.preferences,
     homeWidgets: repositories.homeWidgets,
     reminders: repositories.reminders,
+    quickTiles: repositories.quickTiles,
+    systemLocale: WidgetsBinding.instance.platformDispatcher.locale,
+  );
+}
+
+/// Runs the action of a Quick Settings tile in a headless engine the tile
+/// starts (#192); the first argument names the tile.
+@pragma('vm:entry-point')
+Future<void> quickTileAction(List<String> args) async {
+  WidgetsFlutterBinding.ensureInitialized();
+  setupLogging();
+  final repositories = createRepositories();
+  await runQuickTileInBackground(
+    server: repositories.server,
+    session: repositories.session,
+    preferences: repositories.preferences,
+    quickTiles: repositories.quickTiles,
+    tile: args.firstOrNull,
     systemLocale: WidgetsBinding.instance.platformDispatcher.locale,
   );
 }

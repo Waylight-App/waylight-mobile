@@ -4,10 +4,12 @@ import 'package:waylight_mobile/data/repositories/dashboard/dashboard_repository
 import 'package:waylight_mobile/data/repositories/home_widgets/home_widgets_repository.dart';
 import 'package:waylight_mobile/data/repositories/offline/offline_repository.dart';
 import 'package:waylight_mobile/data/repositories/push/push_repository.dart';
+import 'package:waylight_mobile/data/repositories/quick_tiles/quick_tiles_repository.dart';
 import 'package:waylight_mobile/data/repositories/reminders/reminder_repository.dart';
 import 'package:waylight_mobile/data/repositories/server/server_repository.dart';
 import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/domain/models/home_snapshot.dart';
+import 'package:waylight_mobile/domain/models/quick_tile.dart';
 import 'package:waylight_mobile/domain/models/reminder.dart';
 import 'package:waylight_mobile/ui/dashboard/view_models/arrange_view_model.dart';
 import 'package:waylight_mobile/utils/command.dart';
@@ -28,7 +30,10 @@ class DashboardViewModel extends ChangeNotifier {
     this._homeWidgetFormatter,
     ReminderRepository? reminderRepository,
     this._reminderFormatter,
+    QuickTilesRepository? quickTilesRepository,
+    this._quickTileFormatter,
   }) : _offline = offlineRepository,
+       _quickTiles = quickTilesRepository,
        _push = pushRepository,
        _theme = themeRepository,
        _homeWidgets = homeWidgetsRepository,
@@ -47,6 +52,8 @@ class DashboardViewModel extends ChangeNotifier {
   final HomeWidgetFormatter? _homeWidgetFormatter;
   final ReminderRepository? _reminders;
   final ReminderFormatter? _reminderFormatter;
+  final QuickTilesRepository? _quickTiles;
+  final QuickTileFormatter? _quickTileFormatter;
   bool _pushRefreshed = false;
 
   /// When the server cannot be reached: the time of the stored data shown.
@@ -140,6 +147,11 @@ class DashboardViewModel extends ChangeNotifier {
       _push?.refresh(server).ignore();
       _theme?.refresh(server).ignore();
       _homeWidgets?.schedule().ignore();
+      // The Quick Settings tiles show whether the server has presence and
+      // the current states (#192).
+      if (_quickTileFormatter case final format?) {
+        _quickTiles?.refresh(server, format: format).ignore();
+      }
     }
     final result = await _dashboardRepository.dashboard(server);
     // The home screen widgets follow every load of the dashboard (#42).

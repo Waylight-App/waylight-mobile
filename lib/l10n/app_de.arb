@@ -581,5 +581,18 @@
   "announcementNotify": "An die Benachrichtigungskanäle senden",
   "parcelsScan": "Etikett scannen",
   "parcelsScanPrompt": "Richte die Kamera auf den Barcode des Versandetiketts",
-  "parcelsScanNoNumber": "In diesem Code steht keine Sendungsnummer. Tippe sie ein oder scanne den Barcode neben der Nummer."
+  "parcelsScanNoNumber": "In diesem Code steht keine Sendungsnummer. Tippe sie ein oder scanne den Barcode neben der Nummer.",
+  "quickTileStatus": "Mein Status",
+  "quickTileOn": "An",
+  "quickTileOff": "Aus",
+  "quickTileUnreachable": "Nicht erreichbar",
+  "quickTileChooseTitle": "Smart-Home-Kachel",
+  "quickTileChooseHint": "Wähle das Gerät, das die Waylight-Kachel in den Schnelleinstellungen schaltet.",
+  "quickTileChosen": "Die Kachel schaltet jetzt {name}.",
+  "quickTileNoDevices": "Kein Gerät darf geschaltet werden. Der Besitzer wählt sie in der Weboberfläche aus.",
+  "quickTilesTitle": "Schnelleinstellungen",
+  "quickTilesHint": "Füge Waylights Kacheln in den Schnelleinstellungen des Handys hinzu: Aufgabe anlegen, Gerät schalten, Status setzen.",
+  "quickTileSmartHomeChoice": "Gerät der Smart-Home-Kachel",
+  "quickTileNoChoice": "Noch nicht gewählt",
+  "quickTileNoDevices": "Der Server erlaubt kein Gerät zum Schalten."
 }

@@ -11,6 +11,7 @@ import 'package:waylight_mobile/data/repositories/home_widgets/home_widgets_repo
 import 'package:waylight_mobile/data/repositories/kiosk/kiosk_repository.dart';
 import 'package:waylight_mobile/data/repositories/lock/app_lock_repository.dart';
 import 'package:waylight_mobile/data/repositories/offline/offline_repository.dart';
+import 'package:waylight_mobile/data/repositories/quick_tiles/quick_tiles_repository.dart';
 import 'package:waylight_mobile/data/repositories/reminders/reminder_repository.dart';
 import 'package:waylight_mobile/data/repositories/scanner/scanner_repository.dart';
 import 'package:waylight_mobile/data/repositories/todos/todos_repository_outbox.dart';
@@ -38,6 +39,7 @@ import '../testing/fakes/fake_log_store.dart';
 import '../testing/fakes/fake_notes_repository.dart';
 import '../testing/fakes/fake_preferences_repository.dart';
 import '../testing/fakes/fake_presence_repository.dart';
+import '../testing/fakes/fake_quick_tile_store.dart';
 import '../testing/fakes/fake_reminder_scheduler.dart';
 import '../testing/fakes/fake_search_repository.dart';
 import '../testing/fakes/fake_server_repository.dart';
@@ -81,6 +83,11 @@ void main() {
           smartHome: FakeSmartHomeRepository(),
           focus: FakeFocusRepository(),
           presence: FakePresenceRepository(),
+          quickTiles: QuickTilesRepository(
+            smartHome: FakeSmartHomeRepository(),
+            presence: FakePresenceRepository(),
+            store: FakeQuickTileStore(),
+          ),
           absences: FakeAbsencesRepository(),
           announcements: FakeAnnouncementsRepository(),
           scanner: ScannerRepository(scanner: FakeBarcodeScanner()),

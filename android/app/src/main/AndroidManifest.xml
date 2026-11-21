@@ -64,6 +64,24 @@
             android:name=".push.PushService"
             android:exported="false"
             android:foregroundServiceType="remoteMessaging" />
+        <!-- Quick Settings tiles (#192). The status tile is offered only while
+             the server has presence, so it starts disabled. -->
+        <service android:name=".tiles.CaptureTileService" android:exported="true"
+            android:label="@string/quick_tile_capture" android:icon="@drawable/ic_tile_capture"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter><action android:name="android.service.quicksettings.action.QS_TILE" /></intent-filter>
+        </service>
+        <service android:name=".tiles.SmartHomeTileService" android:exported="true"
+            android:label="@string/quick_tile_smart_home" android:icon="@drawable/ic_tile_home"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter><action android:name="android.service.quicksettings.action.QS_TILE" /></intent-filter>
+            <meta-data android:name="android.service.quicksettings.ACTIVE_TILE" android:value="false" />
+        </service>
+        <service android:name=".tiles.StatusTileService" android:exported="true" android:enabled="false"
+            android:label="@string/quick_tile_status" android:icon="@drawable/ic_tile_status"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter><action android:name="android.service.quicksettings.action.QS_TILE" /></intent-filter>
+        </service>
         <!-- The focus timer's alarm and notification buttons (#191). -->
         <receiver android:name=".focus.FocusReceiver" android:exported="false" />
         <!-- Shows reminders on the device when their alarm fires (#190). -->
