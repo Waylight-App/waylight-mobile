@@ -34,6 +34,10 @@
     </plurals>
     <string name="tile_description">Nächster Termin, Aufgaben und mein Status</string>
     <string name="tile_not_paired">Öffne Waylight, um die Uhr zu verbinden.</string>
+    <string name="complication_next_event">Waylight: nächster Termin</string>
+    <string name="complication_todos">Waylight: offene To-dos</string>
+    <string name="complication_todos_title">To-dos</string>
+    <string name="complication_preview_event">Standup</string>
     <string name="todo_tick_off">Zum Abhaken tippen</string>
     <string name="smart_home">Smart Home</string>
     <string name="device_press">Zum Drücken tippen</string>

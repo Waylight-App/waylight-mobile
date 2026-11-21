@@ -36,6 +36,10 @@
     <string name="tile_label">Waylight</string>
     <string name="tile_description">Next event, to-dos and my status</string>
     <string name="tile_not_paired">Open Waylight to connect the watch.</string>
+    <string name="complication_next_event">Waylight: next event</string>
+    <string name="complication_todos">Waylight: open to-dos</string>
+    <string name="complication_todos_title">To-dos</string>
+    <string name="complication_preview_event">Standup</string>
     <string name="todo_tick_off">Tap to tick off</string>
     <string name="smart_home">Smart home</string>
     <string name="device_press">Tap to press</string>

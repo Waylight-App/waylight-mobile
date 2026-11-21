@@ -77,6 +77,12 @@ stored data with its age and asks for fresh data when the last fetch is
 more than a quarter of an hour old. A tap on the to-do row ticks it off,
 a tap anywhere else opens the app.
 
+Two complications put the data on the watch face: *Waylight: next event*
+(short: time and the start of the title; long: title and time) and
+*Waylight: open to-dos* (the number). Long-press the watch face, choose
+*Edit* and pick them for a slot. They show the stored data and change
+after every refresh; a tap opens the app.
+
 The server sends the texts of compact states in English together with the
 key of their template. The watch shows them in its own language (English
 or German) when it knows the key; texts of modules added on a newer
@@ -121,8 +127,9 @@ Android Studio opens `wear/` as a project. The Wear OS emulator (system
 image *Wear OS 4* or newer) runs the app; pairing by code works there
 against a server on the host (`http://10.0.2.2:8090`).
 
-The code is Kotlin with Compose for Wear OS, the Wear Tiles and ProtoLayout
-libraries and WorkManager from AndroidX, and the ZXing core for the QR code.
+The code is Kotlin with Compose for Wear OS, the Wear Tiles, ProtoLayout and
+watch face complication libraries and WorkManager from AndroidX, and the
+ZXing core for the QR code.
 Nothing from Google Play services or Firebase may be added; CI checks the
 APK for it. The version comes from `pubspec.yaml`.
 
@@ -132,4 +139,5 @@ APK for it. The version comes from `pubspec.yaml`.
 | `pairing/` | the handover key, the small HTTP listener for the phone, Wi-Fi and the QR code |
 | `glances/` | fetching, parsing and storing the snapshot, background refresh, texts |
 | `tile/` | the tile |
+| `complications/` | the watch face complications |
 | `ui/` | the screens and their view model |
