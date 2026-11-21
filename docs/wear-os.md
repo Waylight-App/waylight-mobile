@@ -71,7 +71,8 @@ The app's main screen lists the next event, the compact states, your status
 and when the data was fetched. Long-press the watch face or swipe to the
 tiles, tap *Add tile* and choose *Waylight* to get the tile. It shows the
 stored data with its age and asks for fresh data when the last fetch is
-more than a quarter of an hour old. A tap opens the app.
+more than a quarter of an hour old. A tap on the to-do row ticks it off,
+a tap anywhere else opens the app.
 
 The server sends the texts of compact states in English together with the
 key of their template. The watch shows them in its own language (English
@@ -82,6 +83,25 @@ server stay in English until the watch app knows them. The keys live in
 In the background the watch fetches new data every 30 minutes while it has
 a network. If the server says the session has ended, the watch forgets it
 and asks to be paired again.
+
+## Actions on the wrist
+
+The watch can change a few things itself, with its own app session:
+
+- **Tick off a to-do.** The app and the tile show the first open to-do;
+  tap it to mark it done. On the tile the request runs in the background
+  and waits for a network if there is none.
+- **Set my status.** Tap *My status* in the app and pick office, home,
+  away or *Not set* for today.
+- **Compact actions.** When a module's compact state offers an action
+  (start a focus session, choose one of several options), the app shows
+  it as a chip under the state.
+- **Smart home.** Entities the server allows to switch
+  (`SMARTHOME_ACTIONS_ENTITIES`) are listed under *Smart home*, at most
+  six; a tap toggles or presses them.
+
+After every action the watch fetches the glances again, so the screen and
+the tile show the new state.
 
 ## Build it
 

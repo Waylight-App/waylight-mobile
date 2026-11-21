@@ -24,6 +24,30 @@ class ParsersTest {
     }
 
     @Test
+    fun `finds the first open to-do`() {
+        val json = """[{"id":"1","title":"Done","done":true},{"id":"2","title":"Milk","due":"2026-11-22","done":false,"version":3}]"""
+        assertEquals(OpenTodo("2", "Milk", "2026-11-22", 3), Parsers.firstOpenTodo(json))
+        assertNull(Parsers.firstOpenTodo("""[{"id":"1","done":true}]"""))
+    }
+
+    @Test
+    fun `keeps only switchable devices`() {
+        val json = """[
+            {"id":"sensor.t","name":"Temperature","state":"21","action":""},
+            {"id":"switch.coffee","name":"Coffee","state":"off","action":"toggle"},
+            {"id":"button.door","name":"","state":"","action":"press"}
+        ]"""
+        assertEquals(
+            listOf(
+                Device("switch.coffee", "Coffee", "off", DeviceAction.TOGGLE),
+                Device("button.door", "button.door", "", DeviceAction.PRESS),
+            ),
+            Parsers.devices(json),
+        )
+        assertEquals(1, Parsers.devices(json, limit = 1).size)
+    }
+
+    @Test
     fun `counts open to-dos`() {
         assertEquals(2, Parsers.openTodos("""[{"done":false},{"done":true},{"done":false}]"""))
     }
