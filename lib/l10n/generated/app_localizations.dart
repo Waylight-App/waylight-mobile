@@ -3140,17 +3140,17 @@ abstract class AppLocalizations {
   /// **'Search widgets'**
   String get gallerySearch;
 
-  /// Adds a widget from the gallery to the tab.
-  ///
-  /// In en, this message translates to:
-  /// **'Add'**
-  String get galleryAdd;
-
   /// Shown in the gallery for a widget just added.
   ///
   /// In en, this message translates to:
   /// **'Added'**
   String get galleryAdded;
+
+  /// Screen reader label of a size preview in the widget gallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Add {widget} as {size} tile'**
+  String galleryAddSized(String widget, String size);
 
   /// The gallery search found nothing.
   ///
