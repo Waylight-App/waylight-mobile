@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:waylight_mobile/data/repositories/appearance/theme_repository.dart';
+import 'package:waylight_mobile/data/repositories/attention/attention_repository.dart';
 import 'package:waylight_mobile/data/repositories/dashboard/dashboard_repository.dart';
 import 'package:waylight_mobile/data/repositories/home_widgets/home_widgets_repository.dart';
 import 'package:waylight_mobile/data/repositories/offline/offline_repository.dart';
@@ -32,13 +33,16 @@ class DashboardViewModel extends ChangeNotifier {
     this._reminderFormatter,
     QuickTilesRepository? quickTilesRepository,
     this._quickTileFormatter,
+    AttentionRepository? attentionRepository,
   }) : _offline = offlineRepository,
+       _attention = attentionRepository,
        _quickTiles = quickTilesRepository,
        _push = pushRepository,
        _theme = themeRepository,
        _homeWidgets = homeWidgetsRepository,
        _reminders = reminderRepository {
     _offline?.addListener(notifyListeners);
+    _attention?.addListener(notifyListeners);
     load = Command0(_load)..execute().ignore();
     _loadDemo().ignore();
   }
@@ -52,6 +56,7 @@ class DashboardViewModel extends ChangeNotifier {
   final HomeWidgetFormatter? _homeWidgetFormatter;
   final ReminderRepository? _reminders;
   final ReminderFormatter? _reminderFormatter;
+  final AttentionRepository? _attention;
   final QuickTilesRepository? _quickTiles;
   final QuickTileFormatter? _quickTileFormatter;
   bool _pushRefreshed = false;
@@ -82,6 +87,10 @@ class DashboardViewModel extends ChangeNotifier {
           : initialTabId,
     ).initialIndex;
   }
+
+  /// How many entries need the account's attention (#229); 0 hides the
+  /// badge.
+  int get attentionCount => _attention?.items.length ?? 0;
 
   bool _demo = false;
 
@@ -154,6 +163,8 @@ class DashboardViewModel extends ChangeNotifier {
       }
     }
     final result = await _dashboardRepository.dashboard(server);
+    // The attention badge follows every load; a failure keeps the old one.
+    _attention?.refresh(server).ignore();
     // The home screen widgets follow every load of the dashboard (#42).
     if ((result, _homeWidgets, _homeWidgetFormatter) case (
       Ok(:final value),
@@ -178,6 +189,7 @@ class DashboardViewModel extends ChangeNotifier {
   void dispose() {
     _arranging?.dispose();
     _offline?.removeListener(notifyListeners);
+    _attention?.removeListener(notifyListeners);
     load.dispose();
     super.dispose();
   }

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Waylight</string>
+    <string name="not_paired">Not connected to a Waylight server yet.</string>
+    <string name="pair_with_phone">Pair with phone</string>
+    <string name="pair_manually">Enter code</string>
+    <string name="pair_qr_hint">Scan with the Waylight app. Same Wi-Fi needed.</string>
+    <string name="pair_waiting_for_wifi">Waiting for Wi-Fi …</string>
+    <string name="pair_connecting">Connecting …</string>
+    <string name="manual_server">Server address</string>
+    <string name="manual_code">Pairing code</string>
+    <string name="manual_unset">Not set</string>
+    <string name="manual_connect">Connect</string>
+    <string name="connected_to">Connected to %1$s</string>
+    <string name="sign_out">Sign out</string>
+    <string name="error_invalid_server">Invalid address. Plain http:// only works in the home network.</string>
+    <string name="error_rejected">The pairing code is invalid or expired.</string>
+    <string name="error_unreachable">The server cannot be reached.</string>
+    <string name="error_server">The server refused the request.</string>
+</resources>

@@ -10,7 +10,7 @@
       - any-glob-to-any-file: [lib/l10n/*.arb, l10n.yaml]
 "area: android":
   - changed-files:
-      - any-glob-to-any-file: [android/**]
+      - any-glob-to-any-file: [android/**, wear/**]
 "area: ios":
   - changed-files:
       - any-glob-to-any-file: [ios/**]

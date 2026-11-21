@@ -287,6 +287,47 @@ class AppLocalizationsEn extends AppLocalizations {
   String get linkOpenFailed => 'The link could not be opened.';
 
   @override
+  String get attentionTitle => 'Needs your attention';
+
+  @override
+  String attentionBadge(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count things need your attention',
+      one: '1 thing needs your attention',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get attentionBroken => 'Not working any more';
+
+  @override
+  String get attentionSetup => 'Not set up yet';
+
+  @override
+  String get attentionEmpty => 'Everything is set up and working.';
+
+  @override
+  String get attentionSignIn => 'Sign in again';
+
+  @override
+  String get attentionCheck => 'Check again';
+
+  @override
+  String get attentionFix => 'Fix access';
+
+  @override
+  String get attentionChoose => 'Set up';
+
+  @override
+  String get attentionConnect => 'Connect';
+
+  @override
+  String get attentionStillBroken => 'Still not working.';
+
+  @override
   String get dashboardOpenInWaylight => 'Open in Waylight';
 
   @override

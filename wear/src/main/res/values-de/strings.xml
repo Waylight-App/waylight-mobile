@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="not_paired">Noch mit keinem Waylight-Server verbunden.</string>
+    <string name="pair_with_phone">Mit Handy koppeln</string>
+    <string name="pair_manually">Code eingeben</string>
+    <string name="pair_qr_hint">Mit der Waylight-App scannen. Gleiches WLAN nötig.</string>
+    <string name="pair_waiting_for_wifi">Warte auf WLAN …</string>
+    <string name="pair_connecting">Verbinde …</string>
+    <string name="manual_server">Serveradresse</string>
+    <string name="manual_code">Kopplungscode</string>
+    <string name="manual_unset">Nicht gesetzt</string>
+    <string name="manual_connect">Verbinden</string>
+    <string name="connected_to">Verbunden mit %1$s</string>
+    <string name="sign_out">Abmelden</string>
+    <string name="error_invalid_server">Ungültige Adresse. http:// geht nur im Heimnetz.</string>
+    <string name="error_rejected">Der Kopplungscode ist ungültig oder abgelaufen.</string>
+    <string name="error_unreachable">Der Server ist nicht erreichbar.</string>
+    <string name="error_server">Der Server hat die Anfrage abgelehnt.</string>
+</resources>

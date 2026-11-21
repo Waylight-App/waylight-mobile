@@ -66,6 +66,9 @@ abstract final class Routes {
   /// Uptime and outages of a service: `/service?id=<id>&name=<name>` (#108).
   static const service = '/service';
 
+  /// Broken connections and widgets that are not set up yet (#229).
+  static const attention = '/attention';
+
   /// Password, two-factor sign-in and sessions (#110).
   static const security = '/settings/security';
 
@@ -99,6 +102,7 @@ abstract final class Routes {
     note,
     article,
     service,
+    attention,
     security,
     share,
     kiosk,

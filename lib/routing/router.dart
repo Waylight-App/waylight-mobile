@@ -7,6 +7,8 @@ import 'package:waylight_mobile/data/repositories/server/server_repository.dart'
 import 'package:waylight_mobile/data/repositories/session/session_repository.dart';
 import 'package:waylight_mobile/data/repositories/widget_data/queries/home_server.dart';
 import 'package:waylight_mobile/routing/routes.dart';
+import 'package:waylight_mobile/ui/attention/view_models/attention_view_model.dart';
+import 'package:waylight_mobile/ui/attention/widgets/attention_screen.dart';
 import 'package:waylight_mobile/ui/auth_callback/view_models/auth_callback_view_model.dart';
 import 'package:waylight_mobile/ui/auth_callback/widgets/auth_callback_screen.dart';
 import 'package:waylight_mobile/ui/connect_server/view_models/connect_server_view_model.dart';
@@ -95,6 +97,7 @@ GoRouter createRouter(
           serverRepository: context.read(),
           dashboardRepository: context.read(),
           offlineRepository: context.read(),
+          attentionRepository: context.read(),
         ),
         builder: (context, viewModel) =>
             DashboardScreen(viewModel: viewModel, registry: nativeWidgets),
@@ -232,6 +235,16 @@ GoRouter createRouter(
       builder: (context, state) => ServiceDetailsScreen(
         id: state.uri.queryParameters['id'] ?? '',
         name: state.uri.queryParameters['name'] ?? '',
+      ),
+    ),
+    GoRoute(
+      path: Routes.attention,
+      builder: (context, state) => ViewModelHost(
+        create: (context) => AttentionViewModel(
+          serverRepository: context.read(),
+          attentionRepository: context.read(),
+        ),
+        builder: (context, viewModel) => AttentionScreen(viewModel: viewModel),
       ),
     ),
     GoRoute(
