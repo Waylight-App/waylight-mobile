@@ -2431,4 +2431,46 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get dashboardNothingToShow =>
       'Auf diesem Tab gibt es gerade nichts zu sehen.';
+
+  @override
+  String get firstStartTitle => 'App einrichten';
+
+  @override
+  String firstStartProgress(int current, int total) {
+    return 'Schritt $current von $total';
+  }
+
+  @override
+  String get firstStartLater =>
+      'Alles lässt sich später in den Einstellungen ändern.';
+
+  @override
+  String get firstStartNext => 'Weiter';
+
+  @override
+  String get firstStartBack => 'Zurück';
+
+  @override
+  String get firstStartDone => 'Fertig';
+
+  @override
+  String get firstStartSkipAll => 'Alle überspringen';
+
+  @override
+  String get firstStartNotificationsText =>
+      'Erinnerungen und Nachrichten deines Waylight auf diesem Handy bekommen.';
+
+  @override
+  String get firstStartLockText =>
+      'Beim Öffnen der App nach Fingerabdruck, Gesicht oder Geräte-PIN fragen.';
+
+  @override
+  String get firstStartAddressesTitle => 'Zu Hause und unterwegs';
+
+  @override
+  String get firstStartAddressesText =>
+      'Hat dein Waylight eine zweite Adresse, etwa eine im Heimnetz und eine für unterwegs? Trag sie hier ein, dann nimmt die App die, die antwortet.';
+
+  @override
+  String get firstStartLookText => 'Hell, dunkel oder wie das System.';
 }

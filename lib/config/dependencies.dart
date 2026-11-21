@@ -25,6 +25,7 @@ import 'package:waylight_mobile/data/repositories/dashboard/dashboard_repository
 import 'package:waylight_mobile/data/repositories/dashboard/dashboard_repository_remote.dart';
 import 'package:waylight_mobile/data/repositories/device_controls/device_controls_repository.dart';
 import 'package:waylight_mobile/data/repositories/diagnostics/diagnostics_repository.dart';
+import 'package:waylight_mobile/data/repositories/first_start/first_start_repository.dart';
 import 'package:waylight_mobile/data/repositories/focus/focus_timer_repository.dart';
 import 'package:waylight_mobile/data/repositories/habits/habits_repository.dart';
 import 'package:waylight_mobile/data/repositories/habits/habits_repository_remote.dart';
@@ -146,6 +147,7 @@ typedef Repositories = ({
   SearchRepository search,
   AppLockRepository lock,
   KioskRepository kiosk,
+  FirstStartRepository firstStart,
 });
 
 /// The services and repositories of the app: the composition root.
@@ -198,6 +200,9 @@ List<SingleChildWidget> providers(Repositories repositories) => [
   Provider<SearchRepository>.value(value: repositories.search),
   ChangeNotifierProvider<AppLockRepository>.value(value: repositories.lock),
   ChangeNotifierProvider<KioskRepository>.value(value: repositories.kiosk),
+  ChangeNotifierProvider<FirstStartRepository>.value(
+    value: repositories.firstStart,
+  ),
   ChangeNotifierProvider<PreferencesRepository>.value(
     value: repositories.preferences,
   ),
@@ -381,5 +386,6 @@ Repositories createRepositories() {
     search: SearchRepositoryRemote(api: SearchApi(client)),
     lock: lock,
     kiosk: kiosk,
+    firstStart: FirstStartRepository(store: store),
   );
 }
