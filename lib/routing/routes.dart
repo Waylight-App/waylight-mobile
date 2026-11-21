@@ -81,6 +81,9 @@ abstract final class Routes {
   /// The wall display (#193); also opened by `waylight://kiosk?link=…`.
   static const kiosk = '/kiosk';
 
+  /// Runs the action of an NFC tag: `waylight://tag?do=habit&id=…` (#195).
+  static const tag = '/tag';
+
   /// Every path the router knows; links to others open the dashboard.
   static const all = {
     home,
@@ -110,5 +113,6 @@ abstract final class Routes {
     pairWatch,
     share,
     kiosk,
+    tag,
   };
 }

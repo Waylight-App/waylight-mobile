@@ -18,6 +18,10 @@
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
     <!-- The optional app lock (#46). -->
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+    <!-- Writing a Waylight link onto an NFC tag (#195); a normal permission,
+         granted at install. Phones without NFC can still install the app. -->
+    <uses-permission android:name="android.permission.NFC" />
+    <uses-feature android:name="android.hardware.nfc" android:required="false" />
     <application
         android:label="Waylight"
         android:name="${applicationName}"
@@ -50,6 +54,13 @@
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="text/plain" />
+            </intent-filter>
+            <!-- NFC tags with a Waylight action (#195), opened by the
+                 system's tag dispatch while the phone is unlocked. -->
+            <intent-filter>
+                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="waylight" android:host="tag" />
             </intent-filter>
             <!-- Links into the app, e.g. waylight://settings (#47). -->
             <intent-filter>

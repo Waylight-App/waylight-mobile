@@ -2251,6 +2251,101 @@ class AppLocalizationsEn extends AppLocalizations {
       'Choose “Add another server” under Server & connection, then “Use as wall display” and paste the link of a kiosk display.';
 
   @override
+  String get tagTitle => 'NFC tag';
+
+  @override
+  String tagConfirm(String name) {
+    return 'Change $name?';
+  }
+
+  @override
+  String get tagConfirmAction => 'Yes, change it';
+
+  @override
+  String get tagClose => 'Close';
+
+  @override
+  String get tagUnknown => 'This tag holds no Waylight action this app knows.';
+
+  @override
+  String tagTicked(String name) {
+    return '$name ticked off for today.';
+  }
+
+  @override
+  String tagAlreadyDone(String name) {
+    return '$name was already ticked off today.';
+  }
+
+  @override
+  String tagSwitched(String name) {
+    return '$name switched.';
+  }
+
+  @override
+  String tagPressed(String name) {
+    return '$name started.';
+  }
+
+  @override
+  String tagAdded(String name) {
+    return '$name is on the shopping list.';
+  }
+
+  @override
+  String get tagWrite => 'Write to NFC tag';
+
+  @override
+  String get tagWriteHint =>
+      'The tag stores only a link to this action. It does nothing on a phone without your Waylight account.';
+
+  @override
+  String get tagWriteStart => 'Write tag';
+
+  @override
+  String get tagHold => 'Hold the tag to the back of the phone.';
+
+  @override
+  String get tagAsk => 'Ask before switching';
+
+  @override
+  String get tagWritten =>
+      'Done. Touch the tag with the unlocked phone to run the action.';
+
+  @override
+  String get tagLocked => 'This tag is locked and cannot be written.';
+
+  @override
+  String get tagTooSmall =>
+      'This tag is too small for the link. Use an NTAG213 or larger.';
+
+  @override
+  String get tagUnsupported => 'This kind of tag cannot hold a link.';
+
+  @override
+  String get tagLost =>
+      'The tag moved away too early. Hold it still until it is done.';
+
+  @override
+  String get tagFailed => 'Writing the tag failed.';
+
+  @override
+  String get tagTryAgain => 'Try again';
+
+  @override
+  String get tagNoNfc => 'This phone has no NFC.';
+
+  @override
+  String get tagNfcOff =>
+      'NFC is turned off. Turn it on in the system settings.';
+
+  @override
+  String get tagShopping => 'NFC tag for an item';
+
+  @override
+  String get tagShoppingItem => 'Item';
+
+  @override
   String get deviceControlNoState => 'No state';
 
   @override

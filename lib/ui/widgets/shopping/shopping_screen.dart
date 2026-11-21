@@ -1,9 +1,11 @@
+import 'package:flutter/foundation.dart';
 import 'package:material_ui/material_ui.dart';
-
+import 'package:waylight_mobile/domain/models/tag_action.dart';
 import 'package:waylight_mobile/ui/core/error_messages.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
 import 'package:waylight_mobile/ui/widgets/common/error_snack_listener.dart';
+import 'package:waylight_mobile/ui/widgets/common/tag_writer.dart';
 import 'package:waylight_mobile/ui/widgets/shopping/shopping_view_model.dart';
 import 'package:waylight_mobile/utils/result.dart';
 
@@ -27,6 +29,20 @@ class _ShoppingScreenState extends State<ShoppingScreen> {
   void dispose() {
     _input.dispose();
     super.dispose();
+  }
+
+  /// Asks for the item and writes a tag that adds it (#195).
+  Future<void> _writeTag() async {
+    final text = await showDialog<String>(
+      context: context,
+      builder: (context) => const _TagItemDialog(),
+    );
+    if (text == null || text.trim().isEmpty || !mounted) return;
+    await showWriteTagSheet(
+      context,
+      ShoppingTag(text.trim()),
+      subject: text.trim(),
+    );
   }
 
   Future<void> _add() async {
@@ -62,6 +78,13 @@ class _ShoppingScreenState extends State<ShoppingScreen> {
                     )
                   : Text(list?.name ?? l10n.shoppingTitle),
               actions: [
+                if (defaultTargetPlatform == TargetPlatform.android)
+                  IconButton(
+                    key: const ValueKey('shopping.tag'),
+                    tooltip: l10n.tagShopping,
+                    icon: const Icon(Icons.nfc),
+                    onPressed: () => _writeTag().ignore(),
+                  ),
                 if (done > 0)
                   IconButton(
                     tooltip: l10n.shoppingClear(done),
@@ -141,6 +164,51 @@ class _ShoppingScreenState extends State<ShoppingScreen> {
           );
         },
       ),
+    );
+  }
+}
+
+/// Asks for the item an NFC tag adds to the shopping list.
+class _TagItemDialog extends StatefulWidget {
+  const _TagItemDialog();
+
+  @override
+  State<_TagItemDialog> createState() => _TagItemDialogState();
+}
+
+class _TagItemDialogState extends State<_TagItemDialog> {
+  final _controller = TextEditingController();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final m = MaterialLocalizations.of(context);
+    return AlertDialog(
+      title: Text(l10n.tagShopping),
+      content: TextField(
+        key: const ValueKey('shopping.tagItem'),
+        controller: _controller,
+        autofocus: true,
+        decoration: InputDecoration(labelText: l10n.tagShoppingItem),
+        onSubmitted: (text) => Navigator.pop(context, text),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: Text(m.cancelButtonLabel),
+        ),
+        FilledButton(
+          key: const ValueKey('shopping.tagNext'),
+          onPressed: () => Navigator.pop(context, _controller.text),
+          child: Text(m.continueButtonLabel),
+        ),
+      ],
     );
   }
 }

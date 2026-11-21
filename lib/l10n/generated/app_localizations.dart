@@ -4040,6 +4040,162 @@ abstract class AppLocalizations {
   /// **'Choose “Add another server” under Server & connection, then “Use as wall display” and paste the link of a kiosk display.'**
   String get settingsWallDisplayHint;
 
+  /// Title of the screen that runs the action of an NFC tag.
+  ///
+  /// In en, this message translates to:
+  /// **'NFC tag'**
+  String get tagTitle;
+
+  /// Asks before an NFC tag changes a smart home device.
+  ///
+  /// In en, this message translates to:
+  /// **'Change {name}?'**
+  String tagConfirm(String name);
+
+  /// Confirms the change of a smart home device from an NFC tag.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes, change it'**
+  String get tagConfirmAction;
+
+  /// Leaves the NFC tag screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get tagClose;
+
+  /// An NFC tag with a link the app does not understand.
+  ///
+  /// In en, this message translates to:
+  /// **'This tag holds no Waylight action this app knows.'**
+  String get tagUnknown;
+
+  /// A habit was ticked off from an NFC tag.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} ticked off for today.'**
+  String tagTicked(String name);
+
+  /// Touching the tag again changes nothing.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} was already ticked off today.'**
+  String tagAlreadyDone(String name);
+
+  /// A smart home device was switched from an NFC tag.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} switched.'**
+  String tagSwitched(String name);
+
+  /// A scene or button ran from an NFC tag.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} started.'**
+  String tagPressed(String name);
+
+  /// An item was added from an NFC tag.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} is on the shopping list.'**
+  String tagAdded(String name);
+
+  /// Writes an action onto an NFC sticker; menu entry and sheet title.
+  ///
+  /// In en, this message translates to:
+  /// **'Write to NFC tag'**
+  String get tagWrite;
+
+  /// Explains what an NFC tag holds.
+  ///
+  /// In en, this message translates to:
+  /// **'The tag stores only a link to this action. It does nothing on a phone without your Waylight account.'**
+  String get tagWriteHint;
+
+  /// Starts waiting for an NFC tag to write.
+  ///
+  /// In en, this message translates to:
+  /// **'Write tag'**
+  String get tagWriteStart;
+
+  /// Waiting for an NFC tag.
+  ///
+  /// In en, this message translates to:
+  /// **'Hold the tag to the back of the phone.'**
+  String get tagHold;
+
+  /// Whether a smart home tag asks for confirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask before switching'**
+  String get tagAsk;
+
+  /// An NFC tag was written.
+  ///
+  /// In en, this message translates to:
+  /// **'Done. Touch the tag with the unlocked phone to run the action.'**
+  String get tagWritten;
+
+  /// NFC tag is read-only.
+  ///
+  /// In en, this message translates to:
+  /// **'This tag is locked and cannot be written.'**
+  String get tagLocked;
+
+  /// NFC tag has too little memory.
+  ///
+  /// In en, this message translates to:
+  /// **'This tag is too small for the link. Use an NTAG213 or larger.'**
+  String get tagTooSmall;
+
+  /// NFC tag is not NDEF.
+  ///
+  /// In en, this message translates to:
+  /// **'This kind of tag cannot hold a link.'**
+  String get tagUnsupported;
+
+  /// NFC tag lost while writing.
+  ///
+  /// In en, this message translates to:
+  /// **'The tag moved away too early. Hold it still until it is done.'**
+  String get tagLost;
+
+  /// Writing an NFC tag failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Writing the tag failed.'**
+  String get tagFailed;
+
+  /// Writes the NFC tag again.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get tagTryAgain;
+
+  /// The phone cannot write NFC tags.
+  ///
+  /// In en, this message translates to:
+  /// **'This phone has no NFC.'**
+  String get tagNoNfc;
+
+  /// NFC is disabled.
+  ///
+  /// In en, this message translates to:
+  /// **'NFC is turned off. Turn it on in the system settings.'**
+  String get tagNfcOff;
+
+  /// Shopping list: writes a tag that adds a fixed item.
+  ///
+  /// In en, this message translates to:
+  /// **'NFC tag for an item'**
+  String get tagShopping;
+
+  /// Label of the field for the item an NFC tag adds.
+  ///
+  /// In en, this message translates to:
+  /// **'Item'**
+  String get tagShoppingItem;
+
   /// Device control: Home Assistant reports no state for the entity.
   ///
   /// In en, this message translates to:

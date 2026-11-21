@@ -13,6 +13,7 @@ import 'package:waylight_mobile/data/repositories/focus/focus_timer_repository.d
 import 'package:waylight_mobile/data/repositories/home_widgets/home_widgets_repository.dart';
 import 'package:waylight_mobile/data/repositories/kiosk/kiosk_repository.dart';
 import 'package:waylight_mobile/data/repositories/lock/app_lock_repository.dart';
+import 'package:waylight_mobile/data/repositories/nfc/nfc_repository.dart';
 import 'package:waylight_mobile/data/repositories/offline/offline_repository.dart';
 import 'package:waylight_mobile/data/repositories/quick_tiles/quick_tiles_repository.dart';
 import 'package:waylight_mobile/data/repositories/reminders/reminder_repository.dart';
@@ -49,6 +50,7 @@ import '../testing/fakes/fake_habits_repository.dart';
 import '../testing/fakes/fake_handover_sealer.dart';
 import '../testing/fakes/fake_home_widget_store.dart';
 import '../testing/fakes/fake_log_store.dart';
+import '../testing/fakes/fake_nfc_writer.dart';
 import '../testing/fakes/fake_notes_repository.dart';
 import '../testing/fakes/fake_preferences_repository.dart';
 import '../testing/fakes/fake_presence_repository.dart';
@@ -108,6 +110,7 @@ void main() {
             smartHome: FakeSmartHomeRepository(),
             store: FakeDeviceControlsStore(),
           ),
+          nfc: NfcRepository(writer: FakeNfcWriter()),
           absences: FakeAbsencesRepository(),
           announcements: FakeAnnouncementsRepository(),
           scanner: ScannerRepository(scanner: FakeBarcodeScanner()),

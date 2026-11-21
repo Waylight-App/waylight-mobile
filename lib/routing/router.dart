@@ -41,6 +41,8 @@ import 'package:waylight_mobile/ui/share/view_models/share_view_model.dart';
 import 'package:waylight_mobile/ui/share/widgets/share_screen.dart';
 import 'package:waylight_mobile/ui/sign_in/view_models/sign_in_view_model.dart';
 import 'package:waylight_mobile/ui/sign_in/widgets/sign_in_screen.dart';
+import 'package:waylight_mobile/ui/tag/view_models/tag_action_view_model.dart';
+import 'package:waylight_mobile/ui/tag/widgets/tag_action_screen.dart';
 import 'package:waylight_mobile/ui/widgets/calendar/calendar_screen.dart';
 import 'package:waylight_mobile/ui/widgets/calendar/calendar_view_model.dart';
 import 'package:waylight_mobile/ui/widgets/common/remote_widget.dart';
@@ -263,6 +265,19 @@ GoRouter createRouter(
           attentionRepository: context.read(),
         ),
         builder: (context, viewModel) => AttentionScreen(viewModel: viewModel),
+      ),
+    ),
+    GoRoute(
+      path: Routes.tag,
+      builder: (context, state) => ViewModelHost(
+        create: (context) => TagActionViewModel(
+          query: state.uri.queryParameters,
+          serverRepository: context.read(),
+          habitsRepository: context.read(),
+          smartHomeRepository: context.read(),
+          shoppingRepository: context.read(),
+        ),
+        builder: (context, viewModel) => TagActionScreen(viewModel: viewModel),
       ),
     ),
     GoRoute(
