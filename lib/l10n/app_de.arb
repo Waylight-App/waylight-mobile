@@ -516,5 +516,10 @@
   "settingsReminderEventsOff": "Aus",
   "settingsReminderMinutes": "{minutes} Min. vorher",
   "settingsReminderBirthdays": "Geburtstage um 8:00",
-  "settingsReminderDenied": "Benachrichtigungen für Waylight sind in den Systemeinstellungen ausgeschaltet."
+  "settingsReminderDenied": "Benachrichtigungen für Waylight sind in den Systemeinstellungen ausgeschaltet.",
+  "focusStartBreak": "Pause",
+  "focusPause": "Anhalten",
+  "focusResume": "Weiter",
+  "focusRunning": "Fokus",
+  "focusBreak": "Pause"
 }

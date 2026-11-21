@@ -35,7 +35,11 @@ Future<void> main() async {
   // Coming back to the app may mean another network: check which server
   // address answers (#189). The listener lives as long as the app.
   AppLifecycleListener(
-    onResume: () => repositories.server.selectAddress().ignore(),
+    onResume: () {
+      repositories.server.selectAddress().ignore();
+      // Records focus phases the phone finished while the app was away.
+      repositories.focusTimer.refresh(repositories.server.current).ignore();
+    },
   );
   runApp(
     MultiProvider(

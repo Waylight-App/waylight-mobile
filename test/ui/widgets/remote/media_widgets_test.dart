@@ -6,12 +6,13 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
-
 import 'package:waylight_mobile/data/repositories/actions/drop_repository.dart';
 import 'package:waylight_mobile/data/repositories/actions/focus_repository.dart';
+import 'package:waylight_mobile/data/repositories/focus/focus_timer_repository.dart';
 import 'package:waylight_mobile/data/repositories/server/server_repository.dart';
 import 'package:waylight_mobile/data/repositories/widget_data/queries/media.dart';
 import 'package:waylight_mobile/data/repositories/widget_data/widget_data_repository.dart';
+import 'package:waylight_mobile/data/services/focus/focus_timer_service.dart';
 import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/ui/core/link_opener.dart';
 import 'package:waylight_mobile/ui/widgets/media/media_widgets.dart';
@@ -21,6 +22,7 @@ import '../../../testing/fakes/fake_action_repositories.dart';
 import '../../../testing/fakes/fake_link_opener.dart';
 import '../../../testing/fakes/fake_server_repository.dart';
 import '../../../testing/fakes/fake_widget_data_repository.dart';
+import '../../../testing/fakes/in_memory_key_value_store.dart';
 import '../../../testing/pump_app.dart';
 
 // A 1×1 transparent PNG.
@@ -154,24 +156,40 @@ void main() {
     expect(find.byType(SelectableText), findsOneWidget);
   });
 
-  testWidgets('a finished focus session is saved', (tester) async {
+  testWidgets('the focus timer runs, pauses and records a finished phase', (
+    tester,
+  ) async {
     var now = DateTime(2026, 11, 19, 10);
+    final timer = FocusTimerRepository(
+      timer: InAppFocusTimer(now: () => now),
+      sessions: focus,
+      store: InMemoryKeyValueStore(),
+    );
     await tester.pumpScreen(
       MultiProvider(
         providers: [
           ChangeNotifierProvider<ServerRepository>.value(
             value: FakeServerRepository(current: testServer()),
           ),
-          Provider<FocusRepository>.value(value: focus),
+          ChangeNotifierProvider<FocusTimerRepository>.value(value: timer),
         ],
         child: FocusTimer(now: () => now),
       ),
     );
     await tester.tap(find.text(l10nEn.focusStart));
+    await tester.pump();
     now = now.add(const Duration(minutes: 1));
     await tester.pump(const Duration(seconds: 1));
     expect(find.text('24:00'), findsOneWidget);
-    expect(find.text(l10nEn.focusStop), findsOneWidget);
+
+    await tester.tap(find.text(l10nEn.focusPause));
+    await tester.pump();
+    now = now.add(const Duration(minutes: 10));
+    await tester.pump(const Duration(seconds: 1));
+    expect(find.text('24:00'), findsOneWidget, reason: 'paused');
+
+    await tester.tap(find.text(l10nEn.focusResume));
+    await tester.pump();
     now = now.add(const Duration(minutes: 25));
     await tester.pump(const Duration(seconds: 1));
     await tester.pump();

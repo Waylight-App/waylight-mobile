@@ -3,6 +3,7 @@ package app.waylight.waylight_mobile
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import app.waylight.waylight_mobile.focus.FocusChannel
 import app.waylight.waylight_mobile.home.HomeWidgetChannel
 import app.waylight.waylight_mobile.push.PushChannel
 import app.waylight.waylight_mobile.reminders.ReminderChannel
@@ -30,6 +31,7 @@ class MainActivity : FlutterFragmentActivity() {
         super.configureFlutterEngine(flutterEngine)
         push.register(flutterEngine)
         reminders.register(flutterEngine)
+        FocusChannel.register(applicationContext, flutterEngine)
         NetworkChannel.register(applicationContext, flutterEngine)
         DeviceChannel(this).register(flutterEngine)
         ColorsChannel.register(applicationContext, flutterEngine)

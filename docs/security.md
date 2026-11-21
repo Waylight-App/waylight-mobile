@@ -32,6 +32,10 @@ report a vulnerability, see [SECURITY.md](../SECURITY.md).
    notification permission is asked when the first kind is turned on. The
    planned reminders (title, text, time) are kept in the app's private
    storage so they survive a reboot, and are deleted on sign-out.
+   The focus timer (#191) ends a phase with an exact alarm: a timer must
+   end on time, and `USE_EXACT_ALARM` is granted to timers from Android 13
+   (`SCHEDULE_EXACT_ALARM` up to Android 12). Where the system refuses
+   exact alarms the timer falls back to an inexact one.
 5. **Same rules as the server.** The server's network allow-list
    (`ALLOWED_CIDRS`), lockouts, two-factor authentication and security log
    apply to the app exactly as to the browser. The app never weakens them.

@@ -4,6 +4,10 @@
     <!-- Network changes for the choice of a server address (#189); a normal
          permission, granted at install. -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- The focus timer ends a phase on time (#191): USE_EXACT_ALARM is
+         granted to timers from Android 13; SCHEDULE_EXACT_ALARM covers 12. -->
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" android:maxSdkVersion="32" />
     <!-- Push notifications over the relay's stream (server ADR 0027): asked
          at runtime on Android 13 and later when push is turned on; the
          stream runs in a foreground service and restarts after a reboot. -->
@@ -60,6 +64,8 @@
             android:name=".push.PushService"
             android:exported="false"
             android:foregroundServiceType="remoteMessaging" />
+        <!-- The focus timer's alarm and notification buttons (#191). -->
+        <receiver android:name=".focus.FocusReceiver" android:exported="false" />
         <!-- Shows reminders on the device when their alarm fires (#190). -->
         <receiver android:name=".reminders.ReminderReceiver" android:exported="false" />
         <receiver android:name=".push.BootReceiver" android:exported="false">

@@ -5,10 +5,11 @@ import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 
 import 'package:waylight_mobile/data/repositories/actions/drop_repository.dart';
-import 'package:waylight_mobile/data/repositories/actions/focus_repository.dart';
+import 'package:waylight_mobile/data/repositories/focus/focus_timer_repository.dart';
 import 'package:waylight_mobile/data/repositories/server/server_repository.dart';
 import 'package:waylight_mobile/data/repositories/widget_data/queries/media.dart';
 import 'package:waylight_mobile/domain/models/dashboard.dart';
+import 'package:waylight_mobile/domain/models/focus_timer.dart';
 import 'package:waylight_mobile/domain/models/media.dart';
 import 'package:waylight_mobile/ui/core/link_opener.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
@@ -543,20 +544,14 @@ class FocusWidget extends StatelessWidget {
   );
 }
 
-/// A 25-minute timer; a finished session is saved to the server.
+/// The focus timer (#191): 25 minutes of focus, then a 5-minute break. It
+/// shows the state of [FocusTimerRepository], which keeps running when the
+/// screen changes or the app is closed.
 class FocusTimer extends StatefulWidget {
   /// Creates the timer.
-  const FocusTimer({
-    this.length = const Duration(minutes: 25),
-    this.now = DateTime.now,
-    super.key,
-  });
+  const FocusTimer({this.now = DateTime.now, super.key});
 
-  /// How long a session lasts.
-  final Duration length;
-
-  /// The clock; the wall clock keeps the timer right while the app is in
-  /// the background. Tests pass their own.
+  /// The clock for the countdown shown; tests pass their own.
   final DateTime Function() now;
 
   @override
@@ -564,65 +559,90 @@ class FocusTimer extends StatefulWidget {
 }
 
 class _FocusTimerState extends State<FocusTimer> {
-  Timer? _timer;
-  DateTime? _endsAt;
+  Timer? _tick;
+  late final AppLifecycleListener _lifecycle;
 
-  Duration get _left {
-    final end = _endsAt;
-    if (end == null) return widget.length;
-    final left = end.difference(widget.now());
-    return left.isNegative ? Duration.zero : left;
-  }
+  FocusTimerRepository get _repo => context.read<FocusTimerRepository>();
 
-  void _start() {
-    setState(() => _endsAt = widget.now().add(widget.length));
-    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
-      if (_left > Duration.zero) {
-        setState(() {});
-        return;
-      }
-      unawaited(_finish());
+  Future<void> _refresh() =>
+      _repo.refresh(context.read<ServerRepository>().current);
+
+  @override
+  void initState() {
+    super.initState();
+    // The phone may have ended or paused the phase meanwhile.
+    _lifecycle = AppLifecycleListener(onResume: () => _refresh().ignore());
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) _refresh().ignore();
     });
-  }
-
-  void _stop() {
-    _timer?.cancel();
-    setState(() => _endsAt = null);
-  }
-
-  Future<void> _finish() async {
-    _timer?.cancel();
-    setState(() => _endsAt = null);
-    final server = context.read<ServerRepository>().current;
-    if (server == null) return;
-    await context.read<FocusRepository>().save(
-      server,
-      minutes: widget.length.inMinutes,
-      endedAt: widget.now(),
-    );
+    _tick = Timer.periodic(const Duration(seconds: 1), (_) {
+      final s = _repo.state;
+      if (s == null || s.paused) return;
+      if (s.left(widget.now()) == Duration.zero) {
+        _refresh().ignore();
+      } else {
+        setState(() {});
+      }
+    });
   }
 
   @override
   void dispose() {
-    _timer?.cancel();
+    _tick?.cancel();
+    _lifecycle.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final left = _left;
+    final s = context.watch<FocusTimerRepository>().state;
+    final left = s?.left(widget.now()) ?? FocusTimerRepository.focusLength;
     final text =
         '${left.inMinutes.toString().padLeft(2, '0')}:${(left.inSeconds % 60).toString().padLeft(2, '0')}';
-    return Row(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Expanded(
-          child: Text(text, style: Theme.of(context).textTheme.headlineSmall),
+        if (s != null)
+          Text(
+            s.phase == FocusPhase.rest ? l10n.focusBreak : l10n.focusRunning,
+            style: Theme.of(context).textTheme.labelLarge,
+          ),
+        Row(
+          children: [
+            Expanded(
+              child: Text(
+                text,
+                style: Theme.of(context).textTheme.headlineSmall,
+              ),
+            ),
+            if (s == null) ...[
+              TextButton(
+                onPressed: () => _repo.start(FocusPhase.rest).ignore(),
+                child: Text(l10n.focusStartBreak),
+              ),
+              FilledButton(
+                onPressed: () => _repo.start(FocusPhase.focus).ignore(),
+                child: Text(l10n.focusStart),
+              ),
+            ] else ...[
+              if (s.paused)
+                TextButton(
+                  onPressed: () => _repo.resume().ignore(),
+                  child: Text(l10n.focusResume),
+                )
+              else
+                TextButton(
+                  onPressed: () => _repo.pause().ignore(),
+                  child: Text(l10n.focusPause),
+                ),
+              TextButton(
+                onPressed: () => _repo.stop().ignore(),
+                child: Text(l10n.focusStop),
+              ),
+            ],
+          ],
         ),
-        if (_endsAt == null)
-          FilledButton(onPressed: _start, child: Text(l10n.focusStart))
-        else
-          TextButton(onPressed: _stop, child: Text(l10n.focusStop)),
       ],
     );
   }
