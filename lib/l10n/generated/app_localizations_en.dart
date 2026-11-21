@@ -1937,4 +1937,51 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get absenceErrorDates => 'The last day must not be before the first.';
+
+  @override
+  String get announcementsTitle => 'Announcements';
+
+  @override
+  String get announcementsEmpty => 'No announcements.';
+
+  @override
+  String get announcementsOff =>
+      'Announcements are not available on this server.';
+
+  @override
+  String get announcementUnread => 'unread';
+
+  @override
+  String get announcementPinned => 'Pinned';
+
+  @override
+  String get announcementWrite => 'Write an announcement';
+
+  @override
+  String get announcementEdit => 'Edit announcement';
+
+  @override
+  String get announcementDelete => 'Delete';
+
+  @override
+  String get announcementPublish => 'Publish';
+
+  @override
+  String get announcementTitleField => 'Title';
+
+  @override
+  String get announcementBodyField => 'Text';
+
+  @override
+  String get announcementMarkdownHint =>
+      'Markdown: **bold**, *italic*, lists and links.';
+
+  @override
+  String get announcementExpires => 'Expires';
+
+  @override
+  String get announcementNoExpiry => 'No expiry';
+
+  @override
+  String get announcementNotify => 'Send to the notification channels';
 }

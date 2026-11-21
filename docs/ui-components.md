@@ -88,6 +88,7 @@ it by purpose, not by size.
 | [`WidgetSizeScope`](#widgetsizescope) | Telling a widget's view the size of its dashboard tile | Dashboard grid |
 | [`SizedGrid`](#sizedgrid) | Items of different sizes on a grid of square cells | Dashboard, edit mode, size sheet |
 | [`CompactCard`](#compactcard) | A widget in a small or strip tile | Clock, weather, to-dos, transit |
+| [`MarkdownView`](#markdownview) | Markdown text from the server | Announcements |
 
 Planned with their issues (from the mockups): `StatusDot` and `FreshnessLabel`
 (#17, #19), `TabScaffold` for the dashboard (#16), `SettingsSection`
@@ -227,6 +228,17 @@ SimpleWidget<T>(
 ```
 
 See `ui/widgets/weather/` or `ui/widgets/todos/` for real ones.
+
+### MarkdownView
+
+Shows Markdown written on the server (ADR 0013): paragraphs, headings,
+lists, emphasis, code, quotes, rules and links, in the app's text styles.
+It never loads images (their alternative text stays) and opens only
+`http`, `https` and `mailto` links, through `LinkOpener` in the browser.
+
+```dart
+MarkdownView(announcement.body)
+```
 
 ## Adding a component
 

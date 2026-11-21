@@ -3481,6 +3481,96 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The last day must not be before the first.'**
   String get absenceErrorDates;
+
+  /// Announcements widget (#202).
+  ///
+  /// In en, this message translates to:
+  /// **'Announcements'**
+  String get announcementsTitle;
+
+  /// Announcements widget (#202).
+  ///
+  /// In en, this message translates to:
+  /// **'No announcements.'**
+  String get announcementsEmpty;
+
+  /// Announcements widget (#202).
+  ///
+  /// In en, this message translates to:
+  /// **'Announcements are not available on this server.'**
+  String get announcementsOff;
+
+  /// Announcements widget (#202).
+  ///
+  /// In en, this message translates to:
+  /// **'unread'**
+  String get announcementUnread;
+
+  /// Announcements widget (#202).
+  ///
+  /// In en, this message translates to:
+  /// **'Pinned'**
+  String get announcementPinned;
+
+  /// Announcements widget (#202).
+  ///
+  /// In en, this message translates to:
+  /// **'Write an announcement'**
+  String get announcementWrite;
+
+  /// Announcements widget (#202).
+  ///
+  /// In en, this message translates to:
+  /// **'Edit announcement'**
+  String get announcementEdit;
+
+  /// Announcements widget (#202).
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get announcementDelete;
+
+  /// Announcements widget (#202).
+  ///
+  /// In en, this message translates to:
+  /// **'Publish'**
+  String get announcementPublish;
+
+  /// Announcements widget (#202).
+  ///
+  /// In en, this message translates to:
+  /// **'Title'**
+  String get announcementTitleField;
+
+  /// Announcements widget (#202).
+  ///
+  /// In en, this message translates to:
+  /// **'Text'**
+  String get announcementBodyField;
+
+  /// Announcements widget (#202).
+  ///
+  /// In en, this message translates to:
+  /// **'Markdown: **bold**, *italic*, lists and links.'**
+  String get announcementMarkdownHint;
+
+  /// Announcements widget (#202).
+  ///
+  /// In en, this message translates to:
+  /// **'Expires'**
+  String get announcementExpires;
+
+  /// Announcements widget (#202).
+  ///
+  /// In en, this message translates to:
+  /// **'No expiry'**
+  String get announcementNoExpiry;
+
+  /// Announcements widget (#202).
+  ///
+  /// In en, this message translates to:
+  /// **'Send to the notification channels'**
+  String get announcementNotify;
 }
 
 class _AppLocalizationsDelegate

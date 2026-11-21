@@ -28,6 +28,8 @@ dependencies:
   local_auth: ^3.0.2
   # Hierarchical loggers from the Dart team instead of print().
   logging: ^1.3.0
+  # Parses the Markdown of announcements and notes (ADR 0013); Dart team.
+  markdown: ^7.3.1
   # Material widgets, decoupled from the framework since Flutter 3.50.
   material_ui: ^1.11.1
   # The app's version and build number for the settings; the platform
