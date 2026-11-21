@@ -124,6 +124,17 @@ class DashboardScreen extends StatelessWidget {
                             );
                           },
                         ),
+                      if (viewModel.attentionCount case final count
+                          when count > 0)
+                        IconButton(
+                          key: const ValueKey('dashboard.attention'),
+                          tooltip: l10n.attentionBadge(count),
+                          icon: Badge.count(
+                            count: count,
+                            child: const Icon(Icons.error_outline),
+                          ),
+                          onPressed: () => context.push(Routes.attention),
+                        ),
                       IconButton(
                         key: const ValueKey('dashboard.search'),
                         tooltip: l10n.searchHint,

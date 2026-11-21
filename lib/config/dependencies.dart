@@ -16,6 +16,7 @@ import 'package:waylight_mobile/data/repositories/actions/smarthome_repository.d
 import 'package:waylight_mobile/data/repositories/actions/summary_repository.dart';
 import 'package:waylight_mobile/data/repositories/announcements/announcements_repository.dart';
 import 'package:waylight_mobile/data/repositories/appearance/theme_repository.dart';
+import 'package:waylight_mobile/data/repositories/attention/attention_repository.dart';
 import 'package:waylight_mobile/data/repositories/bookmarks/bookmarks_repository.dart';
 import 'package:waylight_mobile/data/repositories/bookmarks/bookmarks_repository_remote.dart';
 import 'package:waylight_mobile/data/repositories/calendar/calendar_repository.dart';
@@ -111,6 +112,7 @@ typedef Repositories = ({
   SmartHomeRepository smartHome,
   FocusRepository focus,
   PresenceRepository presence,
+  AttentionRepository attention,
   AbsencesRepository absences,
   AnnouncementsRepository announcements,
   ScannerRepository scanner,
@@ -158,6 +160,7 @@ List<SingleChildWidget> providers(Repositories repositories) => [
   Provider<SmartHomeRepository>.value(value: repositories.smartHome),
   Provider<FocusRepository>.value(value: repositories.focus),
   Provider<PresenceRepository>.value(value: repositories.presence),
+  ListenableProvider<AttentionRepository>.value(value: repositories.attention),
   Provider<AbsencesRepository>.value(value: repositories.absences),
   Provider<ScannerRepository>.value(value: repositories.scanner),
   Provider<AnnouncementsRepository>.value(value: repositories.announcements),
@@ -240,6 +243,7 @@ Repositories createRepositories() {
   final widgetData = WidgetDataRepositoryRemote(api: modules);
   final smartHome = SmartHomeRepositoryRemote(api: modules);
   final presence = PresenceRepositoryRemote(api: modules);
+  final attention = AttentionRepositoryRemote(api: modules);
   final quickTiles = QuickTilesRepository(
     smartHome: smartHome,
     presence: presence,
@@ -264,6 +268,7 @@ Repositories createRepositories() {
     deviceName: deviceName(),
     cache: cache,
     onForget: [
+      attention.clear,
       reminders.clear,
       todos.clear,
       theme.clear,
@@ -300,6 +305,7 @@ Repositories createRepositories() {
     smartHome: smartHome,
     focus: focusSessions,
     presence: presence,
+    attention: attention,
     absences: AbsencesRepositoryRemote(api: modules),
     announcements: AnnouncementsRepositoryRemote(api: modules),
     scanner: const ScannerRepository(scanner: MethodChannelBarcodeScanner()),
