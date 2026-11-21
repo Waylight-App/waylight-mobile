@@ -60,8 +60,12 @@ object GlanceFormat {
 
     /** The title of a compact state; the watch's own words when the server sent none. */
     fun compactTitle(context: Context, glance: CompactGlance): String = when {
-        glance.title.isNotEmpty() -> glance.title
+        glance.title.text.isNotEmpty() -> ServerTexts.resolve(context, glance.title)
         glance.module == "todos" -> context.resources.getQuantityString(R.plurals.todos_open, glance.count ?: 0, glance.count ?: 0)
         else -> glance.module
     }
+
+    /** The second line of a compact state, if any. */
+    fun compactDetail(context: Context, glance: CompactGlance): String? =
+        glance.detail?.let { ServerTexts.resolve(context, it) }
 }

@@ -13,9 +13,12 @@ class ParsersTest {
     @Test
     fun `reads a compact state`() {
         val json = """{"title":{"key":"todos.open","text":"3 open","params":{"n":"3"}},"detail":{"key":"x","text":"1 overdue"},"level":"attention","count":3,"updatedAt":"2026-11-21T10:00:00Z"}"""
-        assertEquals(CompactGlance("todos", "3 open", "1 overdue", Level.ATTENTION, 3), Parsers.compact("todos", json))
         assertEquals(
-            CompactGlance("focus", "Idle", null, Level.NONE, null),
+            CompactGlance("todos", GlanceText("3 open", "todos.open", mapOf("n" to "3")), GlanceText("1 overdue", "x"), Level.ATTENTION, 3),
+            Parsers.compact("todos", json),
+        )
+        assertEquals(
+            CompactGlance("focus", GlanceText("Idle", "k"), null, Level.NONE, null),
             Parsers.compact("focus", """{"title":{"key":"k","text":"Idle"},"level":"none","updatedAt":"x"}"""),
         )
     }

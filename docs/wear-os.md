@@ -73,6 +73,12 @@ tiles, tap *Add tile* and choose *Waylight* to get the tile. It shows the
 stored data with its age and asks for fresh data when the last fetch is
 more than a quarter of an hour old. A tap opens the app.
 
+The server sends the texts of compact states in English together with the
+key of their template. The watch shows them in its own language (English
+or German) when it knows the key; texts of modules added on a newer
+server stay in English until the watch app knows them. The keys live in
+`glances/ServerTexts.kt`, the templates in the string resources.
+
 In the background the watch fetches new data every 30 minutes while it has
 a network. If the server says the session has ended, the watch forgets it
 and asks to be paired again.
