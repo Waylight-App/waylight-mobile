@@ -499,6 +499,7 @@ class _ArrangeScaffold extends StatelessWidget {
                         : () => WidgetGallerySheet.show(
                             context,
                             viewModel: arranging,
+                            registry: registry,
                           ).ignore(),
                   ),
                 ),

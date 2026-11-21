@@ -11,9 +11,11 @@ import 'package:waylight_mobile/ui/core/themes/dimens.dart';
 import 'package:waylight_mobile/ui/core/widgets/message_banner.dart';
 import 'package:waylight_mobile/ui/core/widgets/view_model_host.dart';
 import 'package:waylight_mobile/ui/core/widgets/widget_frame.dart';
+import 'package:waylight_mobile/ui/core/widgets/widget_preview.dart';
 import 'package:waylight_mobile/ui/widgets/common/compact_state_widget.dart';
 import 'package:waylight_mobile/ui/widgets/todos/conflicts_sheet.dart';
 import 'package:waylight_mobile/ui/widgets/todos/todo_sheet.dart';
+import 'package:waylight_mobile/ui/widgets/todos/todos_example.dart';
 import 'package:waylight_mobile/ui/widgets/todos/todos_view_model.dart';
 
 /// The native view of the to-do widget (#64, #20): add, tick off, edit and
@@ -35,6 +37,25 @@ class TodosWidget extends StatelessWidget {
         full: () => TodosWidget(widget: widget, key: ValueKey(widget.id)),
       );
 
+  /// The gallery preview from example data (#251): the open to-dos as a
+  /// list, read-only, and the count with the next one in small tiles.
+  static Widget preview(BuildContext context, String title, WidgetSize size) {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final todos = exampleTodos(today);
+    return WidgetPreview(
+      title: title,
+      size: size,
+      compact: (context) => _TodosCompact(open: todos, size: size),
+      full: (context) => Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          for (final todo in todos) _TodoRow(todo: todo, today: today),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return ViewModelHost(
@@ -49,27 +70,40 @@ class TodosWidget extends StatelessWidget {
         load: viewModel.load,
         compact: (context, _, size) => ListenableBuilder(
           listenable: viewModel,
-          builder: (context, _) {
-            final l10n = context.l10n;
-            final open = [
+          builder: (context, _) => _TodosCompact(
+            open: [
               for (final t in viewModel.todos)
                 if (!t.done) t,
-            ];
-            if (open.isEmpty) return Text(l10n.todosEmpty);
-            final count = l10n.todosCompactOpen(open.length);
-            final next = l10n.todosCompactNext(open.first.title);
-            if (size == WidgetSize.strip) return Text('$count · $next');
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(count, style: Theme.of(context).textTheme.titleLarge),
-                Text(next, maxLines: 3, overflow: TextOverflow.ellipsis),
-              ],
-            );
-          },
+            ],
+            size: size,
+          ),
         ),
         builder: (context, _) => _TodoList(viewModel: viewModel),
       ),
+    );
+  }
+}
+
+/// The open to-dos in a small or strip tile: how many, and the next one.
+class _TodosCompact extends StatelessWidget {
+  const _TodosCompact({required this.open, required this.size});
+
+  final List<Todo> open;
+  final WidgetSize size;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    if (open.isEmpty) return Text(l10n.todosEmpty);
+    final count = l10n.todosCompactOpen(open.length);
+    final next = l10n.todosCompactNext(open.first.title);
+    if (size == WidgetSize.strip) return Text('$count · $next');
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(count, style: Theme.of(context).textTheme.titleLarge),
+        Text(next, maxLines: 3, overflow: TextOverflow.ellipsis),
+      ],
     );
   }
 }
