@@ -1,13 +1,13 @@
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:material_ui/material_ui.dart';
-
 import 'package:waylight_mobile/data/repositories/widget_data/queries/information.dart';
 import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/domain/models/information.dart';
 import 'package:waylight_mobile/routing/routes.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
+import 'package:waylight_mobile/ui/widgets/common/compact_state_widget.dart';
 import 'package:waylight_mobile/ui/widgets/common/simple_widget.dart';
 import 'package:waylight_mobile/ui/widgets/common/widget_rows.dart';
 
@@ -27,8 +27,16 @@ class CalendarWidget extends StatelessWidget {
   static const shown = 8;
 
   /// The builder for the widget registry.
+  /// Small and strip tiles show the server's compact state (#274).
   static Widget forPlacement(BuildContext context, WidgetPlacement widget) =>
-      CalendarWidget(widget: widget, key: ValueKey(widget.id));
+      CompactStateWidget.orFull(
+        context,
+        widget,
+        title: widget.title.isNotEmpty
+            ? widget.title
+            : context.l10n.calendarTitle,
+        full: () => CalendarWidget(widget: widget, key: ValueKey(widget.id)),
+      );
 
   @override
   Widget build(BuildContext context) => SimpleWidget<List<CalendarEvent>>(

@@ -32,6 +32,14 @@ abstract interface class CompactStateRepository {
     String kind, {
     Map<String, Object?> config,
   });
+
+  /// Sends the request of [action] from a compact state (#226), with the
+  /// body of [choice] when the action offers choices.
+  Future<Result<void>> run(
+    ServerAddress server,
+    CompactAction action, {
+    CompactChoice? choice,
+  });
 }
 
 /// A [CompactStateRepository] on the modules' `/compact` endpoints, and
@@ -141,6 +149,27 @@ class CompactStateRepositoryRemote implements CompactStateRepository {
       'transit' when _transit != null => _transitState(server, config),
       'waste' when _waste != null => _wasteState(server),
       _ => const Result.error(ApiException(ApiFailure.notFound)),
+    };
+  }
+
+  @override
+  Future<Result<void>> run(
+    ServerAddress server,
+    CompactAction action, {
+    CompactChoice? choice,
+  }) async {
+    final body = choice?.body ?? action.body;
+    // The parser only lets paths under /api/ through, so the request stays
+    // on the server's API.
+    final Result<Object?> result = switch (action.method) {
+      'POST' => await _api.post(server, action.path, body: body),
+      'PUT' => await _api.put(server, action.path, body: body),
+      'DELETE' => await _api.delete(server, action.path),
+      _ => const Result.error(ApiException(ApiFailure.notFound)),
+    };
+    return switch (result) {
+      Ok() => const Result.ok(null),
+      Error(:final error) => Result.error(error),
     };
   }
 
