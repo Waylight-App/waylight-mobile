@@ -2041,4 +2041,79 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get quickTileNoChoice => 'Noch nicht gewählt';
+
+  @override
+  String get settingsAreaAccount => 'Konto & Sicherheit';
+
+  @override
+  String get settingsAreaServer => 'Server & Verbindung';
+
+  @override
+  String get settingsAreaNotifications => 'Benachrichtigungen & Erinnerungen';
+
+  @override
+  String get settingsAreaPhone => 'Dieses Handy';
+
+  @override
+  String get settingsAreaAbout => 'Über & Hilfe';
+
+  @override
+  String get settingsAreaEmpty =>
+      'Auf diesem Handy gibt es hier nichts einzustellen.';
+
+  @override
+  String get settingsStatusNoAddress => 'Keine Adresse antwortet';
+
+  @override
+  String get settingsStatusPushOn => 'Push an';
+
+  @override
+  String get settingsStatusPushOff => 'Push aus';
+
+  @override
+  String get settingsStatusRemindersOn => 'Erinnerungen an';
+
+  @override
+  String get settingsStatusRemindersOff => 'Erinnerungen aus';
+
+  @override
+  String get settingsStatusLockOn => 'App-Sperre an';
+
+  @override
+  String get settingsStatusLockOff => 'App-Sperre aus';
+
+  @override
+  String get settingsStatusPhone => 'Widgets und Kacheln';
+
+  @override
+  String settingsStatusVersion(String version) {
+    return 'Version $version';
+  }
+
+  @override
+  String get settingsConnection => 'Verbindung';
+
+  @override
+  String get settingsOtherServers => 'Andere Server';
+
+  @override
+  String get settingsAdvanced => 'Erweitert';
+
+  @override
+  String get settingsCheckNow => 'Adressen jetzt prüfen';
+
+  @override
+  String get settingsCheckNowHint =>
+      'Probiert die Adressen der Reihe nach und nimmt die erste, die antwortet.';
+
+  @override
+  String get settingsHomeWidgets => 'Widgets auf dem Startbildschirm';
+
+  @override
+  String get settingsHomeWidgetsHint =>
+      'Halte eine freie Stelle auf dem Startbildschirm gedrückt, wähle Widgets und such dir eines von Waylight aus.';
+
+  @override
+  String get settingsWallDisplayHint =>
+      'Wähle unter Server & Verbindung „Weiteren Server hinzufügen“, dann „Als Wandbildschirm nutzen“ und füge den Link einer Kiosk-Anzeige ein.';
 }

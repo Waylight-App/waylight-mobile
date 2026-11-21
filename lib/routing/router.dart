@@ -27,8 +27,10 @@ import 'package:waylight_mobile/ui/pair/widgets/pair_screen.dart';
 import 'package:waylight_mobile/ui/search/view_models/search_view_model.dart';
 import 'package:waylight_mobile/ui/search/widgets/search_screen.dart';
 import 'package:waylight_mobile/ui/settings/view_models/security_view_model.dart';
+import 'package:waylight_mobile/ui/settings/view_models/settings_area.dart';
 import 'package:waylight_mobile/ui/settings/view_models/settings_view_model.dart';
 import 'package:waylight_mobile/ui/settings/widgets/security_screen.dart';
+import 'package:waylight_mobile/ui/settings/widgets/settings_area_screen.dart';
 import 'package:waylight_mobile/ui/settings/widgets/settings_screen.dart';
 import 'package:waylight_mobile/ui/share/view_models/share_view_model.dart';
 import 'package:waylight_mobile/ui/share/widgets/share_screen.dart';
@@ -100,23 +102,26 @@ GoRouter createRouter(
     ),
     GoRoute(
       path: Routes.settings,
-      builder: (context, state) => ViewModelHost(
-        create: (context) =>
-            SettingsViewModel(
-                serverRepository: context.read(),
-                sessionRepository: context.read(),
-                preferencesRepository: context.read(),
-                pushRepository: context.read(),
-                lockRepository: context.read(),
-                diagnosticsRepository: context.read(),
-                themeRepository: context.read(),
-                reminderRepository: context.read(),
-                quickTilesRepository: context.read(),
-              )
-              ..reminderFormatter = ReminderTexts(context.l10n)
-              ..quickTileFormatter = QuickTileTexts(context.l10n),
-        builder: (context, viewModel) => SettingsScreen(viewModel: viewModel),
-      ),
+      builder: (context, state) => _settings(null),
+      // Nested, so an area opened from a link goes back to the start page.
+      routes: [
+        for (final area in SettingsArea.values)
+          GoRoute(
+            path: area.segment,
+            builder: (context, state) => _settings(area),
+          ),
+        GoRoute(
+          path: Routes.security.substring(Routes.settings.length + 1),
+          builder: (context, state) => ViewModelHost(
+            create: (context) => SecurityViewModel(
+              serverRepository: context.read(),
+              security: context.read(),
+            ),
+            builder: (context, viewModel) =>
+                SecurityScreen(viewModel: viewModel),
+          ),
+        ),
+      ],
     ),
     GoRoute(
       path: Routes.pair,
@@ -230,16 +235,6 @@ GoRouter createRouter(
       ),
     ),
     GoRoute(
-      path: Routes.security,
-      builder: (context, state) => ViewModelHost(
-        create: (context) => SecurityViewModel(
-          serverRepository: context.read(),
-          security: context.read(),
-        ),
-        builder: (context, viewModel) => SecurityScreen(viewModel: viewModel),
-      ),
-    ),
-    GoRoute(
       path: Routes.share,
       builder: (context, state) => ViewModelHost(
         create: (context) => ShareViewModel(
@@ -297,6 +292,28 @@ GoRouter createRouter(
       ),
     ),
   ],
+);
+
+/// Hosts the settings start page (`null`) or one [area] with its own view
+/// model; all settings screens share the view model class (#231).
+ViewModelHost<SettingsViewModel> _settings(SettingsArea? area) => ViewModelHost(
+  create: (context) =>
+      SettingsViewModel(
+          serverRepository: context.read(),
+          sessionRepository: context.read(),
+          preferencesRepository: context.read(),
+          pushRepository: context.read(),
+          lockRepository: context.read(),
+          diagnosticsRepository: context.read(),
+          themeRepository: context.read(),
+          reminderRepository: context.read(),
+          quickTilesRepository: context.read(),
+        )
+        ..reminderFormatter = ReminderTexts(context.l10n)
+        ..quickTileFormatter = QuickTileTexts(context.l10n),
+  builder: (context, viewModel) => area == null
+      ? SettingsScreen(viewModel: viewModel)
+      : SettingsAreaScreen(area: area, viewModel: viewModel),
 );
 
 /// The app's scheme for links from outside, e.g. `waylight://settings`

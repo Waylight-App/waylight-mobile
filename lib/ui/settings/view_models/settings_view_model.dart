@@ -28,7 +28,8 @@ Future<String> _platformVersion() async {
   return '${info.version} (${info.buildNumber})';
 }
 
-/// The state and actions of the settings screen (#14).
+/// The state and actions of the settings start page and its areas (#14,
+/// #231). Every settings screen hosts its own instance.
 class SettingsViewModel extends ChangeNotifier {
   /// Creates the view model and starts loading account and versions.
   SettingsViewModel({
@@ -92,6 +93,10 @@ class SettingsViewModel extends ChangeNotifier {
   bool get quickTilesAvailable =>
       _quickTiles != null && defaultTargetPlatform == TargetPlatform.android;
 
+  /// Whether this phone has home screen widgets of the app (ADR 0009).
+  bool get homeWidgetsAvailable =>
+      defaultTargetPlatform == TargetPlatform.android;
+
   /// The name of the device the smart home tile switches; empty when none.
   String get tileEntity => _tileEntity;
 
@@ -147,6 +152,12 @@ class SettingsViewModel extends ChangeNotifier {
     if (!_remindersDenied && server != null && format != null) {
       await reminders.reschedule(server, format, force: true);
     }
+  }
+
+  /// Whether at least one kind of reminder is on.
+  bool get anyReminderOn {
+    final r = reminders;
+    return r.todos || r.birthdays || r.eventMinutes > 0;
   }
 
   /// The words of the reminders; set by the screen, which has the texts.
@@ -288,6 +299,17 @@ class SettingsViewModel extends ChangeNotifier {
   /// What the last check of [address] found.
   AddressCheck checkOf(ServerAddress address) =>
       _serverRepository.checks[address] ?? AddressCheck.unknown;
+
+  /// Tries the addresses again in their order and uses the first that
+  /// answers.
+  Future<void> checkAddresses() => _serverRepository.selectAddress();
+
+  /// Reads again what another settings screen may have changed and no
+  /// repository announces: push, battery and the tile choice.
+  Future<void> refresh() async {
+    await _loadPush();
+    await _loadTileChoice();
+  }
 
   /// Whether another address can be added.
   bool get canAddAddress => addresses.length < ServerRepository.maxAddresses;

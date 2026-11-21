@@ -45,4 +45,8 @@ abstract final class Dimens {
 
   /// Maximum width of forms on tablets and in landscape.
   static const double maxFormWidth = 480;
+
+  /// Maximum width of list pages such as the settings on tablets and in
+  /// landscape (#52).
+  static const double maxPageWidth = 640;
 }

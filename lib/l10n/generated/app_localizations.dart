@@ -3661,6 +3661,144 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Not chosen yet'**
   String get quickTileNoChoice;
+
+  /// Settings area.
+  ///
+  /// In en, this message translates to:
+  /// **'Account & security'**
+  String get settingsAreaAccount;
+
+  /// Settings area.
+  ///
+  /// In en, this message translates to:
+  /// **'Server & connection'**
+  String get settingsAreaServer;
+
+  /// Settings area.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications & reminders'**
+  String get settingsAreaNotifications;
+
+  /// Settings area: app lock, widgets, tiles.
+  ///
+  /// In en, this message translates to:
+  /// **'This phone'**
+  String get settingsAreaPhone;
+
+  /// Settings area.
+  ///
+  /// In en, this message translates to:
+  /// **'About & help'**
+  String get settingsAreaAbout;
+
+  /// A settings area without settings on this device.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing to set here on this phone.'**
+  String get settingsAreaEmpty;
+
+  /// Status: none of the server addresses is reachable.
+  ///
+  /// In en, this message translates to:
+  /// **'No address answers'**
+  String get settingsStatusNoAddress;
+
+  /// Status of push notifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Push on'**
+  String get settingsStatusPushOn;
+
+  /// Status of push notifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Push off'**
+  String get settingsStatusPushOff;
+
+  /// Status: at least one kind of reminder is on.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders on'**
+  String get settingsStatusRemindersOn;
+
+  /// Status: no reminders.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders off'**
+  String get settingsStatusRemindersOff;
+
+  /// Status of the app lock.
+  ///
+  /// In en, this message translates to:
+  /// **'App lock on'**
+  String get settingsStatusLockOn;
+
+  /// Status of the app lock.
+  ///
+  /// In en, this message translates to:
+  /// **'App lock off'**
+  String get settingsStatusLockOff;
+
+  /// Status of the phone area when the phone has no app lock.
+  ///
+  /// In en, this message translates to:
+  /// **'Widgets and tiles'**
+  String get settingsStatusPhone;
+
+  /// Status of the about area.
+  ///
+  /// In en, this message translates to:
+  /// **'Version {version}'**
+  String settingsStatusVersion(String version);
+
+  /// Settings card: server in use.
+  ///
+  /// In en, this message translates to:
+  /// **'Connection'**
+  String get settingsConnection;
+
+  /// Settings card.
+  ///
+  /// In en, this message translates to:
+  /// **'Other servers'**
+  String get settingsOtherServers;
+
+  /// Settings card.
+  ///
+  /// In en, this message translates to:
+  /// **'Advanced'**
+  String get settingsAdvanced;
+
+  /// Tries the server addresses again.
+  ///
+  /// In en, this message translates to:
+  /// **'Check addresses now'**
+  String get settingsCheckNow;
+
+  /// Explains checking the addresses.
+  ///
+  /// In en, this message translates to:
+  /// **'Tries the addresses in order and uses the first that answers.'**
+  String get settingsCheckNowHint;
+
+  /// Settings card.
+  ///
+  /// In en, this message translates to:
+  /// **'Home screen widgets'**
+  String get settingsHomeWidgets;
+
+  /// How to add a home screen widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Touch and hold an empty spot on the home screen, choose Widgets and pick one from Waylight.'**
+  String get settingsHomeWidgetsHint;
+
+  /// How to turn the phone into a wall display.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose “Add another server” under Server & connection, then “Use as wall display” and paste the link of a kiosk display.'**
+  String get settingsWallDisplayHint;
 }
 
 class _AppLocalizationsDelegate
