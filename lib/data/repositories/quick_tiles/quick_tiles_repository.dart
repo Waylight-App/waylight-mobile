@@ -1,8 +1,10 @@
 import 'package:waylight_mobile/data/repositories/actions/smarthome_repository.dart';
+import 'package:waylight_mobile/data/repositories/compact/compact_state_repository.dart';
 import 'package:waylight_mobile/data/repositories/presence/presence_repository.dart';
 import 'package:waylight_mobile/data/services/quick_tiles/quick_tile_store.dart';
 import 'package:waylight_mobile/domain/models/actions.dart';
 import 'package:waylight_mobile/domain/models/api_exception.dart';
+import 'package:waylight_mobile/domain/models/compact_state.dart';
 import 'package:waylight_mobile/domain/models/presence.dart';
 import 'package:waylight_mobile/domain/models/quick_tile.dart';
 import 'package:waylight_mobile/domain/models/server_address.dart';
@@ -17,11 +19,16 @@ class QuickTilesRepository {
     required this._smartHome,
     required this._presence,
     required this._store,
+    this._compact,
   });
 
   final SmartHomeRepository _smartHome;
   final PresenceRepository _presence;
   final QuickTileStore _store;
+  final CompactStateRepository? _compact;
+
+  /// The widget kind whose compact state the status tile shows (#242).
+  static const statusKind = 'presence';
 
   /// Reads the current states. The status tile is offered only while the
   /// server has presence; other failures keep what the tiles show.
@@ -34,7 +41,10 @@ class QuickTilesRepository {
         await _store.offer(QuickTileKind.status, offered: true);
         await _store.save(
           QuickTileKind.status,
-          format.status(value.mine?.status ?? PresenceStatus.none),
+          format.status(
+            value.mine?.status ?? PresenceStatus.none,
+            compact: await _statusState(server),
+          ),
         );
       case Error(error: ApiException(failure: ApiFailure.notFound)):
         await _store.offer(QuickTileKind.status, offered: false);
@@ -115,7 +125,10 @@ class QuickTilesRepository {
     };
     switch (result) {
       case Ok(:final value):
-        await _store.save(QuickTileKind.status, format.status(value));
+        await _store.save(
+          QuickTileKind.status,
+          format.status(value, compact: await _statusState(server)),
+        );
         return const Result.ok(null);
       case Error(error: ApiException(failure: ApiFailure.notFound)):
         await _store.offer(QuickTileKind.status, offered: false);
@@ -150,6 +163,18 @@ class QuickTilesRepository {
         );
         return Result.error(error);
     }
+  }
+
+  /// The presence widget's compact state when the server offers one;
+  /// `null` otherwise or on error, so the tile names the status itself.
+  /// Tiles have no colours, so only its title line is shown.
+  Future<CompactState?> _statusState(ServerAddress server) async {
+    final compact = _compact;
+    if (compact == null || !compact.supports(statusKind)) return null;
+    return switch (await compact.state(server, statusKind)) {
+      Ok(:final value) => value,
+      Error() => null,
+    };
   }
 
   Future<Result<SmartEntity>> _entity(ServerAddress server, String id) async =>

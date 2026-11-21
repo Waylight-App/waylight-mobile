@@ -1,4 +1,5 @@
 import 'package:waylight_mobile/domain/models/actions.dart';
+import 'package:waylight_mobile/domain/models/compact_state.dart';
 import 'package:waylight_mobile/domain/models/presence.dart';
 
 /// The tiles the app offers in Android's Quick Settings (#192).
@@ -65,8 +66,10 @@ abstract interface class QuickTileFormatter {
   /// The smart home tile for [entity].
   QuickTileState smartHome(SmartEntity entity);
 
-  /// The status tile for [status].
-  QuickTileState status(PresenceStatus status);
+  /// The status tile for [status]; the title line of [compact], the
+  /// presence widget's compact state, replaces the status name when the
+  /// server offers one (#242).
+  QuickTileState status(PresenceStatus status, {CompactState? compact});
 
   /// A tile of [kind] whose server could not be reached; [label] keeps the
   /// name it showed.
