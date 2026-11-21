@@ -596,6 +596,72 @@ abstract class AppLocalizations {
   /// **'The link could not be opened.'**
   String get linkOpenFailed;
 
+  /// Title of the screen listing broken and unconfigured widgets and connections.
+  ///
+  /// In en, this message translates to:
+  /// **'Needs your attention'**
+  String get attentionTitle;
+
+  /// Tooltip of the dashboard button with the count badge.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 thing needs your attention} other{{count} things need your attention}}'**
+  String attentionBadge(int count);
+
+  /// Group of connections that stopped working.
+  ///
+  /// In en, this message translates to:
+  /// **'Not working any more'**
+  String get attentionBroken;
+
+  /// Group of widgets and integrations that miss a setting.
+  ///
+  /// In en, this message translates to:
+  /// **'Not set up yet'**
+  String get attentionSetup;
+
+  /// The attention list is empty.
+  ///
+  /// In en, this message translates to:
+  /// **'Everything is set up and working.'**
+  String get attentionEmpty;
+
+  /// Action: the sign-in at a service expired; opens the web interface.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in again'**
+  String get attentionSignIn;
+
+  /// Action: asks the server again whether the connection works.
+  ///
+  /// In en, this message translates to:
+  /// **'Check again'**
+  String get attentionCheck;
+
+  /// Action: the service refused the stored credential; opens the web interface.
+  ///
+  /// In en, this message translates to:
+  /// **'Fix access'**
+  String get attentionFix;
+
+  /// Action: opens the widget that misses a setting.
+  ///
+  /// In en, this message translates to:
+  /// **'Set up'**
+  String get attentionChoose;
+
+  /// Action: the integration is not set up; opens the web interface.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect'**
+  String get attentionConnect;
+
+  /// Snack bar after Check again when the entry is still listed.
+  ///
+  /// In en, this message translates to:
+  /// **'Still not working.'**
+  String get attentionStillBroken;
+
   /// Button that opens the widget's tab in the web interface.
   ///
   /// In en, this message translates to:
