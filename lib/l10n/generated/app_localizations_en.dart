@@ -2257,6 +2257,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get deviceControlSignIn => 'Open Waylight to sign in';
 
   @override
+  String get absencePerson => 'Person';
+
+  @override
+  String get absenceMe => 'Me';
+
+  @override
   String get settingsSearch => 'Search settings';
 
   @override
@@ -2272,4 +2278,50 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsAttentionShow => 'Show';
+
+  @override
+  String compactWeather(String temp, String feels) {
+    return '$temp °C, feels like $feels °C';
+  }
+
+  @override
+  String compactWeatherToday(String min, String max, String rain) {
+    return '$min to $max °C, $rain% rain';
+  }
+
+  @override
+  String compactDeparture(String line, String headsign, String minutes) {
+    return '$line to $headsign in $minutes min';
+  }
+
+  @override
+  String compactDepartureCancelled(String line, String headsign) {
+    return '$line to $headsign cancelled';
+  }
+
+  @override
+  String compactDepartureDelay(String delay) {
+    return '$delay min late';
+  }
+
+  @override
+  String get compactNoDepartures => 'No departures';
+
+  @override
+  String compactWasteToday(String label) {
+    return '$label today';
+  }
+
+  @override
+  String compactWasteTomorrow(String label) {
+    return '$label tomorrow';
+  }
+
+  @override
+  String compactWasteInDays(String label, String days) {
+    return '$label in $days days';
+  }
+
+  @override
+  String get compactNoCollections => 'No collections ahead';
 }

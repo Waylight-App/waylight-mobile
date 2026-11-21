@@ -244,11 +244,20 @@ Repositories createRepositories() {
     store: store,
   );
   final transit = TransitRepositoryRemote(api: TransitApi(client));
+  final weather = WeatherRepositoryRemote(api: WeatherApi(client));
+  final waste = WasteRepositoryRemote(api: WasteApi(client));
+  final compact = CompactStateRepositoryRemote(
+    api: modules,
+    weather: weather,
+    transit: transit,
+    waste: waste,
+  );
   final homeWidgets = HomeWidgetsRepository(
     dashboard: dashboard,
     todos: todos,
     transit: transit,
     store: MethodChannelHomeWidgetStore(),
+    compact: compact,
   );
   final widgetData = WidgetDataRepositoryRemote(api: modules);
   final smartHome = SmartHomeRepositoryRemote(api: modules);
@@ -258,6 +267,7 @@ Repositories createRepositories() {
     smartHome: smartHome,
     presence: presence,
     store: MethodChannelQuickTileStore(),
+    compact: compact,
   );
   final deviceControls = DeviceControlsRepository(
     smartHome: smartHome,
@@ -306,12 +316,12 @@ Repositories createRepositories() {
     server: server,
     session: session,
     dashboard: dashboard,
-    weather: WeatherRepositoryRemote(api: WeatherApi(client)),
+    weather: weather,
     todos: todos,
     notes: NotesRepositoryRemote(api: NotesApi(client)),
     bookmarks: BookmarksRepositoryRemote(api: BookmarksApi(client)),
     transit: transit,
-    waste: WasteRepositoryRemote(api: WasteApi(client)),
+    waste: waste,
     widgetData: widgetData,
     shopping: ShoppingRepositoryRemote(api: modules),
     habits: HabitsRepositoryRemote(api: modules),
@@ -321,7 +331,7 @@ Repositories createRepositories() {
     focus: focusSessions,
     presence: presence,
     attention: attention,
-    compact: CompactStateRepositoryRemote(api: modules),
+    compact: compact,
     absences: AbsencesRepositoryRemote(api: modules),
     announcements: AnnouncementsRepositoryRemote(api: modules),
     scanner: const ScannerRepository(scanner: MethodChannelBarcodeScanner()),

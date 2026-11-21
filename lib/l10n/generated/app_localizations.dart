@@ -4052,6 +4052,18 @@ abstract class AppLocalizations {
   /// **'Open Waylight to sign in'**
   String get deviceControlSignIn;
 
+  /// Absence form, admins only: whom the absence is for.
+  ///
+  /// In en, this message translates to:
+  /// **'Person'**
+  String get absencePerson;
+
+  /// Absence form: the absence is for the signed-in account.
+  ///
+  /// In en, this message translates to:
+  /// **'Me'**
+  String get absenceMe;
+
   /// Hint of the search field on the settings start page.
   ///
   /// In en, this message translates to:
@@ -4081,6 +4093,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Show'**
   String get settingsAttentionShow;
+
+  /// Derived compact state of a weather widget (#242).
+  ///
+  /// In en, this message translates to:
+  /// **'{temp} °C, feels like {feels} °C'**
+  String compactWeather(String temp, String feels);
+
+  /// Derived compact state: today's forecast (#242).
+  ///
+  /// In en, this message translates to:
+  /// **'{min} to {max} °C, {rain}% rain'**
+  String compactWeatherToday(String min, String max, String rain);
+
+  /// Derived compact state: the next departure (#242).
+  ///
+  /// In en, this message translates to:
+  /// **'{line} to {headsign} in {minutes} min'**
+  String compactDeparture(String line, String headsign, String minutes);
+
+  /// Derived compact state: the next departure is cancelled (#242).
+  ///
+  /// In en, this message translates to:
+  /// **'{line} to {headsign} cancelled'**
+  String compactDepartureCancelled(String line, String headsign);
+
+  /// Derived compact state: delay of the next departure (#242).
+  ///
+  /// In en, this message translates to:
+  /// **'{delay} min late'**
+  String compactDepartureDelay(String delay);
+
+  /// Derived compact state: no departures (#242).
+  ///
+  /// In en, this message translates to:
+  /// **'No departures'**
+  String get compactNoDepartures;
+
+  /// Derived compact state: bins collected today (#242).
+  ///
+  /// In en, this message translates to:
+  /// **'{label} today'**
+  String compactWasteToday(String label);
+
+  /// Derived compact state: bins collected tomorrow (#242).
+  ///
+  /// In en, this message translates to:
+  /// **'{label} tomorrow'**
+  String compactWasteTomorrow(String label);
+
+  /// Derived compact state: next collection in some days (#242).
+  ///
+  /// In en, this message translates to:
+  /// **'{label} in {days} days'**
+  String compactWasteInDays(String label, String days);
+
+  /// Derived compact state: no collections (#242).
+  ///
+  /// In en, this message translates to:
+  /// **'No collections ahead'**
+  String get compactNoCollections;
 }
 
 class _AppLocalizationsDelegate

@@ -15,6 +15,7 @@ import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
 import 'package:waylight_mobile/ui/core/themes/radar_colors.dart';
 import 'package:waylight_mobile/ui/core/widgets/section_card.dart';
+import 'package:waylight_mobile/ui/core/widgets/widget_preview.dart';
 import 'package:waylight_mobile/ui/widgets/common/compact_state_widget.dart';
 import 'package:waylight_mobile/ui/widgets/common/items_view_model.dart';
 import 'package:waylight_mobile/ui/widgets/common/items_widget.dart';
@@ -22,6 +23,7 @@ import 'package:waylight_mobile/ui/widgets/common/server_image.dart';
 import 'package:waylight_mobile/ui/widgets/common/simple_widget.dart';
 import 'package:waylight_mobile/ui/widgets/common/widget_rows.dart';
 import 'package:waylight_mobile/ui/widgets/lists/list_widgets.dart';
+import 'package:waylight_mobile/ui/widgets/media/focus_example.dart';
 
 /// The photo frame (#137): the album's photos one after another.
 class PhotoFrameWidget extends StatelessWidget {
@@ -529,26 +531,75 @@ class FocusWidget extends StatelessWidget {
         quickAction: const FocusQuickAction(),
       );
 
+  /// The gallery preview from example data (#251): today's focus time
+  /// with an idle timer; nothing starts from the preview.
+  static Widget preview(BuildContext context, String title, WidgetSize size) {
+    final now = DateTime.now();
+    final days = exampleFocusDays(DateTime(now.year, now.month, now.day));
+    return WidgetPreview(
+      title: title,
+      size: size,
+      compact: (context) => Row(
+        children: [
+          Expanded(child: _FocusToday(days: days, maxLines: 2)),
+          IconButton.filledTonal(
+            tooltip: context.l10n.focusStartFocus,
+            icon: const Icon(Icons.play_arrow),
+            onPressed: () {},
+          ),
+        ],
+      ),
+      full: (context) => Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _FocusToday(days: days),
+          const SizedBox(height: Dimens.gapSmall),
+          _FocusTimerFace(
+            state: null,
+            left: FocusTimerRepository.focusLength,
+            onStart: (_) {},
+            onPause: () {},
+            onResume: () {},
+            onStop: () {},
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) => SimpleWidget<List<FocusDay>>(
     placement: widget,
     defaultTitle: context.l10n.focusTitle,
     query: focusQuery,
     interval: const Duration(minutes: 15),
-    builder: (context, days) {
-      final today = days.isEmpty ? null : days.last;
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Text(
-            context.l10n.focusToday(today?.minutes ?? 0, today?.sessions ?? 0),
-          ),
-          const SizedBox(height: Dimens.gapSmall),
-          const FocusTimer(),
-        ],
-      );
-    },
+    builder: (context, days) => Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        _FocusToday(days: days),
+        const SizedBox(height: Dimens.gapSmall),
+        const FocusTimer(),
+      ],
+    ),
   );
+}
+
+/// Today's focus minutes and sessions; [days] ends with today.
+class _FocusToday extends StatelessWidget {
+  const _FocusToday({required this.days, this.maxLines});
+
+  final List<FocusDay> days;
+  final int? maxLines;
+
+  @override
+  Widget build(BuildContext context) {
+    final today = days.isEmpty ? null : days.last;
+    return Text(
+      context.l10n.focusToday(today?.minutes ?? 0, today?.sessions ?? 0),
+      maxLines: maxLines,
+      overflow: maxLines == null ? null : TextOverflow.ellipsis,
+    );
+  }
 }
 
 /// Starts or stops a focus phase right on a small focus tile (#226).
@@ -623,9 +674,41 @@ class _FocusTimerState extends State<FocusTimer> {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = context.l10n;
     final s = context.watch<FocusTimerRepository>().state;
-    final left = s?.left(widget.now()) ?? FocusTimerRepository.focusLength;
+    return _FocusTimerFace(
+      state: s,
+      left: s?.left(widget.now()) ?? FocusTimerRepository.focusLength,
+      onStart: (phase) => _repo.start(phase).ignore(),
+      onPause: () => _repo.pause().ignore(),
+      onResume: () => _repo.resume().ignore(),
+      onStop: () => _repo.stop().ignore(),
+    );
+  }
+}
+
+/// The face of the focus timer: the phase, the time [left] and the buttons
+/// for the [state]; `null` means no phase runs.
+class _FocusTimerFace extends StatelessWidget {
+  const _FocusTimerFace({
+    required this.state,
+    required this.left,
+    required this.onStart,
+    required this.onPause,
+    required this.onResume,
+    required this.onStop,
+  });
+
+  final FocusTimerState? state;
+  final Duration left;
+  final void Function(FocusPhase phase) onStart;
+  final VoidCallback onPause;
+  final VoidCallback onResume;
+  final VoidCallback onStop;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    final s = state;
     final text =
         '${left.inMinutes.toString().padLeft(2, '0')}:${(left.inSeconds % 60).toString().padLeft(2, '0')}';
     return Column(
@@ -646,28 +729,19 @@ class _FocusTimerState extends State<FocusTimer> {
             ),
             if (s == null) ...[
               TextButton(
-                onPressed: () => _repo.start(FocusPhase.rest).ignore(),
+                onPressed: () => onStart(FocusPhase.rest),
                 child: Text(l10n.focusStartBreak),
               ),
               FilledButton(
-                onPressed: () => _repo.start(FocusPhase.focus).ignore(),
+                onPressed: () => onStart(FocusPhase.focus),
                 child: Text(l10n.focusStart),
               ),
             ] else ...[
               if (s.paused)
-                TextButton(
-                  onPressed: () => _repo.resume().ignore(),
-                  child: Text(l10n.focusResume),
-                )
+                TextButton(onPressed: onResume, child: Text(l10n.focusResume))
               else
-                TextButton(
-                  onPressed: () => _repo.pause().ignore(),
-                  child: Text(l10n.focusPause),
-                ),
-              TextButton(
-                onPressed: () => _repo.stop().ignore(),
-                child: Text(l10n.focusStop),
-              ),
+                TextButton(onPressed: onPause, child: Text(l10n.focusPause)),
+              TextButton(onPressed: onStop, child: Text(l10n.focusStop)),
             ],
           ],
         ),

@@ -660,9 +660,21 @@
   "settingsWallDisplayHint": "Wähle unter Server & Verbindung „Weiteren Server hinzufügen“, dann „Als Wandbildschirm nutzen“ und füge den Link einer Kiosk-Anzeige ein.",
   "deviceControlNoState": "Kein Zustand",
   "deviceControlSignIn": "Waylight öffnen und anmelden",
+  "absencePerson": "Person",
+  "absenceMe": "Ich",
   "settingsSearch": "Einstellungen durchsuchen",
   "settingsSearchEmpty": "Keine Einstellung passt zu „{query}“.",
   "settingsSearchClear": "Suche leeren",
   "settingsSearchBattery": "Akku-Hinweis",
-  "settingsAttentionShow": "Anzeigen"
+  "settingsAttentionShow": "Anzeigen",
+  "compactWeather": "{temp} °C, gefühlt {feels} °C",
+  "compactWeatherToday": "{min} bis {max} °C, {rain} % Regen",
+  "compactDeparture": "{line} nach {headsign} in {minutes} min",
+  "compactDepartureCancelled": "{line} nach {headsign} fällt aus",
+  "compactDepartureDelay": "{delay} min später",
+  "compactNoDepartures": "Keine Abfahrten",
+  "compactWasteToday": "{label} heute",
+  "compactWasteTomorrow": "{label} morgen",
+  "compactWasteInDays": "{label} in {days} Tagen",
+  "compactNoCollections": "Keine Abholung geplant"
 }

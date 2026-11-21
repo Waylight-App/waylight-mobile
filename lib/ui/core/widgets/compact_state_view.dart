@@ -2,6 +2,8 @@ import 'package:material_ui/material_ui.dart';
 
 import 'package:waylight_mobile/domain/models/compact_state.dart';
 import 'package:waylight_mobile/domain/models/dashboard.dart';
+import 'package:waylight_mobile/ui/core/compact_texts.dart';
+import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
 import 'package:waylight_mobile/ui/core/widgets/rows.dart';
 
@@ -28,9 +30,10 @@ class CompactStateView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = context.l10n;
     final tone = toneOf(state.level);
     final title = Text(
-      state.title.text,
+      compactTextOf(l10n, state.title),
       maxLines: size == WidgetSize.strip ? 1 : 2,
       overflow: TextOverflow.ellipsis,
       style: theme.textTheme.titleSmall?.copyWith(
@@ -48,7 +51,7 @@ class CompactStateView extends StatelessWidget {
         title,
         const SizedBox(height: Dimens.gapTiny),
         Text(
-          detail.text,
+          compactTextOf(l10n, detail),
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
           style: theme.textTheme.bodySmall?.copyWith(

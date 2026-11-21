@@ -11,6 +11,12 @@ class FakeAbsencesRepository implements AbsencesRepository {
   /// What the changes return.
   Result<void> changeResult = const Result.ok(null);
 
+  /// What [members] returns.
+  Result<List<AbsenceMember>> membersResult = const Result.ok([]);
+
+  /// The inputs of [create], to check the chosen person.
+  final List<AbsenceInput> created = [];
+
   /// The changes, such as `create:holiday` or `delete:a1`.
   final List<String> calls = [];
 
@@ -24,6 +30,7 @@ class FakeAbsencesRepository implements AbsencesRepository {
   @override
   Future<Result<void>> create(ServerAddress server, AbsenceInput input) async {
     calls.add('create:${input.kind.name}');
+    created.add(input);
     return changeResult;
   }
 
@@ -42,4 +49,8 @@ class FakeAbsencesRepository implements AbsencesRepository {
     calls.add('delete:$id');
     return changeResult;
   }
+
+  @override
+  Future<Result<List<AbsenceMember>>> members(ServerAddress server) async =>
+      membersResult;
 }

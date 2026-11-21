@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:waylight_mobile/data/repositories/quick_tiles/quick_tiles_repository.dart';
 import 'package:waylight_mobile/domain/models/actions.dart';
 import 'package:waylight_mobile/domain/models/api_exception.dart';
+import 'package:waylight_mobile/domain/models/compact_state.dart';
 import 'package:waylight_mobile/domain/models/presence.dart';
 import 'package:waylight_mobile/domain/models/quick_tile.dart';
 import 'package:waylight_mobile/l10n/generated/app_localizations_en.dart';
@@ -9,6 +10,7 @@ import 'package:waylight_mobile/ui/home_widgets/quick_tile_texts.dart';
 import 'package:waylight_mobile/utils/result.dart';
 
 import '../../../testing/fakes/fake_action_repositories.dart';
+import '../../../testing/fakes/fake_compact_state_repository.dart';
 import '../../../testing/fakes/fake_presence_repository.dart';
 import '../../../testing/fakes/fake_quick_tile_store.dart';
 import '../../../testing/fakes/fake_server_repository.dart';
@@ -63,6 +65,40 @@ void main() {
     presence.result = const Result.error(ApiException(ApiFailure.notFound));
     await repo.refresh(testServer(), format: texts);
     expect(store.offered[QuickTileKind.status], isFalse);
+  });
+
+  test(
+    'the status tile shows the compact state when there is one (#242)',
+    () async {
+      final compact = FakeCompactStateRepository(kinds: {'presence'})
+        ..result = const Result.ok(
+          CompactState(title: CompactText(text: 'Office · 4 in')),
+        );
+      repo = QuickTilesRepository(
+        smartHome: home,
+        presence: presence,
+        store: store,
+        compact: compact,
+      );
+      await repo.refresh(testServer(), format: texts);
+      expect(compact.asked, [QuickTilesRepository.statusKind]);
+      expect(store.states[QuickTileKind.status]?.subtitle, 'Office · 4 in');
+
+      compact.result = const Result.error(ApiException(ApiFailure.unreachable));
+      await repo.run(testServer(), QuickTileKind.status, format: texts);
+      expect(store.states[QuickTileKind.status]?.subtitle, 'Office');
+    },
+  );
+
+  test('without a compact state the status tile names the status', () async {
+    repo = QuickTilesRepository(
+      smartHome: home,
+      presence: presence,
+      store: store,
+      compact: FakeCompactStateRepository(),
+    );
+    await repo.refresh(testServer(), format: texts);
+    expect(store.states[QuickTileKind.status]?.subtitle, 'Not set');
   });
 
   test('the smart home tile offers only switchable devices and switches the chosen one', () async {
