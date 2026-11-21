@@ -1,6 +1,7 @@
 import 'package:waylight_mobile/data/services/api/api_client.dart';
 import 'package:waylight_mobile/domain/models/api_exception.dart';
 import 'package:waylight_mobile/domain/models/departure.dart';
+import 'package:waylight_mobile/domain/models/place.dart';
 import 'package:waylight_mobile/domain/models/server_address.dart';
 import 'package:waylight_mobile/utils/result.dart';
 
@@ -31,7 +32,32 @@ class TransitApi {
         return Result.error(error);
     }
   }
+
+  /// Searches stops by name (`GET /api/transit/stops?q=`).
+  Future<Result<List<Stop>>> stops(ServerAddress server, String query) async {
+    final uri = server
+        .resolve('/api/transit/stops')
+        .replace(queryParameters: {'q': query});
+    return switch (await _client.getJson(uri)) {
+      Ok(:final value) => switch (parseStops(value)) {
+        final stops? => Result.ok(stops),
+        null => const Result.error(ApiException(ApiFailure.server)),
+      },
+      Error(:final error) => Result.error(error),
+    };
+  }
 }
+
+/// Maps the JSON of `GET /api/transit/stops`; `null` if it does not match.
+List<Stop>? parseStops(Object? json) => switch (json) {
+  final List<Object?> stops => [
+    for (final s in stops)
+      if (s case {'id': final String id, 'name': final String name}
+          when id.isNotEmpty)
+        Stop(id: id, name: name),
+  ],
+  _ => null,
+};
 
 /// Maps the JSON of `GET /api/transit/departures`; `null` if it does not
 /// match.

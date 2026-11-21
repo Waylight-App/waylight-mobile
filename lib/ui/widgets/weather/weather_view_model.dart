@@ -1,7 +1,9 @@
 import 'package:flutter/foundation.dart';
 
+import 'package:waylight_mobile/data/repositories/dashboard/dashboard_repository.dart';
 import 'package:waylight_mobile/data/repositories/server/server_repository.dart';
 import 'package:waylight_mobile/data/repositories/weather/weather_repository.dart';
+import 'package:waylight_mobile/domain/models/place.dart';
 import 'package:waylight_mobile/domain/models/weather.dart';
 import 'package:waylight_mobile/utils/command.dart';
 import 'package:waylight_mobile/utils/result.dart';
@@ -45,7 +47,7 @@ final class WeatherConfig {
   final String label;
 }
 
-/// The widget has no place yet; it is set in the web interface.
+/// The widget has no place yet.
 final class NoPlaceException implements Exception {
   /// Creates the exception.
   const NoPlaceException();
@@ -55,20 +57,72 @@ final class NoPlaceException implements Exception {
 class WeatherViewModel extends ChangeNotifier {
   /// Creates the view model and starts loading.
   WeatherViewModel({
-    required this.config,
+    required this._config,
     required this._serverRepository,
     required this._weatherRepository,
+    this._dashboardRepository,
+    this.widgetId = '',
+    this._widgetConfig = const {},
   }) {
     load = Command0(_load)..execute().ignore();
+    choosePlace = Command1(_choosePlace);
   }
 
+  WeatherConfig _config;
+  Map<String, Object?> _widgetConfig;
+
   /// The settings of the widget.
-  final WeatherConfig config;
+  WeatherConfig get config => _config;
+
+  /// The id of the widget, to store a chosen place; empty where the widget
+  /// cannot be changed.
+  final String widgetId;
+
+  final DashboardRepository? _dashboardRepository;
   final ServerRepository _serverRepository;
   final WeatherRepository _weatherRepository;
 
   /// Loads the weather; run again to reload.
   late final Command0<Weather> load;
+
+  /// Stores the place chosen for a widget without one (#230), then loads
+  /// its weather.
+  late final Command1<void, Place> choosePlace;
+
+  /// Whether a place can be chosen in the app.
+  bool get canChoosePlace =>
+      _dashboardRepository != null && widgetId.isNotEmpty;
+
+  /// The places whose name matches [query].
+  Future<Result<List<Place>>> searchPlaces(String query) async {
+    final server = _serverRepository.current;
+    if (server == null) return const Result.error(NotConnectedException());
+    return _weatherRepository.places(server, query);
+  }
+
+  Future<Result<void>> _choosePlace(Place place) async {
+    final server = _serverRepository.current;
+    final dashboard = _dashboardRepository;
+    if (server == null || dashboard == null) {
+      return const Result.error(NotConnectedException());
+    }
+    // The server replaces the whole configuration, so the other settings
+    // go along unchanged; the label is the place's name, as on the web.
+    final updated = {
+      ..._widgetConfig,
+      'lat': place.lat,
+      'lon': place.lon,
+      'label': place.name,
+    };
+    final result = await dashboard.updateWidget(server, widgetId, updated);
+    if (result is Ok<void>) {
+      _widgetConfig = updated;
+      _config = WeatherConfig.fromJson(updated);
+      notifyListeners();
+      load.execute().ignore();
+    }
+    return result;
+  }
 
   Future<Result<Weather>> _load() async {
     final (lat, lon) = (config.lat, config.lon);
@@ -94,6 +148,7 @@ class WeatherViewModel extends ChangeNotifier {
   @override
   void dispose() {
     load.dispose();
+    choosePlace.dispose();
     super.dispose();
   }
 }

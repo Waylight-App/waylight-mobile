@@ -112,6 +112,45 @@ void main() {
     expect(badge, findsNothing, reason: 'an empty list hides the badge');
   });
 
+  testWidgets('a widget the server lists as not set up offers Set up', (
+    tester,
+  ) async {
+    final attention = FakeAttentionRepository(
+      items: const [
+        AttentionItem(
+          id: 'widget:w2',
+          kind: AttentionKind.setup,
+          integration: 'status',
+          widgetId: 'w2',
+          tabId: 't2',
+          title: 'status',
+          message: 'Choose the services to watch.',
+          action: AttentionAction.choose,
+        ),
+      ],
+    );
+    opener = FakeLinkOpener();
+    await tester.pumpScreen(
+      LinkOpenerScope(
+        opener: opener,
+        child: DashboardScreen(
+          viewModel: DashboardViewModel(
+            serverRepository: servers,
+            dashboardRepository: dashboards,
+            attentionRepository: attention,
+          ),
+          registry: registry,
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Choose the services to watch.'), findsOneWidget);
+    await tester.tap(find.byKey(const ValueKey('setUp')));
+    await tester.pumpAndSettle();
+    expect(opener.opened.single.queryParameters, {'tab': 't2'});
+  });
+
   testWidgets('shows the tabs and opens the default tab', (tester) async {
     await pump(tester);
 

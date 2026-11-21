@@ -80,6 +80,7 @@ class DashboardScreen extends StatelessWidget {
                   tab: tab,
                   registry: registry,
                   webUrl: viewModel.webUrl(tab.id),
+                  setUpNeedOf: viewModel.setUpNeedOf,
                   onArrange: tab.mine ? () => _arrange(context, tab) : null,
                 ),
             ],
@@ -213,9 +214,14 @@ class TabPage extends StatelessWidget {
     required this.registry,
     this.webUrl,
     this.onArrange,
+    this.setUpNeedOf,
     this.readOnly = false,
     super.key,
   });
+
+  /// What a widget misses before it can show anything (#230), or `null`
+  /// when it is set up; such widgets show *Set up*.
+  final String? Function(WidgetPlacement widget)? setUpNeedOf;
 
   /// Shows widgets without opening them in full.
   final bool readOnly;
@@ -241,6 +247,9 @@ class TabPage extends StatelessWidget {
       );
 
   Widget _card(BuildContext context, WidgetPlacement widget) {
+    if (setUpNeedOf?.call(widget) case final message?) {
+      return SetUpCard(widget: widget, message: message, webUrl: webUrl);
+    }
     final builder = registry.builderFor(widget.kind);
     return builder == null
         ? WidgetCard(widget: widget, webUrl: webUrl)

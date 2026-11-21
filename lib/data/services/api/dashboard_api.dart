@@ -91,6 +91,20 @@ class DashboardApi {
     Error(:final error) => Result.error(error),
   };
 
+  /// Replaces the configuration of widget [id]
+  /// (`PATCH /api/dashboard/widgets/{id}`).
+  Future<Result<void>> updateWidget(
+    ServerAddress server,
+    String id,
+    Map<String, Object?> config,
+  ) async => switch (await _client.patchJson(
+    server.resolve('/api/dashboard/widgets/${Uri.encodeComponent(id)}'),
+    body: {'config': config},
+  )) {
+    Ok() => const Result.ok(null),
+    Error(:final error) => Result.error(error),
+  };
+
   /// Lets the phone layout of [tabId] follow the desktop grid again.
   Future<Result<void>> resetLayout(ServerAddress server, String tabId) =>
       _client.delete(_layoutUri(server, tabId));

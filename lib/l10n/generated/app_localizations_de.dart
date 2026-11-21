@@ -245,8 +245,7 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
-  String get weatherNoPlace =>
-      'Wähle für dieses Widget in der Weboberfläche einen Ort.';
+  String get weatherNoPlace => 'Noch kein Ort gewählt.';
 
   @override
   String get todosTitle => 'To-dos';
@@ -335,8 +334,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get transitTitle => 'Abfahrten';
 
   @override
-  String get transitNoStop =>
-      'Wähle für dieses Widget in der Weboberfläche eine Haltestelle.';
+  String get transitNoStop => 'Noch keine Haltestelle gewählt.';
 
   @override
   String get transitEmpty => 'Keine Abfahrten in den nächsten Stunden.';
@@ -366,8 +364,41 @@ class AppLocalizationsDe extends AppLocalizations {
   String get wasteTitle => 'Müllabfuhr';
 
   @override
-  String get wasteNotConfigured =>
-      'Richte den Müllkalender in der Weboberfläche ein.';
+  String get wasteNotConfigured => 'Noch kein Müllkalender eingerichtet.';
+
+  @override
+  String get setUpAction => 'Einrichten';
+
+  @override
+  String get setUpMissing => 'Dieses Widget ist noch nicht eingerichtet.';
+
+  @override
+  String get setUpSearchHint => 'Mindestens zwei Buchstaben eingeben';
+
+  @override
+  String get setUpNoResults => 'Nichts gefunden.';
+
+  @override
+  String get setUpStopTitle => 'Haltestelle wählen';
+
+  @override
+  String get setUpPlaceTitle => 'Ort wählen';
+
+  @override
+  String get setUpWasteTitle => 'Müllkalender abonnieren';
+
+  @override
+  String get setUpWasteHint =>
+      'Die Adresse des Kalenders (ICS) deines Entsorgers, beginnend mit https:// oder webcal://.';
+
+  @override
+  String get setUpWasteLabel => 'Kalenderadresse';
+
+  @override
+  String get setUpSave => 'Speichern';
+
+  @override
+  String get setUpCancel => 'Abbrechen';
 
   @override
   String get wasteEmpty => 'Keine anstehenden Abholungen.';

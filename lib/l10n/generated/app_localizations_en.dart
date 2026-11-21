@@ -244,8 +244,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get weatherNoPlace =>
-      'Choose a place for this widget in the web interface.';
+  String get weatherNoPlace => 'No place chosen yet.';
 
   @override
   String get todosTitle => 'To-dos';
@@ -334,8 +333,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get transitTitle => 'Departures';
 
   @override
-  String get transitNoStop =>
-      'Choose a stop for this widget in the web interface.';
+  String get transitNoStop => 'No stop chosen yet.';
 
   @override
   String get transitEmpty => 'No departures in the next hours.';
@@ -365,8 +363,41 @@ class AppLocalizationsEn extends AppLocalizations {
   String get wasteTitle => 'Waste collection';
 
   @override
-  String get wasteNotConfigured =>
-      'Set up the waste calendar in the web interface.';
+  String get wasteNotConfigured => 'No waste calendar set up yet.';
+
+  @override
+  String get setUpAction => 'Set up';
+
+  @override
+  String get setUpMissing => 'This widget is not set up yet.';
+
+  @override
+  String get setUpSearchHint => 'Type at least two letters';
+
+  @override
+  String get setUpNoResults => 'Nothing found.';
+
+  @override
+  String get setUpStopTitle => 'Choose a stop';
+
+  @override
+  String get setUpPlaceTitle => 'Choose a place';
+
+  @override
+  String get setUpWasteTitle => 'Subscribe to a waste calendar';
+
+  @override
+  String get setUpWasteHint =>
+      'The address of the calendar (ICS) from your waste collection service, starting with https:// or webcal://.';
+
+  @override
+  String get setUpWasteLabel => 'Calendar address';
+
+  @override
+  String get setUpSave => 'Save';
+
+  @override
+  String get setUpCancel => 'Cancel';
 
   @override
   String get wasteEmpty => 'No collections ahead.';
