@@ -29,8 +29,8 @@ abstract interface class QuickTileStore {
 /// A [QuickTileStore] on the native side of Android (`app.waylight/tiles`).
 /// Other platforms have no tiles, so calls do nothing there.
 class MethodChannelQuickTileStore implements QuickTileStore {
-  /// Creates the store; [supported] defaults to whether this is Android
-  /// and lets tests reach the channel.
+  /// Creates the store. [supported] defaults to whether this is Android;
+  /// tests pass `true` to reach the mocked channel on the desktop.
   MethodChannelQuickTileStore({bool? supported})
     : _supported = supported ?? Platform.isAndroid;
 
@@ -80,5 +80,7 @@ class MethodChannelQuickTileStore implements QuickTileStore {
   Future<void> clear() => _call<void>('clear');
 
   @override
+  // TilesChannel.kt handles `finished`; any other name leaves the
+  // headless worker waiting for its timeout (#253).
   Future<void> finished() => _call<void>('finished');
 }

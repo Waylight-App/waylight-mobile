@@ -59,10 +59,9 @@ an address it can reach from there.
 **Enter code.** Type the server address and a pairing code. An address in
 the home network without a scheme, such as `192.168.178.115:8090`, is taken
 as plain HTTP; every other address needs HTTPS. The web interface shows
-pairing codes under *Settings → Apps* only as a QR code so far
-([waylight#605](https://github.com/Waylight-App/waylight/issues/605)); the
-code is the `code` parameter of the link in that QR code, which any QR
-reader on the phone shows.
+the pairing code under *Settings → Apps* as text next to the QR code, eight
+characters such as `7KQ2-M9XD`. Case, spaces and the hyphen do not matter
+when you type it.
 
 Either way the watch gets its own app session. It shows up with the watch's
 name under *Settings → Apps* on the server, where you can revoke it. *Sign
