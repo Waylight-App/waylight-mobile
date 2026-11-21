@@ -106,6 +106,7 @@ final class CompactState {
     this.count,
     this.updatedAt,
     this.action,
+    this.empty = false,
   });
 
   /// The one line every client shows, e.g. "3 open · 1 overdue".
@@ -125,6 +126,11 @@ final class CompactState {
 
   /// The one primary action, if the widget offers one.
   final CompactAction? action;
+
+  /// Whether the widget has nothing to show, e.g. no open to-dos
+  /// (Waylight-App/waylight#619); the dashboard hides it outside the edit
+  /// mode.
+  final bool empty;
 }
 
 /// A module's compact state endpoint as `GET /api/modules` lists it

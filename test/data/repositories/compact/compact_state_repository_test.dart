@@ -51,6 +51,15 @@ void main() {
     expect(action.choices.last.body, {'status': 'home'});
   });
 
+  test('reads whether the widget has nothing to show (#288)', () {
+    expect(parseCompactState(jsonDecode(todos))!.empty, isFalse);
+    final state = parseCompactState({
+      'title': {'text': 'No open to-dos'},
+      'empty': true,
+    })!;
+    expect(state.empty, isTrue);
+  });
+
   test('rejects other shapes and actions outside the API', () {
     expect(parseCompactState({'level': 'ok'}), isNull);
     expect(parseCompactState({'title': 'plain'}), isNull);

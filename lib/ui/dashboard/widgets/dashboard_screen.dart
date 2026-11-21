@@ -96,6 +96,7 @@ class DashboardScreen extends StatelessWidget {
                   registry: registry,
                   webUrl: viewModel.webUrl(tab.id),
                   setUpNeedOf: viewModel.setUpNeedOf,
+                  hidden: viewModel.isEmptyWidget,
                   onArrange: tab.mine ? () => _arrange(context, tab) : null,
                 ),
             ],
@@ -231,9 +232,20 @@ class TabPage extends StatelessWidget {
     this.webUrl,
     this.onArrange,
     this.setUpNeedOf,
+    this.hidden,
     this.readOnly = false,
     super.key,
   });
+
+  /// Widgets with nothing to show (#288); left out here and listed in the
+  /// edit mode only.
+  final bool Function(WidgetPlacement widget)? hidden;
+
+  /// The widgets that show.
+  List<WidgetPlacement> get _shown => [
+    for (final w in tab.widgets)
+      if (!(hidden?.call(w) ?? false)) w,
+  ];
 
   /// What a widget misses before it can show anything (#230), or `null`
   /// when it is set up; such widgets show *Set up*.
@@ -305,7 +317,7 @@ class TabPage extends StatelessWidget {
   List<List<WidgetPlacement>> _runs() {
     final runs = <List<WidgetPlacement>>[];
     bool? sized;
-    for (final widget in tab.widgets) {
+    for (final widget in _shown) {
       final isSized = tab.sizes.containsKey(widget.id);
       if (isSized != sized) runs.add([]);
       runs.last.add(widget);
@@ -317,6 +329,7 @@ class TabPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (tab.widgets.isEmpty) return _Hint(context.l10n.dashboardEmptyTab);
+    if (_shown.isEmpty) return _Hint(context.l10n.dashboardNothingToShow);
     final window = WindowSize.of(context);
     final columns = window.columns;
     final gridColumns = SizedGrid.columnsOf(context);

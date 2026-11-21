@@ -1404,6 +1404,8 @@
   "@compactWasteInDays": {"description": "Derived compact state: next collection in some days (#242).", "placeholders": {"label": {"type": "String"}, "days": {"type": "String"}}},
   "compactNoCollections": "No collections ahead",
   "@compactNoCollections": {"description": "Derived compact state: no collections (#242)."},
+  "dashboardNothingToShow": "Nothing to show on this tab right now.",
+  "@dashboardNothingToShow": {"description": "Shown on a tab whose widgets all have nothing to show (#288)."},
   "firstStartTitle": "Set up the app",
   "@firstStartTitle": {"description": "Heading of the first-start questions after the first sign-in (#287)."},
   "firstStartProgress": "Step {current} of {total}",

@@ -302,6 +302,7 @@ CompactState? parseCompactState(Object? json) {
         _ => null,
       },
       action: _action(o['action']),
+      empty: o['empty'] == true,
     );
   }
   return null;

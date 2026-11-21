@@ -702,6 +702,7 @@
   "compactWasteTomorrow": "{label} morgen",
   "compactWasteInDays": "{label} in {days} Tagen",
   "compactNoCollections": "Keine Abholung geplant",
+  "dashboardNothingToShow": "Auf diesem Tab gibt es gerade nichts zu sehen.",
   "firstStartTitle": "App einrichten",
   "firstStartProgress": "Schritt {current} von {total}",
   "firstStartLater": "Alles lässt sich später in den Einstellungen ändern.",

@@ -5,6 +5,10 @@ import 'package:material_ui/material_ui.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
 
 /// How good or bad a value is; decides its colour in the widgets.
+///
+/// Only [warning] and [critical] are coloured, as in the web interface
+/// (Waylight-App/waylight#672): a dashboard of healthy widgets stays calm,
+/// so colour keeps meaning that something needs a look.
 enum Tone {
   /// Fine.
   ok,
@@ -23,7 +27,7 @@ enum Tone {
 Color toneColor(BuildContext context, Tone tone) {
   final scheme = Theme.of(context).colorScheme;
   return switch (tone) {
-    Tone.ok => scheme.tertiary,
+    Tone.ok => scheme.onSurfaceVariant,
     Tone.warning => scheme.primary,
     Tone.critical => scheme.error,
     Tone.neutral => scheme.outline,
