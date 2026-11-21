@@ -1,15 +1,19 @@
 import 'package:intl/intl.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
-
+import 'package:waylight_mobile/data/repositories/dashboard/dashboard_repository.dart';
 import 'package:waylight_mobile/domain/models/dashboard.dart';
+import 'package:waylight_mobile/domain/models/place.dart';
 import 'package:waylight_mobile/domain/models/weather.dart';
+import 'package:waylight_mobile/ui/core/error_messages.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
+import 'package:waylight_mobile/ui/core/widgets/choice_search_sheet.dart';
 import 'package:waylight_mobile/ui/core/widgets/view_model_host.dart';
 import 'package:waylight_mobile/ui/core/widgets/widget_frame.dart';
 import 'package:waylight_mobile/ui/widgets/weather/weather_extras.dart';
 import 'package:waylight_mobile/ui/widgets/weather/weather_view_model.dart';
+import 'package:waylight_mobile/utils/result.dart';
 
 /// The native view of the weather widget (#63).
 class WeatherWidget extends StatelessWidget {
@@ -23,34 +27,71 @@ class WeatherWidget extends StatelessWidget {
   static Widget forPlacement(BuildContext context, WidgetPlacement widget) =>
       WeatherWidget(widget: widget, key: ValueKey(widget.id));
 
+  /// Lets the user search a place and stores it on the widget (#230).
+  static Future<void> _choosePlace(
+    BuildContext context,
+    WeatherViewModel viewModel,
+  ) async {
+    final l10n = context.l10n;
+    final place = await ChoiceSearchSheet.show<Place>(
+      context,
+      title: l10n.setUpPlaceTitle,
+      search: viewModel.searchPlaces,
+      label: (place) => place.name,
+      detail: (place) =>
+          [place.region, place.country].where((s) => s.isNotEmpty).join(', '),
+    );
+    if (place == null) return;
+    await viewModel.choosePlace.execute(place);
+    if (viewModel.choosePlace.result case Error(:final error)
+        when context.mounted) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(l10n.errorMessage(error))));
+    }
+  }
+
   @override
-  Widget build(BuildContext context) {
-    final config = WeatherConfig.fromJson(widget.config);
-    return ViewModelHost(
-      create: (context) => WeatherViewModel(
-        config: config,
-        serverRepository: context.read(),
-        weatherRepository: context.read(),
-      ),
-      builder: (context, viewModel) => WidgetFrame(
-        title: widget.title.isNotEmpty
-            ? widget.title
-            : config.label.isNotEmpty
-            ? config.label
-            : widget.displayTitle,
-        load: viewModel.load,
-        interval: const Duration(minutes: 15),
-        errorText: (error) =>
-            error is NoPlaceException ? context.l10n.weatherNoPlace : null,
-        compact: (context, weather, size) =>
-            _WeatherCompact(weather: weather, size: size),
-        builder: (context, weather) => Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            _WeatherContent(weather: weather),
-            WeatherExtras(config: widget.config),
-          ],
-        ),
+  Widget build(BuildContext context) => ViewModelHost(
+    create: (context) => WeatherViewModel(
+      config: WeatherConfig.fromJson(widget.config),
+      serverRepository: context.read(),
+      weatherRepository: context.read(),
+      dashboardRepository: context.read<DashboardRepository?>(),
+      widgetId: widget.id,
+      widgetConfig: widget.config,
+    ),
+    builder: (context, viewModel) => ListenableBuilder(
+      listenable: viewModel,
+      builder: (context, _) => _frame(context, viewModel),
+    ),
+  );
+
+  Widget _frame(BuildContext context, WeatherViewModel viewModel) {
+    final config = viewModel.config;
+    return WidgetFrame(
+      title: widget.title.isNotEmpty
+          ? widget.title
+          : config.label.isNotEmpty
+          ? config.label
+          : widget.displayTitle,
+      load: viewModel.load,
+      interval: const Duration(minutes: 15),
+      errorText: (error) =>
+          error is NoPlaceException ? context.l10n.weatherNoPlace : null,
+      setUp: (error) => error is NoPlaceException && viewModel.canChoosePlace
+          ? (
+              message: context.l10n.weatherNoPlace,
+              onSetUp: () => _choosePlace(context, viewModel).ignore(),
+            )
+          : null,
+      compact: (context, weather, size) =>
+          _WeatherCompact(weather: weather, size: size),
+      builder: (context, weather) => Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _WeatherContent(weather: weather),
+          WeatherExtras(config: widget.config),
+        ],
       ),
     );
   }

@@ -1,15 +1,19 @@
 import 'package:intl/intl.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
-
+import 'package:waylight_mobile/data/repositories/dashboard/dashboard_repository.dart';
 import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/domain/models/departure.dart';
+import 'package:waylight_mobile/domain/models/place.dart';
+import 'package:waylight_mobile/ui/core/error_messages.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
 import 'package:waylight_mobile/ui/core/themes/status_colors.dart';
+import 'package:waylight_mobile/ui/core/widgets/choice_search_sheet.dart';
 import 'package:waylight_mobile/ui/core/widgets/view_model_host.dart';
 import 'package:waylight_mobile/ui/core/widgets/widget_frame.dart';
 import 'package:waylight_mobile/ui/widgets/transit/transit_view_model.dart';
+import 'package:waylight_mobile/utils/result.dart';
 
 /// The native view of the departures widget (#49).
 class TransitWidget extends StatelessWidget {
@@ -23,73 +27,110 @@ class TransitWidget extends StatelessWidget {
   static Widget forPlacement(BuildContext context, WidgetPlacement widget) =>
       TransitWidget(widget: widget, key: ValueKey(widget.id));
 
+  /// Lets the user search a stop and stores it on the widget (#230).
+  static Future<void> _chooseStop(
+    BuildContext context,
+    TransitViewModel viewModel,
+  ) async {
+    final l10n = context.l10n;
+    final stop = await ChoiceSearchSheet.show<Stop>(
+      context,
+      title: l10n.setUpStopTitle,
+      search: viewModel.searchStops,
+      label: (stop) => stop.name,
+    );
+    if (stop == null) return;
+    await viewModel.chooseStop.execute(stop);
+    if (viewModel.chooseStop.result case Error(:final error)
+        when context.mounted) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(l10n.errorMessage(error))));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final l10n = context.l10n;
-    final config = TransitConfig.fromJson(widget.config);
     return ViewModelHost(
       create: (context) => TransitViewModel(
-        config: config,
+        config: TransitConfig.fromJson(widget.config),
         serverRepository: context.read(),
         transitRepository: context.read(),
+        dashboardRepository: context.read<DashboardRepository?>(),
+        widgetId: widget.id,
+        widgetConfig: widget.config,
       ),
-      builder: (context, viewModel) => WidgetFrame(
-        title: widget.title.isNotEmpty
-            ? widget.title
-            : config.stopName.isNotEmpty
-            ? config.stopName
-            : l10n.transitTitle,
-        load: viewModel.load,
-        interval: const Duration(minutes: 1),
-        errorText: (error) =>
-            error is NoStopException ? l10n.transitNoStop : null,
-        compact: (context, departures, size) {
-          final next = [
-            for (final d in departures)
-              if (!d.cancelled) d,
-          ];
-          if (next.isEmpty) return Text(l10n.transitEmpty);
-          final first = next.first;
-          final minutes = viewModel.minutesUntil(first);
-          final when = minutes == 0
-              ? l10n.transitNow
-              : l10n.transitInMinutes(minutes);
-          final line = '${first.line} ${first.headsign}';
-          if (size == WidgetSize.strip) return Text('$line · $when');
-          final time = DateFormat.Hm(
-            Localizations.localeOf(context).toLanguageTag(),
-          );
-          final later = [
-            for (final d in next.skip(1).take(2)) time.format(d.expected),
-          ];
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(when, style: Theme.of(context).textTheme.headlineSmall),
-              Text(line, maxLines: 2, overflow: TextOverflow.ellipsis),
-              if (later.isNotEmpty)
-                Text(
-                  l10n.transitThen(later.join(', ')),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
-            ],
-          );
-        },
-        builder: (context, departures) => departures.isEmpty
-            ? Text(l10n.transitEmpty)
-            : Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  for (final d in departures)
-                    _DepartureRow(
-                      departure: d,
-                      minutes: viewModel.minutesUntil(d),
-                    ),
-                ],
+      builder: (context, viewModel) => ListenableBuilder(
+        listenable: viewModel,
+        builder: (context, _) => _frame(context, viewModel),
+      ),
+    );
+  }
+
+  Widget _frame(BuildContext context, TransitViewModel viewModel) {
+    final l10n = context.l10n;
+    final config = viewModel.config;
+    return WidgetFrame(
+      title: widget.title.isNotEmpty
+          ? widget.title
+          : config.stopName.isNotEmpty
+          ? config.stopName
+          : l10n.transitTitle,
+      load: viewModel.load,
+      interval: const Duration(minutes: 1),
+      errorText: (error) =>
+          error is NoStopException ? l10n.transitNoStop : null,
+      setUp: (error) => error is NoStopException && viewModel.canChooseStop
+          ? (
+              message: l10n.transitNoStop,
+              onSetUp: () => _chooseStop(context, viewModel).ignore(),
+            )
+          : null,
+      compact: (context, departures, size) {
+        final next = [
+          for (final d in departures)
+            if (!d.cancelled) d,
+        ];
+        if (next.isEmpty) return Text(l10n.transitEmpty);
+        final first = next.first;
+        final minutes = viewModel.minutesUntil(first);
+        final when = minutes == 0
+            ? l10n.transitNow
+            : l10n.transitInMinutes(minutes);
+        final line = '${first.line} ${first.headsign}';
+        if (size == WidgetSize.strip) return Text('$line · $when');
+        final time = DateFormat.Hm(
+          Localizations.localeOf(context).toLanguageTag(),
+        );
+        final later = [
+          for (final d in next.skip(1).take(2)) time.format(d.expected),
+        ];
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(when, style: Theme.of(context).textTheme.headlineSmall),
+            Text(line, maxLines: 2, overflow: TextOverflow.ellipsis),
+            if (later.isNotEmpty)
+              Text(
+                l10n.transitThen(later.join(', ')),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.bodySmall,
               ),
-      ),
+          ],
+        );
+      },
+      builder: (context, departures) => departures.isEmpty
+          ? Text(l10n.transitEmpty)
+          : Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                for (final d in departures)
+                  _DepartureRow(
+                    departure: d,
+                    minutes: viewModel.minutesUntil(d),
+                  ),
+              ],
+            ),
     );
   }
 }

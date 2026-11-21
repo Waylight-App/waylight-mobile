@@ -8,6 +8,7 @@ import 'package:waylight_mobile/data/repositories/push/push_repository.dart';
 import 'package:waylight_mobile/data/repositories/quick_tiles/quick_tiles_repository.dart';
 import 'package:waylight_mobile/data/repositories/reminders/reminder_repository.dart';
 import 'package:waylight_mobile/data/repositories/server/server_repository.dart';
+import 'package:waylight_mobile/domain/models/attention.dart';
 import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/domain/models/home_snapshot.dart';
 import 'package:waylight_mobile/domain/models/quick_tile.dart';
@@ -91,6 +92,24 @@ class DashboardViewModel extends ChangeNotifier {
   /// How many entries need the account's attention (#229); 0 hides the
   /// badge.
   int get attentionCount => _attention?.items.length ?? 0;
+
+  /// Widget kinds that notice a missing setting themselves and offer the
+  /// choice in the app (#230).
+  static const setUpInApp = {'transit', 'weather', 'waste'};
+
+  /// What [widget] misses according to the server's attention list (#230),
+  /// or `null` when it is set up; an empty text when the server gives no
+  /// reason.
+  String? setUpNeedOf(WidgetPlacement widget) {
+    if (setUpInApp.contains(widget.kind)) return null;
+    return _attention?.items
+        .where(
+          (item) =>
+              item.kind == AttentionKind.setup && item.widgetId == widget.id,
+        )
+        .firstOrNull
+        ?.message;
+  }
 
   bool _demo = false;
 

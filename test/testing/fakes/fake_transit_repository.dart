@@ -1,5 +1,6 @@
 import 'package:waylight_mobile/data/repositories/transit/transit_repository.dart';
 import 'package:waylight_mobile/domain/models/departure.dart';
+import 'package:waylight_mobile/domain/models/place.dart';
 import 'package:waylight_mobile/domain/models/server_address.dart';
 import 'package:waylight_mobile/utils/result.dart';
 
@@ -19,5 +20,17 @@ class FakeTransitRepository implements TransitRepository {
   }) async {
     calls.add((stop, count));
     return result;
+  }
+
+  /// What [stops] returns.
+  Result<List<Stop>> stopsResult = const Result.ok([]);
+
+  /// The searches of [stops].
+  final List<String> stopQueries = [];
+
+  @override
+  Future<Result<List<Stop>>> stops(ServerAddress server, String query) async {
+    stopQueries.add(query);
+    return stopsResult;
   }
 }

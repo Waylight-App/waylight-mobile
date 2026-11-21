@@ -515,7 +515,7 @@ abstract class AppLocalizations {
   /// Weather widget without a place.
   ///
   /// In en, this message translates to:
-  /// **'Choose a place for this widget in the web interface.'**
+  /// **'No place chosen yet.'**
   String get weatherNoPlace;
 
   /// Default title of the to-do widget.
@@ -677,7 +677,7 @@ abstract class AppLocalizations {
   /// Departures widget without a stop.
   ///
   /// In en, this message translates to:
-  /// **'Choose a stop for this widget in the web interface.'**
+  /// **'No stop chosen yet.'**
   String get transitNoStop;
 
   /// Departures widget without departures.
@@ -725,8 +725,74 @@ abstract class AppLocalizations {
   /// Waste widget while no calendar is set up.
   ///
   /// In en, this message translates to:
-  /// **'Set up the waste calendar in the web interface.'**
+  /// **'No waste calendar set up yet.'**
   String get wasteNotConfigured;
+
+  /// Button on a widget that misses its settings; opens the choice in the app or the web interface.
+  ///
+  /// In en, this message translates to:
+  /// **'Set up'**
+  String get setUpAction;
+
+  /// Fallback sentence on a widget that misses its settings, when the server gives no reason.
+  ///
+  /// In en, this message translates to:
+  /// **'This widget is not set up yet.'**
+  String get setUpMissing;
+
+  /// Hint in the search field of the stop or place choice.
+  ///
+  /// In en, this message translates to:
+  /// **'Type at least two letters'**
+  String get setUpSearchHint;
+
+  /// The stop or place search found nothing.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing found.'**
+  String get setUpNoResults;
+
+  /// Title of the stop search of a departures widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a stop'**
+  String get setUpStopTitle;
+
+  /// Title of the place search of a weather widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a place'**
+  String get setUpPlaceTitle;
+
+  /// Title of the dialog that asks for the address of a waste calendar.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscribe to a waste calendar'**
+  String get setUpWasteTitle;
+
+  /// Explanation in the waste calendar dialog.
+  ///
+  /// In en, this message translates to:
+  /// **'The address of the calendar (ICS) from your waste collection service, starting with https:// or webcal://.'**
+  String get setUpWasteHint;
+
+  /// Label of the waste calendar address field.
+  ///
+  /// In en, this message translates to:
+  /// **'Calendar address'**
+  String get setUpWasteLabel;
+
+  /// Saves the waste calendar address.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get setUpSave;
+
+  /// Closes the waste calendar dialog without saving.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get setUpCancel;
 
   /// Waste widget without dates.
   ///

@@ -16,4 +16,16 @@ class FakeWasteRepository implements WasteRepository {
     calls.add(server.toString());
     return result;
   }
+
+  /// What [subscribe] returns.
+  Result<void> subscribeResult = const Result.ok(null);
+
+  /// The calendar addresses passed to [subscribe].
+  final List<String> subscribed = [];
+
+  @override
+  Future<Result<void>> subscribe(ServerAddress server, String url) async {
+    subscribed.add(url);
+    return subscribeResult;
+  }
 }

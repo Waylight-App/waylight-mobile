@@ -9,6 +9,7 @@ import 'package:waylight_mobile/ui/core/themes/dimens.dart';
 import 'package:waylight_mobile/ui/core/widget_size_scope.dart';
 import 'package:waylight_mobile/ui/core/widgets/compact_card.dart';
 import 'package:waylight_mobile/ui/core/widgets/section_card.dart';
+import 'package:waylight_mobile/ui/core/widgets/set_up_prompt.dart';
 import 'package:waylight_mobile/utils/command.dart';
 import 'package:waylight_mobile/utils/result.dart';
 
@@ -31,6 +32,7 @@ class WidgetFrame<T> extends StatefulWidget {
     required this.builder,
     this.errorText,
     this.compact,
+    this.setUp,
     this.interval = const Duration(minutes: 5),
     super.key,
   });
@@ -51,6 +53,10 @@ class WidgetFrame<T> extends StatefulWidget {
   /// Builds the compact form for a small or strip tile of the dashboard
   /// grid (#211); without it such tiles say that a tap shows everything.
   final Widget Function(BuildContext context, T data, WidgetSize size)? compact;
+
+  /// What is missing when the error means the widget is not set up yet
+  /// (#230); the frame then shows *Set up* instead of the error.
+  final SetUpNeed? Function(Exception error)? setUp;
 
   /// How often the data is reloaded while shown.
   final Duration interval;
@@ -127,6 +133,11 @@ class _WidgetFrameState<T> extends State<WidgetFrame<T>> {
     final l10n = context.l10n;
     final result = widget.load.result;
     final size = WidgetSizeScope.maybeOf(context);
+    // A widget without its settings offers to set them up, not an error.
+    final setUp = switch (result) {
+      Error(:final error) when !_hasData => widget.setUp?.call(error),
+      _ => null,
+    };
     if (size != null && isCompact(size)) {
       return CompactCard(
         title: widget.title,
@@ -136,6 +147,7 @@ class _WidgetFrameState<T> extends State<WidgetFrame<T>> {
           _ when _hasData =>
             widget.compact?.call(context, _data as T, size) ??
                 const TapToOpenHint(),
+          _ when setUp != null => SetUpPrompt(need: setUp, compact: true),
           Error(:final error) => Text(
             widget.errorText?.call(error) ?? l10n.errorMessage(error),
             maxLines: 3,
@@ -155,6 +167,7 @@ class _WidgetFrameState<T> extends State<WidgetFrame<T>> {
       child: switch (result) {
         // A failed reload keeps showing the last data.
         _ when _hasData => widget.builder(context, _data as T),
+        _ when setUp != null => SetUpPrompt(need: setUp),
         Error(:final error) => Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
