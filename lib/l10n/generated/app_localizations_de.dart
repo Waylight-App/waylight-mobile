@@ -476,6 +476,65 @@ class AppLocalizationsDe extends AppLocalizations {
   String get pairEnterManually => 'Adresse stattdessen eingeben';
 
   @override
+  String get pairWatchTitle => 'Uhr koppeln';
+
+  @override
+  String get pairWatchEntry => 'Uhr koppeln';
+
+  @override
+  String get pairWatchIntro =>
+      'Öffne Waylight auf deiner Wear-OS-Uhr und wähle „Mit Handy koppeln“. Die Uhr zeigt einen QR-Code. Beide Geräte müssen im selben WLAN sein.';
+
+  @override
+  String get pairWatchScan => 'Code der Uhr scannen';
+
+  @override
+  String get pairWatchScanAgain => 'Anderen Code scannen';
+
+  @override
+  String get pairWatchScanPrompt => 'Richte die Kamera auf den QR-Code der Uhr';
+
+  @override
+  String pairWatchFound(String address) {
+    return 'Uhr gefunden unter $address';
+  }
+
+  @override
+  String get pairWatchSend => 'Diese Uhr koppeln';
+
+  @override
+  String get pairWatchDone =>
+      'Die Uhr ist gekoppelt. Sie erscheint in Waylight unter Einstellungen → Apps, wo du sie auch abmelden kannst.';
+
+  @override
+  String get pairWatchUnavailable =>
+      'Zum Koppeln einer Uhr brauchst du die Android-App.';
+
+  @override
+  String get pairWatchInvalidCode =>
+      'Das ist nicht der Code einer Waylight-Uhr. Öffne auf der Uhr „Mit Handy koppeln“ und scanne den Code, den sie zeigt.';
+
+  @override
+  String get pairWatchUnreachable =>
+      'Die Uhr antwortet nicht. Prüfe, ob Handy und Uhr im selben WLAN sind und die Uhr den Code noch zeigt.';
+
+  @override
+  String get pairWatchNotDecryptable =>
+      'Die Uhr konnte die Nachricht nicht lesen. Scanne den Code, den die Uhr jetzt zeigt.';
+
+  @override
+  String get pairWatchRejected =>
+      'Der Server hat das Koppeln nicht angenommen. Versuch es noch einmal.';
+
+  @override
+  String get pairWatchInvalidServer =>
+      'Die Uhr nimmt die Adresse dieses Servers nicht an. Unverschlüsseltes HTTP geht nur mit Adressen im Heimnetz.';
+
+  @override
+  String get pairWatchServerUnreachable =>
+      'Die Uhr erreicht deinen Server nicht. Prüfe ihre Netzwerkverbindung.';
+
+  @override
   String get connectQrHint =>
       'Oder scanne den QR-Code unter Einstellungen → Mobile App in Waylight mit der Kamera deines Handys.';
 

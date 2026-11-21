@@ -920,6 +920,102 @@ abstract class AppLocalizations {
   /// **'Enter the address instead'**
   String get pairEnterManually;
 
+  /// Title of the screen that pairs a Wear OS watch.
+  ///
+  /// In en, this message translates to:
+  /// **'Pair a watch'**
+  String get pairWatchTitle;
+
+  /// Row in the phone settings that opens the watch pairing.
+  ///
+  /// In en, this message translates to:
+  /// **'Pair a watch'**
+  String get pairWatchEntry;
+
+  /// How to start pairing a watch.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Waylight on your Wear OS watch and choose Pair with phone. The watch shows a QR code. Both devices need to be in the same Wi-Fi.'**
+  String get pairWatchIntro;
+
+  /// Button that opens the camera for the watch's QR code.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan the watch\'s code'**
+  String get pairWatchScan;
+
+  /// Button to scan again after a watch was found.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan another code'**
+  String get pairWatchScanAgain;
+
+  /// Hint shown over the camera.
+  ///
+  /// In en, this message translates to:
+  /// **'Point the camera at the QR code on the watch'**
+  String get pairWatchScanPrompt;
+
+  /// Shown after scanning; the watch's address in the local network.
+  ///
+  /// In en, this message translates to:
+  /// **'Watch found at {address}'**
+  String pairWatchFound(String address);
+
+  /// Button that hands the server over to the watch.
+  ///
+  /// In en, this message translates to:
+  /// **'Pair this watch'**
+  String get pairWatchSend;
+
+  /// Shown after the watch accepted the handover.
+  ///
+  /// In en, this message translates to:
+  /// **'The watch is paired. It shows up under Settings → Apps in Waylight, where you can revoke it.'**
+  String get pairWatchDone;
+
+  /// Shown on phones that cannot pair a watch.
+  ///
+  /// In en, this message translates to:
+  /// **'Pairing a watch needs the Android app.'**
+  String get pairWatchUnavailable;
+
+  /// The scanned code is not a watch's pairing code.
+  ///
+  /// In en, this message translates to:
+  /// **'This is not the code of a Waylight watch. Open Pair with phone on the watch and scan the code it shows.'**
+  String get pairWatchInvalidCode;
+
+  /// The watch could not be reached in the local network.
+  ///
+  /// In en, this message translates to:
+  /// **'The watch does not answer. Check that the phone and the watch are in the same Wi-Fi and the code is still shown on the watch.'**
+  String get pairWatchUnreachable;
+
+  /// The watch could not decrypt the handover, e.g. an old QR code.
+  ///
+  /// In en, this message translates to:
+  /// **'The watch could not read the message. Scan the code the watch shows now.'**
+  String get pairWatchNotDecryptable;
+
+  /// The server rejected the pairing code the watch redeemed.
+  ///
+  /// In en, this message translates to:
+  /// **'The server did not accept the pairing. Try again.'**
+  String get pairWatchRejected;
+
+  /// The watch rejected the server address.
+  ///
+  /// In en, this message translates to:
+  /// **'The watch does not accept this server\'s address. Plain HTTP only works for addresses in the home network.'**
+  String get pairWatchInvalidServer;
+
+  /// The watch could not reach the server.
+  ///
+  /// In en, this message translates to:
+  /// **'The watch cannot reach your server. Check its network connection.'**
+  String get pairWatchServerUnreachable;
+
   /// Hint on the connect screen.
   ///
   /// In en, this message translates to:

@@ -26,6 +26,8 @@ import 'package:waylight_mobile/ui/lock/view_models/lock_view_model.dart';
 import 'package:waylight_mobile/ui/lock/widgets/lock_screen.dart';
 import 'package:waylight_mobile/ui/pair/view_models/pair_view_model.dart';
 import 'package:waylight_mobile/ui/pair/widgets/pair_screen.dart';
+import 'package:waylight_mobile/ui/pair_watch/view_models/pair_watch_view_model.dart';
+import 'package:waylight_mobile/ui/pair_watch/widgets/pair_watch_screen.dart';
 import 'package:waylight_mobile/ui/search/view_models/search_view_model.dart';
 import 'package:waylight_mobile/ui/search/widgets/search_screen.dart';
 import 'package:waylight_mobile/ui/settings/view_models/security_view_model.dart';
@@ -122,6 +124,17 @@ GoRouter createRouter(
             ),
             builder: (context, viewModel) =>
                 SecurityScreen(viewModel: viewModel),
+          ),
+        ),
+        GoRoute(
+          path: Routes.pairWatch.substring(Routes.settings.length + 1),
+          builder: (context, state) => ViewModelHost(
+            create: (context) => PairWatchViewModel(
+              serverRepository: context.read(),
+              watchRepository: context.read(),
+            ),
+            builder: (context, viewModel) =>
+                PairWatchScreen(viewModel: viewModel),
           ),
         ),
       ],

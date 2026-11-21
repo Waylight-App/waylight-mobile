@@ -72,6 +72,9 @@ abstract final class Routes {
   /// Password, two-factor sign-in and sessions (#110).
   static const security = '/settings/security';
 
+  /// Hands the server over to a Wear OS watch (#239).
+  static const pairWatch = '/settings/watch';
+
   /// Saves content shared from another app: `/share?text=…` (#21).
   static const share = '/share';
 
@@ -104,6 +107,7 @@ abstract final class Routes {
     service,
     attention,
     security,
+    pairWatch,
     share,
     kiosk,
   };
