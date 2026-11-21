@@ -2165,4 +2165,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsSearchBattery => 'Battery hint';
+
+  @override
+  String get settingsAttentionShow => 'Show';
 }

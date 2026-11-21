@@ -632,5 +632,6 @@
   "settingsSearch": "Einstellungen durchsuchen",
   "settingsSearchEmpty": "Keine Einstellung passt zu „{query}“.",
   "settingsSearchClear": "Suche leeren",
-  "settingsSearchBattery": "Akku-Hinweis"
+  "settingsSearchBattery": "Akku-Hinweis",
+  "settingsAttentionShow": "Anzeigen"
 }

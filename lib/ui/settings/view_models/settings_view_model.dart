@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:waylight_mobile/data/repositories/appearance/theme_repository.dart';
+import 'package:waylight_mobile/data/repositories/attention/attention_repository.dart';
 import 'package:waylight_mobile/data/repositories/diagnostics/diagnostics_repository.dart';
 import 'package:waylight_mobile/data/repositories/lock/app_lock_repository.dart';
 import 'package:waylight_mobile/data/repositories/preferences/preferences_repository.dart';
@@ -45,7 +46,9 @@ class SettingsViewModel extends ChangeNotifier {
     QuickTilesRepository? quickTilesRepository,
     AppVersionReader appVersion = _platformVersion,
     DiagnosticsRepository? diagnosticsRepository,
+    AttentionRepository? attentionRepository,
   }) : _lock = lockRepository,
+       _attention = attentionRepository,
        _diagnostics = diagnosticsRepository,
        _readAppVersion = appVersion,
        _push = pushRepository,
@@ -64,6 +67,15 @@ class SettingsViewModel extends ChangeNotifier {
     _lock?.addListener(notifyListeners);
     _theme?.addListener(notifyListeners);
     _reminders?.addListener(notifyListeners);
+    _attention?.addListener(notifyListeners);
+    if ((_serverRepository.current, _attention) case (
+      final server?,
+      final attention?,
+    )) {
+      // After the first frame: the repository notifies the dashboard too,
+      // which must not happen while the router builds this screen.
+      Future.microtask(() => attention.refresh(server)).ignore();
+    }
     _lock?.available().then((available) {
       _lockAvailable = available;
       notifyListeners();
@@ -73,6 +85,11 @@ class SettingsViewModel extends ChangeNotifier {
   }
 
   final PushRepository? _push;
+  final AttentionRepository? _attention;
+
+  /// How many things on the server need the person's help (#229); the
+  /// start page shows a hint while there are any.
+  int get attentionCount => _attention?.items.length ?? 0;
   final DiagnosticsRepository? _diagnostics;
   final AppVersionReader _readAppVersion;
 
@@ -406,6 +423,7 @@ class SettingsViewModel extends ChangeNotifier {
     _lock?.removeListener(notifyListeners);
     _theme?.removeListener(notifyListeners);
     _reminders?.removeListener(notifyListeners);
+    _attention?.removeListener(notifyListeners);
     for (final c in [account, serverVersion, appVersion, signOut, disconnect]) {
       c.dispose();
     }

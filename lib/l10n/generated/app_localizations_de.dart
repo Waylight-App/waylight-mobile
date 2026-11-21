@@ -2171,4 +2171,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get settingsSearchBattery => 'Akku-Hinweis';
+
+  @override
+  String get settingsAttentionShow => 'Anzeigen';
 }

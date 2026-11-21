@@ -330,6 +330,7 @@ ViewModelHost<SettingsViewModel> _settings(
           themeRepository: context.read(),
           reminderRepository: context.read(),
           quickTilesRepository: context.read(),
+          attentionRepository: context.read(),
         )
         ..reminderFormatter = ReminderTexts(context.l10n)
         ..quickTileFormatter = QuickTileTexts(context.l10n),

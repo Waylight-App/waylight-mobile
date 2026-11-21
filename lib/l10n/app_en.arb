@@ -1265,5 +1265,7 @@
   "settingsSearchClear": "Clear search",
   "@settingsSearchClear": {"description": "Tooltip of the button that empties the settings search."},
   "settingsSearchBattery": "Battery hint",
-  "@settingsSearchBattery": {"description": "Search result: the hint to lift battery restrictions for push."}
+  "@settingsSearchBattery": {"description": "Search result: the hint to lift battery restrictions for push."},
+  "settingsAttentionShow": "Show",
+  "@settingsAttentionShow": {"description": "Opens the list of things that need attention, from the settings start page."}
 }

@@ -2,9 +2,11 @@ import 'package:go_router/go_router.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:waylight_mobile/domain/models/appearance.dart';
 import 'package:waylight_mobile/domain/models/server_status.dart';
+import 'package:waylight_mobile/routing/routes.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
 import 'package:waylight_mobile/ui/core/widgets/command_button.dart';
+import 'package:waylight_mobile/ui/core/widgets/message_banner.dart';
 import 'package:waylight_mobile/ui/settings/view_models/settings_area.dart';
 import 'package:waylight_mobile/ui/settings/view_models/settings_index.dart';
 import 'package:waylight_mobile/ui/settings/view_models/settings_view_model.dart';
@@ -38,6 +40,18 @@ class SettingsScreen extends StatelessWidget {
             const SizedBox(height: Dimens.gap),
             _SearchField(viewModel: viewModel),
             const SizedBox(height: Dimens.gap),
+            if (viewModel.attentionCount > 0) ...[
+              MessageBanner(
+                key: const ValueKey('settings.attention'),
+                kind: MessageKind.warning,
+                message: l10n.attentionBadge(viewModel.attentionCount),
+                action: TextButton(
+                  onPressed: () => context.push(Routes.attention),
+                  child: Text(l10n.settingsAttentionShow),
+                ),
+              ),
+              const SizedBox(height: Dimens.gap),
+            ],
             if (viewModel.query.trim().isNotEmpty)
               _Results(viewModel: viewModel, onOpen: _open)
             else

@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:waylight_mobile/domain/models/attention.dart';
 import 'package:waylight_mobile/domain/models/server_status.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/settings/view_models/settings_area.dart';
@@ -11,6 +12,7 @@ import 'package:waylight_mobile/ui/settings/widgets/settings_texts.dart';
 import 'package:waylight_mobile/utils/result.dart';
 
 import '../../testing/fakes/fake_action_repositories.dart';
+import '../../testing/fakes/fake_attention_repository.dart';
 import '../../testing/fakes/fake_preferences_repository.dart';
 import '../../testing/fakes/fake_server_repository.dart';
 import '../../testing/fakes/fake_session_repository.dart';
@@ -49,10 +51,9 @@ void main() {
 
     test('finds areas by their title', () {
       final hits = search('this phone');
-      expect(
-        hits.where((h) => h.item == null).map((h) => h.area),
-        [SettingsArea.phone],
-      );
+      expect(hits.where((h) => h.item == null).map((h) => h.area), [
+        SettingsArea.phone,
+      ]);
     });
 
     test('needs every word and finds nothing for blank queries', () {
@@ -109,6 +110,37 @@ void main() {
         find.byKey(const ValueKey('settings.area.server')),
         findsOneWidget,
       );
+    });
+
+    testWidgets('shows the attention hint while something needs help', (
+      tester,
+    ) async {
+      final attention = FakeAttentionRepository(
+        items: const [
+          AttentionItem(
+            id: 'module:immich',
+            kind: AttentionKind.connection,
+            integration: 'immich',
+            title: 'immich',
+            message: 'The server rejected the login.',
+            action: AttentionAction.fix,
+          ),
+        ],
+      );
+      final viewModel = SettingsViewModel(
+        serverRepository: servers,
+        sessionRepository: FakeSessionRepository(signedIn: true),
+        preferencesRepository: FakePreferencesRepository(),
+        attentionRepository: attention,
+        appVersion: () async => '0.3.0 (7)',
+      );
+      await tester.pumpScreen(SettingsScreen(viewModel: viewModel));
+      await tester.pumpAndSettle();
+      expect(find.text(l10nEn.attentionBadge(1)), findsOneWidget);
+
+      await attention.clear();
+      await tester.pumpAndSettle();
+      expect(find.byKey(const ValueKey('settings.attention')), findsNothing);
     });
 
     testWidgets('does not find push where the phone has none', (tester) async {
