@@ -7,6 +7,7 @@ import 'package:waylight_mobile/domain/models/information.dart';
 import 'package:waylight_mobile/ui/core/link_opener.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/widgets/compact_lines.dart';
+import 'package:waylight_mobile/ui/core/widgets/tile_rows.dart';
 import 'package:waylight_mobile/ui/widgets/common/simple_widget.dart';
 import 'package:waylight_mobile/ui/widgets/common/widget_rows.dart';
 
@@ -59,10 +60,15 @@ class FuelWidget extends StatelessWidget {
         children: [
           Text(
             '${fuel.fuel.toUpperCase()} · ${fuel.place}',
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
             style: Theme.of(context).textTheme.bodySmall,
           ),
-          for (final s in fuel.stations)
-            InfoRow(
+          TileRows(
+            items: fuel.stations,
+            rowHeight: TileRows.twoLineRowHeight,
+            reserved: 20,
+            rowBuilder: (context, s) => InfoRow(
               title: s.brand.isEmpty ? s.name : '${s.brand} · ${s.name}',
               subtitle: [
                 if (s.distanceKm != null)
@@ -81,6 +87,7 @@ class FuelWidget extends StatelessWidget {
                       ),
                     ),
             ),
+          ),
         ],
       );
     },
