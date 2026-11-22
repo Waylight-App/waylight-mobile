@@ -75,9 +75,11 @@ class ArrangeView extends StatelessWidget {
   }
 }
 
-/// The size a widget takes in the edit grid: its own, or medium for widgets
-/// without a size, which take the full width on the dashboard.
-WidgetSize _shownSize(PhoneLayoutItem item) => item.size ?? WidgetSize.medium;
+/// The size a widget takes in the edit grid: its own, or the default of its
+/// kind for widgets without a size, which take the full width on the
+/// dashboard.
+WidgetSize _shownSize(PhoneLayoutItem item, WidgetRegistry registry) =>
+    item.size ?? registry.sizesFor(item.widget.kind).defaultSize;
 
 /// The name of a size; `null` is the full width.
 String sizeName(AppLocalizations l10n, WidgetSize? size) => switch (size) {
@@ -132,7 +134,7 @@ class _ArrangeGridState extends State<_ArrangeGrid>
       animate: true,
       items: [
         for (final item in visible)
-          (id: item.widget.id, size: _shownSize(item)),
+          (id: item.widget.id, size: _shownSize(item, widget.registry)),
       ],
       columns: SizedGrid.columnsOf(context),
       tileBuilder: (context, place, size) => _ArrangeTile(
@@ -310,7 +312,7 @@ class _Preview extends StatelessWidget {
             child: ConstrainedBox(
               constraints: BoxConstraints(minHeight: height),
               child: WidgetSizeScope(
-                size: _shownSize(item),
+                size: _shownSize(item, registry),
                 child: builder == null
                     ? SectionCard(
                         title: widget.displayTitle,
@@ -358,14 +360,6 @@ class SizeSheet extends StatelessWidget {
         SizeSheet._(viewModel: viewModel, registry: registry, id: id),
   );
 
-  static const _choices = <WidgetSize?>[
-    WidgetSize.small,
-    WidgetSize.medium,
-    WidgetSize.large,
-    WidgetSize.strip,
-    null,
-  ];
-
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
@@ -398,7 +392,7 @@ class SizeSheet extends StatelessWidget {
                       // The cell size of a phone, also on tablets.
                       width: min(constraints.maxWidth, 400),
                       child: SizedGrid(
-                        items: [(id: id, size: _shownSize(item))],
+                        items: [(id: id, size: _shownSize(item, registry))],
                         columns: 4,
                         tileBuilder: (context, _, size) => _Preview(
                           item: item,
@@ -415,7 +409,10 @@ class SizeSheet extends StatelessWidget {
                   runSpacing: Dimens.gapSmall,
                   alignment: WrapAlignment.center,
                   children: [
-                    for (final size in _choices)
+                    for (final size in [
+                      ...registry.sizesFor(item.widget.kind).supported,
+                      null,
+                    ])
                       ChoiceChip(
                         key: ValueKey('editTab.sizeChoice.${size?.name}'),
                         label: Text(sizeName(l10n, size)),
@@ -614,7 +611,7 @@ class _WidgetGallerySheetState extends State<WidgetGallerySheet> {
                 runSpacing: Dimens.gapSmall,
                 crossAxisAlignment: WrapCrossAlignment.end,
                 children: [
-                  for (final size in WidgetSize.values)
+                  for (final size in registry.sizesFor(kind).supported)
                     SizePreview(
                       key: ValueKey('gallery.add.$kind.${size.name}'),
                       title: title,

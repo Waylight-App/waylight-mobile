@@ -698,6 +698,8 @@
   "@habitsEmpty": {"description": "Habits widget without habits due."},
   "shoppingClear": "Remove {count} in the basket",
   "@shoppingClear": {"description": "Button that removes ticked-off items.", "placeholders": {"count": {"type": "int", "example": "2"}}},
+  "shoppingOpenItems": "{count, plural, =1{1 item to buy} other{{count} items to buy}}",
+  "@shoppingOpenItems": {"description": "Open items on the shopping list, in a small tile.", "placeholders": {"count": {"type": "int", "example": "4"}}},
   "habitsStreak": "{current} days in a row · best {best}",
   "@habitsStreak": {"description": "Current and best streak.", "placeholders": {"current": {"type": "int", "example": "8"}, "best": {"type": "int", "example": "19"}}},
   "rssTitle": "Feeds",

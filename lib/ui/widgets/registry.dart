@@ -1,3 +1,4 @@
+import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/ui/core/widget_registry.dart';
 import 'package:waylight_mobile/ui/widgets/absences/absences_widget.dart';
 import 'package:waylight_mobile/ui/widgets/adguard/adguard_widget.dart';
@@ -47,6 +48,15 @@ import 'package:waylight_mobile/ui/widgets/wireguard/wireguard_widget.dart';
 /// folder in `ui/widgets/` is done (docs/adding-a-feature.md); add its
 /// `preview` to `previews` once it has example data (#251).
 const nativeWidgets = WidgetRegistry(
+  // A clock needs no more than half a screen; kinds not listed offer every
+  // size.
+  sizes: {
+    'clock': WidgetSizes([
+      WidgetSize.small,
+      WidgetSize.medium,
+      WidgetSize.strip,
+    ], defaultSize: WidgetSize.small),
+  },
   previews: {
     'focus': FocusWidget.preview,
     'presence': PresenceWidget.preview,

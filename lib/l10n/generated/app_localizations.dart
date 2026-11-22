@@ -2192,6 +2192,12 @@ abstract class AppLocalizations {
   /// **'Remove {count} in the basket'**
   String shoppingClear(int count);
 
+  /// Open items on the shopping list, in a small tile.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 item to buy} other{{count} items to buy}}'**
+  String shoppingOpenItems(int count);
+
   /// Current and best streak.
   ///
   /// In en, this message translates to:

@@ -349,6 +349,7 @@
   "habitsTitle": "Gewohnheiten",
   "habitsEmpty": "Heute keine Gewohnheiten fällig.",
   "shoppingClear": "{count} im Korb entfernen",
+  "shoppingOpenItems": "{count, plural, =1{1 Artikel zu kaufen} other{{count} Artikel zu kaufen}}",
   "habitsStreak": "{current} Tage in Folge · Rekord {best}",
   "rssTitle": "Feeds",
   "rssCaughtUp": "Alles gelesen.",
