@@ -13,9 +13,19 @@ class HelpApi {
 
   final ApiClient _client;
 
-  /// Reads `GET /api/help/widgets`.
-  Future<Result<List<WidgetHelp>>> widgets(ServerAddress server) async {
-    final result = await _client.getJson(server.resolve('/api/help/widgets'));
+  /// Reads `GET /api/help/widgets` in [language] (`lang`, e.g. `de`); the
+  /// server answers in English for a language it has no texts in.
+  Future<Result<List<WidgetHelp>>> widgets(
+    ServerAddress server, {
+    String language = '',
+  }) async {
+    final result = await _client.getJson(
+      server
+          .resolve('/api/help/widgets')
+          .replace(
+            queryParameters: {if (language.isNotEmpty) 'lang': language},
+          ),
+    );
     return switch (result) {
       Ok(:final value) => switch (parseWidgetHelp(value)) {
         final help? => Result.ok(help),

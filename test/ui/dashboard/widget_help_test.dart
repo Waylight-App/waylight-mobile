@@ -1,5 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:http/http.dart' as http;
+import 'package:http/testing.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:waylight_mobile/data/repositories/help/help_repository.dart';
+import 'package:waylight_mobile/data/services/api/api_client.dart';
 import 'package:waylight_mobile/data/services/api/help_api.dart';
 import 'package:waylight_mobile/domain/models/api_exception.dart';
 import 'package:waylight_mobile/domain/models/compact_state.dart';
@@ -47,6 +51,47 @@ void main() {
     test('rejects an answer without the list', () {
       expect(parseWidgetHelp({'other': 1}), isNull);
     });
+
+    group('request', () {
+      final requests = <Uri>[];
+      late HelpRepositoryRemote repository;
+      HelpRepositoryRemote create() => HelpRepositoryRemote(
+        api: HelpApi(
+          ApiClient(
+            client: MockClient((request) async {
+              requests.add(request.url);
+              return http.Response('{"widgets": []}', 200);
+            }),
+          ),
+        ),
+      );
+
+      setUp(() {
+        requests.clear();
+        repository = create();
+      });
+
+      test('sends the app language as lang', () async {
+        await repository.helpOf(testServer(), 'docker', language: 'de');
+
+        expect(requests.single.path, '/api/help/widgets');
+        expect(requests.single.queryParameters, {'lang': 'de'});
+      });
+
+      test('keeps the texts of each language apart', () async {
+        await repository.helpOf(testServer(), 'docker', language: 'en');
+        await repository.helpOf(testServer(), 'meters', language: 'en');
+        await repository.helpOf(testServer(), 'docker', language: 'de');
+
+        expect(requests.map((u) => u.queryParameters['lang']), ['en', 'de']);
+      });
+
+      test('sends no lang without a language', () async {
+        await repository.helpOf(testServer(), 'docker');
+
+        expect(requests.last.queryParameters, isEmpty);
+      });
+    });
   });
 
   group('screen', () {
@@ -81,8 +126,13 @@ void main() {
       opener = FakeLinkOpener();
     });
 
-    Future<void> pump(WidgetTester tester, {bool withHelp = true}) async {
+    Future<void> pump(
+      WidgetTester tester, {
+      bool withHelp = true,
+      Locale locale = const Locale('en'),
+    }) async {
       await tester.pumpScreen(
+        locale: locale,
         LinkOpenerScope(
           opener: opener,
           child: DashboardScreen(
@@ -129,6 +179,13 @@ void main() {
       await tester.tap(find.text('Read more in the documentation'));
       await tester.pump();
       expect(opener.opened.single.path, '/docs/modules/docker/');
+    });
+
+    testWidgets('asks for the texts in the app language', (tester) async {
+      await pump(tester, locale: const Locale('de'));
+      await openHelp(tester);
+
+      expect(help.languages, ['de']);
     });
 
     testWidgets('says so when the help cannot be loaded', (tester) async {

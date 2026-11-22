@@ -219,14 +219,18 @@ class DashboardViewModel extends ChangeNotifier {
   /// Whether the help of widgets can be shown (#289).
   bool get hasHelp => _help != null;
 
-  /// The help of the widget kind [kind]; `null` when the server has none.
-  Future<Result<WidgetHelp?>> helpOf(String kind) async {
+  /// The help of the widget kind [kind] in [language]; `null` when the
+  /// server has none.
+  Future<Result<WidgetHelp?>> helpOf(
+    String kind, {
+    String language = '',
+  }) async {
     final server = _serverRepository.current;
     final help = _help;
     if (server == null || help == null) {
       return const Result.error(NotConnectedException());
     }
-    return help.helpOf(server, kind);
+    return help.helpOf(server, kind, language: language);
   }
 
   Future<Result<Dashboard>> _load() async {
