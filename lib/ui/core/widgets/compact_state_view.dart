@@ -5,6 +5,7 @@ import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/ui/core/compact_texts.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
+import 'package:waylight_mobile/ui/core/widgets/compact_lines.dart';
 import 'package:waylight_mobile/ui/core/widgets/rows.dart';
 
 /// The content of a small or strip tile from the server's compact state
@@ -26,7 +27,7 @@ class CompactStateView extends StatelessWidget {
   final WidgetSize size;
 
   /// Whether small tiles show the detail line; off where an action needs
-  /// the room.
+  /// the room. It also gives way at large text sizes.
   final bool showDetail;
 
   /// The tone of [level]; healthy and neutral states stay uncoloured.
@@ -52,6 +53,8 @@ class CompactStateView extends StatelessWidget {
     final detail = state.detail;
     if (size == WidgetSize.strip ||
         !showDetail ||
+        MediaQuery.textScalerOf(context).scale(1) >
+            CompactLines.maxDetailScale ||
         detail == null ||
         detail.text.isEmpty) {
       return title;
