@@ -869,25 +869,25 @@ abstract class AppLocalizations {
   /// Settings screen.
   ///
   /// In en, this message translates to:
-  /// **'Owner'**
+  /// **'Can do everything'**
   String get settingsRoleOwner;
 
   /// Settings screen.
   ///
   /// In en, this message translates to:
-  /// **'Admin'**
+  /// **'Can set things up'**
   String get settingsRoleAdmin;
 
   /// Settings screen.
   ///
   /// In en, this message translates to:
-  /// **'Member'**
+  /// **'Can use'**
   String get settingsRoleMember;
 
   /// Settings screen.
   ///
   /// In en, this message translates to:
-  /// **'Guest'**
+  /// **'Can only look'**
   String get settingsRoleGuest;
 
   /// Settings screen.

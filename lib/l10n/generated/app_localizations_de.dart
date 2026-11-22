@@ -445,16 +445,16 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settingsOwnerAccount => 'Eigentümerkonto';
 
   @override
-  String get settingsRoleOwner => 'Eigentümer';
+  String get settingsRoleOwner => 'Darf alles';
 
   @override
-  String get settingsRoleAdmin => 'Admin';
+  String get settingsRoleAdmin => 'Darf einrichten';
 
   @override
-  String get settingsRoleMember => 'Mitglied';
+  String get settingsRoleMember => 'Darf benutzen';
 
   @override
-  String get settingsRoleGuest => 'Gast';
+  String get settingsRoleGuest => 'Darf nur ansehen';
 
   @override
   String get settingsAppearance => 'Darstellung';

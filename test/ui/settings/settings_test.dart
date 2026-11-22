@@ -76,8 +76,8 @@ void main() {
     await pump(tester);
 
     expect(find.text('anna'), findsWidgets);
-    expect(find.text('Member · https://home.example.org'), findsOneWidget);
-    expect(find.text('anna · Member'), findsOneWidget);
+    expect(find.text('Can use · https://home.example.org'), findsOneWidget);
+    expect(find.text('anna · Can use'), findsOneWidget);
     expect(find.text('System · System'), findsOneWidget);
     expect(find.text('Version 0.3.0 (7)'), findsOneWidget);
     expect(find.text(l10nEn.settingsStatusPhone), findsOneWidget);
