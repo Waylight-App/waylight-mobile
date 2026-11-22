@@ -66,8 +66,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'The server cannot be reached. Is your phone in the same network or VPN?';
 
   @override
-  String get errorUnauthorized =>
-      'Your session has ended. Please sign in again.';
+  String get errorUnauthorized => 'You were signed out. Please sign in again.';
 
   @override
   String get errorForbidden => 'Your account may not do this.';
@@ -99,7 +98,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get signInExpired => 'Your session has ended. Please sign in again.';
+  String get signInExpired => 'You were signed out. Please sign in again.';
 
   @override
   String get signInUsernameLabel => 'Account name';
@@ -558,7 +557,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get pairWatchInvalidServer =>
-      'The watch does not accept this server\'s address. Plain HTTP only works for addresses in the home network.';
+      'The watch does not accept this server\'s address. An address starting with http:// only works in the home network.';
 
   @override
   String get pairWatchServerUnreachable =>
@@ -1271,7 +1270,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get apodTitle => 'Picture of the day';
 
   @override
-  String get apiWidgetNoEndpoint => 'Choose an endpoint in the web interface.';
+  String get apiWidgetNoEndpoint => 'Choose an address in the web interface.';
 
   @override
   String get mailTitle => 'Mail';
@@ -1851,7 +1850,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get addressesHint =>
-      'Tried in this order; the first that answers and knows your session is used, e.g. the home network first, then the address on the go.';
+      'Tried in this order; the first that answers and still has you signed in is used, e.g. the home network first, then the address on the go.';
 
   @override
   String get addressInUse => 'In use';
@@ -1861,7 +1860,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get addressRejected =>
-      'Answers, but does not know your session – another server under this address?';
+      'Answers, but you are not signed in there – another server under this address?';
 
   @override
   String get addressRaise => 'Try earlier';
