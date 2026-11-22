@@ -29,6 +29,7 @@ import 'package:waylight_mobile/data/repositories/first_start/first_start_reposi
 import 'package:waylight_mobile/data/repositories/focus/focus_timer_repository.dart';
 import 'package:waylight_mobile/data/repositories/habits/habits_repository.dart';
 import 'package:waylight_mobile/data/repositories/habits/habits_repository_remote.dart';
+import 'package:waylight_mobile/data/repositories/help/help_repository.dart';
 import 'package:waylight_mobile/data/repositories/home_widgets/home_widgets_repository.dart';
 import 'package:waylight_mobile/data/repositories/kiosk/kiosk_repository.dart';
 import 'package:waylight_mobile/data/repositories/lock/app_lock_repository.dart';
@@ -71,6 +72,7 @@ import 'package:waylight_mobile/data/services/api/api_credentials.dart';
 import 'package:waylight_mobile/data/services/api/auth_api.dart';
 import 'package:waylight_mobile/data/services/api/bookmarks_api.dart';
 import 'package:waylight_mobile/data/services/api/dashboard_api.dart';
+import 'package:waylight_mobile/data/services/api/help_api.dart';
 import 'package:waylight_mobile/data/services/api/module_api.dart';
 import 'package:waylight_mobile/data/services/api/notes_api.dart';
 import 'package:waylight_mobile/data/services/api/notifications_api.dart';
@@ -145,6 +147,7 @@ typedef Repositories = ({
   PreferencesRepository preferences,
   OfflineRepository offline,
   SearchRepository search,
+  HelpRepository help,
   AppLockRepository lock,
   KioskRepository kiosk,
   FirstStartRepository firstStart,
@@ -198,6 +201,7 @@ List<SingleChildWidget> providers(Repositories repositories) => [
   ),
   Provider<DiagnosticsRepository>.value(value: repositories.diagnostics),
   Provider<SearchRepository>.value(value: repositories.search),
+  Provider<HelpRepository>.value(value: repositories.help),
   ChangeNotifierProvider<AppLockRepository>.value(value: repositories.lock),
   ChangeNotifierProvider<KioskRepository>.value(value: repositories.kiosk),
   ChangeNotifierProvider<FirstStartRepository>.value(
@@ -384,6 +388,7 @@ Repositories createRepositories() {
     preferences: PreferencesRepositoryLocal(store: store),
     offline: OfflineRepository(offline),
     search: SearchRepositoryRemote(api: SearchApi(client)),
+    help: HelpRepositoryRemote(api: HelpApi(client)),
     lock: lock,
     kiosk: kiosk,
     firstStart: FirstStartRepository(store: store),

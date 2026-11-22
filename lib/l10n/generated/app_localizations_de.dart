@@ -67,7 +67,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get errorUnauthorized =>
-      'Deine Sitzung ist abgelaufen. Bitte melde dich erneut an.';
+      'Du wurdest abgemeldet. Bitte melde dich erneut an.';
 
   @override
   String get errorForbidden => 'Dein Konto darf das nicht.';
@@ -101,7 +101,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get signInExpired =>
-      'Deine Sitzung ist abgelaufen. Bitte melde dich erneut an.';
+      'Du wurdest abgemeldet. Bitte melde dich erneut an.';
 
   @override
   String get signInUsernameLabel => 'Kontoname';
@@ -559,7 +559,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get pairWatchInvalidServer =>
-      'Die Uhr nimmt die Adresse dieses Servers nicht an. Unverschlüsseltes HTTP geht nur mit Adressen im Heimnetz.';
+      'Die Uhr nimmt die Adresse dieses Servers nicht an. Eine Adresse mit http:// geht nur im Heimnetz.';
 
   @override
   String get pairWatchServerUnreachable =>
@@ -1272,7 +1272,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get apodTitle => 'Bild des Tages';
 
   @override
-  String get apiWidgetNoEndpoint => 'Wähle im Web einen Endpunkt.';
+  String get apiWidgetNoEndpoint => 'Wähle im Web eine Adresse.';
 
   @override
   String get mailTitle => 'Mail';
@@ -1852,7 +1852,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get addressesHint =>
-      'Werden in dieser Reihenfolge probiert; die erste, die antwortet und deine Sitzung kennt, wird benutzt, z. B. zuerst das Heimnetz, dann die Adresse für unterwegs.';
+      'Werden in dieser Reihenfolge probiert; die erste, die antwortet und bei der du angemeldet bist, wird benutzt, z. B. zuerst das Heimnetz, dann die Adresse für unterwegs.';
 
   @override
   String get addressInUse => 'In Benutzung';
@@ -1862,7 +1862,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get addressRejected =>
-      'Antwortet, kennt deine Sitzung aber nicht – ein anderer Server unter dieser Adresse?';
+      'Antwortet, aber du bist dort nicht angemeldet – ein anderer Server unter dieser Adresse?';
 
   @override
   String get addressRaise => 'Früher probieren';
@@ -2473,4 +2473,25 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get firstStartLookText => 'Hell, dunkel oder wie das System.';
+
+  @override
+  String get widgetHelpMenu => 'Hilfe';
+
+  @override
+  String widgetHelpTitle(String name) {
+    return 'Über $name';
+  }
+
+  @override
+  String get widgetHelpShows => 'Was es zeigt';
+
+  @override
+  String get widgetHelpSetUp => 'So richtest du es ein';
+
+  @override
+  String get widgetHelpDocs => 'Mehr in der Dokumentation';
+
+  @override
+  String get widgetHelpUnavailable =>
+      'Die Hilfe konnte nicht geladen werden. Die Dokumentation hat die Details.';
 }

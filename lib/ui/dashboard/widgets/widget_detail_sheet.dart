@@ -1,6 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 
 import 'package:waylight_mobile/domain/models/dashboard.dart';
+import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/refresh.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
 
@@ -12,6 +13,7 @@ class WidgetDetailSheet extends StatelessWidget {
     required this.placement,
     required this.child,
     required this.scrollController,
+    this.onHelp,
   });
 
   /// The widget shown.
@@ -19,6 +21,9 @@ class WidgetDetailSheet extends StatelessWidget {
 
   /// The widget's full view, with its actions.
   final Widget child;
+
+  /// Shows the help of the widget (#289); `null` hides the button.
+  final VoidCallback? onHelp;
 
   /// Lets the list scroll and the sheet follow the drag.
   final ScrollController scrollController;
@@ -31,6 +36,7 @@ class WidgetDetailSheet extends StatelessWidget {
     BuildContext context, {
     required WidgetPlacement placement,
     required Widget child,
+    VoidCallback? onHelp,
   }) => showModalBottomSheet<void>(
     context: context,
     isScrollControlled: true,
@@ -43,6 +49,7 @@ class WidgetDetailSheet extends StatelessWidget {
       builder: (context, controller) => WidgetDetailSheet._(
         placement: placement,
         scrollController: controller,
+        onHelp: onHelp,
         child: child,
       ),
     ),
@@ -69,12 +76,25 @@ class WidgetDetailSheet extends StatelessWidget {
               Dimens.gap,
             ),
             children: [
-              Semantics(
-                header: true,
-                child: Text(
-                  placement.displayTitle,
-                  style: theme.textTheme.titleLarge,
-                ),
+              Row(
+                children: [
+                  Expanded(
+                    child: Semantics(
+                      header: true,
+                      child: Text(
+                        placement.displayTitle,
+                        style: theme.textTheme.titleLarge,
+                      ),
+                    ),
+                  ),
+                  if (onHelp case final help?)
+                    IconButton(
+                      key: const ValueKey('widget.help'),
+                      tooltip: context.l10n.widgetHelpMenu,
+                      icon: const Icon(Icons.help_outline),
+                      onPressed: help,
+                    ),
+                ],
               ),
               const SizedBox(height: Dimens.gapSmall),
               child,

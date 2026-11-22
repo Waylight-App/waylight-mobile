@@ -50,6 +50,7 @@ import '../testing/fakes/fake_device_controls_store.dart';
 import '../testing/fakes/fake_device_info.dart';
 import '../testing/fakes/fake_habits_repository.dart';
 import '../testing/fakes/fake_handover_sealer.dart';
+import '../testing/fakes/fake_help_repository.dart';
 import '../testing/fakes/fake_home_widget_store.dart';
 import '../testing/fakes/fake_log_store.dart';
 import '../testing/fakes/fake_nfc_writer.dart';
@@ -156,6 +157,7 @@ void main() {
           preferences: FakePreferencesRepository(),
           offline: OfflineRepository(OfflineStatus()),
           search: FakeSearchRepository(),
+          help: FakeHelpRepository(),
           lock: AppLockRepository(
             auth: FakeDeviceAuth(),
             store: InMemoryKeyValueStore(),

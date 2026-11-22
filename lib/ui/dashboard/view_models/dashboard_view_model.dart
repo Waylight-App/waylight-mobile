@@ -5,6 +5,7 @@ import 'package:waylight_mobile/data/repositories/appearance/theme_repository.da
 import 'package:waylight_mobile/data/repositories/attention/attention_repository.dart';
 import 'package:waylight_mobile/data/repositories/compact/compact_state_repository.dart';
 import 'package:waylight_mobile/data/repositories/dashboard/dashboard_repository.dart';
+import 'package:waylight_mobile/data/repositories/help/help_repository.dart';
 import 'package:waylight_mobile/data/repositories/home_widgets/home_widgets_repository.dart';
 import 'package:waylight_mobile/data/repositories/offline/offline_repository.dart';
 import 'package:waylight_mobile/data/repositories/push/push_repository.dart';
@@ -14,6 +15,7 @@ import 'package:waylight_mobile/data/repositories/server/server_repository.dart'
 import 'package:waylight_mobile/domain/models/attention.dart';
 import 'package:waylight_mobile/domain/models/compact_state.dart';
 import 'package:waylight_mobile/domain/models/dashboard.dart';
+import 'package:waylight_mobile/domain/models/help.dart';
 import 'package:waylight_mobile/domain/models/home_snapshot.dart';
 import 'package:waylight_mobile/domain/models/quick_tile.dart';
 import 'package:waylight_mobile/domain/models/reminder.dart';
@@ -41,8 +43,10 @@ class DashboardViewModel extends ChangeNotifier {
     this._quickTileFormatter,
     AttentionRepository? attentionRepository,
     CompactStateRepository? compactRepository,
+    HelpRepository? helpRepository,
   }) : _offline = offlineRepository,
        _compact = compactRepository,
+       _help = helpRepository,
        _attention = attentionRepository,
        _quickTiles = quickTilesRepository,
        _push = pushRepository,
@@ -68,6 +72,7 @@ class DashboardViewModel extends ChangeNotifier {
   final QuickTilesRepository? _quickTiles;
   final QuickTileFormatter? _quickTileFormatter;
   final CompactStateRepository? _compact;
+  final HelpRepository? _help;
   bool _pushRefreshed = false;
 
   /// When the server cannot be reached: the time of the stored data shown.
@@ -202,6 +207,19 @@ class DashboardViewModel extends ChangeNotifier {
       (_serverRepository.active ?? _serverRepository.current)
           ?.resolve('/')
           .replace(queryParameters: {'tab': tabId});
+
+  /// Whether the help of widgets can be shown (#289).
+  bool get hasHelp => _help != null;
+
+  /// The help of the widget kind [kind]; `null` when the server has none.
+  Future<Result<WidgetHelp?>> helpOf(String kind) async {
+    final server = _serverRepository.current;
+    final help = _help;
+    if (server == null || help == null) {
+      return const Result.error(NotConnectedException());
+    }
+    return help.helpOf(server, kind);
+  }
 
   Future<Result<Dashboard>> _load() async {
     final server = _serverRepository.current;

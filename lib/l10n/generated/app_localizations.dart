@@ -197,7 +197,7 @@ abstract class AppLocalizations {
   /// Error: HTTP 401, the session is missing or expired.
   ///
   /// In en, this message translates to:
-  /// **'Your session has ended. Please sign in again.'**
+  /// **'You were signed out. Please sign in again.'**
   String get errorUnauthorized;
 
   /// Error: HTTP 403.
@@ -251,7 +251,7 @@ abstract class AppLocalizations {
   /// Shown when the server ended the session.
   ///
   /// In en, this message translates to:
-  /// **'Your session has ended. Please sign in again.'**
+  /// **'You were signed out. Please sign in again.'**
   String get signInExpired;
 
   /// Label of the account name field.
@@ -1073,7 +1073,7 @@ abstract class AppLocalizations {
   /// The watch rejected the server address.
   ///
   /// In en, this message translates to:
-  /// **'The watch does not accept this server\'s address. Plain HTTP only works for addresses in the home network.'**
+  /// **'The watch does not accept this server\'s address. An address starting with http:// only works in the home network.'**
   String get pairWatchInvalidServer;
 
   /// The watch could not reach the server.
@@ -2351,7 +2351,7 @@ abstract class AppLocalizations {
   /// JSON widget without an endpoint.
   ///
   /// In en, this message translates to:
-  /// **'Choose an endpoint in the web interface.'**
+  /// **'Choose an address in the web interface.'**
   String get apiWidgetNoEndpoint;
 
   /// Default title of the mail widget.
@@ -3317,7 +3317,7 @@ abstract class AppLocalizations {
   /// Below the addresses heading.
   ///
   /// In en, this message translates to:
-  /// **'Tried in this order; the first that answers and knows your session is used, e.g. the home network first, then the address on the go.'**
+  /// **'Tried in this order; the first that answers and still has you signed in is used, e.g. the home network first, then the address on the go.'**
   String get addressesHint;
 
   /// Address status.
@@ -3335,7 +3335,7 @@ abstract class AppLocalizations {
   /// Address status.
   ///
   /// In en, this message translates to:
-  /// **'Answers, but does not know your session – another server under this address?'**
+  /// **'Answers, but you are not signed in there – another server under this address?'**
   String get addressRejected;
 
   /// Tooltip: move address up.
@@ -4387,6 +4387,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Light, dark or as the system.'**
   String get firstStartLookText;
+
+  /// Action on a dashboard widget: shows what the widget is and how to set it up (#289).
+  ///
+  /// In en, this message translates to:
+  /// **'Help'**
+  String get widgetHelpMenu;
+
+  /// Title of the help of a widget (#289).
+  ///
+  /// In en, this message translates to:
+  /// **'About {name}'**
+  String widgetHelpTitle(String name);
+
+  /// Heading of the help of a widget (#289).
+  ///
+  /// In en, this message translates to:
+  /// **'What it shows'**
+  String get widgetHelpShows;
+
+  /// Heading of the help of a widget (#289).
+  ///
+  /// In en, this message translates to:
+  /// **'How to set it up'**
+  String get widgetHelpSetUp;
+
+  /// Link below the help of a widget (#289).
+  ///
+  /// In en, this message translates to:
+  /// **'Read more in the documentation'**
+  String get widgetHelpDocs;
+
+  /// Shown in the help of a widget when the server has none or cannot be reached (#289).
+  ///
+  /// In en, this message translates to:
+  /// **'The help could not be loaded. The documentation has the details.'**
+  String get widgetHelpUnavailable;
 }
 
 class _AppLocalizationsDelegate
