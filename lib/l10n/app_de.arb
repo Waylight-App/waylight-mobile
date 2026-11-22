@@ -714,5 +714,11 @@
   "firstStartLockText": "Beim Öffnen der App nach Fingerabdruck, Gesicht oder Geräte-PIN fragen.",
   "firstStartAddressesTitle": "Zu Hause und unterwegs",
   "firstStartAddressesText": "Hat dein Waylight eine zweite Adresse, etwa eine im Heimnetz und eine für unterwegs? Trag sie hier ein, dann nimmt die App die, die antwortet.",
-  "firstStartLookText": "Hell, dunkel oder wie das System."
+  "firstStartLookText": "Hell, dunkel oder wie das System.",
+  "widgetHelpMenu": "Hilfe",
+  "widgetHelpTitle": "Über {name}",
+  "widgetHelpShows": "Was es zeigt",
+  "widgetHelpSetUp": "So richtest du es ein",
+  "widgetHelpDocs": "Mehr in der Dokumentation",
+  "widgetHelpUnavailable": "Die Hilfe konnte nicht geladen werden. Die Dokumentation hat die Details."
 }

@@ -21,6 +21,7 @@ import 'package:waylight_mobile/ui/dashboard/widgets/widget_card.dart';
 import 'package:waylight_mobile/ui/dashboard/widgets/widget_detail_sheet.dart';
 import 'package:waylight_mobile/ui/dashboard/widgets/widget_full_screen.dart';
 import 'package:waylight_mobile/ui/dashboard/widgets/widget_grid.dart';
+import 'package:waylight_mobile/ui/dashboard/widgets/widget_help_sheet.dart';
 import 'package:waylight_mobile/utils/command.dart';
 import 'package:waylight_mobile/utils/result.dart';
 
@@ -98,6 +99,13 @@ class DashboardScreen extends StatelessWidget {
                   setUpNeedOf: viewModel.setUpNeedOf,
                   hidden: viewModel.isEmptyWidget,
                   onArrange: tab.mine ? () => _arrange(context, tab) : null,
+                  onHelp: viewModel.hasHelp
+                      ? (widget) => WidgetHelpSheet.show(
+                          context,
+                          placement: widget,
+                          load: viewModel.helpOf,
+                        ).ignore()
+                      : null,
                 ),
             ],
           ),
@@ -231,6 +239,7 @@ class TabPage extends StatelessWidget {
     required this.registry,
     this.webUrl,
     this.onArrange,
+    this.onHelp,
     this.setUpNeedOf,
     this.hidden,
     this.readOnly = false,
@@ -266,10 +275,54 @@ class TabPage extends StatelessWidget {
   /// Opens the edit mode; `null` for tabs the account may not change.
   final VoidCallback? onArrange;
 
-  /// A widget without a size: its view, held to open the edit mode.
+  /// Shows the help of a widget (#289); `null` where there is none.
+  final ValueChanged<WidgetPlacement>? onHelp;
+
+  /// What holding [widget] does: with help on offer a menu of the help and
+  /// the edit mode, otherwise the edit mode (#209) directly.
+  VoidCallback? _holdOf(BuildContext context, WidgetPlacement widget) {
+    final help = onHelp;
+    final arrange = onArrange;
+    if (help == null) return arrange;
+    return () => showModalBottomSheet<void>(
+      context: context,
+      showDragHandle: true,
+      useSafeArea: true,
+      builder: (sheet) {
+        final l10n = sheet.l10n;
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              key: const ValueKey('dashboard.help'),
+              leading: const Icon(Icons.help_outline),
+              title: Text(l10n.widgetHelpMenu),
+              onTap: () {
+                Navigator.pop(sheet);
+                help(widget);
+              },
+            ),
+            if (arrange != null)
+              ListTile(
+                key: const ValueKey('dashboard.arrange'),
+                leading: const Icon(Icons.dashboard_customize_outlined),
+                title: Text(l10n.editTabTitle),
+                onTap: () {
+                  Navigator.pop(sheet);
+                  arrange();
+                },
+              ),
+          ],
+        );
+      },
+    ).ignore();
+  }
+
+  /// A widget without a size: its view, held to open the edit mode or the
+  /// menu.
   Widget _unsized(BuildContext context, WidgetPlacement widget) =>
       GestureDetector(
-        onLongPress: onArrange,
+        onLongPress: _holdOf(context, widget),
         excludeFromSemantics: true,
         child: _card(context, widget),
       );
@@ -292,6 +345,7 @@ class TabPage extends StatelessWidget {
       WidgetDetailSheet.show(
         context,
         placement: widget,
+        onHelp: onHelp == null ? null : () => onHelp!(widget),
         child: _card(context, widget),
       ).ignore();
     } else {
@@ -305,6 +359,7 @@ class TabPage extends StatelessWidget {
           MaterialPageRoute<void>(
             builder: (context) => WidgetFullScreen(
               placement: widget,
+              onHelp: onHelp == null ? null : () => onHelp!(widget),
               child: _card(context, widget),
             ),
           ),
@@ -345,7 +400,9 @@ class TabPage extends StatelessWidget {
             columns: gridColumns,
             builder: _card,
             onOpen: (widget) => _openTile(context, widget),
-            onArrange: onArrange,
+            onHold: onArrange == null && onHelp == null
+                ? null
+                : (widget) => _holdOf(context, widget)?.call(),
           ),
         );
       } else if (columns == 1) {

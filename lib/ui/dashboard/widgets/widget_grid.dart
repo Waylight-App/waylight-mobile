@@ -27,7 +27,7 @@ class WidgetGrid extends StatelessWidget {
     required this.columns,
     required this.builder,
     required this.onOpen,
-    this.onArrange,
+    this.onHold,
     super.key,
   });
 
@@ -43,9 +43,9 @@ class WidgetGrid extends StatelessWidget {
   /// Shows a widget in full.
   final ValueChanged<WidgetPlacement> onOpen;
 
-  /// Opens the edit mode of the tab (#209); `null` where the tab cannot be
-  /// changed.
-  final VoidCallback? onArrange;
+  /// Called when a tile is held: opens the edit mode of the tab (#209) or
+  /// the menu of the widget (#289); `null` where there is nothing to do.
+  final ValueChanged<WidgetPlacement>? onHold;
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +60,7 @@ class WidgetGrid extends StatelessWidget {
           title: item.widget.displayTitle,
           height: size.height,
           onOpen: () => onOpen(item.widget),
-          onLongPress: onArrange,
+          onLongPress: onHold == null ? null : () => onHold!(item.widget),
           builder: (context) => builder(context, item.widget),
         );
       },
@@ -97,7 +97,7 @@ class WidgetTile extends StatefulWidget {
   /// Shows the widget in full.
   final VoidCallback onOpen;
 
-  /// Opens the edit mode, e.g. when the tile is held (#209).
+  /// Runs when the tile is held, e.g. to open the edit mode (#209).
   final VoidCallback? onLongPress;
 
   /// Builds the widget's view.

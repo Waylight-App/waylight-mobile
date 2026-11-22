@@ -2464,4 +2464,25 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get firstStartLookText => 'Light, dark or as the system.';
+
+  @override
+  String get widgetHelpMenu => 'Help';
+
+  @override
+  String widgetHelpTitle(String name) {
+    return 'About $name';
+  }
+
+  @override
+  String get widgetHelpShows => 'What it shows';
+
+  @override
+  String get widgetHelpSetUp => 'How to set it up';
+
+  @override
+  String get widgetHelpDocs => 'Read more in the documentation';
+
+  @override
+  String get widgetHelpUnavailable =>
+      'The help could not be loaded. The documentation has the details.';
 }

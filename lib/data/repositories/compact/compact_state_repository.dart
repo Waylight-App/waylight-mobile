@@ -1,6 +1,7 @@
 import 'package:waylight_mobile/data/repositories/transit/transit_repository.dart';
 import 'package:waylight_mobile/data/repositories/waste/waste_repository.dart';
 import 'package:waylight_mobile/data/repositories/weather/weather_repository.dart';
+import 'package:waylight_mobile/data/services/api/compact_text_json.dart';
 import 'package:waylight_mobile/data/services/api/module_api.dart';
 import 'package:waylight_mobile/domain/models/api_exception.dart';
 import 'package:waylight_mobile/domain/models/compact_derived.dart';
@@ -287,11 +288,11 @@ String? compactParam(String kind, String param, Map<String, Object?> config) {
 /// shape.
 CompactState? parseCompactState(Object? json) {
   if (json case {'title': final Object? t} && final Map<String, Object?> o) {
-    final title = _text(t);
+    final title = parseCompactText(t);
     if (title == null) return null;
     return CompactState(
       title: title,
-      detail: _text(o['detail']),
+      detail: parseCompactText(o['detail']),
       level: CompactLevel.parse(o['level']),
       count: switch (o['count']) {
         final int n => n,
@@ -307,24 +308,6 @@ CompactState? parseCompactState(Object? json) {
   }
   return null;
 }
-
-CompactText? _text(Object? json) => switch (json) {
-  {'text': final String text} && final Map<String, Object?> o => CompactText(
-    text: text,
-    key: switch (o['key']) {
-      final String k => k,
-      _ => '',
-    },
-    params: switch (o['params']) {
-      final Map<String, Object?> p => {
-        for (final MapEntry(:key, :value) in p.entries)
-          if (value is String) key: value,
-      },
-      _ => const {},
-    },
-  ),
-  _ => null,
-};
 
 Map<String, Object?>? _body(Object? json) => switch (json) {
   final Map<String, Object?> body => body,
@@ -342,7 +325,7 @@ CompactAction? _action(Object? json) {
       when path.startsWith('/api/')) {
     return CompactAction(
       id: id,
-      label: _text(o['label']) ?? CompactText(text: id),
+      label: parseCompactText(o['label']) ?? CompactText(text: id),
       method: method.toUpperCase(),
       path: path,
       body: _body(o['body']),
@@ -352,7 +335,7 @@ CompactAction? _action(Object? json) {
             if (c case {'id': final String cid} && final Map<String, Object?> m)
               CompactChoice(
                 id: cid,
-                label: _text(m['label']) ?? CompactText(text: cid),
+                label: parseCompactText(m['label']) ?? CompactText(text: cid),
                 body: _body(m['body']),
                 selected: m['selected'] == true,
               ),

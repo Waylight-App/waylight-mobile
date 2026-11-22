@@ -4387,6 +4387,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Light, dark or as the system.'**
   String get firstStartLookText;
+
+  /// Action on a dashboard widget: shows what the widget is and how to set it up (#289).
+  ///
+  /// In en, this message translates to:
+  /// **'Help'**
+  String get widgetHelpMenu;
+
+  /// Title of the help of a widget (#289).
+  ///
+  /// In en, this message translates to:
+  /// **'About {name}'**
+  String widgetHelpTitle(String name);
+
+  /// Heading of the help of a widget (#289).
+  ///
+  /// In en, this message translates to:
+  /// **'What it shows'**
+  String get widgetHelpShows;
+
+  /// Heading of the help of a widget (#289).
+  ///
+  /// In en, this message translates to:
+  /// **'How to set it up'**
+  String get widgetHelpSetUp;
+
+  /// Link below the help of a widget (#289).
+  ///
+  /// In en, this message translates to:
+  /// **'Read more in the documentation'**
+  String get widgetHelpDocs;
+
+  /// Shown in the help of a widget when the server has none or cannot be reached (#289).
+  ///
+  /// In en, this message translates to:
+  /// **'The help could not be loaded. The documentation has the details.'**
+  String get widgetHelpUnavailable;
 }
 
 class _AppLocalizationsDelegate

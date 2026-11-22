@@ -2473,4 +2473,25 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get firstStartLookText => 'Hell, dunkel oder wie das System.';
+
+  @override
+  String get widgetHelpMenu => 'Hilfe';
+
+  @override
+  String widgetHelpTitle(String name) {
+    return 'Über $name';
+  }
+
+  @override
+  String get widgetHelpShows => 'Was es zeigt';
+
+  @override
+  String get widgetHelpSetUp => 'So richtest du es ein';
+
+  @override
+  String get widgetHelpDocs => 'Mehr in der Dokumentation';
+
+  @override
+  String get widgetHelpUnavailable =>
+      'Die Hilfe konnte nicht geladen werden. Die Dokumentation hat die Details.';
 }
