@@ -7,6 +7,8 @@ import 'package:waylight_mobile/domain/models/note.dart';
 import 'package:waylight_mobile/routing/routes.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
+import 'package:waylight_mobile/ui/core/widget_size_scope.dart';
+import 'package:waylight_mobile/ui/core/widgets/tile_rows.dart';
 import 'package:waylight_mobile/ui/core/widgets/view_model_host.dart';
 import 'package:waylight_mobile/ui/core/widgets/widget_frame.dart';
 import 'package:waylight_mobile/ui/widgets/notes/notes_view_model.dart';
@@ -46,8 +48,10 @@ class NotesWidget extends StatelessWidget {
                     ? context.l10n.notesNonePinned
                     : context.l10n.notesNone,
               ),
-            for (final note in notes)
-              InkWell(
+            TileRows(
+              items: notes,
+              rowHeight: TileRows.twoLineRowHeight,
+              rowBuilder: (context, note) => InkWell(
                 onTap: () async {
                   await context.push(
                     Uri(
@@ -59,17 +63,19 @@ class NotesWidget extends StatelessWidget {
                 },
                 child: _NoteRow(note: note),
               ),
-            Align(
-              alignment: Alignment.centerRight,
-              child: TextButton.icon(
-                icon: const Icon(Icons.add),
-                label: Text(context.l10n.noteNew),
-                onPressed: () async {
-                  await context.push(Routes.note);
-                  await viewModel.load.execute();
-                },
-              ),
             ),
+            if (!WidgetSizeScope.inGrid(context))
+              Align(
+                alignment: Alignment.centerRight,
+                child: TextButton.icon(
+                  icon: const Icon(Icons.add),
+                  label: Text(context.l10n.noteNew),
+                  onPressed: () async {
+                    await context.push(Routes.note);
+                    await viewModel.load.execute();
+                  },
+                ),
+              ),
           ],
         ),
       ),
@@ -102,7 +108,12 @@ class _NoteRow extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(note.title, style: theme.textTheme.titleSmall),
+                Text(
+                  note.title,
+                  maxLines: WidgetSizeScope.inGrid(context) ? 1 : null,
+                  overflow: TextOverflow.ellipsis,
+                  style: theme.textTheme.titleSmall,
+                ),
                 if (preview.isNotEmpty)
                   Text(
                     preview,

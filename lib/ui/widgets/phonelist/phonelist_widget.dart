@@ -5,6 +5,7 @@ import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/domain/models/information.dart';
 import 'package:waylight_mobile/ui/core/link_opener.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
+import 'package:waylight_mobile/ui/core/widgets/tile_rows.dart';
 import 'package:waylight_mobile/ui/widgets/common/simple_widget.dart';
 import 'package:waylight_mobile/ui/widgets/common/widget_rows.dart';
 
@@ -31,8 +32,10 @@ class PhoneListWidget extends StatelessWidget {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          for (final e in entries)
-            InfoRow(
+          TileRows(
+            items: entries,
+            rowHeight: TileRows.twoLineRowHeight,
+            rowBuilder: (context, e) => InfoRow(
               title: e.name,
               subtitle: [
                 if (e.role.isNotEmpty) e.role,
@@ -50,6 +53,7 @@ class PhoneListWidget extends StatelessWidget {
                       ),
                     ),
             ),
+          ),
         ],
       );
     },

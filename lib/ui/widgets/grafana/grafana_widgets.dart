@@ -7,7 +7,9 @@ import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/domain/models/grafana.dart';
 import 'package:waylight_mobile/ui/core/link_opener.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
+import 'package:waylight_mobile/ui/core/widget_size_scope.dart';
 import 'package:waylight_mobile/ui/core/widgets/section_card.dart';
+import 'package:waylight_mobile/ui/core/widgets/tile_rows.dart';
 import 'package:waylight_mobile/ui/widgets/common/server_image.dart';
 import 'package:waylight_mobile/ui/widgets/common/simple_widget.dart';
 import 'package:waylight_mobile/ui/widgets/common/widget_rows.dart';
@@ -36,8 +38,10 @@ class GrafanaAlertsWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           if (data.alerts.isEmpty) Text(l10n.grafanaAllQuiet),
-          for (final a in data.alerts)
-            InfoRow(
+          TileRows(
+            items: data.alerts,
+            rowHeight: TileRows.twoLineRowHeight,
+            rowBuilder: (context, a) => InfoRow(
               leading: StatusDot(
                 tone: a.firing ? Tone.critical : Tone.warning,
                 label: a.firing ? l10n.grafanaFiring : l10n.grafanaPending,
@@ -49,7 +53,8 @@ class GrafanaAlertsWidget extends StatelessWidget {
                 if (a.since case final since?) shortDate(context, since),
               ].join(' · '),
             ),
-          if (data.url case final url?)
+          ),
+          if (data.url case final url? when !WidgetSizeScope.inGrid(context))
             Align(
               alignment: Alignment.centerRight,
               child: TextButton(

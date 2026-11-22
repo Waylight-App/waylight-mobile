@@ -7,7 +7,9 @@ import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/ui/core/error_messages.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
+import 'package:waylight_mobile/ui/core/widget_size_scope.dart';
 import 'package:waylight_mobile/ui/core/widgets/markdown_view.dart';
+import 'package:waylight_mobile/ui/core/widgets/tile_rows.dart';
 import 'package:waylight_mobile/ui/core/widgets/view_model_host.dart';
 import 'package:waylight_mobile/ui/core/widgets/widget_frame.dart';
 import 'package:waylight_mobile/ui/widgets/announcements/announcements_view_model.dart';
@@ -55,12 +57,16 @@ class _List extends StatelessWidget {
     if (viewModel.off) return Text(l10n.announcementsOff);
     final theme = Theme.of(context);
     final items = viewModel.items;
+    // Rows keep to one line in a tile, which fits them by height.
+    final lines = WidgetSizeScope.inGrid(context) ? 1 : null;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         if (items.isEmpty) Text(l10n.announcementsEmpty),
-        for (final a in items)
-          ListTile(
+        TileRows(
+          items: items,
+          rowHeight: TileRows.twoLineRowHeight + 8,
+          rowBuilder: (context, a) => ListTile(
             key: ValueKey('announcement.${a.id}'),
             contentPadding: EdgeInsets.zero,
             dense: true,
@@ -72,6 +78,8 @@ class _List extends StatelessWidget {
                 : null,
             title: Text(
               a.title,
+              maxLines: lines,
+              overflow: TextOverflow.ellipsis,
               style: a.read
                   ? null
                   : const TextStyle(fontWeight: FontWeight.bold),
@@ -83,6 +91,8 @@ class _List extends StatelessWidget {
                     .formatShortMonthDay(a.createdAt),
                 if (!a.read) l10n.announcementUnread,
               ].join(' · '),
+              maxLines: lines,
+              overflow: TextOverflow.ellipsis,
             ),
             trailing: a.read
                 ? null
@@ -93,7 +103,9 @@ class _List extends StatelessWidget {
                   ),
             onTap: () => showAnnouncement(context, viewModel, a).ignore(),
           ),
-        if (viewModel.mayWrite)
+        ),
+        // Writing is one tap away in the full view.
+        if (viewModel.mayWrite && !WidgetSizeScope.inGrid(context))
           Align(
             alignment: AlignmentDirectional.centerStart,
             child: TextButton.icon(

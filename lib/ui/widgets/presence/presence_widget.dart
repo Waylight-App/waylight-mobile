@@ -5,6 +5,7 @@ import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/domain/models/presence.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
+import 'package:waylight_mobile/ui/core/widgets/tile_rows.dart';
 import 'package:waylight_mobile/ui/core/widgets/view_model_host.dart';
 import 'package:waylight_mobile/ui/core/widgets/widget_frame.dart';
 import 'package:waylight_mobile/ui/core/widgets/widget_preview.dart';
@@ -189,8 +190,12 @@ class _Board extends StatelessWidget {
         if (board.people.isEmpty)
           Text(l10n.presenceEmpty)
         else
-          for (final p in board.people)
-            ListTile(
+          TileRows(
+            items: board.people,
+            rowHeight: TileRows.twoLineRowHeight + 8,
+            reserved: (board.mine != null ? 104 : 0) + 28,
+            minRows: 0,
+            rowBuilder: (context, p) => ListTile(
               contentPadding: EdgeInsets.zero,
               dense: true,
               title: Text(p.name),
@@ -201,6 +206,7 @@ class _Board extends StatelessWidget {
                 _ => presenceLabel(l10n, p.status),
               }),
             ),
+          ),
         const SizedBox(height: Dimens.gapSmall),
         Text(
           l10n.presenceCounts(

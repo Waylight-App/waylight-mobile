@@ -1,6 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
+import 'package:waylight_mobile/ui/core/widget_size_scope.dart';
 
 /// A card with a title row and content: the frame of every dashboard
 /// widget and of grouped content on other screens.
@@ -42,7 +43,14 @@ class SectionCard extends StatelessWidget {
                 Expanded(
                   child: Semantics(
                     header: true,
-                    child: Text(title, style: theme.textTheme.titleMedium),
+                    // A tile fits its content by height, so the title keeps to
+                    // one line there (#211).
+                    child: Text(
+                      title,
+                      maxLines: WidgetSizeScope.inGrid(context) ? 1 : null,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.textTheme.titleMedium,
+                    ),
                   ),
                 ),
                 if (trailing != null)

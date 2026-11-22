@@ -7,6 +7,7 @@ import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/domain/models/information.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/widgets/compact_lines.dart';
+import 'package:waylight_mobile/ui/core/widgets/tile_rows.dart';
 import 'package:waylight_mobile/ui/widgets/common/simple_widget.dart';
 import 'package:waylight_mobile/ui/widgets/common/widget_rows.dart';
 
@@ -77,9 +78,8 @@ class AppOverviewWidget extends StatelessWidget {
       final n = NumberFormat.decimalPattern(
         Localizations.localeOf(context).toLanguageTag(),
       );
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
+      return TileRows<Widget>(
+        items: [
           if (app.maintenance)
             InfoRow(
               leading: StatusDot(
@@ -114,6 +114,8 @@ class AppOverviewWidget extends StatelessWidget {
                     ),
             ),
         ],
+        rowHeight: TileRows.lineRowHeight + 12,
+        rowBuilder: (context, row) => row,
       );
     },
   );

@@ -14,8 +14,10 @@ import 'package:waylight_mobile/ui/core/link_opener.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
 import 'package:waylight_mobile/ui/core/themes/radar_colors.dart';
+import 'package:waylight_mobile/ui/core/widget_size_scope.dart';
 import 'package:waylight_mobile/ui/core/widgets/compact_lines.dart';
 import 'package:waylight_mobile/ui/core/widgets/section_card.dart';
+import 'package:waylight_mobile/ui/core/widgets/tile_rows.dart';
 import 'package:waylight_mobile/ui/core/widgets/widget_preview.dart';
 import 'package:waylight_mobile/ui/widgets/common/compact_state_widget.dart';
 import 'package:waylight_mobile/ui/widgets/common/items_view_model.dart';
@@ -318,8 +320,11 @@ class ApiValuesWidget extends StatelessWidget {
         children: [
           if (widget.title.isEmpty)
             Text(values.name, style: Theme.of(context).textTheme.labelLarge),
-          for (final v in values.values)
-            InfoRow(
+          TileRows(
+            items: values.values,
+            rowHeight: TileRows.lineRowHeight,
+            reserved: 24,
+            rowBuilder: (context, v) => InfoRow(
               title: v.label,
               trailing: v.unit.isEmpty ? v.text : '${v.text} ${v.unit}',
               trailingTone: switch (v.status) {
@@ -328,6 +333,7 @@ class ApiValuesWidget extends StatelessWidget {
                 _ => null,
               },
             ),
+          ),
         ],
       ),
     );
@@ -376,8 +382,11 @@ class MailWidget extends StatelessWidget {
               l10n.mailUnread(inbox.unread),
               style: Theme.of(context).textTheme.titleMedium,
             ),
-            for (final m in inbox.messages)
-              InfoRow(
+            TileRows(
+              items: inbox.messages,
+              rowHeight: TileRows.twoLineRowHeight,
+              reserved: 28,
+              rowBuilder: (context, m) => InfoRow(
                 title: m.subject,
                 subtitle: [
                   m.from,
@@ -385,6 +394,7 @@ class MailWidget extends StatelessWidget {
                 ].join(' · '),
                 onTap: open,
               ),
+            ),
           ],
         );
       },
@@ -424,8 +434,10 @@ class DropWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           if (vm.items.isEmpty) Text(l10n.dropEmpty),
-          for (final d in vm.items)
-            Row(
+          TileRows(
+            items: vm.items,
+            rowHeight: Dimens.tapTarget,
+            rowBuilder: (context, d) => Row(
               children: [
                 Expanded(
                   child: d.isFile
@@ -438,7 +450,12 @@ class DropWidget extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(
                             vertical: Dimens.gapTiny,
                           ),
-                          child: SelectableText(d.text),
+                          child: SelectableText(
+                            d.text,
+                            maxLines: WidgetSizeScope.inGrid(context)
+                                ? 1
+                                : null,
+                          ),
                         ),
                 ),
                 if (vm.canEdit)
@@ -450,7 +467,9 @@ class DropWidget extends StatelessWidget {
                   ),
               ],
             ),
-          if (vm.canEdit)
+          ),
+          // Sending is one tap away in the full view.
+          if (vm.canEdit && !WidgetSizeScope.inGrid(context))
             Align(
               alignment: Alignment.centerRight,
               child: TextButton.icon(

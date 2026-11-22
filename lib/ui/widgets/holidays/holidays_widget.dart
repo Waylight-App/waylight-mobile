@@ -5,6 +5,7 @@ import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/domain/models/everyday.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/widgets/compact_lines.dart';
+import 'package:waylight_mobile/ui/core/widgets/tile_rows.dart';
 import 'package:waylight_mobile/ui/widgets/common/simple_widget.dart';
 import 'package:waylight_mobile/ui/widgets/common/widget_rows.dart';
 
@@ -44,8 +45,10 @@ class HolidaysWidget extends StatelessWidget {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          for (final h in holidays.take(6))
-            InfoRow(
+          TileRows(
+            items: holidays.take(6).toList(),
+            rowHeight: TileRows.twoLineRowHeight,
+            rowBuilder: (context, h) => InfoRow(
               leading: Text(h.school ? '🎒' : '📅', semanticsLabel: ''),
               title: h.school ? h.name : holidayName(l10n, h.key),
               subtitle: h.start == h.end
@@ -55,6 +58,7 @@ class HolidaysWidget extends StatelessWidget {
                   ? l10n.holidaysNow
                   : daysText(context, h.daysUntil),
             ),
+          ),
         ],
       );
     },

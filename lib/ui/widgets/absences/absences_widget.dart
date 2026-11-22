@@ -7,6 +7,8 @@ import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/ui/core/error_messages.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
+import 'package:waylight_mobile/ui/core/widget_size_scope.dart';
+import 'package:waylight_mobile/ui/core/widgets/tile_rows.dart';
 import 'package:waylight_mobile/ui/core/widgets/view_model_host.dart';
 import 'package:waylight_mobile/ui/core/widgets/widget_frame.dart';
 import 'package:waylight_mobile/ui/widgets/absences/absences_view_model.dart';
@@ -70,6 +72,8 @@ class _List extends StatelessWidget {
 
   Widget _row(BuildContext context, Absence a) {
     final l10n = context.l10n;
+    // Rows keep to one line in a tile, which fits them by height.
+    final lines = WidgetSizeScope.inGrid(context) ? 1 : null;
     final details = [
       absenceKindLabel(l10n, a.kind),
       _period(context, a),
@@ -79,8 +83,8 @@ class _List extends StatelessWidget {
     return ListTile(
       contentPadding: EdgeInsets.zero,
       dense: true,
-      title: Text(a.name),
-      subtitle: Text(details),
+      title: Text(a.name, maxLines: lines, overflow: TextOverflow.ellipsis),
+      subtitle: Text(details, maxLines: lines, overflow: TextOverflow.ellipsis),
       trailing: a.editable && viewModel.canEnter
           ? IconButton(
               tooltip: l10n.absenceEdit(a.name),
@@ -101,18 +105,28 @@ class _List extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text(l10n.absencesToday, style: style),
-        if (today.isEmpty)
-          Text(l10n.absencesNobodyToday)
-        else
-          for (final a in today) _row(context, a),
-        const SizedBox(height: Dimens.gapSmall),
-        Text(l10n.absencesWeek, style: style),
-        if (later.isEmpty)
-          Text(l10n.absencesNobodyWeek)
-        else
-          for (final a in later) _row(context, a),
-        if (viewModel.canEnter)
+        // The headings are rows of the tile too, so it never ends on one.
+        TileRows<Widget>(
+          items: [
+            Text(l10n.absencesToday, style: style),
+            if (today.isEmpty)
+              Text(l10n.absencesNobodyToday)
+            else
+              for (final a in today) _row(context, a),
+            Padding(
+              padding: const EdgeInsets.only(top: Dimens.gapSmall),
+              child: Text(l10n.absencesWeek, style: style),
+            ),
+            if (later.isEmpty)
+              Text(l10n.absencesNobodyWeek)
+            else
+              for (final a in later) _row(context, a),
+          ],
+          rowHeight: TileRows.twoLineRowHeight,
+          rowBuilder: (context, row) => row,
+        ),
+        // Entering is one tap away in the full view.
+        if (viewModel.canEnter && !WidgetSizeScope.inGrid(context))
           Align(
             alignment: AlignmentDirectional.centerStart,
             child: TextButton.icon(

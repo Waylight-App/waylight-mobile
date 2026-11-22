@@ -5,6 +5,7 @@ import 'package:waylight_mobile/data/repositories/widget_data/queries/informatio
 import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/domain/models/information.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
+import 'package:waylight_mobile/ui/core/widgets/tile_rows.dart';
 import 'package:waylight_mobile/ui/widgets/common/simple_widget.dart';
 import 'package:waylight_mobile/ui/widgets/common/widget_rows.dart';
 
@@ -35,9 +36,8 @@ class StudyWidget extends StatelessWidget {
       // Credits are formatted without decimals unless they have some.
       String ects(double v) =>
           v == v.roundToDouble() ? '${v.round()}' : number.format(v);
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
+      return TileRows<Widget>(
+        items: [
           MeterRow(
             label: l10n.studyCredits(
               ects(study.passedEcts),
@@ -54,6 +54,8 @@ class StudyWidget extends StatelessWidget {
           for (final m in study.inProgress)
             InfoRow(title: m, subtitle: l10n.studyInProgress),
         ],
+        rowHeight: TileRows.twoLineRowHeight,
+        rowBuilder: (context, row) => row,
       );
     },
   );
