@@ -6,7 +6,9 @@ import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/domain/models/home_server.dart';
 import 'package:waylight_mobile/routing/routes.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
+import 'package:waylight_mobile/ui/core/widget_size_scope.dart';
 import 'package:waylight_mobile/ui/core/widgets/compact_lines.dart';
+import 'package:waylight_mobile/ui/core/widgets/tile_rows.dart';
 import 'package:waylight_mobile/ui/widgets/common/simple_widget.dart';
 import 'package:waylight_mobile/ui/widgets/common/widget_rows.dart';
 
@@ -46,8 +48,10 @@ class TimelineWidget extends StatelessWidget {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          for (final e in entries.take(shown))
-            InfoRow(
+          TileRows(
+            items: entries.take(shown).toList(),
+            rowHeight: TileRows.twoLineRowHeight,
+            rowBuilder: (context, e) => InfoRow(
               leading: StatusDot(
                 tone: switch (e.severity) {
                   'critical' => Tone.critical,
@@ -60,13 +64,15 @@ class TimelineWidget extends StatelessWidget {
               subtitle:
                   '${DateFormat.MMMd(locale).add_Hm().format(e.at.toLocal())} · ${e.subject}',
             ),
-          Align(
-            alignment: Alignment.centerRight,
-            child: TextButton(
-              onPressed: () => context.push(Routes.timeline),
-              child: Text(context.l10n.timelineOpen),
-            ),
           ),
+          if (!WidgetSizeScope.inGrid(context))
+            Align(
+              alignment: Alignment.centerRight,
+              child: TextButton(
+                onPressed: () => context.push(Routes.timeline),
+                child: Text(context.l10n.timelineOpen),
+              ),
+            ),
         ],
       );
     },

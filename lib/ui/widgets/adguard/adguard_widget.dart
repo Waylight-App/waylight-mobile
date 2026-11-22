@@ -8,6 +8,7 @@ import 'package:waylight_mobile/data/repositories/widget_data/queries/network.da
 import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/domain/models/network.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
+import 'package:waylight_mobile/ui/core/widgets/tile_rows.dart';
 import 'package:waylight_mobile/ui/widgets/common/admin_actions.dart';
 import 'package:waylight_mobile/ui/widgets/common/compact_state_widget.dart';
 import 'package:waylight_mobile/ui/widgets/common/simple_widget.dart';
@@ -48,9 +49,8 @@ class AdguardWidget extends StatelessWidget {
       final number = NumberFormat.decimalPattern(
         Localizations.localeOf(context).toLanguageTag(),
       );
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
+      return TileRows<Widget>(
+        items: [
           InfoRow(
             leading: StatusDot(
               tone: stats.protectionEnabled ? Tone.ok : Tone.warning,
@@ -73,6 +73,8 @@ class AdguardWidget extends StatelessWidget {
           for (final (domain, count) in stats.topBlocked.take(3))
             InfoRow(title: domain, trailing: number.format(count)),
         ],
+        rowHeight: TileRows.twoLineRowHeight,
+        rowBuilder: (context, row) => row,
       );
     },
   );

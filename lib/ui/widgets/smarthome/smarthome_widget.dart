@@ -6,6 +6,9 @@ import 'package:waylight_mobile/domain/models/actions.dart';
 import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/routing/routes.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
+import 'package:waylight_mobile/ui/core/themes/dimens.dart';
+import 'package:waylight_mobile/ui/core/widget_size_scope.dart';
+import 'package:waylight_mobile/ui/core/widgets/tile_rows.dart';
 import 'package:waylight_mobile/ui/widgets/common/compact_state_widget.dart';
 import 'package:waylight_mobile/ui/widgets/common/items_view_model.dart';
 import 'package:waylight_mobile/ui/widgets/common/items_widget.dart';
@@ -87,8 +90,10 @@ class SmartHomeWidget extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            for (final e in vm.items)
-              SmartEntityTile(
+            TileRows(
+              items: vm.items,
+              rowHeight: Dimens.tapTarget + 8,
+              rowBuilder: (context, e) => SmartEntityTile(
                 entity: e,
                 canAct: vm.canEdit,
                 onAct: (e, {on}) => vm.change(
@@ -97,13 +102,15 @@ class SmartHomeWidget extends StatelessWidget {
                   (server) => home.act(server, e.id),
                 ),
               ),
-            Align(
-              alignment: Alignment.centerRight,
-              child: TextButton(
-                onPressed: () => context.push(Routes.smartHome),
-                child: Text(context.l10n.smartHomeAll),
-              ),
             ),
+            if (!WidgetSizeScope.inGrid(context))
+              Align(
+                alignment: Alignment.centerRight,
+                child: TextButton(
+                  onPressed: () => context.push(Routes.smartHome),
+                  child: Text(context.l10n.smartHomeAll),
+                ),
+              ),
           ],
         );
       },

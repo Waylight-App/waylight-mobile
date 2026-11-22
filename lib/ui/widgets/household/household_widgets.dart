@@ -8,6 +8,7 @@ import 'package:waylight_mobile/domain/models/household.dart';
 import 'package:waylight_mobile/domain/models/server_address.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
+import 'package:waylight_mobile/ui/core/widgets/tile_rows.dart';
 import 'package:waylight_mobile/ui/widgets/common/compact_state_widget.dart';
 import 'package:waylight_mobile/ui/widgets/common/items_view_model.dart';
 import 'package:waylight_mobile/ui/widgets/common/items_widget.dart';
@@ -365,8 +366,12 @@ class _HouseholdList<T> extends StatelessWidget {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              for (final item in viewModel.items)
-                row(context, viewModel, repository, item),
+              TileRows(
+                items: viewModel.items,
+                rowHeight: TileRows.twoLineRowHeight + 8,
+                rowBuilder: (context, item) =>
+                    row(context, viewModel, repository, item),
+              ),
               const SizedBox(height: Dimens.gapTiny),
             ],
           );

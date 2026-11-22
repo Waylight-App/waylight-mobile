@@ -7,6 +7,7 @@ import 'package:waylight_mobile/domain/models/network.dart';
 import 'package:waylight_mobile/ui/core/link_opener.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/widgets/compact_lines.dart';
+import 'package:waylight_mobile/ui/core/widgets/tile_rows.dart';
 import 'package:waylight_mobile/ui/widgets/common/simple_widget.dart';
 import 'package:waylight_mobile/ui/widgets/common/widget_rows.dart';
 
@@ -38,9 +39,8 @@ class FritzboxWidget extends StatelessWidget {
     },
     builder: (context, box) {
       final l10n = context.l10n;
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
+      return TileRows<Widget>(
+        items: [
           InfoRow(
             leading: StatusDot(
               tone: box.connected ? Tone.ok : Tone.critical,
@@ -64,6 +64,8 @@ class FritzboxWidget extends StatelessWidget {
               percent: box.upstreamPercent!,
             ),
         ],
+        rowHeight: TileRows.twoLineRowHeight,
+        rowBuilder: (context, row) => row,
       );
     },
   );
@@ -98,8 +100,10 @@ class CallsWidget extends StatelessWidget {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          for (final c in calls.take(shown))
-            InfoRow(
+          TileRows(
+            items: calls.take(shown).toList(),
+            rowHeight: TileRows.twoLineRowHeight,
+            rowBuilder: (context, c) => InfoRow(
               leading: Text(
                 switch (c.type) {
                   CallType.incoming => '↙️',
@@ -121,6 +125,7 @@ class CallsWidget extends StatelessWidget {
               onTap: () => LinkOpener.of(context)
                   .open(Uri(scheme: 'tel', path: c.number.replaceAll(' ', ''))),
             ),
+          ),
         ],
       );
     },

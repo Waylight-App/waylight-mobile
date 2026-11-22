@@ -6,6 +6,8 @@ import 'package:waylight_mobile/domain/models/actions.dart';
 import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/ui/core/link_opener.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
+import 'package:waylight_mobile/ui/core/widget_size_scope.dart';
+import 'package:waylight_mobile/ui/core/widgets/tile_rows.dart';
 import 'package:waylight_mobile/ui/widgets/common/compact_state_widget.dart';
 import 'package:waylight_mobile/ui/widgets/common/items_view_model.dart';
 import 'package:waylight_mobile/ui/widgets/common/items_widget.dart';
@@ -51,8 +53,10 @@ class ParcelsWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           if (vm.items.isEmpty) Text(l10n.parcelsEmpty),
-          for (final p in vm.items)
-            InfoRow(
+          TileRows(
+            items: vm.items,
+            rowHeight: TileRows.twoLineRowHeight,
+            rowBuilder: (context, p) => InfoRow(
               leading: StatusDot(
                 tone: switch (p.status) {
                   ParcelStatus.delivered => Tone.ok,
@@ -76,7 +80,9 @@ class ParcelsWidget extends StatelessWidget {
                   ? () => _details(context, vm, parcels, p)
                   : null,
             ),
-          if (vm.canEdit)
+          ),
+          // Adding is one tap away in the full view.
+          if (vm.canEdit && !WidgetSizeScope.inGrid(context))
             Align(
               alignment: Alignment.centerRight,
               child: TextButton.icon(

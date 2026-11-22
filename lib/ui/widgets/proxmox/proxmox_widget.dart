@@ -7,6 +7,7 @@ import 'package:waylight_mobile/data/repositories/widget_data/queries/home_serve
 import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/domain/models/home_server.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
+import 'package:waylight_mobile/ui/core/widgets/tile_rows.dart';
 import 'package:waylight_mobile/ui/widgets/common/admin_actions.dart';
 import 'package:waylight_mobile/ui/widgets/common/compact_state_widget.dart';
 import 'package:waylight_mobile/ui/widgets/common/simple_widget.dart';
@@ -42,26 +43,35 @@ class ProxmoxWidget extends StatelessWidget {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          for (final n in pve.nodes) ...[
-            MeterRow(
-              label: '${n.name} · ${l10n.systemCpu}',
-              percent: n.cpuPercent,
-            ),
-            MeterRow(
-              label: '${n.name} · ${l10n.systemMemory}',
-              percent: n.memoryPercent,
-            ),
-          ],
-          for (final g in pve.guests)
-            InfoRow(
-              leading: StatusDot(
-                tone: g.running ? Tone.ok : Tone.neutral,
-                label: g.running ? l10n.proxmoxRunning : l10n.proxmoxStopped,
-              ),
-              title: g.name,
-              subtitle: '${g.id} · ${g.kind == 'lxc' ? 'LXC' : 'VM'}',
-              onTap: g.actions ? () => _power(context, g) : null,
-            ),
+          // The meters of the nodes come first, then the guests.
+          TileRows<Widget>(
+            items: [
+              for (final n in pve.nodes) ...[
+                MeterRow(
+                  label: '${n.name} · ${l10n.systemCpu}',
+                  percent: n.cpuPercent,
+                ),
+                MeterRow(
+                  label: '${n.name} · ${l10n.systemMemory}',
+                  percent: n.memoryPercent,
+                ),
+              ],
+              for (final g in pve.guests)
+                InfoRow(
+                  leading: StatusDot(
+                    tone: g.running ? Tone.ok : Tone.neutral,
+                    label: g.running
+                        ? l10n.proxmoxRunning
+                        : l10n.proxmoxStopped,
+                  ),
+                  title: g.name,
+                  subtitle: '${g.id} · ${g.kind == 'lxc' ? 'LXC' : 'VM'}',
+                  onTap: g.actions ? () => _power(context, g) : null,
+                ),
+            ],
+            rowHeight: TileRows.twoLineRowHeight,
+            rowBuilder: (context, row) => row,
+          ),
         ],
       );
     },

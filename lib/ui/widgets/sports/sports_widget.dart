@@ -4,6 +4,7 @@ import 'package:waylight_mobile/data/repositories/widget_data/queries/informatio
 import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/domain/models/information.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
+import 'package:waylight_mobile/ui/core/widgets/tile_rows.dart';
 import 'package:waylight_mobile/ui/widgets/common/simple_widget.dart';
 import 'package:waylight_mobile/ui/widgets/common/widget_rows.dart';
 
@@ -36,13 +37,17 @@ class SportsWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(table.league, style: Theme.of(context).textTheme.labelLarge),
-          for (final r in table.rows.take(6))
-            InfoRow(
+          TileRows(
+            items: table.rows.take(6).toList(),
+            rowHeight: TileRows.twoLineRowHeight,
+            reserved: 24,
+            rowBuilder: (context, r) => InfoRow(
               leading: Text('${r.position}.'),
               title: r.team,
               subtitle: context.l10n.sportsPlayed(r.played),
               trailing: context.l10n.sportsPoints(r.points),
             ),
+          ),
         ],
       ),
     );

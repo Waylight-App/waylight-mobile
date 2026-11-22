@@ -6,6 +6,8 @@ import 'package:waylight_mobile/ui/core/error_messages.dart';
 import 'package:waylight_mobile/ui/core/link_opener.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
+import 'package:waylight_mobile/ui/core/widget_size_scope.dart';
+import 'package:waylight_mobile/ui/core/widgets/tile_rows.dart';
 import 'package:waylight_mobile/ui/core/widgets/view_model_host.dart';
 import 'package:waylight_mobile/ui/core/widgets/widget_frame.dart';
 import 'package:waylight_mobile/ui/widgets/bookmarks/bookmark_dialog.dart';
@@ -42,29 +44,43 @@ class BookmarksWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             if (groups.isEmpty) Text(l10n.bookmarksEmpty),
-            for (final group in groups) ...[
-              if (group.name.isNotEmpty)
-                Padding(
-                  padding: const EdgeInsets.only(top: Dimens.gapSmall),
-                  child: Text(
-                    group.name,
-                    style: Theme.of(context).textTheme.labelLarge,
+            // A link that starts a group carries the heading of the group,
+            // so a tile never ends on a heading alone.
+            TileRows(
+              items: [
+                for (final group in groups)
+                  for (final (i, link) in group.links.indexed)
+                    (link: link, heading: i == 0 ? group.name : ''),
+              ],
+              rowHeight: TileRows.lineRowHeight + 8,
+              rowBuilder: (context, entry) => Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  if (entry.heading.isNotEmpty)
+                    Padding(
+                      padding: const EdgeInsets.only(top: Dimens.gapSmall),
+                      child: Text(
+                        entry.heading,
+                        style: Theme.of(context).textTheme.labelLarge,
+                      ),
+                    ),
+                  _LinkTile(
+                    link: entry.link,
+                    onEdit: () => _edit(context, viewModel, entry.link),
                   ),
-                ),
-              for (final link in group.links)
-                _LinkTile(
-                  link: link,
-                  onEdit: () => _edit(context, viewModel, link),
-                ),
-            ],
-            Align(
-              alignment: Alignment.centerRight,
-              child: TextButton.icon(
-                icon: const Icon(Icons.add),
-                label: Text(l10n.bookmarkAdd),
-                onPressed: () => _edit(context, viewModel, null),
+                ],
               ),
             ),
+            // Adding is one tap away in the full view.
+            if (!WidgetSizeScope.inGrid(context))
+              Align(
+                alignment: Alignment.centerRight,
+                child: TextButton.icon(
+                  icon: const Icon(Icons.add),
+                  label: Text(l10n.bookmarkAdd),
+                  onPressed: () => _edit(context, viewModel, null),
+                ),
+              ),
           ],
         ),
       ),

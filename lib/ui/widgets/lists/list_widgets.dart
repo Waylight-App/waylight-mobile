@@ -9,6 +9,7 @@ import 'package:waylight_mobile/ui/core/link_opener.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
 import 'package:waylight_mobile/ui/core/widgets/compact_lines.dart';
+import 'package:waylight_mobile/ui/core/widgets/tile_rows.dart';
 import 'package:waylight_mobile/ui/widgets/common/simple_widget.dart';
 import 'package:waylight_mobile/ui/widgets/common/widget_rows.dart';
 
@@ -106,45 +107,57 @@ class ListWidget extends StatelessWidget {
       final locale = Localizations.localeOf(context).toLanguageTag();
       final date = DateFormat.MMMd(locale);
       final time = DateFormat.MMMd(locale).add_Hm();
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          for (final s in shown) ...[
-            if (sectionTitle(l10n, s.title) case final heading?) ...[
-              const SizedBox(height: Dimens.gapTiny),
-              Text(heading, style: Theme.of(context).textTheme.labelLarge),
-            ],
-            for (final item in s.items.take(maxItems))
-              InfoRow(
-                title: item.title,
-                subtitle: [
-                  if (item.detail.isNotEmpty) item.detail,
-                  if (item.at case final at?)
-                    at.hour == 0 && at.minute == 0
-                        ? date.format(at)
-                        : time.format(at),
-                ].join(' · '),
-                leading: item.tone == FeedTone.neutral
-                    ? null
-                    : StatusDot(
-                        tone: item.tone == FeedTone.critical
-                            ? Tone.critical
-                            : Tone.warning,
-                        label: '',
-                      ),
-                onTap: item.url == null
-                    ? null
-                    : () => LinkOpener.of(context).open(item.url!),
-              ),
-            if (s.more + (s.items.length - maxItems).clamp(0, 999) > 0)
-              Text(
-                l10n.listMore(
-                  s.more + (s.items.length - maxItems).clamp(0, 999),
+      // A section's heading sits on its first row, so a tile never ends on
+      // a heading alone.
+      final rows = <Widget>[
+        for (final s in shown) ...[
+          for (final (i, item) in s.items.take(maxItems).indexed)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                if (i == 0)
+                  if (sectionTitle(l10n, s.title) case final heading?) ...[
+                    const SizedBox(height: Dimens.gapTiny),
+                    Text(
+                      heading,
+                      style: Theme.of(context).textTheme.labelLarge,
+                    ),
+                  ],
+                InfoRow(
+                  title: item.title,
+                  subtitle: [
+                    if (item.detail.isNotEmpty) item.detail,
+                    if (item.at case final at?)
+                      at.hour == 0 && at.minute == 0
+                          ? date.format(at)
+                          : time.format(at),
+                  ].join(' · '),
+                  leading: item.tone == FeedTone.neutral
+                      ? null
+                      : StatusDot(
+                          tone: item.tone == FeedTone.critical
+                              ? Tone.critical
+                              : Tone.warning,
+                          label: '',
+                        ),
+                  onTap: item.url == null
+                      ? null
+                      : () => LinkOpener.of(context).open(item.url!),
                 ),
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
-          ],
+              ],
+            ),
+          if (s.more + (s.items.length - maxItems).clamp(0, 999) > 0)
+            Text(
+              l10n.listMore(s.more + (s.items.length - maxItems).clamp(0, 999)),
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
         ],
+      ];
+      return TileRows<Widget>(
+        items: rows,
+        // A heading above a row takes some more.
+        rowHeight: TileRows.twoLineRowHeight + 16,
+        rowBuilder: (context, row) => row,
       );
     },
   );
