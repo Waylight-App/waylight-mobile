@@ -3,6 +3,7 @@ import 'package:waylight_mobile/data/repositories/widget_data/queries/home_serve
 import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/domain/models/home_server.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
+import 'package:waylight_mobile/ui/core/widgets/tile_rows.dart';
 import 'package:waylight_mobile/ui/widgets/common/compact_state_widget.dart';
 import 'package:waylight_mobile/ui/widgets/common/simple_widget.dart';
 import 'package:waylight_mobile/ui/widgets/common/widget_rows.dart';
@@ -39,8 +40,10 @@ class DiskHealthWidget extends StatelessWidget {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          for (final d in disks)
-            InfoRow(
+          TileRows(
+            items: disks,
+            rowHeight: TileRows.twoLineRowHeight,
+            rowBuilder: (context, d) => InfoRow(
               leading: StatusDot(
                 tone: _tone(d.status),
                 label: _label(context, d.status),
@@ -55,6 +58,7 @@ class DiskHealthWidget extends StatelessWidget {
               trailing: _label(context, d.status),
               trailingTone: _tone(d.status),
             ),
+          ),
         ],
       );
     },

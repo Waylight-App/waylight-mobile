@@ -9,6 +9,7 @@ import 'package:waylight_mobile/domain/models/server_address.dart';
 import 'package:waylight_mobile/ui/core/error_messages.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
+import 'package:waylight_mobile/ui/core/widgets/tile_rows.dart';
 import 'package:waylight_mobile/ui/widgets/common/admin_actions.dart';
 import 'package:waylight_mobile/ui/widgets/common/compact_state_widget.dart';
 import 'package:waylight_mobile/ui/widgets/common/simple_widget.dart';
@@ -64,8 +65,11 @@ class DockerWidget extends StatelessWidget {
             style: Theme.of(context).textTheme.bodySmall,
           ),
           const SizedBox(height: Dimens.gapTiny),
-          for (final c in sorted)
-            InfoRow(
+          TileRows(
+            items: sorted,
+            rowHeight: TileRows.twoLineRowHeight,
+            reserved: 28,
+            rowBuilder: (context, c) => InfoRow(
               leading: StatusDot(tone: tone(c), label: c.state),
               title: c.name,
               subtitle: c.status,
@@ -73,6 +77,7 @@ class DockerWidget extends StatelessWidget {
               trailingTone: Tone.critical,
               onTap: () => _actions(context, c.name),
             ),
+          ),
         ],
       );
     },

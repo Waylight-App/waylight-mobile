@@ -3,6 +3,7 @@ import 'package:waylight_mobile/data/repositories/widget_data/queries/home_serve
 import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/domain/models/home_server.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
+import 'package:waylight_mobile/ui/core/widgets/tile_rows.dart';
 import 'package:waylight_mobile/ui/widgets/common/compact_state_widget.dart';
 import 'package:waylight_mobile/ui/widgets/common/remote_widget.dart';
 import 'package:waylight_mobile/ui/widgets/common/widget_rows.dart';
@@ -40,8 +41,10 @@ class BackupsWidget extends StatelessWidget {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          for (final s in sorted)
-            InfoRow(
+          TileRows(
+            items: sorted,
+            rowHeight: TileRows.twoLineRowHeight,
+            rowBuilder: (context, s) => InfoRow(
               leading: StatusDot(
                 tone: _tone(s.state),
                 label: _label(context, s.state),
@@ -59,6 +62,7 @@ class BackupsWidget extends StatelessWidget {
                   : _label(context, s.state),
               trailingTone: _tone(s.state),
             ),
+          ),
         ],
       );
     },
