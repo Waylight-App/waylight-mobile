@@ -6,6 +6,7 @@ import 'package:waylight_mobile/data/repositories/widget_data/widget_data_reposi
 import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/domain/models/information.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
+import 'package:waylight_mobile/ui/core/widgets/compact_lines.dart';
 import 'package:waylight_mobile/ui/widgets/common/simple_widget.dart';
 import 'package:waylight_mobile/ui/widgets/common/widget_rows.dart';
 
@@ -52,6 +53,25 @@ class AppOverviewWidget extends StatelessWidget {
     defaultTitle: title,
     query: query,
     interval: const Duration(minutes: 30),
+    compact: (context, app, size) {
+      final l10n = context.l10n;
+      final n = NumberFormat.decimalPattern(
+        Localizations.localeOf(context).toLanguageTag(),
+      );
+      final updates = app.appUpdates ?? 0;
+      return CompactLines(
+        headline: app.maintenance
+            ? l10n.appMaintenance
+            : updates > 0
+            ? '${l10n.appUpdates}: ${n.format(updates)}'
+            : title,
+        detail: [
+          if (app.photos != null) '${l10n.appPhotos} ${n.format(app.photos)}',
+          if (app.users != null) '${l10n.appUsers} ${n.format(app.users)}',
+        ].join(' · '),
+        size: size,
+      );
+    },
     builder: (context, app) {
       final l10n = context.l10n;
       final n = NumberFormat.decimalPattern(

@@ -6,6 +6,7 @@ import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/domain/models/home_server.dart';
 import 'package:waylight_mobile/routing/routes.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
+import 'package:waylight_mobile/ui/core/widgets/compact_lines.dart';
 import 'package:waylight_mobile/ui/widgets/common/simple_widget.dart';
 import 'package:waylight_mobile/ui/widgets/common/widget_rows.dart';
 
@@ -30,6 +31,15 @@ class TimelineWidget extends StatelessWidget {
     defaultTitle: context.l10n.timelineTitle,
     query: timelineQuery,
     interval: const Duration(minutes: 2),
+    compact: (context, entries, size) {
+      final latest = entries.firstOrNull;
+      if (latest == null) return Text(context.l10n.timelineEmpty);
+      return CompactLines(
+        headline: latest.message,
+        detail: latest.subject,
+        size: size,
+      );
+    },
     builder: (context, entries) {
       if (entries.isEmpty) return Text(context.l10n.timelineEmpty);
       final locale = Localizations.localeOf(context).toLanguageTag();

@@ -4,6 +4,7 @@ import 'package:waylight_mobile/data/repositories/widget_data/queries/everyday.d
 import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/domain/models/everyday.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
+import 'package:waylight_mobile/ui/core/widgets/compact_lines.dart';
 import 'package:waylight_mobile/ui/widgets/common/simple_widget.dart';
 import 'package:waylight_mobile/ui/widgets/common/widget_rows.dart';
 
@@ -25,6 +26,18 @@ class HolidaysWidget extends StatelessWidget {
     defaultTitle: context.l10n.holidaysTitle,
     query: holidaysQuery,
     interval: const Duration(hours: 6),
+    compact: (context, holidays, size) {
+      final l10n = context.l10n;
+      final next = holidays.firstOrNull;
+      if (next == null) return Text(l10n.holidaysEmpty);
+      return CompactLines(
+        headline: next.school ? next.name : holidayName(l10n, next.key),
+        detail: next.current
+            ? l10n.holidaysNow
+            : daysText(context, next.daysUntil),
+        size: size,
+      );
+    },
     builder: (context, holidays) {
       final l10n = context.l10n;
       if (holidays.isEmpty) return Text(l10n.holidaysEmpty);
