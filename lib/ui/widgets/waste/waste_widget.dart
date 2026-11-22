@@ -7,8 +7,10 @@ import 'package:waylight_mobile/domain/models/waste_collection.dart';
 import 'package:waylight_mobile/ui/core/error_messages.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
+import 'package:waylight_mobile/ui/core/widgets/compact_lines.dart';
 import 'package:waylight_mobile/ui/core/widgets/view_model_host.dart';
 import 'package:waylight_mobile/ui/core/widgets/widget_frame.dart';
+import 'package:waylight_mobile/ui/widgets/common/widget_rows.dart';
 import 'package:waylight_mobile/ui/widgets/waste/waste_view_model.dart';
 import 'package:waylight_mobile/utils/result.dart';
 
@@ -51,6 +53,17 @@ class WasteWidget extends StatelessWidget {
                 ).ignore(),
               )
             : null,
+        compact: (context, collections, size) {
+          if (collections.isEmpty) return Text(l10n.wasteEmpty);
+          final next = collections.reduce(
+            (a, b) => b.daysUntil < a.daysUntil ? b : a,
+          );
+          return CompactLines(
+            headline: '${next.icon} ${next.label}'.trim(),
+            detail: daysText(context, next.daysUntil),
+            size: size,
+          );
+        },
         builder: (context, collections) => collections.isEmpty
             ? Text(l10n.wasteEmpty)
             : Column(

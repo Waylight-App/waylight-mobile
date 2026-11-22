@@ -5,6 +5,7 @@ import 'package:waylight_mobile/data/repositories/widget_data/queries/informatio
 import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/domain/models/information.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
+import 'package:waylight_mobile/ui/core/widgets/compact_lines.dart';
 import 'package:waylight_mobile/ui/widgets/common/simple_widget.dart';
 import 'package:waylight_mobile/ui/widgets/common/widget_rows.dart';
 
@@ -49,6 +50,24 @@ class MarketsWidget extends StatelessWidget {
       'symbols': symbolsOf(widget.config).join(','),
     }),
     interval: const Duration(minutes: 15),
+    compact: (context, quotes, size) {
+      final first = quotes.firstOrNull;
+      if (first == null) return const Text('–');
+      final number = NumberFormat.decimalPatternDigits(
+        locale: Localizations.localeOf(context).toLanguageTag(),
+        decimalDigits: 2,
+      );
+      final change = first.changePercent;
+      return CompactLines(
+        headline: label(first.symbol),
+        detail: [
+          if (first.value != null) number.format(first.value),
+          if (change != null)
+            '${change >= 0 ? '+' : ''}${number.format(change)} %',
+        ].join(' · '),
+        size: size,
+      );
+    },
     builder: (context, quotes) {
       final locale = Localizations.localeOf(context).toLanguageTag();
       final number = NumberFormat.decimalPatternDigits(

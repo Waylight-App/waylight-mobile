@@ -353,6 +353,8 @@
   "habitsStreak": "{current} Tage in Folge · Rekord {best}",
   "rssTitle": "Feeds",
   "rssCaughtUp": "Alles gelesen.",
+  "rssUnreadCount": "{count, plural, =1{1 ungelesener Beitrag} other{{count} ungelesene Beiträge}}",
+  "readLaterUnreadCount": "{count, plural, =1{1 ungelesener Artikel} other{{count} ungelesene Artikel}}",
   "rssMarkRead": "Als gelesen markieren",
   "rssMarkUnread": "Als ungelesen markieren",
   "parcelsTitle": "Pakete",
