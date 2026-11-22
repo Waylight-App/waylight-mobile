@@ -2216,6 +2216,18 @@ abstract class AppLocalizations {
   /// **'All caught up.'**
   String get rssCaughtUp;
 
+  /// Unread feed items, in a small tile.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 unread item} other{{count} unread items}}'**
+  String rssUnreadCount(int count);
+
+  /// Unread read-later articles, in a small tile.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 unread article} other{{count} unread articles}}'**
+  String readLaterUnreadCount(int count);
+
   /// Button on a feed item.
   ///
   /// In en, this message translates to:

@@ -6,6 +6,7 @@ import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/domain/models/information.dart';
 import 'package:waylight_mobile/ui/core/link_opener.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
+import 'package:waylight_mobile/ui/core/widgets/compact_lines.dart';
 import 'package:waylight_mobile/ui/widgets/common/simple_widget.dart';
 import 'package:waylight_mobile/ui/widgets/common/widget_rows.dart';
 
@@ -28,6 +29,23 @@ class FuelWidget extends StatelessWidget {
     defaultTitle: context.l10n.fuelTitle,
     query: fuelQuery,
     interval: const Duration(minutes: 10),
+    compact: (context, fuel, size) {
+      final l10n = context.l10n;
+      final station = fuel.stations.where((s) => s.price != null).firstOrNull;
+      if (station == null) return Text(l10n.fuelEmpty);
+      final price = NumberFormat.currency(
+        locale: Localizations.localeOf(context).toLanguageTag(),
+        symbol: '€',
+        decimalDigits: 3,
+      );
+      return CompactLines(
+        headline: price.format(station.price),
+        detail:
+            '${fuel.fuel.toUpperCase()} · '
+            '${station.brand.isEmpty ? station.name : station.brand}',
+        size: size,
+      );
+    },
     builder: (context, fuel) {
       final l10n = context.l10n;
       if (fuel.stations.isEmpty) return Text(l10n.fuelEmpty);

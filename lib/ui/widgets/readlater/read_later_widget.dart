@@ -7,6 +7,7 @@ import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/domain/models/media.dart';
 import 'package:waylight_mobile/routing/routes.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
+import 'package:waylight_mobile/ui/core/widgets/compact_lines.dart';
 import 'package:waylight_mobile/ui/widgets/common/items_view_model.dart';
 import 'package:waylight_mobile/ui/widgets/common/items_widget.dart';
 import 'package:waylight_mobile/ui/widgets/common/widget_rows.dart';
@@ -37,6 +38,18 @@ class ReadLaterWidget extends StatelessWidget {
         serverRepository: context.read(),
         fetch: repo.articles,
         id: (a) => a.id,
+      );
+    },
+    compact: (context, vm, size) {
+      final l10n = context.l10n;
+      final unread = vm.items
+          .where((a) => a.status == ArticleStatus.unread)
+          .toList();
+      if (unread.isEmpty) return Text(l10n.listEmpty);
+      return CompactLines(
+        headline: l10n.readLaterUnreadCount(unread.length),
+        detail: unread.first.title,
+        size: size,
       );
     },
     builder: (context, vm) {

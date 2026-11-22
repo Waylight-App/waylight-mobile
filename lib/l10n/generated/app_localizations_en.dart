@@ -1210,6 +1210,28 @@ class AppLocalizationsEn extends AppLocalizations {
   String get rssCaughtUp => 'All caught up.';
 
   @override
+  String rssUnreadCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count unread items',
+      one: '1 unread item',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String readLaterUnreadCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count unread articles',
+      one: '1 unread article',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get rssMarkRead => 'Mark as read';
 
   @override

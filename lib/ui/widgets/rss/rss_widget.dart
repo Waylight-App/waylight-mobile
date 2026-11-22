@@ -10,6 +10,7 @@ import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/routing/routes.dart';
 import 'package:waylight_mobile/ui/core/link_opener.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
+import 'package:waylight_mobile/ui/core/widgets/compact_lines.dart';
 import 'package:waylight_mobile/ui/widgets/common/items_view_model.dart';
 import 'package:waylight_mobile/ui/widgets/common/items_widget.dart';
 
@@ -51,6 +52,16 @@ class RssWidget extends StatelessWidget {
             limit: limit,
           ),
           id: (a) => a.id,
+        );
+      },
+      compact: (context, vm, size) {
+        final l10n = context.l10n;
+        final unread = vm.items.where((a) => !a.read).toList();
+        if (unread.isEmpty) return Text(l10n.rssCaughtUp);
+        return CompactLines(
+          headline: l10n.rssUnreadCount(unread.length),
+          detail: unread.first.title,
+          size: size,
         );
       },
       builder: (context, vm) {

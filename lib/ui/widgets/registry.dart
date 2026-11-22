@@ -51,6 +51,11 @@ const nativeWidgets = WidgetRegistry(
   // A clock needs no more than half a screen; kinds not listed offer every
   // size.
   sizes: {
+    // The radar is a square picture; it does not fit a small tile or a strip.
+    'radar': WidgetSizes([
+      WidgetSize.medium,
+      WidgetSize.large,
+    ], defaultSize: WidgetSize.large),
     'clock': WidgetSizes([
       WidgetSize.small,
       WidgetSize.medium,
