@@ -2519,4 +2519,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String backupHealthOffsite(String reason) {
     return 'Externe Kopie fehlgeschlagen: $reason';
   }
+
+  @override
+  String get kioskScan => 'QR-Code scannen';
+
+  @override
+  String get kioskScanPrompt => 'Scanne den QR-Code des Wandtablet-Assistenten';
 }

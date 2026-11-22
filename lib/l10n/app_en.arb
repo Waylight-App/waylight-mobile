@@ -1455,5 +1455,9 @@
   "backupHealthNone": "No backup yet",
   "@backupHealthNone": {"description": "Backup traffic light without any backup."},
   "backupHealthOffsite": "Off-site copy failed: {reason}",
-  "@backupHealthOffsite": {"description": "The upload of the backup to the off-site target failed.", "placeholders": {"reason": {"type": "String", "example": "connection refused"}}}
+  "@backupHealthOffsite": {"description": "The upload of the backup to the off-site target failed.", "placeholders": {"reason": {"type": "String", "example": "connection refused"}}},
+  "kioskScan": "Scan the QR code",
+  "@kioskScan": {"description": "Button in the wall display dialog that scans the QR code of the wall tablet assistant (#294)."},
+  "kioskScanPrompt": "Scan the QR code of the wall tablet assistant",
+  "@kioskScanPrompt": {"description": "Shown over the camera while scanning the QR code of a wall display."}
 }

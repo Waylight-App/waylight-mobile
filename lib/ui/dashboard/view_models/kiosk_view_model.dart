@@ -55,6 +55,9 @@ class KioskViewModel extends ChangeNotifier {
   /// The tab shown now.
   int get index => _index;
 
+  /// Whether the server asks for larger text on this display.
+  bool get largeText => _kiosk.options.largeText;
+
   /// Whether the screen is dimmed.
   bool get night => _night;
 
@@ -95,6 +98,7 @@ class KioskViewModel extends ChangeNotifier {
       _rotate = Timer.periodic(Duration(seconds: seconds), (_) => next());
     }
     _tickNight();
+    notifyListeners();
   }
 
   void _tickNight() {

@@ -8,6 +8,7 @@ final class KioskOptions {
     this.rotateSeconds = 0,
     this.nightFrom = '',
     this.nightTo = '',
+    this.largeText = false,
   });
 
   /// Seconds per tab; 0 means no rotation.
@@ -18,6 +19,9 @@ final class KioskOptions {
 
   /// End of night dimming as "HH:MM".
   final String nightTo;
+
+  /// Whether the display shows larger text, for reading across a room.
+  final bool largeText;
 
   /// Whether the screen is dimmed at [now]. A window like 22:00–06:30 runs
   /// over midnight, as on the server's web page.
@@ -42,10 +46,11 @@ final class KioskOptions {
       other is KioskOptions &&
       other.rotateSeconds == rotateSeconds &&
       other.nightFrom == nightFrom &&
-      other.nightTo == nightTo;
+      other.nightTo == nightTo &&
+      other.largeText == largeText;
 
   @override
-  int get hashCode => Object.hash(rotateSeconds, nightFrom, nightTo);
+  int get hashCode => Object.hash(rotateSeconds, nightFrom, nightTo, largeText);
 }
 
 /// The link of a kiosk display could not be read.

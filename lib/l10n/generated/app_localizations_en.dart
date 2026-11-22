@@ -2509,4 +2509,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String backupHealthOffsite(String reason) {
     return 'Off-site copy failed: $reason';
   }
+
+  @override
+  String get kioskScan => 'Scan the QR code';
+
+  @override
+  String get kioskScanPrompt => 'Scan the QR code of the wall tablet assistant';
 }

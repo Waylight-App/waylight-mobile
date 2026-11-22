@@ -5,6 +5,9 @@ import 'package:waylight_mobile/ui/core/widget_registry.dart';
 import 'package:waylight_mobile/ui/dashboard/view_models/kiosk_view_model.dart';
 import 'package:waylight_mobile/ui/dashboard/widgets/dashboard_screen.dart';
 
+/// The web display sets 125 % for large text; the app does the same.
+const _largeTextFactor = 1.25;
+
 /// The wall display (#193): full screen, the screen kept on, the kiosk's
 /// tabs read-only. Leaving needs the device credential.
 class KioskScreen extends StatelessWidget {
@@ -45,9 +48,23 @@ class KioskScreen extends StatelessWidget {
                     readOnly: true,
                   ),
                 );
+          final media = MediaQuery.of(context);
           return Stack(
             children: [
-              Positioned.fill(child: SafeArea(child: content)),
+              Positioned.fill(
+                child: SafeArea(
+                  child: vm.largeText
+                      ? MediaQuery(
+                          data: media.copyWith(
+                            textScaler: TextScaler.linear(
+                              media.textScaler.scale(1) * _largeTextFactor,
+                            ),
+                          ),
+                          child: content,
+                        )
+                      : content,
+                ),
+              ),
               // Night dimming: a dark veil the screen shows through.
               if (vm.night)
                 Positioned.fill(

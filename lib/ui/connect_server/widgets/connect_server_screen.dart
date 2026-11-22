@@ -1,5 +1,6 @@
 import 'package:material_ui/material_ui.dart';
 
+import 'package:waylight_mobile/data/repositories/scanner/scanner_repository.dart';
 import 'package:waylight_mobile/domain/models/api_exception.dart';
 import 'package:waylight_mobile/domain/models/kiosk.dart';
 import 'package:waylight_mobile/domain/models/server_address.dart';
@@ -25,6 +26,7 @@ class ConnectServerScreen extends StatefulWidget {
     required this.viewModel,
     this.onKiosk,
     this.kioskLink = '',
+    this.scanner,
     super.key,
   });
 
@@ -37,6 +39,9 @@ class ConnectServerScreen extends StatefulWidget {
 
   /// A kiosk link from a deep link; the dialog opens with it.
   final String kioskLink;
+
+  /// Reads the QR code of a wall display (#294); `null` hides the button.
+  final ScannerRepository? scanner;
 
   @override
   State<ConnectServerScreen> createState() => _ConnectServerScreenState();
@@ -57,8 +62,11 @@ class _ConnectServerScreenState extends State<ConnectServerScreen> {
 
   Future<void> _kiosk([String initial = '']) => showDialog<void>(
     context: context,
-    builder: (_) =>
-        KioskLinkDialog(onSubmit: widget.onKiosk!, initial: initial),
+    builder: (_) => KioskLinkDialog(
+      onSubmit: widget.onKiosk!,
+      initial: initial,
+      scanner: widget.scanner,
+    ),
   );
 
   @override
@@ -184,13 +192,21 @@ String? bannerError(AppLocalizations l10n, Exception error) => switch (error) {
 @visibleForTesting
 class KioskLinkDialog extends StatefulWidget {
   /// Creates the dialog.
-  const KioskLinkDialog({required this.onSubmit, this.initial = '', super.key});
+  const KioskLinkDialog({
+    required this.onSubmit,
+    this.initial = '',
+    this.scanner,
+    super.key,
+  });
 
   /// Signs in as the kiosk; an error is shown in the dialog.
   final Future<Result<void>> Function(String link) onSubmit;
 
   /// The link to start with.
   final String initial;
+
+  /// Scans the QR code of the wall tablet assistant; `null` hides the button.
+  final ScannerRepository? scanner;
 
   @override
   State<KioskLinkDialog> createState() => _KioskLinkDialogState();
@@ -200,6 +216,33 @@ class _KioskLinkDialogState extends State<KioskLinkDialog> {
   late final _link = TextEditingController(text: widget.initial);
   String? _error;
   bool _busy = false;
+  bool _canScan = false;
+
+  @override
+  void initState() {
+    super.initState();
+    widget.scanner?.available().then((ok) {
+      if (mounted) setState(() => _canScan = ok);
+    }).ignore();
+  }
+
+  /// A scanned link starts the display right away; there is nothing left
+  /// to confirm.
+  Future<void> _scan() async {
+    final l10n = context.l10n;
+    var unreadable = false;
+    final link = await widget.scanner?.scanKioskLink(
+      prompt: l10n.kioskScanPrompt,
+      raw: (_) => unreadable = true,
+    );
+    if (!mounted) return;
+    if (link == null) {
+      if (unreadable) setState(() => _error = l10n.kioskLinkInvalid);
+      return;
+    }
+    _link.text = link;
+    await _submit();
+  }
 
   @override
   void dispose() {
@@ -209,7 +252,10 @@ class _KioskLinkDialogState extends State<KioskLinkDialog> {
 
   Future<void> _submit() async {
     final l10n = context.l10n;
-    setState(() => _busy = true);
+    setState(() {
+      _busy = true;
+      _error = null;
+    });
     final result = await widget.onSubmit(_link.text);
     if (!mounted) return;
     switch (result) {
@@ -247,6 +293,14 @@ class _KioskLinkDialogState extends State<KioskLinkDialog> {
             decoration: InputDecoration(
               hintText: 'https://waylight.example.org/kiosk#…',
               errorText: _error,
+              suffixIcon: _canScan
+                  ? IconButton(
+                      key: const ValueKey('connect.kioskScan'),
+                      tooltip: l10n.kioskScan,
+                      icon: const Icon(Icons.qr_code_scanner),
+                      onPressed: _busy ? null : () => _scan().ignore(),
+                    )
+                  : null,
             ),
             onSubmitted: (_) => _submit(),
           ),

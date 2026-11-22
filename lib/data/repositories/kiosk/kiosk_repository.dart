@@ -71,7 +71,7 @@ class KioskRepository extends ChangeNotifier {
     return const Result.ok(null);
   }
 
-  /// Reads rotation and night dimming again; failures keep the last ones.
+  /// Reads rotation, night dimming and text size again; failures keep the last ones.
   Future<void> refreshOptions() async {
     final server = _servers.current;
     if (!_active || server == null) return;
@@ -90,6 +90,7 @@ class KioskRepository extends ChangeNotifier {
           final String s => s,
           _ => '',
         },
+        largeText: json['largeText'] == true,
       );
     });
     if (result case Ok(:final value) when value != _options) {
