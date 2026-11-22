@@ -7,7 +7,9 @@ import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/domain/models/media.dart';
 import 'package:waylight_mobile/routing/routes.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
+import 'package:waylight_mobile/ui/core/widget_size_scope.dart';
 import 'package:waylight_mobile/ui/core/widgets/compact_lines.dart';
+import 'package:waylight_mobile/ui/core/widgets/tile_rows.dart';
 import 'package:waylight_mobile/ui/widgets/common/items_view_model.dart';
 import 'package:waylight_mobile/ui/widgets/common/items_widget.dart';
 import 'package:waylight_mobile/ui/widgets/common/widget_rows.dart';
@@ -62,8 +64,10 @@ class ReadLaterWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           if (articles.isEmpty) Text(l10n.listEmpty),
-          for (final a in articles.take(shown))
-            InfoRow(
+          TileRows(
+            items: articles.take(shown).toList(),
+            rowHeight: TileRows.twoLineRowHeight,
+            rowBuilder: (context, a) => InfoRow(
               leading: a.status == ArticleStatus.unread
                   ? StatusDot(tone: Tone.neutral, label: l10n.readLaterUnread)
                   : null,
@@ -82,7 +86,9 @@ class ReadLaterWidget extends StatelessWidget {
                 await vm.load.execute();
               },
             ),
-          if (vm.canEdit)
+          ),
+          // Saving is one tap away in the full view.
+          if (vm.canEdit && !WidgetSizeScope.inGrid(context))
             Align(
               alignment: Alignment.centerRight,
               child: TextButton.icon(

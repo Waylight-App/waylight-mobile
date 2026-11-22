@@ -8,6 +8,7 @@ import 'package:waylight_mobile/ui/core/error_messages.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
 import 'package:waylight_mobile/ui/core/widgets/compact_lines.dart';
+import 'package:waylight_mobile/ui/core/widgets/tile_rows.dart';
 import 'package:waylight_mobile/ui/core/widgets/view_model_host.dart';
 import 'package:waylight_mobile/ui/core/widgets/widget_frame.dart';
 import 'package:waylight_mobile/ui/widgets/common/widget_rows.dart';
@@ -66,11 +67,10 @@ class WasteWidget extends StatelessWidget {
         },
         builder: (context, collections) => collections.isEmpty
             ? Text(l10n.wasteEmpty)
-            : Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  for (final c in collections) _CollectionRow(collection: c),
-                ],
+            : TileRows(
+                items: collections,
+                rowHeight: TileRows.twoLineRowHeight,
+                rowBuilder: (context, c) => _CollectionRow(collection: c),
               ),
       ),
     );
@@ -179,26 +179,39 @@ class _CollectionRow extends StatelessWidget {
               semanticsLabel: '',
             ),
           ),
-          Expanded(child: Text(collection.label)),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Text(
-                when,
-                style: theme.textTheme.titleSmall?.copyWith(
-                  color: collection.daysUntil <= 1
-                      ? theme.colorScheme.primary
-                      : null,
-                ),
-              ),
-              if (next != null)
+          Expanded(
+            flex: 2,
+            child: Text(
+              collection.label,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          Flexible(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
                 Text(
-                  DateFormat.MMMEd(locale).format(next),
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant,
+                  when,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: theme.textTheme.titleSmall?.copyWith(
+                    color: collection.daysUntil <= 1
+                        ? theme.colorScheme.primary
+                        : null,
                   ),
                 ),
-            ],
+                if (next != null)
+                  Text(
+                    DateFormat.MMMEd(locale).format(next),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+              ],
+            ),
           ),
         ],
       ),

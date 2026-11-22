@@ -26,6 +26,7 @@ import '../../../testing/fakes/fake_server_repository.dart';
 import '../../../testing/fakes/fake_shopping_repository.dart';
 import '../../../testing/fakes/fake_widget_data_repository.dart';
 import '../../../testing/pump_app.dart';
+import '../../../testing/tile_harness.dart';
 
 void main() {
   setUpAll(initializeDateFormatting);
@@ -33,63 +34,6 @@ void main() {
   // Recorded from https://demo.getwaylight.app.
   Object? fixture(String name) =>
       jsonDecode(File('test/fixtures/${name}_demo.json').readAsStringSync());
-
-  // A phone is 360 logical pixels wide; the grid leaves 328 for the tiles.
-  const tiles = {
-    WidgetSize.medium: Size(328, 148),
-    WidgetSize.large: Size(328, 304),
-  };
-
-  Future<void> pumpTile(
-    WidgetTester tester, {
-    required WidgetSize size,
-    required double scale,
-    required Widget child,
-    List<SingleChildWidget> providers = const [],
-  }) async {
-    final pixels = tiles[size]!;
-    await tester.pumpScreen(
-      MultiProvider(
-        providers: [
-          ChangeNotifierProvider<ServerRepository>.value(
-            value: FakeServerRepository(current: testServer()),
-          ),
-          ...providers,
-        ],
-        child: Builder(
-          builder: (context) => MediaQuery(
-            data: MediaQuery.of(context)
-                .copyWith(textScaler: TextScaler.linear(scale)),
-            child: Align(
-              alignment: Alignment.topLeft,
-              // Laid out at its natural height, as in the grid's tile.
-              child: SizedBox(
-                width: pixels.width,
-                child: SingleChildScrollView(
-                  child: WidgetSizeScope(
-                    size: size,
-                    height: pixels.height,
-                    child: child,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-    await tester.pumpAndSettle();
-  }
-
-  // At 200 % a medium tile has no room for more than one row, which stays;
-  // everything else fits the tile.
-  void expectFits(WidgetTester tester, WidgetSize size, double scale) {
-    if (size == WidgetSize.medium && scale > 1.5) return;
-    expect(
-      tester.getSize(find.byType(Card).first).height,
-      lessThanOrEqualTo(tiles[size]!.height),
-    );
-  }
 
   group('TileRows', () {
     Widget rows(int count) => TileRows<int>(

@@ -10,7 +10,9 @@ import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/routing/routes.dart';
 import 'package:waylight_mobile/ui/core/link_opener.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
+import 'package:waylight_mobile/ui/core/widget_size_scope.dart';
 import 'package:waylight_mobile/ui/core/widgets/compact_lines.dart';
+import 'package:waylight_mobile/ui/core/widgets/tile_rows.dart';
 import 'package:waylight_mobile/ui/widgets/common/items_view_model.dart';
 import 'package:waylight_mobile/ui/widgets/common/items_widget.dart';
 
@@ -71,6 +73,9 @@ class RssWidget extends StatelessWidget {
         final date = DateFormat.MMMd(
           Localizations.localeOf(context).toLanguageTag(),
         ).add_Hm();
+        // Rows keep to one line in a tile, which fits them by height.
+        final lines = WidgetSizeScope.inGrid(context) ? 1 : null;
+        final overflow = lines == null ? null : TextOverflow.ellipsis;
         void mark(FeedArticle a, bool read) => vm.change(
           a,
           a.withRead(read),
@@ -79,12 +84,16 @@ class RssWidget extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            for (final a in vm.items)
-              ListTile(
+            TileRows(
+              items: vm.items,
+              rowHeight: TileRows.twoLineRowHeight + 8,
+              rowBuilder: (context, a) => ListTile(
                 contentPadding: EdgeInsets.zero,
                 dense: true,
                 title: Text(
                   a.title,
+                  maxLines: lines,
+                  overflow: overflow,
                   style: a.read
                       ? TextStyle(color: Theme.of(context).colorScheme.outline)
                       : null,
@@ -94,6 +103,8 @@ class RssWidget extends StatelessWidget {
                     if (feedId.isEmpty) a.feed,
                     if (a.publishedAt case final at?) date.format(at),
                   ].join(' · '),
+                  maxLines: lines,
+                  overflow: overflow,
                 ),
                 trailing: IconButton(
                   tooltip: a.read ? l10n.rssMarkUnread : l10n.rssMarkRead,
@@ -107,13 +118,16 @@ class RssWidget extends StatelessWidget {
                         unawaited(LinkOpener.of(context).open(a.link!));
                       },
               ),
-            Align(
-              alignment: Alignment.centerRight,
-              child: TextButton(
-                onPressed: () => context.push(Routes.feeds),
-                child: Text(context.l10n.rssOpen),
-              ),
             ),
+            // The feeds are one tap away in the full view.
+            if (!WidgetSizeScope.inGrid(context))
+              Align(
+                alignment: Alignment.centerRight,
+                child: TextButton(
+                  onPressed: () => context.push(Routes.feeds),
+                  child: Text(context.l10n.rssOpen),
+                ),
+              ),
           ],
         );
       },

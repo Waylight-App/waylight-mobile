@@ -6,6 +6,8 @@ import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/domain/models/everyday.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
+import 'package:waylight_mobile/ui/core/widget_size_scope.dart';
+import 'package:waylight_mobile/ui/core/widgets/tile_rows.dart';
 import 'package:waylight_mobile/ui/widgets/common/compact_state_widget.dart';
 import 'package:waylight_mobile/ui/widgets/common/remote_widget.dart';
 import 'package:waylight_mobile/ui/widgets/common/widget_rows.dart';
@@ -62,23 +64,35 @@ class ElectricityWidget extends StatelessWidget {
             if (current != null)
               Text(
                 l10n.electricityNow(_cent(context, current.centPerKWh)),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
                 style: Theme.of(context).textTheme.titleMedium,
               ),
-            for (final entry in days.entries) ...[
-              const SizedBox(height: Dimens.gapSmall),
-              // Labelled by date, not position: hours of another day never
-              // read as today or tomorrow.
-              Text(
-                entry.key == today
-                    ? l10n.todosToday
-                    : entry.key == today.add(const Duration(days: 1))
-                    ? l10n.todosTomorrow
-                    : shortDate(context, entry.key),
-                style: Theme.of(context).textTheme.labelLarge,
+            // Each day is a row of the tile: a medium tile has room for one.
+            TileRows(
+              items: days.entries.toList(),
+              rowHeight: _dayHeight,
+              reserved: _nowHeight,
+              rowBuilder: (context, entry) => Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  if (!WidgetSizeScope.inGrid(context))
+                    const SizedBox(height: Dimens.gapSmall),
+                  // Labelled by date, not position: hours of another day
+                  // never read as today or tomorrow.
+                  Text(
+                    entry.key == today
+                        ? l10n.todosToday
+                        : entry.key == today.add(const Duration(days: 1))
+                        ? l10n.todosTomorrow
+                        : shortDate(context, entry.key),
+                    style: Theme.of(context).textTheme.labelLarge,
+                  ),
+                  _Bars(hours: entry.value, current: current),
+                ],
               ),
-              _Bars(hours: entry.value, current: current),
-            ],
-            if (days.length == 1) ...[
+            ),
+            if (days.length == 1 && !WidgetSizeScope.inGrid(context)) ...[
               const SizedBox(height: Dimens.gapTiny),
               Text(
                 l10n.electricityTomorrowLater,
@@ -91,6 +105,11 @@ class ElectricityWidget extends StatelessWidget {
     );
   }
 }
+
+// The heights, at normal text size, of one day with its bars and of the line
+// with the current price, which a tile needs to tell how many days fit.
+const _dayHeight = 52.0;
+const _nowHeight = 28.0;
 
 String _cent(BuildContext context, double cent) =>
     '${NumberFormat.decimalPatternDigits(locale: Localizations.localeOf(context).toLanguageTag(), decimalDigits: 1).format(cent)} ct/kWh';
@@ -123,7 +142,7 @@ class _Bars extends StatelessWidget {
             ),
       excludeSemantics: true,
       child: SizedBox(
-        height: Dimens.iconLarge * 1.5,
+        height: Dimens.iconLarge,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [

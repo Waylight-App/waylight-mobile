@@ -6,6 +6,7 @@ import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/domain/models/information.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/widgets/compact_lines.dart';
+import 'package:waylight_mobile/ui/core/widgets/tile_rows.dart';
 import 'package:waylight_mobile/ui/widgets/common/simple_widget.dart';
 import 'package:waylight_mobile/ui/widgets/common/widget_rows.dart';
 
@@ -77,8 +78,10 @@ class MarketsWidget extends StatelessWidget {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          for (final q in quotes)
-            InfoRow(
+          TileRows(
+            items: quotes,
+            rowHeight: TileRows.twoLineRowHeight,
+            rowBuilder: (context, q) => InfoRow(
               title: label(q.symbol),
               subtitle: q.value == null ? null : number.format(q.value),
               trailing: q.changePercent == null
@@ -90,6 +93,7 @@ class MarketsWidget extends StatelessWidget {
                   ? Tone.ok
                   : Tone.critical,
             ),
+          ),
         ],
       );
     },

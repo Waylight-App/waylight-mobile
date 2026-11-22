@@ -10,6 +10,7 @@ import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
 import 'package:waylight_mobile/ui/core/themes/status_colors.dart';
 import 'package:waylight_mobile/ui/core/widgets/choice_search_sheet.dart';
+import 'package:waylight_mobile/ui/core/widgets/tile_rows.dart';
 import 'package:waylight_mobile/ui/core/widgets/view_model_host.dart';
 import 'package:waylight_mobile/ui/core/widgets/widget_frame.dart';
 import 'package:waylight_mobile/ui/core/widgets/widget_preview.dart';
@@ -176,12 +177,11 @@ class _DepartureList extends StatelessWidget {
   @override
   Widget build(BuildContext context) => departures.isEmpty
       ? Text(context.l10n.transitEmpty)
-      : Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            for (final d in departures)
+      : TileRows(
+          items: departures,
+          rowHeight: TileRows.twoLineRowHeight,
+          rowBuilder: (context, d) =>
               _DepartureRow(departure: d, minutes: minutesUntil(d)),
-          ],
         );
 }
 
