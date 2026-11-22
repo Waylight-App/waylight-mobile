@@ -32,6 +32,8 @@ import 'package:waylight_mobile/ui/pair/view_models/pair_view_model.dart';
 import 'package:waylight_mobile/ui/pair/widgets/pair_screen.dart';
 import 'package:waylight_mobile/ui/pair_watch/view_models/pair_watch_view_model.dart';
 import 'package:waylight_mobile/ui/pair_watch/widgets/pair_watch_screen.dart';
+import 'package:waylight_mobile/ui/paste/view_models/paste_view_model.dart';
+import 'package:waylight_mobile/ui/paste/widgets/paste_screen.dart';
 import 'package:waylight_mobile/ui/search/view_models/search_view_model.dart';
 import 'package:waylight_mobile/ui/search/widgets/search_screen.dart';
 import 'package:waylight_mobile/ui/settings/view_models/security_view_model.dart';
@@ -175,6 +177,18 @@ GoRouter createRouter(
           sessionRepository: context.read(),
         ),
         builder: (context, viewModel) => PairScreen(viewModel: viewModel),
+      ),
+    ),
+    GoRoute(
+      path: Routes.paste,
+      builder: (context, state) => ViewModelHost(
+        create: (context) => PasteViewModel(
+          server: state.uri.queryParameters['server'] ?? '',
+          code: state.uri.queryParameters['code'] ?? '',
+          serverRepository: context.read(),
+          pasteRepository: context.read(),
+        ),
+        builder: (context, viewModel) => PasteScreen(viewModel: viewModel),
       ),
     ),
     GoRoute(

@@ -771,5 +771,22 @@
   "meterLast": "{value} am {date}",
   "meterAddReading": "Stand für {name} eintragen",
   "meterReadingValue": "Zählerstand",
-  "meterReadingInvalid": "Gib den Wert als Zahl ein."
+  "meterReadingInvalid": "Gib den Wert als Zahl ein.",
+  "pasteTitle": "An den Einrichtungsassistenten senden",
+  "pasteEntry": "Schlüssel an den Einrichtungsassistenten senden",
+  "pasteIntro": "Der Einrichtungsassistent im Browser kann einen QR-Code für einen Schlüssel oder ein Passwort zeigen. Scanne ihn, gib den Wert hier ein und sende ihn. Der Code gilt einmal und fünf Minuten lang.",
+  "pasteScan": "QR-Code scannen",
+  "pasteScanAgain": "Anderen Code scannen",
+  "pasteScanPrompt": "Richte die Kamera auf den QR-Code im Einrichtungsassistenten",
+  "pasteTarget": "Senden an {server}",
+  "pasteValueLabel": "Schlüssel oder Passwort",
+  "pasteShow": "Wert anzeigen",
+  "pasteHide": "Wert verbergen",
+  "pasteSend": "Senden",
+  "pasteDone": "Gesendet. Der Einrichtungsassistent trägt den Wert ein.",
+  "pasteUnavailable": "Zum Scannen brauchst du die Android-App.",
+  "pasteInvalidCode": "Das ist kein Code des Einrichtungsassistenten. Öffne dort „Vom Handy einfügen“ und scanne den angezeigten Code.",
+  "pasteOtherServer": "Dieser Code gehört zu einem anderen Server als dem, mit dem die App verbunden ist.",
+  "pasteExpired": "Der Code ist abgelaufen oder wurde schon benutzt. Lass im Einrichtungsassistenten einen neuen Code anzeigen und scanne ihn erneut.",
+  "pasteValueInvalid": "Der Wert ist leer oder zu lang."
 }

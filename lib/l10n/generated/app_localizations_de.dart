@@ -2697,4 +2697,63 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get meterReadingInvalid => 'Gib den Wert als Zahl ein.';
+
+  @override
+  String get pasteTitle => 'An den Einrichtungsassistenten senden';
+
+  @override
+  String get pasteEntry => 'Schlüssel an den Einrichtungsassistenten senden';
+
+  @override
+  String get pasteIntro =>
+      'Der Einrichtungsassistent im Browser kann einen QR-Code für einen Schlüssel oder ein Passwort zeigen. Scanne ihn, gib den Wert hier ein und sende ihn. Der Code gilt einmal und fünf Minuten lang.';
+
+  @override
+  String get pasteScan => 'QR-Code scannen';
+
+  @override
+  String get pasteScanAgain => 'Anderen Code scannen';
+
+  @override
+  String get pasteScanPrompt =>
+      'Richte die Kamera auf den QR-Code im Einrichtungsassistenten';
+
+  @override
+  String pasteTarget(String server) {
+    return 'Senden an $server';
+  }
+
+  @override
+  String get pasteValueLabel => 'Schlüssel oder Passwort';
+
+  @override
+  String get pasteShow => 'Wert anzeigen';
+
+  @override
+  String get pasteHide => 'Wert verbergen';
+
+  @override
+  String get pasteSend => 'Senden';
+
+  @override
+  String get pasteDone =>
+      'Gesendet. Der Einrichtungsassistent trägt den Wert ein.';
+
+  @override
+  String get pasteUnavailable => 'Zum Scannen brauchst du die Android-App.';
+
+  @override
+  String get pasteInvalidCode =>
+      'Das ist kein Code des Einrichtungsassistenten. Öffne dort „Vom Handy einfügen“ und scanne den angezeigten Code.';
+
+  @override
+  String get pasteOtherServer =>
+      'Dieser Code gehört zu einem anderen Server als dem, mit dem die App verbunden ist.';
+
+  @override
+  String get pasteExpired =>
+      'Der Code ist abgelaufen oder wurde schon benutzt. Lass im Einrichtungsassistenten einen neuen Code anzeigen und scanne ihn erneut.';
+
+  @override
+  String get pasteValueInvalid => 'Der Wert ist leer oder zu lang.';
 }

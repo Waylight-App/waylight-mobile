@@ -55,6 +55,7 @@ import 'package:waylight_mobile/data/repositories/server/server_repository.dart'
 import 'package:waylight_mobile/data/repositories/server/server_repository_remote.dart';
 import 'package:waylight_mobile/data/repositories/session/session_repository.dart';
 import 'package:waylight_mobile/data/repositories/session/session_repository_remote.dart';
+import 'package:waylight_mobile/data/repositories/setup_paste/setup_paste_repository.dart';
 import 'package:waylight_mobile/data/repositories/shopping/shopping_repository.dart';
 import 'package:waylight_mobile/data/repositories/shopping/shopping_repository_remote.dart';
 import 'package:waylight_mobile/data/repositories/todos/todos_repository.dart';
@@ -134,6 +135,7 @@ typedef Repositories = ({
   PlacesRepository places,
   HouseholdRepository household,
   WatchPairingRepository watch,
+  SetupPasteRepository setupPaste,
   FocusTimerRepository focusTimer,
   HomeServerActionsRepository homeServer,
   CalendarRepository calendar,
@@ -189,6 +191,7 @@ List<SingleChildWidget> providers(Repositories repositories) => [
   Provider<PlacesRepository>.value(value: repositories.places),
   Provider<HouseholdRepository>.value(value: repositories.household),
   Provider<WatchPairingRepository>.value(value: repositories.watch),
+  Provider<SetupPasteRepository>.value(value: repositories.setupPaste),
   Provider<AnnouncementsRepository>.value(value: repositories.announcements),
   ChangeNotifierProvider<FocusTimerRepository>.value(
     value: repositories.focusTimer,
@@ -368,6 +371,10 @@ Repositories createRepositories() {
       scanner: const MethodChannelBarcodeScanner(),
       sealer: const MethodChannelHandoverSealer(),
       watch: WatchClient(http.Client()),
+    ),
+    setupPaste: SetupPasteRepository(
+      api: modules,
+      scanner: const MethodChannelBarcodeScanner(),
     ),
     focusTimer: FocusTimerRepository(
       timer: MethodChannelFocusTimer(),

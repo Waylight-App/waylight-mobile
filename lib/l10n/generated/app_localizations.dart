@@ -4729,6 +4729,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Enter the value as a number.'**
   String get meterReadingInvalid;
+
+  /// Title of the screen that sends a value to the setup assistant.
+  ///
+  /// In en, this message translates to:
+  /// **'Send to the setup assistant'**
+  String get pasteTitle;
+
+  /// Row in the phone settings that opens the screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Send a key to the setup assistant'**
+  String get pasteEntry;
+
+  /// How to send a value to the setup assistant.
+  ///
+  /// In en, this message translates to:
+  /// **'The setup assistant in the browser can show a QR code for a key or password. Scan it, enter the value here and send it. The code works once and for five minutes.'**
+  String get pasteIntro;
+
+  /// Button that opens the camera.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan the QR code'**
+  String get pasteScan;
+
+  /// Button to scan again.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan another code'**
+  String get pasteScanAgain;
+
+  /// Hint shown over the camera.
+  ///
+  /// In en, this message translates to:
+  /// **'Point the camera at the QR code in the setup assistant'**
+  String get pasteScanPrompt;
+
+  /// Shown after a code was read; the server that gets the value.
+  ///
+  /// In en, this message translates to:
+  /// **'Send to {server}'**
+  String pasteTarget(String server);
+
+  /// Label of the field for the value.
+  ///
+  /// In en, this message translates to:
+  /// **'Key or password'**
+  String get pasteValueLabel;
+
+  /// Tooltip of the button that shows the value.
+  ///
+  /// In en, this message translates to:
+  /// **'Show the value'**
+  String get pasteShow;
+
+  /// Tooltip of the button that hides the value.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide the value'**
+  String get pasteHide;
+
+  /// Button that sends the value.
+  ///
+  /// In en, this message translates to:
+  /// **'Send'**
+  String get pasteSend;
+
+  /// Shown after the server accepted the value.
+  ///
+  /// In en, this message translates to:
+  /// **'Sent. The setup assistant fills the value in.'**
+  String get pasteDone;
+
+  /// Shown on phones that cannot scan.
+  ///
+  /// In en, this message translates to:
+  /// **'Scanning needs the Android app.'**
+  String get pasteUnavailable;
+
+  /// The scanned or opened code cannot be used.
+  ///
+  /// In en, this message translates to:
+  /// **'This is not a code from the setup assistant. Open Paste from phone in the assistant and scan the code it shows.'**
+  String get pasteInvalidCode;
+
+  /// The code names a server the app is not connected to.
+  ///
+  /// In en, this message translates to:
+  /// **'This code is for another server than the one this app is connected to.'**
+  String get pasteOtherServer;
+
+  /// The server does not know the code any more.
+  ///
+  /// In en, this message translates to:
+  /// **'The code has expired or was already used. Show a new code in the setup assistant and scan it again.'**
+  String get pasteExpired;
+
+  /// The server rejected the value.
+  ///
+  /// In en, this message translates to:
+  /// **'The value is empty or too long.'**
+  String get pasteValueInvalid;
 }
 
 class _AppLocalizationsDelegate
