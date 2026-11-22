@@ -444,16 +444,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsOwnerAccount => 'Owner account';
 
   @override
-  String get settingsRoleOwner => 'Owner';
+  String get settingsRoleOwner => 'Can do everything';
 
   @override
-  String get settingsRoleAdmin => 'Admin';
+  String get settingsRoleAdmin => 'Can set things up';
 
   @override
-  String get settingsRoleMember => 'Member';
+  String get settingsRoleMember => 'Can use';
 
   @override
-  String get settingsRoleGuest => 'Guest';
+  String get settingsRoleGuest => 'Can only look';
 
   @override
   String get settingsAppearance => 'Appearance';
