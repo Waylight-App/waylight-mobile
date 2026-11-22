@@ -727,5 +727,7 @@
   "backupHealthFailed": "Sicherung fehlgeschlagen",
   "backupHealthLast": "Letzte Sicherung {date}",
   "backupHealthNone": "Noch keine Sicherung",
-  "backupHealthOffsite": "Externe Kopie fehlgeschlagen: {reason}"
+  "backupHealthOffsite": "Externe Kopie fehlgeschlagen: {reason}",
+  "kioskScan": "QR-Code scannen",
+  "kioskScanPrompt": "Scanne den QR-Code des Wandtablet-Assistenten"
 }

@@ -4465,6 +4465,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Off-site copy failed: {reason}'**
   String backupHealthOffsite(String reason);
+
+  /// Button in the wall display dialog that scans the QR code of the wall tablet assistant (#294).
+  ///
+  /// In en, this message translates to:
+  /// **'Scan the QR code'**
+  String get kioskScan;
+
+  /// Shown over the camera while scanning the QR code of a wall display.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan the QR code of the wall tablet assistant'**
+  String get kioskScanPrompt;
 }
 
 class _AppLocalizationsDelegate

@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 
+import 'package:waylight_mobile/data/repositories/scanner/scanner_repository.dart';
 import 'package:waylight_mobile/domain/models/api_exception.dart';
 import 'package:waylight_mobile/domain/models/server_address.dart';
 import 'package:waylight_mobile/ui/connect_server/view_models/connect_server_view_model.dart';
@@ -8,6 +9,7 @@ import 'package:waylight_mobile/ui/connect_server/widgets/connect_server_screen.
 import 'package:waylight_mobile/ui/core/address_errors.dart';
 import 'package:waylight_mobile/utils/result.dart';
 
+import '../../testing/fakes/fake_barcode_scanner.dart';
 import '../../testing/fakes/fake_server_repository.dart';
 import '../../testing/pump_app.dart';
 
@@ -122,5 +124,61 @@ void main() {
     await tester.pumpScreen(ConnectServerScreen(viewModel: viewModel));
     expect(find.text(l10nEn.connectPrivacy), findsOneWidget);
     expect(find.bySemanticsLabel('Waylight'), findsWidgets);
+  });
+
+  group('kiosk QR code (#294)', () {
+    Future<void> openDialog(
+      WidgetTester tester,
+      FakeBarcodeScanner camera,
+      List<String> links,
+    ) async {
+      await tester.pumpScreen(
+        ConnectServerScreen(
+          viewModel: viewModel,
+          scanner: ScannerRepository(scanner: camera),
+          onKiosk: (link) async {
+            links.add(link);
+            return const Result.ok(null);
+          },
+        ),
+      );
+      await tester.tap(find.byKey(const ValueKey('connect.kiosk')));
+      await tester.pumpAndSettle();
+    }
+
+    testWidgets('a scanned kiosk link starts the display', (tester) async {
+      final links = <String>[];
+      await openDialog(
+        tester,
+        FakeBarcodeScanner(next: 'https://home.example.org/kiosk#tok'),
+        links,
+      );
+
+      await tester.tap(find.byKey(const ValueKey('connect.kioskScan')));
+      await tester.pumpAndSettle();
+
+      expect(links, ['https://home.example.org/kiosk#tok']);
+    });
+
+    testWidgets('another code is refused and starts nothing', (tester) async {
+      final links = <String>[];
+      await openDialog(
+        tester,
+        FakeBarcodeScanner(next: 'https://example.org/'),
+        links,
+      );
+
+      await tester.tap(find.byKey(const ValueKey('connect.kioskScan')));
+      await tester.pumpAndSettle();
+
+      expect(links, isEmpty);
+      expect(find.text(l10nEn.kioskLinkInvalid), findsOneWidget);
+    });
+
+    testWidgets('without a camera there is no scan button', (tester) async {
+      await openDialog(tester, FakeBarcodeScanner(isAvailable: false), []);
+
+      expect(find.byKey(const ValueKey('connect.kioskScan')), findsNothing);
+    });
   });
 }

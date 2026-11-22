@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:waylight_mobile/data/repositories/first_start/first_start_repository.dart';
 import 'package:waylight_mobile/data/repositories/kiosk/kiosk_repository.dart';
 import 'package:waylight_mobile/data/repositories/lock/app_lock_repository.dart';
+import 'package:waylight_mobile/data/repositories/scanner/scanner_repository.dart';
 import 'package:waylight_mobile/data/repositories/server/server_repository.dart';
 import 'package:waylight_mobile/data/repositories/session/session_repository.dart';
 import 'package:waylight_mobile/data/repositories/widget_data/queries/home_server.dart';
@@ -330,6 +331,7 @@ GoRouter createRouter(
           viewModel: viewModel,
           onKiosk: kiosk?.enter,
           kioskLink: state.uri.queryParameters['kiosk'] ?? '',
+          scanner: context.read<ScannerRepository?>(),
         ),
       ),
     ),

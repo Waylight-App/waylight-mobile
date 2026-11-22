@@ -66,7 +66,7 @@ void main() {
         ApiClient(
           client: MockClient(
             (_) async => http.Response(
-              '{"rotateSeconds":30,"nightFrom":"22:00","nightTo":"06:00"}',
+              '{"rotateSeconds":30,"nightFrom":"22:00","nightTo":"06:00","largeText":true}',
               200,
             ),
           ),
@@ -93,6 +93,7 @@ void main() {
       expect(sessions.kioskCalls, ['tok']);
       expect(repo.active, isTrue);
       expect(repo.options.rotateSeconds, 30);
+      expect(repo.options.largeText, isTrue);
 
       final restored = repository();
       await restored.restore();
