@@ -10,9 +10,12 @@ import 'package:waylight_mobile/data/repositories/quick_tiles/quick_tiles_reposi
 import 'package:waylight_mobile/data/repositories/reminders/reminder_repository.dart';
 import 'package:waylight_mobile/data/repositories/server/server_repository.dart';
 import 'package:waylight_mobile/data/repositories/session/session_repository.dart';
+import 'package:waylight_mobile/data/repositories/widget_data/queries/home_server.dart';
+import 'package:waylight_mobile/data/repositories/widget_data/widget_data_repository.dart';
 import 'package:waylight_mobile/domain/models/actions.dart';
 import 'package:waylight_mobile/domain/models/address_check.dart';
 import 'package:waylight_mobile/domain/models/appearance.dart';
+import 'package:waylight_mobile/domain/models/backup_health.dart';
 import 'package:waylight_mobile/domain/models/diagnostics.dart';
 import 'package:waylight_mobile/domain/models/quick_tile.dart';
 import 'package:waylight_mobile/domain/models/reminder.dart';
@@ -47,6 +50,7 @@ class SettingsViewModel extends ChangeNotifier {
     AppVersionReader appVersion = _platformVersion,
     DiagnosticsRepository? diagnosticsRepository,
     AttentionRepository? attentionRepository,
+    this._widgetData,
   }) : _lock = lockRepository,
        _attention = attentionRepository,
        _diagnostics = diagnosticsRepository,
@@ -56,6 +60,7 @@ class SettingsViewModel extends ChangeNotifier {
        _reminders = reminderRepository,
        _quickTiles = quickTilesRepository {
     _loadTileChoice().ignore();
+    _loadBackup().ignore();
     account = Command0(_serverRepository.status)..execute().ignore();
     serverVersion = Command0(_serverRepository.version)..execute().ignore();
     this.appVersion = Command0(() async => Result.ok(await appVersion()))
@@ -85,6 +90,24 @@ class SettingsViewModel extends ChangeNotifier {
   }
 
   final PushRepository? _push;
+  final WidgetDataRepository? _widgetData;
+  BackupStatus? _backup;
+
+  /// The traffic light of the server's backups; `null` while unknown and
+  /// for accounts the server does not show it to (owner only).
+  BackupStatus? get backup => _backup;
+
+  Future<void> _loadBackup() async {
+    final server = _serverRepository.current;
+    final data = _widgetData;
+    if (server == null || data == null) return;
+    _backup = switch (await data.read(server, backupStatusQuery)) {
+      Ok(:final value) => value,
+      Error() => null,
+    };
+    notifyListeners();
+  }
+
   final AttentionRepository? _attention;
 
   /// How many things on the server need the person's help (#229); the
@@ -332,6 +355,7 @@ class SettingsViewModel extends ChangeNotifier {
   Future<void> refresh() async {
     await _loadPush();
     await _loadTileChoice();
+    await _loadBackup();
   }
 
   String _query = '';

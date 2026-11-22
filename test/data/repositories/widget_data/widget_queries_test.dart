@@ -11,6 +11,7 @@ import 'package:waylight_mobile/data/repositories/widget_data/widget_data_reposi
 import 'package:waylight_mobile/data/services/api/api_client.dart';
 import 'package:waylight_mobile/data/services/api/module_api.dart';
 import 'package:waylight_mobile/domain/models/api_exception.dart';
+import 'package:waylight_mobile/domain/models/backup_health.dart';
 import 'package:waylight_mobile/domain/models/everyday.dart';
 import 'package:waylight_mobile/domain/models/home_server.dart';
 import 'package:waylight_mobile/utils/result.dart';
@@ -105,4 +106,17 @@ void main() {
       expect(((bad as Error).error as ApiException).failure, ApiFailure.server);
     },
   );
+
+  test('reads the backup traffic light', () {
+    final status = parseBackupStatus({
+      'health': 'stale',
+      'lastBackupAt': '2026-11-20T02:00:00Z',
+      'error': '',
+      'offsiteError': 'timeout',
+    })!;
+    expect(status.health, BackupHealth.stale);
+    expect(status.lastBackupAt, DateTime.utc(2026, 11, 20, 2));
+    expect(status.offsiteError, 'timeout');
+    expect(parseBackupStatus({'count': 1}), isNull);
+  });
 }

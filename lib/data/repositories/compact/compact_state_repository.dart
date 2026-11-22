@@ -71,6 +71,7 @@ class CompactStateRepositoryRemote implements CompactStateRepository {
   /// The module behind each widget kind whose name differs; every other
   /// kind is served by the module of the same name.
   static const moduleOfKind = {
+    'backup-health': 'backup',
     'backup-status': 'backupmonitor',
     'status-overview': 'services',
   };

@@ -4423,6 +4423,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The help could not be loaded. The documentation has the details.'**
   String get widgetHelpUnavailable;
+
+  /// Default title of the backup traffic light widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Waylight backup'**
+  String get backupHealthTitle;
+
+  /// Backup traffic light: green.
+  ///
+  /// In en, this message translates to:
+  /// **'Backups are fine'**
+  String get backupHealthOk;
+
+  /// Backup traffic light: amber, the newest backup is older than expected.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup overdue'**
+  String get backupHealthStale;
+
+  /// Backup traffic light: red, the latest attempt failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup failed'**
+  String get backupHealthFailed;
+
+  /// When the newest backup was made.
+  ///
+  /// In en, this message translates to:
+  /// **'Last backup {date}'**
+  String backupHealthLast(String date);
+
+  /// Backup traffic light without any backup.
+  ///
+  /// In en, this message translates to:
+  /// **'No backup yet'**
+  String get backupHealthNone;
+
+  /// The upload of the backup to the off-site target failed.
+  ///
+  /// In en, this message translates to:
+  /// **'Off-site copy failed: {reason}'**
+  String backupHealthOffsite(String reason);
 }
 
 class _AppLocalizationsDelegate

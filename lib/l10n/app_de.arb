@@ -720,5 +720,12 @@
   "widgetHelpShows": "Was es zeigt",
   "widgetHelpSetUp": "So richtest du es ein",
   "widgetHelpDocs": "Mehr in der Dokumentation",
-  "widgetHelpUnavailable": "Die Hilfe konnte nicht geladen werden. Die Dokumentation hat die Details."
+  "widgetHelpUnavailable": "Die Hilfe konnte nicht geladen werden. Die Dokumentation hat die Details.",
+  "backupHealthTitle": "Waylight-Sicherung",
+  "backupHealthOk": "Sicherungen in Ordnung",
+  "backupHealthStale": "Sicherung überfällig",
+  "backupHealthFailed": "Sicherung fehlgeschlagen",
+  "backupHealthLast": "Letzte Sicherung {date}",
+  "backupHealthNone": "Noch keine Sicherung",
+  "backupHealthOffsite": "Externe Kopie fehlgeschlagen: {reason}"
 }

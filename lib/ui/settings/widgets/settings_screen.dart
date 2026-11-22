@@ -1,12 +1,16 @@
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:waylight_mobile/domain/models/appearance.dart';
+import 'package:waylight_mobile/domain/models/backup_health.dart';
 import 'package:waylight_mobile/domain/models/server_status.dart';
 import 'package:waylight_mobile/routing/routes.dart';
+import 'package:waylight_mobile/ui/core/backup_health_texts.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
 import 'package:waylight_mobile/ui/core/widgets/command_button.dart';
 import 'package:waylight_mobile/ui/core/widgets/message_banner.dart';
+import 'package:waylight_mobile/ui/core/widgets/rows.dart';
 import 'package:waylight_mobile/ui/settings/view_models/settings_area.dart';
 import 'package:waylight_mobile/ui/settings/view_models/settings_index.dart';
 import 'package:waylight_mobile/ui/settings/view_models/settings_view_model.dart';
@@ -50,6 +54,11 @@ class SettingsScreen extends StatelessWidget {
                   child: Text(l10n.settingsAttentionShow),
                 ),
               ),
+              const SizedBox(height: Dimens.gap),
+            ],
+            if (viewModel.backup case final backup?
+                when viewModel.query.isEmpty) ...[
+              _BackupTile(status: backup),
               const SizedBox(height: Dimens.gap),
             ],
             if (viewModel.query.trim().isNotEmpty)
@@ -102,6 +111,34 @@ class SettingsScreen extends StatelessWidget {
     SettingsArea.phone => Icons.smartphone,
     SettingsArea.about => Icons.info_outline,
   };
+}
+
+/// The backup traffic light; shown to the owner only, as the server decides.
+class _BackupTile extends StatelessWidget {
+  const _BackupTile({required this.status});
+
+  final BackupStatus status;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    return Card(
+      child: ListTile(
+        key: const ValueKey('settings.backup'),
+        minTileHeight: Dimens.tapTarget,
+        leading: StatusDot(tone: status.tone, label: status.label(l10n)),
+        title: Text(status.label(l10n)),
+        subtitle: Text(
+          status.detail(
+            l10n,
+            (d) => DateFormat.MMMEd(
+              Localizations.localeOf(context).toLanguageTag(),
+            ).add_Hm().format(d),
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 /// The line of status below an area on the start page.
