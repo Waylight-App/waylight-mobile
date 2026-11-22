@@ -16,6 +16,29 @@ void main() {
     expect(link.code, 'ab_C-1.2~');
   });
 
+  test('reads the web address from the server QR code', () {
+    final result = parsePasteLinkText('https://home.example.org/paste/ab_C-1');
+
+    final link = (result as Ok<PasteLink>).value;
+    expect(link.server.uri.toString(), 'https://home.example.org');
+    expect(link.code, 'ab_C-1');
+    expect(
+      parsePasteLinkText('http://192.168.1.5:8090/paste/c'),
+      isA<Ok<PasteLink>>(),
+    );
+  });
+
+  test('rejects web addresses with other paths', () {
+    for (final text in [
+      'https://home.example.org/paste',
+      'https://home.example.org/other/c',
+      'https://home.example.org/paste/a/b',
+      'https://home.example.org/paste/a%20b',
+    ]) {
+      expect(parsePasteLinkText(text), isA<Error<PasteLink>>(), reason: text);
+    }
+  });
+
   test('accepts a private http address', () {
     expect(
       parsePasteLinkText(

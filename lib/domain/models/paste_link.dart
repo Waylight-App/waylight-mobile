@@ -11,8 +11,9 @@ final class InvalidPasteLink implements Exception {
 }
 
 /// The QR code the setup assistant shows for "Paste from phone":
-/// `waylight://paste?server=<address>&code=<code>`. The code is single-use
-/// and lasts five minutes.
+/// `<server>/paste/<code>` (a web address a phone camera can open) or the app
+/// link `waylight://paste?server=<address>&code=<code>`. The code is
+/// single-use and lasts five minutes.
 typedef PasteLink = ({ServerAddress server, String code});
 
 // The codes are URL-safe random strings; anything else never came from a
@@ -34,7 +35,15 @@ Result<PasteLink> parsePasteLink(String server, String code) {
 /// Reads the text of a scanned QR code.
 Result<PasteLink> parsePasteLinkText(String text) {
   final uri = Uri.tryParse(text.trim());
-  if (uri == null || uri.scheme != 'waylight' || uri.host != 'paste') {
+  if (uri == null) return const Result.error(InvalidPasteLink());
+  if (uri.scheme == 'http' || uri.scheme == 'https') {
+    final segments = uri.pathSegments;
+    if (segments.length != 2 || segments.first != 'paste') {
+      return const Result.error(InvalidPasteLink());
+    }
+    return parsePasteLink(uri.origin, segments.last);
+  }
+  if (uri.scheme != 'waylight' || uri.host != 'paste') {
     return const Result.error(InvalidPasteLink());
   }
   return parsePasteLink(
