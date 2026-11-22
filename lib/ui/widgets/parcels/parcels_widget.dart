@@ -56,7 +56,6 @@ class ParcelsWidget extends StatelessWidget {
               leading: StatusDot(
                 tone: switch (p.status) {
                   ParcelStatus.delivered => Tone.ok,
-                  ParcelStatus.transit => Tone.warning,
                   _ => Tone.neutral,
                 },
                 label: _status(context, p.status),

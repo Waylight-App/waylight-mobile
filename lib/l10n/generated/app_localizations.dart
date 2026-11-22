@@ -4310,6 +4310,12 @@ abstract class AppLocalizations {
   /// **'No collections ahead'**
   String get compactNoCollections;
 
+  /// Shown on a tab whose widgets all have nothing to show (#288).
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing to show on this tab right now.'**
+  String get dashboardNothingToShow;
+
   /// Heading of the first-start questions after the first sign-in (#287).
   ///
   /// In en, this message translates to:

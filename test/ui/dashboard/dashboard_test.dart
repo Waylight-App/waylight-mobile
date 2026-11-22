@@ -5,6 +5,7 @@ import 'package:waylight_mobile/data/repositories/offline/offline_repository.dar
 import 'package:waylight_mobile/data/services/api/offline_status.dart';
 import 'package:waylight_mobile/domain/models/api_exception.dart';
 import 'package:waylight_mobile/domain/models/attention.dart';
+import 'package:waylight_mobile/domain/models/compact_state.dart';
 import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/domain/models/home_snapshot.dart';
 import 'package:waylight_mobile/ui/core/link_opener.dart';
@@ -575,6 +576,54 @@ void main() {
     await vm.load.execute();
     expect(compact.loaded, isNotEmpty);
     expect(compact.loaded.toSet(), {testServer()});
+  });
+
+  testWidgets('hides widgets with nothing to show (#288)', (tester) async {
+    final compact = FakeCompactStateRepository(kinds: {'docker'})
+      ..result = const Result.ok(
+        CompactState(title: CompactText(text: 'No containers'), empty: true),
+      );
+    final vm = DashboardViewModel(
+      serverRepository: servers,
+      dashboardRepository: dashboards,
+      compactRepository: compact,
+    );
+    await tester.pumpScreen(DashboardScreen(viewModel: vm, registry: registry));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Containers'), findsNothing);
+    expect(find.text('Status overview'), findsOneWidget);
+    expect(compact.asked, ['docker']);
+    expect(vm.isEmptyWidget(twoTabs.tabs.last.widgets.last), isTrue);
+
+    compact.result = const Result.ok(
+      CompactState(title: CompactText(text: '2 running')),
+    );
+    await vm.load.execute();
+    await tester.pumpAndSettle();
+    expect(find.text('Containers'), findsOneWidget);
+  });
+
+  testWidgets('says so when every widget of a tab is empty (#288)', (
+    tester,
+  ) async {
+    final compact =
+        FakeCompactStateRepository(kinds: {'status-overview', 'docker'})
+          ..result = const Result.ok(
+            CompactState(title: CompactText(text: ''), empty: true),
+          );
+    await tester.pumpScreen(
+      DashboardScreen(
+        viewModel: DashboardViewModel(
+          serverRepository: servers,
+          dashboardRepository: dashboards,
+          compactRepository: compact,
+        ),
+        registry: registry,
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(find.text(l10nEn.dashboardNothingToShow), findsOneWidget);
   });
 }
 

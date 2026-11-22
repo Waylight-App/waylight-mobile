@@ -2421,6 +2421,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get compactNoCollections => 'No collections ahead';
 
   @override
+  String get dashboardNothingToShow => 'Nothing to show on this tab right now.';
+
+  @override
   String get firstStartTitle => 'Set up the app';
 
   @override
