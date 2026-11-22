@@ -5,16 +5,13 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
-import 'package:provider/single_child_widget.dart';
 
 import 'package:waylight_mobile/data/repositories/habits/habits_repository.dart';
 import 'package:waylight_mobile/data/repositories/habits/habits_repository_remote.dart';
-import 'package:waylight_mobile/data/repositories/server/server_repository.dart';
 import 'package:waylight_mobile/data/repositories/shopping/shopping_repository.dart';
 import 'package:waylight_mobile/data/repositories/shopping/shopping_repository_remote.dart';
 import 'package:waylight_mobile/data/repositories/widget_data/widget_data_repository.dart';
 import 'package:waylight_mobile/domain/models/dashboard.dart';
-import 'package:waylight_mobile/ui/core/widget_size_scope.dart';
 import 'package:waylight_mobile/ui/core/widgets/tile_rows.dart';
 import 'package:waylight_mobile/ui/widgets/birthdays/birthdays_widget.dart';
 import 'package:waylight_mobile/ui/widgets/countdown/countdown_widget.dart';
@@ -22,7 +19,6 @@ import 'package:waylight_mobile/ui/widgets/habits/habits_widget.dart';
 import 'package:waylight_mobile/ui/widgets/shopping/shopping_widget.dart';
 
 import '../../../testing/fakes/fake_habits_repository.dart';
-import '../../../testing/fakes/fake_server_repository.dart';
 import '../../../testing/fakes/fake_shopping_repository.dart';
 import '../../../testing/fakes/fake_widget_data_repository.dart';
 import '../../../testing/pump_app.dart';
