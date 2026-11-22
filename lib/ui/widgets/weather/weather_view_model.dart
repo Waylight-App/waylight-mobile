@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
-
 import 'package:waylight_mobile/data/repositories/dashboard/dashboard_repository.dart';
+import 'package:waylight_mobile/data/repositories/places/places_repository.dart';
 import 'package:waylight_mobile/data/repositories/server/server_repository.dart';
 import 'package:waylight_mobile/data/repositories/weather/weather_repository.dart';
 import 'package:waylight_mobile/domain/models/place.dart';
@@ -61,6 +61,7 @@ class WeatherViewModel extends ChangeNotifier {
     required this._serverRepository,
     required this._weatherRepository,
     this._dashboardRepository,
+    this._placesRepository,
     this.widgetId = '',
     this._widgetConfig = const {},
   }) {
@@ -79,6 +80,7 @@ class WeatherViewModel extends ChangeNotifier {
   final String widgetId;
 
   final DashboardRepository? _dashboardRepository;
+  final PlacesRepository? _placesRepository;
   final ServerRepository _serverRepository;
   final WeatherRepository _weatherRepository;
 
@@ -92,6 +94,21 @@ class WeatherViewModel extends ChangeNotifier {
   /// Whether a place can be chosen in the app.
   bool get canChoosePlace =>
       _dashboardRepository != null && widgetId.isNotEmpty;
+
+  /// Whether the picker can offer *Use my location* (#295).
+  bool get canUseLocation =>
+      canChoosePlace && (_placesRepository?.canLocate ?? false);
+
+  /// Reads the phone's coarse position and saves it as a place on the
+  /// server, called by name [name] (#295).
+  Future<Result<Place>> useMyLocation(String name) async {
+    final server = _serverRepository.current;
+    final places = _placesRepository;
+    if (server == null || places == null) {
+      return const Result.error(NotConnectedException());
+    }
+    return places.useMyLocation(server, name);
+  }
 
   /// The places whose name matches [query].
   Future<Result<List<Place>>> searchPlaces(String query) async {
@@ -113,6 +130,7 @@ class WeatherViewModel extends ChangeNotifier {
       'lat': place.lat,
       'lon': place.lon,
       'label': place.name,
+      if (place.id.isNotEmpty) 'placeId': place.id,
     };
     final result = await dashboard.updateWidget(server, widgetId, updated);
     if (result is Ok<void>) {

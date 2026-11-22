@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
@@ -37,6 +38,7 @@ import 'package:waylight_mobile/data/repositories/nfc/nfc_repository.dart';
 import 'package:waylight_mobile/data/repositories/notes/notes_repository.dart';
 import 'package:waylight_mobile/data/repositories/notes/notes_repository_remote.dart';
 import 'package:waylight_mobile/data/repositories/offline/offline_repository.dart';
+import 'package:waylight_mobile/data/repositories/places/places_repository.dart';
 import 'package:waylight_mobile/data/repositories/preferences/preferences_repository.dart';
 import 'package:waylight_mobile/data/repositories/preferences/preferences_repository_local.dart';
 import 'package:waylight_mobile/data/repositories/presence/presence_repository.dart';
@@ -89,6 +91,7 @@ import 'package:waylight_mobile/data/services/device/wall_display.dart';
 import 'package:waylight_mobile/data/services/device_controls/device_controls_store.dart';
 import 'package:waylight_mobile/data/services/focus/focus_timer_service.dart';
 import 'package:waylight_mobile/data/services/home_widgets/home_widget_store.dart';
+import 'package:waylight_mobile/data/services/location/device_location.dart';
 import 'package:waylight_mobile/data/services/logging/log_store.dart';
 import 'package:waylight_mobile/data/services/network/network_changes.dart';
 import 'package:waylight_mobile/data/services/nfc/nfc_writer.dart';
@@ -127,6 +130,7 @@ typedef Repositories = ({
   AbsencesRepository absences,
   AnnouncementsRepository announcements,
   ScannerRepository scanner,
+  PlacesRepository places,
   WatchPairingRepository watch,
   FocusTimerRepository focusTimer,
   HomeServerActionsRepository homeServer,
@@ -180,6 +184,7 @@ List<SingleChildWidget> providers(Repositories repositories) => [
   Provider<CompactStateRepository>.value(value: repositories.compact),
   Provider<AbsencesRepository>.value(value: repositories.absences),
   Provider<ScannerRepository>.value(value: repositories.scanner),
+  Provider<PlacesRepository>.value(value: repositories.places),
   Provider<WatchPairingRepository>.value(value: repositories.watch),
   Provider<AnnouncementsRepository>.value(value: repositories.announcements),
   ChangeNotifierProvider<FocusTimerRepository>.value(
@@ -348,6 +353,12 @@ Repositories createRepositories() {
     absences: AbsencesRepositoryRemote(api: modules),
     announcements: AnnouncementsRepositoryRemote(api: modules),
     scanner: const ScannerRepository(scanner: MethodChannelBarcodeScanner()),
+    places: PlacesRepositoryRemote(
+      api: modules,
+      location: MethodChannelDeviceLocation(
+        available: defaultTargetPlatform == TargetPlatform.android,
+      ),
+    ),
     watch: WatchPairingRepository(
       api: modules,
       scanner: const MethodChannelBarcodeScanner(),

@@ -23,6 +23,7 @@ class MainActivity : FlutterFragmentActivity() {
     private val reminders = ReminderChannel(this)
     private val scan = ScanChannel(this)
     private val nfc = NfcChannel(this)
+    private val location = LocationChannel(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         intent = asShareLink(asTagLink(intent))
@@ -39,6 +40,7 @@ class MainActivity : FlutterFragmentActivity() {
         reminders.register(flutterEngine)
         scan.register(flutterEngine)
         nfc.register(flutterEngine)
+        location.register(flutterEngine)
         TilesChannel.register(applicationContext, flutterEngine.dartExecutor.binaryMessenger)
         ControlsChannel.register(applicationContext, flutterEngine.dartExecutor.binaryMessenger)
         FocusChannel.register(applicationContext, flutterEngine)
@@ -57,6 +59,7 @@ class MainActivity : FlutterFragmentActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         push.onPermissionResult(requestCode, grantResults)
         reminders.onPermissionResult(requestCode, grantResults)
+        location.onPermissionResult(requestCode, grantResults)
     }
 }
 

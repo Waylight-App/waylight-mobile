@@ -2,6 +2,7 @@ import 'package:intl/intl.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 import 'package:waylight_mobile/data/repositories/dashboard/dashboard_repository.dart';
+import 'package:waylight_mobile/data/repositories/places/places_repository.dart';
 import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/domain/models/place.dart';
 import 'package:waylight_mobile/domain/models/weather.dart';
@@ -54,6 +55,17 @@ class WeatherWidget extends StatelessWidget {
       label: (place) => place.name,
       detail: (place) =>
           [place.region, place.country].where((s) => s.isNotEmpty).join(', '),
+      action: viewModel.canUseLocation
+          ? ChoiceAction(
+              label: l10n.setUpPlaceMyLocation,
+              run: () => viewModel.useMyLocation(l10n.setUpPlaceMyLocationName),
+              errorText: (error) => switch (error) {
+                LocationDenied() => l10n.setUpPlaceLocationDenied,
+                LocationUnavailable() => l10n.setUpPlaceLocationUnavailable,
+                _ => l10n.errorMessage(error),
+              },
+            )
+          : null,
     );
     if (place == null) return;
     await viewModel.choosePlace.execute(place);
@@ -71,6 +83,7 @@ class WeatherWidget extends StatelessWidget {
       serverRepository: context.read(),
       weatherRepository: context.read(),
       dashboardRepository: context.read<DashboardRepository?>(),
+      placesRepository: context.read<PlacesRepository?>(),
       widgetId: widget.id,
       widgetConfig: widget.config,
     ),

@@ -7,6 +7,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:provider/provider.dart';
 import 'package:waylight_mobile/data/repositories/dashboard/dashboard_repository.dart';
+import 'package:waylight_mobile/data/repositories/places/places_repository.dart';
 import 'package:waylight_mobile/data/repositories/server/server_repository.dart';
 import 'package:waylight_mobile/data/repositories/transit/transit_repository.dart';
 import 'package:waylight_mobile/data/repositories/waste/waste_repository.dart';
@@ -27,6 +28,7 @@ import 'package:waylight_mobile/ui/widgets/weather/weather_widget.dart';
 import 'package:waylight_mobile/utils/result.dart';
 
 import '../../../testing/fakes/fake_dashboard_repository.dart';
+import '../../../testing/fakes/fake_places_repository.dart';
 import '../../../testing/fakes/fake_server_repository.dart';
 import '../../../testing/fakes/fake_transit_repository.dart';
 import '../../../testing/fakes/fake_waste_repository.dart';
@@ -54,6 +56,7 @@ void main() {
     Widget Function(BuildContext, WidgetPlacement) builder,
     WidgetPlacement placement, {
     WidgetSize? size,
+    PlacesRepository? places,
   }) async {
     final child = Builder(builder: (context) => builder(context, placement));
     await tester.pumpScreen(
@@ -66,6 +69,7 @@ void main() {
           Provider<WeatherRepository>.value(value: weather),
           Provider<WasteRepository>.value(value: waste),
           Provider<DashboardRepository>.value(value: dashboard),
+          Provider<PlacesRepository?>.value(value: places),
         ],
         child: size == null
             ? SingleChildScrollView(child: child)
@@ -156,6 +160,66 @@ void main() {
       'label': 'Berlin',
     });
     expect(weather.calls.last, (52.5, 13.4));
+  });
+
+  testWidgets('weather: uses the location of the phone (#295)', (tester) async {
+    final places = FakePlacesRepository();
+    await pump(
+      tester,
+      WeatherWidget.forPlacement,
+      const WidgetPlacement(id: 'w3', kind: 'weather'),
+      places: places,
+    );
+
+    await tester.tap(find.byKey(const ValueKey('setUp')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const ValueKey('choiceSearch.action')));
+    await tester.pumpAndSettle();
+
+    expect(places.asked, [l10nEn.setUpPlaceMyLocationName]);
+    expect(dashboard.updated['w3'], {
+      'lat': 52.37,
+      'lon': 9.73,
+      'label': 'My location',
+      'placeId': 'p1',
+    });
+  });
+
+  testWidgets('weather: says why the location is missing (#295)', (
+    tester,
+  ) async {
+    final places = FakePlacesRepository(
+      result: const Result.error(LocationDenied()),
+    );
+    await pump(
+      tester,
+      WeatherWidget.forPlacement,
+      const WidgetPlacement(id: 'w3', kind: 'weather'),
+      places: places,
+    );
+
+    await tester.tap(find.byKey(const ValueKey('setUp')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const ValueKey('choiceSearch.action')));
+    await tester.pumpAndSettle();
+
+    expect(find.text(l10nEn.setUpPlaceLocationDenied), findsOneWidget);
+    expect(dashboard.updated, isEmpty);
+  });
+
+  testWidgets('without a way to locate there is no button (#295)', (
+    tester,
+  ) async {
+    await pump(
+      tester,
+      WeatherWidget.forPlacement,
+      const WidgetPlacement(id: 'w3', kind: 'weather'),
+    );
+
+    await tester.tap(find.byKey(const ValueKey('setUp')));
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(const ValueKey('choiceSearch.action')), findsNothing);
   });
 
   testWidgets('waste: subscribes to a calendar and shows a refusal', (

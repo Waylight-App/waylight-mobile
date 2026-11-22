@@ -729,5 +729,9 @@
   "backupHealthNone": "Noch keine Sicherung",
   "backupHealthOffsite": "Externe Kopie fehlgeschlagen: {reason}",
   "kioskScan": "QR-Code scannen",
-  "kioskScanPrompt": "Scanne den QR-Code des Wandtablet-Assistenten"
+  "kioskScanPrompt": "Scanne den QR-Code des Wandtablet-Assistenten",
+  "setUpPlaceMyLocation": "Meinen Standort verwenden",
+  "setUpPlaceMyLocationName": "Mein Standort",
+  "setUpPlaceLocationDenied": "Waylight darf deinen Standort nicht lesen. Du kannst das in den Einstellungen des Telefons erlauben.",
+  "setUpPlaceLocationUnavailable": "Dein Telefon konnte seinen Standort nicht bestimmen. Prüfe, ob die Ortung eingeschaltet ist."
 }
