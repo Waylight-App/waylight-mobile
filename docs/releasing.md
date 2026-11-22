@@ -45,17 +45,31 @@ Store identifiers can never change after the first store release.
 
 ## Signing and stores
 
-Not set up yet ([#25](https://github.com/Waylight-App/waylight-mobile/issues/25)). Until then
-the release APKs (phone and watch) are signed with the debug key and meant
-for testers only,
-and iOS builds are unsigned.
+The release APKs (phone and watch) are signed with one fixed release key
+([#284](https://github.com/Waylight-App/waylight-mobile/issues/284)), so
+installed apps accept updates from later releases. The key is a PKCS12
+keystore kept in four GitHub secrets:
 
-The plan:
+| Secret | Content |
+| --- | --- |
+| `ANDROID_KEYSTORE_BASE64` | the keystore file, base64 encoded |
+| `ANDROID_KEYSTORE_PASSWORD` | the keystore password |
+| `ANDROID_KEY_ALIAS` | the key alias |
+| `ANDROID_KEY_PASSWORD` | the key password (for PKCS12 the same as the keystore password) |
 
-- **Android:** an upload key in the GitHub secrets (`ANDROID_KEYSTORE_BASE64`,
-  `ANDROID_KEYSTORE_PASSWORD`, `ANDROID_KEY_ALIAS`, `ANDROID_KEY_PASSWORD`),
-  read by `android/app/build.gradle.kts`; Play App Signing; upload of the AAB
-  to the internal track.
+The release workflow decodes the keystore and passes it to
+`android/app/build.gradle.kts` and `wear/build.gradle.kts` through
+`ANDROID_KEYSTORE_FILE` and the other variables. Without the secrets the
+workflow fails instead of publishing debug-signed APKs. Local builds and pull
+requests keep the debug key.
+
+Losing the key means installed apps can no longer be updated: keep a copy of
+the keystore and its password outside GitHub. iOS builds are unsigned.
+
+Still open ([#25](https://github.com/Waylight-App/waylight-mobile/issues/25)):
+
+- **Google Play:** Play App Signing and upload of the AAB to the internal
+  track, if the app goes to the store.
 - **iOS:** built, signed and uploaded to TestFlight locally on the
   maintainer's Mac; certificates stay on that Mac.
 - **F-Droid:** possible because the app has no proprietary dependencies
