@@ -63,6 +63,7 @@ Future<void> main() async {
           appearance: repositories.preferences.appearance,
           palette: repositories.theme.palette,
           wallpaperSeed: repositories.theme.wallpaperSeed,
+          accessibility: repositories.theme.accessibility,
           onShortcut: (shortcut) => router.go(shortcutLocation(shortcut)),
         ),
       ),

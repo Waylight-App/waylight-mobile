@@ -8,6 +8,7 @@ import 'package:material_ui/material_ui.dart';
 import 'package:waylight_mobile/data/repositories/appearance/theme_repository.dart';
 import 'package:waylight_mobile/data/services/api/api_client.dart';
 import 'package:waylight_mobile/data/services/api/module_api.dart';
+import 'package:waylight_mobile/domain/models/appearance.dart';
 import 'package:waylight_mobile/domain/models/server_address.dart';
 import 'package:waylight_mobile/ui/core/themes/app_theme.dart';
 import 'package:waylight_mobile/ui/core/themes/status_colors.dart';
@@ -78,6 +79,54 @@ void main() {
     expect(light.colorScheme.primary, const Color(0xFF9C5D00));
     expect(AppTheme.darkFor(p).colorScheme.surface, const Color(0xFF131829));
     expect(AppTheme.light.colorScheme.primary, AppTheme.accentTextLight);
+  });
+
+  group('accessibility options (#291)', () {
+    ThemeRepository create(String body, InMemoryKeyValueStore store) =>
+        ThemeRepository(
+          api: ModuleApi(
+            ApiClient(
+              client: MockClient((_) async => http.Response(body, 200)),
+            ),
+          ),
+          store: store,
+        );
+
+    test('are read from the account and kept on the device', () async {
+      final store = InMemoryKeyValueStore();
+      final repo = create(
+        '{"customCss":"","textSize":"larger","highContrast":true,'
+        '"simpleView":true}',
+        store,
+      );
+      expect(repo.accessibility, const Accessibility());
+      await repo.refresh(testServer());
+      expect(repo.accessibility.textSize, TextSize.larger);
+      expect(repo.accessibility.highContrast, isTrue);
+      expect(repo.accessibility.simpleView, isTrue);
+
+      final restored = create('', store);
+      await restored.restore();
+      expect(restored.accessibility, repo.accessibility);
+
+      await repo.clear();
+      expect(repo.accessibility, const Accessibility());
+      expect(store.values, isEmpty);
+    });
+
+    test('stay off on a server that does not know them', () async {
+      final repo = create(
+        '{"customCss":"","textSize":"huge"}',
+        InMemoryKeyValueStore(),
+      );
+      await repo.refresh(testServer());
+      expect(repo.accessibility, const Accessibility());
+    });
+
+    test('scale the text by the step', () {
+      expect(TextSize.normal.factor, 1);
+      expect(TextSize.large.factor, lessThan(TextSize.larger.factor));
+    });
   });
 
   group('wallpaper colours (#198)', () {

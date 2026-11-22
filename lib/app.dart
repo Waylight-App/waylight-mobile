@@ -4,6 +4,7 @@ import 'package:material_ui/material_ui.dart';
 import 'package:waylight_mobile/domain/models/appearance.dart';
 import 'package:waylight_mobile/ui/core/app_shortcuts.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
+import 'package:waylight_mobile/ui/core/text_scaling.dart';
 import 'package:waylight_mobile/ui/core/themes/app_theme.dart';
 
 /// The root widget: theme, languages and the [router].
@@ -14,6 +15,7 @@ class WaylightApp extends StatelessWidget {
     this.appearance = const Appearance(),
     this.palette,
     this.wallpaperSeed,
+    this.accessibility = const Accessibility(),
     this.onShortcut = _ignore,
     super.key,
   });
@@ -36,14 +38,23 @@ class WaylightApp extends StatelessWidget {
   /// it replaces [palette].
   final int? wallpaperSeed;
 
+  /// The account's accessibility options (#291): high contrast replaces
+  /// the colours of [palette] and [wallpaperSeed]; the text size multiplies
+  /// the system's.
+  final Accessibility accessibility;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
       onGenerateTitle: (context) => AppLocalizations.of(context).appTitle,
-      theme: wallpaperSeed == null
+      theme: accessibility.highContrast
+          ? AppTheme.highContrast(Brightness.light)
+          : wallpaperSeed == null
           ? AppTheme.lightFor(palette)
           : AppTheme.wallpaper(Color(wallpaperSeed!), Brightness.light),
-      darkTheme: wallpaperSeed == null
+      darkTheme: accessibility.highContrast
+          ? AppTheme.highContrast(Brightness.dark)
+          : wallpaperSeed == null
           ? AppTheme.darkFor(palette)
           : AppTheme.wallpaper(Color(wallpaperSeed!), Brightness.dark),
       themeMode: switch (appearance.theme) {
@@ -59,9 +70,17 @@ class WaylightApp extends StatelessWidget {
       localizationsDelegates: appLocalizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       routerConfig: router,
-      builder: (context, child) => AppShortcuts(
-        onShortcut: onShortcut,
-        child: child ?? const SizedBox(),
+      builder: (context, child) => MediaQuery(
+        data: MediaQuery.of(context).copyWith(
+          textScaler: StepTextScaler(
+            MediaQuery.textScalerOf(context),
+            accessibility.textSize.factor,
+          ),
+        ),
+        child: AppShortcuts(
+          onShortcut: onShortcut,
+          child: child ?? const SizedBox(),
+        ),
       ),
     );
   }
