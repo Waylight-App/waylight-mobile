@@ -5,6 +5,7 @@ import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/domain/models/home_server.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
+import 'package:waylight_mobile/ui/core/widgets/compact_lines.dart';
 import 'package:waylight_mobile/ui/widgets/common/remote_widget.dart';
 import 'package:waylight_mobile/ui/widgets/common/widget_rows.dart';
 
@@ -25,6 +26,14 @@ class SystemWidget extends StatelessWidget {
     title: widget.title.isNotEmpty ? widget.title : context.l10n.systemTitle,
     query: systemQuery,
     interval: const Duration(seconds: 30),
+    compact: (context, s, size) {
+      final l10n = context.l10n;
+      return CompactLines(
+        headline: '${l10n.systemCpu} ${s.cpuPercent.round()} %',
+        detail: '${l10n.systemMemory} ${s.memoryPercent.round()} %',
+        size: size,
+      );
+    },
     builder: (context, s) {
       final l10n = context.l10n;
       final theme = Theme.of(context);

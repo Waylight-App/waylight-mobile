@@ -85,8 +85,9 @@ void main() {
     _Builder builder,
     WidgetPlacement placement,
     WidgetSize size,
-    Size pixels,
-  ) async {
+    Size pixels, {
+    double scale = 1,
+  }) async {
     await tester.pumpScreen(
       MultiProvider(
         providers: [
@@ -99,9 +100,14 @@ void main() {
           alignment: Alignment.topLeft,
           child: SizedBox.fromSize(
             size: pixels,
-            child: WidgetSizeScope(
-              size: size,
-              child: Builder(builder: (context) => builder(context, placement)),
+            child: MediaQuery(
+              data: MediaQueryData(textScaler: TextScaler.linear(scale)),
+              child: WidgetSizeScope(
+                size: size,
+                child: Builder(
+                  builder: (context) => builder(context, placement),
+                ),
+              ),
             ),
           ),
         ),
@@ -134,6 +140,17 @@ void main() {
       expect(find.text('2 of 14 need attention right now'), findsOneWidget);
       expect(find.text('Nightly NAS backup failed at 03:00'), findsNothing);
     });
+
+    for (final (size, pixels) in [
+      (WidgetSize.small, smallTile),
+      (WidgetSize.strip, stripTile),
+    ]) {
+      testWidgets('$kind: a ${size.name} tile fits 200 % text', (tester) async {
+        await pump(tester, builder, placement, size, pixels, scale: 2);
+
+        expect(find.textContaining('need attention'), findsOneWidget);
+      });
+    }
   }
 
   group('the action of the server state', () {
