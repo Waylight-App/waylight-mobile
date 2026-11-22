@@ -17,8 +17,8 @@ import io.flutter.embedding.engine.FlutterEngine
 // local_auth shows the system's biometric prompt, which needs a
 // FragmentActivity (#46).
 class MainActivity : FlutterFragmentActivity() {
-    // The push channel exists in both flavours (ADR 0008); only the store
-    // flavour's one talks to Firebase.
+    // Push notifications arrive over the relay's server-sent event stream,
+    // without any Google service (ADR 0011).
     private val push = PushChannel(this)
     private val reminders = ReminderChannel(this)
     private val scan = ScanChannel(this)
