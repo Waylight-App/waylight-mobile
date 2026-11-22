@@ -14,9 +14,17 @@ class FakeHelpRepository implements HelpRepository {
   /// The kinds asked for.
   final List<String> asked = [];
 
+  /// The languages asked for, one per call.
+  final List<String> languages = [];
+
   @override
-  Future<Result<WidgetHelp?>> helpOf(ServerAddress server, String kind) async {
+  Future<Result<WidgetHelp?>> helpOf(
+    ServerAddress server,
+    String kind, {
+    String language = '',
+  }) async {
     asked.add(kind);
+    languages.add(language);
     return failure ?? Result.ok(byKind[kind]);
   }
 }

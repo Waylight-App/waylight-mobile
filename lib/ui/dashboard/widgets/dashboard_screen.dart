@@ -108,7 +108,11 @@ class DashboardScreen extends StatelessWidget {
                       ? (widget) => WidgetHelpSheet.show(
                           context,
                           placement: widget,
-                          load: viewModel.helpOf,
+                          load: (kind) => viewModel.helpOf(
+                            kind,
+                            language: Localizations.localeOf(context)
+                                .languageCode,
+                          ),
                         ).ignore()
                       : null,
                 ),
