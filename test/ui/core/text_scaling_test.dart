@@ -5,9 +5,9 @@ import 'package:waylight_mobile/ui/core/text_scaling.dart';
 void main() {
   test('multiplies what the system scales', () {
     const system = TextScaler.linear(1.5);
-    final scaler = StepTextScaler(system, 1.3);
+    const scaler = StepTextScaler(system, 1.3);
     expect(scaler.scale(10), closeTo(19.5, 1e-9));
-    expect(StepTextScaler(system, 1).scale(10), 15);
+    expect(const StepTextScaler(system, 1).scale(10), 15);
   });
 
   test('keeps a non-linear system scaling', () {
@@ -20,12 +20,12 @@ void main() {
 
   test('compares by value', () {
     expect(
-      StepTextScaler(TextScaler.noScaling, 1.15),
-      StepTextScaler(TextScaler.noScaling, 1.15),
+      const StepTextScaler(TextScaler.noScaling, 1.15),
+      const StepTextScaler(TextScaler.noScaling, 1.15),
     );
     expect(
-      StepTextScaler(TextScaler.noScaling, 1.15),
-      isNot(StepTextScaler(TextScaler.noScaling, 1.3)),
+      const StepTextScaler(TextScaler.noScaling, 1.15),
+      isNot(const StepTextScaler(TextScaler.noScaling, 1.3)),
     );
   });
 }

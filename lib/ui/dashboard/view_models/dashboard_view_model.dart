@@ -55,6 +55,7 @@ class DashboardViewModel extends ChangeNotifier {
        _reminders = reminderRepository {
     _offline?.addListener(notifyListeners);
     _attention?.addListener(notifyListeners);
+    _theme?.addListener(notifyListeners);
     load = Command0(_load)..execute().ignore();
     _loadDemo().ignore();
   }
@@ -208,6 +209,13 @@ class DashboardViewModel extends ChangeNotifier {
           ?.resolve('/')
           .replace(queryParameters: {'tab': tabId});
 
+  /// Whether the account chose the simple view (#291).
+  bool get simpleView => _theme?.accessibility.simpleView ?? false;
+
+  /// Whether [widget] has a compact view, which the simple view prefers.
+  bool hasCompact(WidgetPlacement widget) =>
+      _compact?.supports(widget.kind, config: widget.config) ?? false;
+
   /// Whether the help of widgets can be shown (#289).
   bool get hasHelp => _help != null;
 
@@ -274,6 +282,7 @@ class DashboardViewModel extends ChangeNotifier {
     _arranging?.dispose();
     _offline?.removeListener(notifyListeners);
     _attention?.removeListener(notifyListeners);
+    _theme?.removeListener(notifyListeners);
     load.dispose();
     super.dispose();
   }
