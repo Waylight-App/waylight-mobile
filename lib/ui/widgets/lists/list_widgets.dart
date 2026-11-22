@@ -8,6 +8,7 @@ import 'package:waylight_mobile/domain/models/information.dart';
 import 'package:waylight_mobile/ui/core/link_opener.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
+import 'package:waylight_mobile/ui/core/widgets/compact_lines.dart';
 import 'package:waylight_mobile/ui/widgets/common/simple_widget.dart';
 import 'package:waylight_mobile/ui/widgets/common/widget_rows.dart';
 
@@ -85,6 +86,19 @@ class ListWidget extends StatelessWidget {
     defaultTitle: title(context.l10n),
     query: query,
     interval: interval,
+    compact: (context, sections, size) {
+      final l10n = context.l10n;
+      final items = [for (final s in sections) ...s.items];
+      if (items.isEmpty) return Text(l10n.listEmpty);
+      final first = items.first;
+      return CompactLines(
+        headline: first.title,
+        detail: items.length > 1
+            ? l10n.listMore(items.length - 1)
+            : first.detail,
+        size: size,
+      );
+    },
     builder: (context, sections) {
       final l10n = context.l10n;
       final shown = sections.where((s) => s.items.isNotEmpty).toList();

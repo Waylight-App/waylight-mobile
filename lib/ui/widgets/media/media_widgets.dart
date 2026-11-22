@@ -14,6 +14,7 @@ import 'package:waylight_mobile/ui/core/link_opener.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
 import 'package:waylight_mobile/ui/core/themes/radar_colors.dart';
+import 'package:waylight_mobile/ui/core/widgets/compact_lines.dart';
 import 'package:waylight_mobile/ui/core/widgets/section_card.dart';
 import 'package:waylight_mobile/ui/core/widgets/widget_preview.dart';
 import 'package:waylight_mobile/ui/widgets/common/compact_state_widget.dart';
@@ -355,6 +356,11 @@ class MailWidget extends StatelessWidget {
       query: account is String && account.isNotEmpty
           ? inboxQuery.withQuery({'account': account})
           : inboxQuery,
+      compact: (context, inbox, size) => CompactLines(
+        headline: context.l10n.mailUnread(inbox.unread),
+        detail: inbox.messages.firstOrNull?.subject,
+        size: size,
+      ),
       builder: (context, inbox) {
         final l10n = context.l10n;
         final time = DateFormat.MMMd(

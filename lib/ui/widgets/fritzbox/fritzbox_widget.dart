@@ -6,6 +6,7 @@ import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/domain/models/network.dart';
 import 'package:waylight_mobile/ui/core/link_opener.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
+import 'package:waylight_mobile/ui/core/widgets/compact_lines.dart';
 import 'package:waylight_mobile/ui/widgets/common/simple_widget.dart';
 import 'package:waylight_mobile/ui/widgets/common/widget_rows.dart';
 
@@ -27,6 +28,14 @@ class FritzboxWidget extends StatelessWidget {
     defaultTitle: 'FRITZ!Box',
     query: fritzboxQuery,
     interval: const Duration(minutes: 1),
+    compact: (context, box, size) {
+      final l10n = context.l10n;
+      return CompactLines(
+        headline: box.connected ? l10n.servicesOnline : l10n.servicesOffline,
+        detail: box.model,
+        size: size,
+      );
+    },
     builder: (context, box) {
       final l10n = context.l10n;
       return Column(

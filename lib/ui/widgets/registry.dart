@@ -44,6 +44,10 @@ import 'package:waylight_mobile/ui/widgets/waste/waste_widget.dart';
 import 'package:waylight_mobile/ui/widgets/weather/weather_widget.dart';
 import 'package:waylight_mobile/ui/widgets/wireguard/wireguard_widget.dart';
 
+/// Kinds with long lists and no small or strip tile: they start at medium
+/// and also offer large.
+const _roomySizes = WidgetSizes([WidgetSize.medium, WidgetSize.large]);
+
 /// The widget kinds with a native view. Add a kind here when its feature
 /// folder in `ui/widgets/` is done (docs/adding-a-feature.md); add its
 /// `preview` to `previews` once it has example data (#251).
@@ -51,6 +55,24 @@ const nativeWidgets = WidgetRegistry(
   // A clock needs no more than half a screen; kinds not listed offer every
   // size.
   sizes: {
+    'absences': _roomySizes,
+    'announcements': _roomySizes,
+    'bookmarks': _roomySizes,
+    'fritzbox-calls': _roomySizes,
+    'grafana-alerts': _roomySizes,
+    'notes': _roomySizes,
+    'phonelist': _roomySizes,
+    'sports': _roomySizes,
+    'study': _roomySizes,
+    // Pictures and charts need room, so they start large.
+    'space': WidgetSizes([
+      WidgetSize.medium,
+      WidgetSize.large,
+    ], defaultSize: WidgetSize.large),
+    'grafana-panel': WidgetSizes([
+      WidgetSize.medium,
+      WidgetSize.large,
+    ], defaultSize: WidgetSize.large),
     // The radar is a square picture; it does not fit a small tile or a strip.
     'radar': WidgetSizes([
       WidgetSize.medium,
