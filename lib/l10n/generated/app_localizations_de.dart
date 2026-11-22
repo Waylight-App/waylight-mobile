@@ -1190,6 +1190,17 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String shoppingOpenItems(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count Artikel zu kaufen',
+      one: '1 Artikel zu kaufen',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String habitsStreak(int current, int best) {
     return '$current Tage in Folge · Rekord $best';
   }

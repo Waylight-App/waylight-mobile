@@ -287,7 +287,16 @@ void main() {
                 .copyWith(disableAnimations: reduceMotion),
             child: DashboardScreen(
               viewModel: viewModel,
-              registry: const WidgetRegistry({}),
+              registry: const WidgetRegistry(
+                {},
+                sizes: {
+                  'clock': WidgetSizes([
+                    WidgetSize.small,
+                    WidgetSize.medium,
+                    WidgetSize.strip,
+                  ], defaultSize: WidgetSize.small),
+                },
+              ),
               writeTabTag: writeTabTag,
             ),
           ),
@@ -588,6 +597,19 @@ void main() {
             tester.getSize(find.byKey(const ValueKey('grid.b'))).width / 2,
           ),
           reason: 'medium takes the full width',
+        );
+      });
+
+      testWidgets('offers only the sizes a kind declares', (tester) async {
+        await openGallery(tester);
+
+        expect(
+          find.byKey(const ValueKey('gallery.add.clock.strip')),
+          findsOneWidget,
+        );
+        expect(
+          find.byKey(const ValueKey('gallery.add.clock.large')),
+          findsNothing,
         );
       });
 

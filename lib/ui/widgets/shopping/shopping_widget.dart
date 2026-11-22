@@ -6,6 +6,7 @@ import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/routing/routes.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
+import 'package:waylight_mobile/ui/core/widgets/compact_lines.dart';
 import 'package:waylight_mobile/ui/core/widgets/view_model_host.dart';
 import 'package:waylight_mobile/ui/core/widgets/widget_frame.dart';
 import 'package:waylight_mobile/ui/widgets/common/error_snack_listener.dart';
@@ -38,6 +39,19 @@ class ShoppingWidget extends StatelessWidget {
       interval: const Duration(minutes: 1),
       errorText: (error) =>
           isNotConfigured(error) ? context.l10n.shoppingNotConfigured : null,
+      compact: (context, _, size) => ListenableBuilder(
+        listenable: viewModel,
+        builder: (context, _) {
+          final l10n = context.l10n;
+          final open = viewModel.items.where((i) => !i.done).toList();
+          if (open.isEmpty) return Text(l10n.shoppingEmpty);
+          return CompactLines(
+            headline: l10n.shoppingOpenItems(open.length),
+            detail: open.take(3).map((i) => i.summary).join(', '),
+            size: size,
+          );
+        },
+      ),
       builder: (context, _) => _ShoppingList(viewModel: viewModel),
     ),
   );
