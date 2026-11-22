@@ -8,6 +8,7 @@ import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/refresh.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
 import 'package:waylight_mobile/ui/core/widget_registry.dart';
+import 'package:waylight_mobile/ui/core/widget_size_scope.dart';
 import 'package:waylight_mobile/ui/core/widgets/compact_card.dart';
 import 'package:waylight_mobile/ui/core/widgets/form_page.dart';
 import 'package:waylight_mobile/ui/core/widgets/message_banner.dart';
@@ -98,7 +99,11 @@ class DashboardScreen extends StatelessWidget {
                   webUrl: viewModel.webUrl(tab.id),
                   setUpNeedOf: viewModel.setUpNeedOf,
                   hidden: viewModel.isEmptyWidget,
-                  onArrange: tab.mine ? () => _arrange(context, tab) : null,
+                  onArrange: tab.mine && !viewModel.simpleView
+                      ? () => _arrange(context, tab)
+                      : null,
+                  simple: viewModel.simpleView,
+                  hasCompact: viewModel.hasCompact,
                   onHelp: viewModel.hasHelp
                       ? (widget) => WidgetHelpSheet.show(
                           context,
@@ -137,7 +142,9 @@ class DashboardScreen extends StatelessWidget {
                               listenable: controller,
                               builder: (context, _) {
                                 final tab = tabs[controller.index];
-                                if (!tab.mine) return const SizedBox.shrink();
+                                if (!tab.mine || viewModel.simpleView) {
+                                  return const SizedBox.shrink();
+                                }
                                 return IconButton(
                                   key: const ValueKey('dashboard.edit'),
                                   tooltip: l10n.editTabTitle,
@@ -240,6 +247,8 @@ class TabPage extends StatelessWidget {
     this.webUrl,
     this.onArrange,
     this.onHelp,
+    this.simple = false,
+    this.hasCompact,
     this.setUpNeedOf,
     this.hidden,
     this.readOnly = false,
@@ -274,6 +283,13 @@ class TabPage extends StatelessWidget {
 
   /// Opens the edit mode; `null` for tabs the account may not change.
   final VoidCallback? onArrange;
+
+  /// The simple view of the accessibility options (#291): one column in
+  /// reading order, compact views where a widget has one, no sizes.
+  final bool simple;
+
+  /// Whether a widget has a compact view, which the simple view prefers.
+  final bool Function(WidgetPlacement widget)? hasCompact;
 
   /// Shows the help of a widget (#289); `null` where there is none.
   final ValueChanged<WidgetPlacement>? onHelp;
@@ -342,15 +358,45 @@ class TabPage extends StatelessWidget {
   void _openTile(BuildContext context, WidgetPlacement widget) {
     if (readOnly) return;
     if (isCompact(tab.sizes[widget.id])) {
-      WidgetDetailSheet.show(
-        context,
-        placement: widget,
-        onHelp: onHelp == null ? null : () => onHelp!(widget),
-        child: _card(context, widget),
-      ).ignore();
+      _openSheet(context, widget);
     } else {
       _open(context, widget);
     }
+  }
+
+  void _openSheet(BuildContext context, WidgetPlacement widget) {
+    WidgetDetailSheet.show(
+      context,
+      placement: widget,
+      onHelp: onHelp == null ? null : () => onHelp!(widget),
+      child: _card(context, widget),
+    ).ignore();
+  }
+
+  /// A widget in the simple view: its compact view when it has one, as a
+  /// strip that opens the full view in a sheet, else the full view itself.
+  Widget _simpleItem(BuildContext context, WidgetPlacement widget) {
+    if (!(hasCompact?.call(widget) ?? false)) return _unsized(context, widget);
+    return Semantics(
+      container: true,
+      button: true,
+      label: widget.displayTitle,
+      onTap: () => _openSheet(context, widget),
+      onTapHint: context.l10n.dashboardOpenDetails,
+      child: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        excludeFromSemantics: true,
+        onTap: () => _openSheet(context, widget),
+        onLongPress: _holdOf(context, widget),
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(minHeight: Dimens.tapTarget),
+          child: WidgetSizeScope(
+            size: WidgetSize.strip,
+            child: Builder(builder: (context) => _card(context, widget)),
+          ),
+        ),
+      ),
+    );
   }
 
   void _open(BuildContext context, WidgetPlacement widget) {
@@ -389,7 +435,7 @@ class TabPage extends StatelessWidget {
     final columns = window.columns;
     final gridColumns = SizedGrid.columnsOf(context);
     final blocks = <Widget>[];
-    for (final run in _runs()) {
+    for (final run in simple ? const <List<WidgetPlacement>>[] : _runs()) {
       if (tab.sizes.containsKey(run.first.id)) {
         blocks.add(
           WidgetGrid(
@@ -412,6 +458,9 @@ class TabPage extends StatelessWidget {
       } else {
         blocks.add(_Columns(widgets: run, columns: columns, card: _unsized));
       }
+    }
+    if (simple) {
+      blocks.addAll([for (final w in _shown) _simpleItem(context, w)]);
     }
     return RefreshIndicator(
       // Reloads the widgets of this tab that are on screen (#19).

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 
 import 'package:waylight_mobile/data/services/api/module_api.dart';
@@ -25,14 +27,19 @@ class ThemeRepository extends ChangeNotifier {
   final SystemColors? _systemColors;
 
   static const _key = 'theme.palette';
+  static const _accessibilityKey = 'theme.accessibility';
 
   ThemePalette? _palette;
+  Accessibility _accessibility = const Accessibility();
   int? _systemAccent;
   bool _wallpaper = false;
   ServerAddress? _server;
 
   /// The palette, or `null` for the app's own Amber.
   ThemePalette? get palette => _palette;
+
+  /// The accessibility options of the account (#291).
+  Accessibility get accessibility => _accessibility;
 
   /// Whether the system offers wallpaper colours.
   bool get wallpaperAvailable => _systemAccent != null;
@@ -56,6 +63,11 @@ class ThemeRepository extends ChangeNotifier {
     }
     final stored = await _store.read(_key);
     if (stored != null) _palette = paletteFromCss(stored);
+    if (await _store.read(_accessibilityKey) case final json?) {
+      if (jsonDecode(json) case final Map<String, Object?> options) {
+        _accessibility = Accessibility.fromJson(options);
+      }
+    }
     notifyListeners();
   }
 
@@ -83,18 +95,34 @@ class ThemeRepository extends ChangeNotifier {
       _wallpaper = await _store.read(_wallpaperKey(server)) == '1';
       notifyListeners();
     }
-    final result = await _api.read(server, '/api/appearance', (json) {
-      if (json case {'customCss': final String css}) return css;
-      return '';
-    });
+    final result = await _api.read<({String css, Accessibility? options})>(
+      server,
+      '/api/appearance',
+      (json) {
+        if (json is! Map<String, Object?>) return (css: '', options: null);
+        return (
+          css: switch (json['customCss']) {
+            final String css => css,
+            _ => '',
+          },
+          options: Accessibility.fromJson(json),
+        );
+      },
+    );
     if (result case Ok(:final value)) {
-      final palette = paletteFromCss(value);
+      final palette = paletteFromCss(value.css);
       if (palette == null) {
         await _store.delete(_key);
       } else {
-        await _store.write(_key, value);
+        await _store.write(_key, value.css);
       }
       _palette = palette;
+      if (value.options case final options?) {
+        // The options are kept for the next start, so the app opens as
+        // large and as contrasty as it was left (#291).
+        await _store.write(_accessibilityKey, jsonEncode(options.toJson()));
+        _accessibility = options;
+      }
       notifyListeners();
     }
   }
@@ -103,6 +131,8 @@ class ThemeRepository extends ChangeNotifier {
   Future<void> clear() async {
     _palette = null;
     await _store.delete(_key);
+    _accessibility = const Accessibility();
+    await _store.delete(_accessibilityKey);
     if (_server case final server?) await _store.delete(_wallpaperKey(server));
     _wallpaper = false;
     notifyListeners();

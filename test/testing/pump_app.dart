@@ -7,15 +7,18 @@ import 'package:waylight_mobile/ui/core/themes/app_theme.dart';
 /// Helpers to show single screens in widget tests.
 extension PumpApp on WidgetTester {
   /// Shows [screen] with the app's theme in [brightness] and the texts of
-  /// [locale].
+  /// [locale]; [theme] replaces the app's own theme.
   Future<void> pumpScreen(
     Widget screen, {
     Locale locale = const Locale('en'),
     Brightness brightness = Brightness.light,
+    ThemeData? theme,
   }) async {
     await pumpWidget(
       MaterialApp(
-        theme: brightness == Brightness.light ? AppTheme.light : AppTheme.dark,
+        theme:
+            theme ??
+            (brightness == Brightness.light ? AppTheme.light : AppTheme.dark),
         locale: locale,
         localizationsDelegates: appLocalizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,

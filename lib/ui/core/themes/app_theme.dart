@@ -60,6 +60,58 @@ abstract final class AppTheme {
     );
   }
 
+  /// The high-contrast theme of the account's accessibility options
+  /// (#291): the colours of the web interface's high-contrast palette, all
+  /// at least 7:1 on their background, and outlines on cards and fields.
+  static ThemeData highContrast(Brightness brightness) {
+    final light = brightness == Brightness.light;
+    final text = light ? const Color(0xFF000000) : const Color(0xFFFFFFFF);
+    final background = light
+        ? const Color(0xFFFFFFFF)
+        : const Color(0xFF000000);
+    final raised = light ? const Color(0xFFF0F0F0) : const Color(0xFF1A1A1A);
+    final accent = light ? const Color(0xFF0039A6) : const Color(0xFFFFD400);
+    final onAccent = light ? const Color(0xFFFFFFFF) : const Color(0xFF000000);
+    final colors = ColorScheme(
+      brightness: brightness,
+      primary: accent,
+      onPrimary: onAccent,
+      primaryContainer: raised,
+      onPrimaryContainer: text,
+      secondary: accent,
+      onSecondary: onAccent,
+      secondaryContainer: raised,
+      onSecondaryContainer: text,
+      error: light ? const Color(0xFFA00000) : const Color(0xFFFF8A8A),
+      onError: onAccent,
+      surface: background,
+      onSurface: text,
+      onSurfaceVariant: light
+          ? const Color(0xFF2E2E2E)
+          : const Color(0xFFE0E0E0),
+      outline: text,
+      outlineVariant: text,
+      surfaceContainerLowest: background,
+      surfaceContainerLow: background,
+      surfaceContainer: background,
+      surfaceContainerHigh: raised,
+      surfaceContainerHighest: raised,
+    );
+    final status = StatusColors(
+      warning: light ? const Color(0xFF6B4400) : const Color(0xFFFFD400),
+      warningContainer: raised,
+      onWarningContainer: text,
+      success: light ? const Color(0xFF005A2C) : const Color(0xFF5CFF8D),
+    );
+    return _build(
+      colors,
+      status,
+      accent: accent,
+      onAccent: onAccent,
+      outlined: true,
+    );
+  }
+
   static ThemeData _theme(
     Brightness brightness,
     StatusColors status,
@@ -102,6 +154,7 @@ abstract final class AppTheme {
     StatusColors status, {
     required Color accent,
     required Color onAccent,
+    bool outlined = false,
   }) {
     const buttonSize = Size(64, Dimens.tapTarget);
     return ThemeData(
@@ -138,8 +191,15 @@ abstract final class AppTheme {
         elevation: 0,
         margin: EdgeInsets.zero,
         color: colors.surfaceContainer,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(Dimens.radiusCard)),
+        shape: RoundedRectangleBorder(
+          borderRadius: const BorderRadius.all(
+            Radius.circular(Dimens.radiusCard),
+          ),
+          // High contrast: cards are told apart by an outline, not by a
+          // slightly different surface (#291).
+          side: outlined
+              ? BorderSide(color: colors.outline, width: 2)
+              : BorderSide.none,
         ),
       ),
     );

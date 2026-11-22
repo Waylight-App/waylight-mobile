@@ -30,6 +30,42 @@ void main() {
     }
   });
 
+  test('the high-contrast themes reach 7:1 (WCAG AAA) on every surface', () {
+    for (final brightness in Brightness.values) {
+      final theme = AppTheme.highContrast(brightness);
+      final colors = theme.colorScheme;
+      final status = theme.extension<StatusColors>()!;
+      for (final surface in [colors.surface, colors.surfaceContainerHigh]) {
+        for (final foreground in [
+          colors.onSurface,
+          colors.onSurfaceVariant,
+          colors.primary,
+          colors.error,
+          status.warning,
+          status.success,
+          colors.outline,
+        ]) {
+          expect(_contrast(foreground, surface), greaterThanOrEqualTo(7));
+        }
+      }
+      expect(
+        _contrast(colors.onPrimary, colors.primary),
+        greaterThanOrEqualTo(7),
+      );
+      expect(
+        _contrast(status.onWarningContainer, status.warningContainer),
+        greaterThanOrEqualTo(7),
+      );
+    }
+  });
+
+  test('cards of the high-contrast themes have an outline', () {
+    final shape = AppTheme.highContrast(Brightness.light).cardTheme.shape!;
+    expect((shape as RoundedRectangleBorder).side.width, greaterThan(0));
+    final plain = AppTheme.light.cardTheme.shape! as RoundedRectangleBorder;
+    expect(plain.side, BorderSide.none);
+  });
+
   test('both themes carry their status colours', () {
     expect(AppTheme.light.extension<StatusColors>(), StatusColors.light);
     expect(AppTheme.dark.extension<StatusColors>(), StatusColors.dark);
