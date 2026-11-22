@@ -19,6 +19,7 @@ import 'package:waylight_mobile/data/repositories/offline/offline_repository.dar
 import 'package:waylight_mobile/data/repositories/quick_tiles/quick_tiles_repository.dart';
 import 'package:waylight_mobile/data/repositories/reminders/reminder_repository.dart';
 import 'package:waylight_mobile/data/repositories/scanner/scanner_repository.dart';
+import 'package:waylight_mobile/data/repositories/setup_paste/setup_paste_repository.dart';
 import 'package:waylight_mobile/data/repositories/todos/todos_repository_outbox.dart';
 import 'package:waylight_mobile/data/repositories/watch/watch_pairing_repository.dart';
 import 'package:waylight_mobile/data/services/api/api_client.dart';
@@ -122,6 +123,14 @@ void main() {
           scanner: ScannerRepository(scanner: FakeBarcodeScanner()),
           places: FakePlacesRepository(),
           household: FakeHouseholdRepository(),
+          setupPaste: SetupPasteRepository(
+            api: ModuleApi(
+              ApiClient(
+                client: MockClient((_) async => http.Response('', 204)),
+              ),
+            ),
+            scanner: FakeBarcodeScanner(),
+          ),
           watch: WatchPairingRepository(
             api: ModuleApi(
               ApiClient(
@@ -326,6 +335,11 @@ void main() {
     for (final area in SettingsArea.values) {
       expect(at('waylight://settings/${area.segment}'), area.path);
     }
+    expect(at('waylight://paste?server=s&code=c'), '/paste?server=s&code=c');
+    expect(
+      at('waylight://paste?server=s&code=c', signedIn: false),
+      '/sign-in?from=%2Fpaste%3Fserver%3Ds%26code%3Dc',
+    );
     expect(at('waylight://nowhere'), Routes.home);
     expect(
       at('waylight://auth?code=c&state=s', signedIn: false),

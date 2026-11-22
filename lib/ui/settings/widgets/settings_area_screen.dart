@@ -118,6 +118,7 @@ class SettingsAreaScreen extends StatelessWidget {
       // Watches are paired through the Android app only (#239, #185).
       if (viewModel.watchPairingAvailable)
         const SettingsTarget(item: SettingsItem.pairWatch, child: _PairWatch()),
+      const SettingsTarget(item: SettingsItem.setupPaste, child: _Paste()),
       SettingsTarget(
         item: SettingsItem.wallDisplay,
         child: _Hint(
@@ -147,6 +148,28 @@ class _PairWatch extends StatelessWidget {
         title: Text(l10n.pairWatchEntry),
         trailing: const Icon(Icons.chevron_right),
         onTap: () => context.push(Routes.pairWatch),
+      ),
+    );
+  }
+}
+
+/// Opens the screen that sends a value to the setup assistant (#303).
+class _Paste extends StatelessWidget {
+  const _Paste();
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    return SectionCard(
+      title: l10n.pasteTitle,
+      child: ListTile(
+        key: const ValueKey('settings.paste'),
+        contentPadding: EdgeInsets.zero,
+        minTileHeight: Dimens.tapTarget,
+        leading: const Icon(Icons.qr_code_scanner),
+        title: Text(l10n.pasteEntry),
+        trailing: const Icon(Icons.chevron_right),
+        onTap: () => context.push(Routes.paste),
       ),
     );
   }

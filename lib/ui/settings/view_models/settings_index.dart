@@ -194,6 +194,17 @@ enum SettingsItem {
     'koppeln',
   ]),
 
+  /// Sending a key to the setup assistant (#303).
+  setupPaste(SettingsArea.phone, [
+    'paste',
+    'einfügen',
+    'setup',
+    'einrichtung',
+    'qr',
+    'key',
+    'schlüssel',
+  ]),
+
   /// How to start a wall display (#193).
   wallDisplay(SettingsArea.phone, [
     'wall',

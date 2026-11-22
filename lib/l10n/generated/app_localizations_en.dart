@@ -2687,4 +2687,62 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get meterReadingInvalid => 'Enter the value as a number.';
+
+  @override
+  String get pasteTitle => 'Send to the setup assistant';
+
+  @override
+  String get pasteEntry => 'Send a key to the setup assistant';
+
+  @override
+  String get pasteIntro =>
+      'The setup assistant in the browser can show a QR code for a key or password. Scan it, enter the value here and send it. The code works once and for five minutes.';
+
+  @override
+  String get pasteScan => 'Scan the QR code';
+
+  @override
+  String get pasteScanAgain => 'Scan another code';
+
+  @override
+  String get pasteScanPrompt =>
+      'Point the camera at the QR code in the setup assistant';
+
+  @override
+  String pasteTarget(String server) {
+    return 'Send to $server';
+  }
+
+  @override
+  String get pasteValueLabel => 'Key or password';
+
+  @override
+  String get pasteShow => 'Show the value';
+
+  @override
+  String get pasteHide => 'Hide the value';
+
+  @override
+  String get pasteSend => 'Send';
+
+  @override
+  String get pasteDone => 'Sent. The setup assistant fills the value in.';
+
+  @override
+  String get pasteUnavailable => 'Scanning needs the Android app.';
+
+  @override
+  String get pasteInvalidCode =>
+      'This is not a code from the setup assistant. Open Paste from phone in the assistant and scan the code it shows.';
+
+  @override
+  String get pasteOtherServer =>
+      'This code is for another server than the one this app is connected to.';
+
+  @override
+  String get pasteExpired =>
+      'The code has expired or was already used. Show a new code in the setup assistant and scan it again.';
+
+  @override
+  String get pasteValueInvalid => 'The value is empty or too long.';
 }

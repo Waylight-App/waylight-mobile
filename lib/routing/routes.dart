@@ -87,6 +87,10 @@ abstract final class Routes {
   /// Runs the action of an NFC tag: `waylight://tag?do=habit&id=…` (#195).
   static const tag = '/tag';
 
+  /// Sends a value to the setup assistant: `waylight://paste?server=…&code=…`
+  /// (#303); without parameters the screen scans the code itself.
+  static const paste = '/paste';
+
   /// Every path the router knows; links to others open the dashboard.
   static const all = {
     home,
@@ -118,5 +122,6 @@ abstract final class Routes {
     kiosk,
     tag,
     welcome,
+    paste,
   };
 }
