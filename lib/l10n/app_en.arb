@@ -1459,5 +1459,13 @@
   "kioskScan": "Scan the QR code",
   "@kioskScan": {"description": "Button in the wall display dialog that scans the QR code of the wall tablet assistant (#294)."},
   "kioskScanPrompt": "Scan the QR code of the wall tablet assistant",
-  "@kioskScanPrompt": {"description": "Shown over the camera while scanning the QR code of a wall display."}
+  "@kioskScanPrompt": {"description": "Shown over the camera while scanning the QR code of a wall display."},
+  "setUpPlaceMyLocation": "Use my location",
+  "@setUpPlaceMyLocation": {"description": "Button in the place picker that reads the phone's approximate location (#295)."},
+  "setUpPlaceMyLocationName": "My location",
+  "@setUpPlaceMyLocationName": {"description": "Name of the place saved from the phone's location."},
+  "setUpPlaceLocationDenied": "Waylight may not read your location. You can allow it in the phone's settings.",
+  "@setUpPlaceLocationDenied": {"description": "The location permission was refused."},
+  "setUpPlaceLocationUnavailable": "Your phone could not tell where it is. Check that location is switched on.",
+  "@setUpPlaceLocationUnavailable": {"description": "No location available."}
 }

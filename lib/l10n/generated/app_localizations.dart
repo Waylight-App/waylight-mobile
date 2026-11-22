@@ -4477,6 +4477,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Scan the QR code of the wall tablet assistant'**
   String get kioskScanPrompt;
+
+  /// Button in the place picker that reads the phone's approximate location (#295).
+  ///
+  /// In en, this message translates to:
+  /// **'Use my location'**
+  String get setUpPlaceMyLocation;
+
+  /// Name of the place saved from the phone's location.
+  ///
+  /// In en, this message translates to:
+  /// **'My location'**
+  String get setUpPlaceMyLocationName;
+
+  /// The location permission was refused.
+  ///
+  /// In en, this message translates to:
+  /// **'Waylight may not read your location. You can allow it in the phone\'s settings.'**
+  String get setUpPlaceLocationDenied;
+
+  /// No location available.
+  ///
+  /// In en, this message translates to:
+  /// **'Your phone could not tell where it is. Check that location is switched on.'**
+  String get setUpPlaceLocationUnavailable;
 }
 
 class _AppLocalizationsDelegate

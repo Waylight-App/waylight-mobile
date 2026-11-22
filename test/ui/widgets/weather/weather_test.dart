@@ -7,12 +7,15 @@ import 'package:waylight_mobile/data/repositories/server/server_repository.dart'
 import 'package:waylight_mobile/data/repositories/weather/weather_repository.dart';
 import 'package:waylight_mobile/domain/models/api_exception.dart';
 import 'package:waylight_mobile/domain/models/dashboard.dart';
+import 'package:waylight_mobile/domain/models/place.dart';
 import 'package:waylight_mobile/domain/models/weather.dart';
 import 'package:waylight_mobile/ui/core/widget_size_scope.dart';
 import 'package:waylight_mobile/ui/widgets/weather/weather_view_model.dart';
 import 'package:waylight_mobile/ui/widgets/weather/weather_widget.dart';
 import 'package:waylight_mobile/utils/result.dart';
 
+import '../../../testing/fakes/fake_dashboard_repository.dart';
+import '../../../testing/fakes/fake_places_repository.dart';
 import '../../../testing/fakes/fake_server_repository.dart';
 import '../../../testing/fakes/fake_weather_repository.dart';
 import '../../../testing/pump_app.dart';
@@ -37,6 +40,42 @@ void main() {
 
     expect(weather.calls.single, (52.52, 13.41));
     expect((viewModel.load.result! as Ok<Weather>).value.days, hasLength(2));
+    viewModel.dispose();
+  });
+
+  test('stores a place from the phone with its id on the widget', () async {
+    final dashboard = FakeDashboardRepository();
+    final places = FakePlacesRepository();
+    final viewModel = WeatherViewModel(
+      config: WeatherConfig.fromJson(const {}),
+      serverRepository: servers,
+      weatherRepository: weather,
+      dashboardRepository: dashboard,
+      placesRepository: places,
+      widgetId: 'w',
+    );
+    expect(viewModel.canUseLocation, isTrue);
+
+    final place =
+        (await viewModel.useMyLocation('My location') as Ok<Place>).value;
+    await viewModel.choosePlace.execute(place);
+
+    expect(places.asked, ['My location']);
+    expect(dashboard.updated['w'], containsPair('placeId', 'p1'));
+    expect(viewModel.config.lat, 52.37);
+    viewModel.dispose();
+  });
+
+  test('offers the location only where the phone can tell it', () {
+    final viewModel = WeatherViewModel(
+      config: WeatherConfig.fromJson(const {}),
+      serverRepository: servers,
+      weatherRepository: weather,
+      dashboardRepository: FakeDashboardRepository(),
+      placesRepository: FakePlacesRepository(canLocate: false),
+      widgetId: 'w',
+    );
+    expect(viewModel.canUseLocation, isFalse);
     viewModel.dispose();
   });
 

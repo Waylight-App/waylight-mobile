@@ -2515,4 +2515,18 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get kioskScanPrompt => 'Scan the QR code of the wall tablet assistant';
+
+  @override
+  String get setUpPlaceMyLocation => 'Use my location';
+
+  @override
+  String get setUpPlaceMyLocationName => 'My location';
+
+  @override
+  String get setUpPlaceLocationDenied =>
+      'Waylight may not read your location. You can allow it in the phone\'s settings.';
+
+  @override
+  String get setUpPlaceLocationUnavailable =>
+      'Your phone could not tell where it is. Check that location is switched on.';
 }

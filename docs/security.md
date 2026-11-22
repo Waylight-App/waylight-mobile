@@ -24,6 +24,10 @@ report a vulnerability, see [SECURITY.md](../SECURITY.md).
    `ACCESS_NETWORK_STATE` on Android; the latter only tells it that the
    network changed, to pick the server address that answers (#189). It
    never reads the Wi-Fi name, which would need the location permission.
+   The one location use is *Use my location* in the place picker (#295): the
+   coarse permission, asked on that tap only, read once from Android's
+   LocationManager and rounded to about 100 m before it is saved as a place
+   on your server. No Google location service.
    Every further permission (notifications, camera for QR codes) needs an
    issue that explains why, and is requested when the feature is first
    used, not at start.

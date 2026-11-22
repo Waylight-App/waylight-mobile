@@ -2525,4 +2525,18 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get kioskScanPrompt => 'Scanne den QR-Code des Wandtablet-Assistenten';
+
+  @override
+  String get setUpPlaceMyLocation => 'Meinen Standort verwenden';
+
+  @override
+  String get setUpPlaceMyLocationName => 'Mein Standort';
+
+  @override
+  String get setUpPlaceLocationDenied =>
+      'Waylight darf deinen Standort nicht lesen. Du kannst das in den Einstellungen des Telefons erlauben.';
+
+  @override
+  String get setUpPlaceLocationUnavailable =>
+      'Dein Telefon konnte seinen Standort nicht bestimmen. Prüfe, ob die Ortung eingeschaltet ist.';
 }

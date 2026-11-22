@@ -21,6 +21,9 @@
     <!-- Writing a Waylight link onto an NFC tag (#195); a normal permission,
          granted at install. Phones without NFC can still install the app. -->
     <uses-permission android:name="android.permission.NFC" />
+    <!-- Approximate position, asked only when the person taps "Use my location" (#295). -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-feature android:name="android.hardware.location" android:required="false" />
     <uses-feature android:name="android.hardware.nfc" android:required="false" />
     <application
         android:label="Waylight"

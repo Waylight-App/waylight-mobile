@@ -17,9 +17,13 @@ final class Place {
     required this.name,
     required this.lat,
     required this.lon,
+    this.id = '',
     this.region = '',
     this.country = '',
   });
+
+  /// The id of the saved place on the server; empty for a search result.
+  final String id;
 
   /// The name, e.g. "Berlin".
   final String name;
@@ -35,4 +39,19 @@ final class Place {
 
   /// The longitude.
   final double lon;
+}
+
+/// A latitude and longitude in degrees.
+typedef Coordinates = ({double lat, double lon});
+
+/// The person did not allow the app to read the location.
+final class LocationDenied implements Exception {
+  /// Creates the exception.
+  const LocationDenied();
+}
+
+/// The phone could not tell its location, e.g. it is switched off.
+final class LocationUnavailable implements Exception {
+  /// Creates the exception.
+  const LocationUnavailable();
 }

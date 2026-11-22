@@ -55,6 +55,7 @@ import '../testing/fakes/fake_home_widget_store.dart';
 import '../testing/fakes/fake_log_store.dart';
 import '../testing/fakes/fake_nfc_writer.dart';
 import '../testing/fakes/fake_notes_repository.dart';
+import '../testing/fakes/fake_places_repository.dart';
 import '../testing/fakes/fake_preferences_repository.dart';
 import '../testing/fakes/fake_presence_repository.dart';
 import '../testing/fakes/fake_quick_tile_store.dart';
@@ -118,6 +119,7 @@ void main() {
           absences: FakeAbsencesRepository(),
           announcements: FakeAnnouncementsRepository(),
           scanner: ScannerRepository(scanner: FakeBarcodeScanner()),
+          places: FakePlacesRepository(),
           watch: WatchPairingRepository(
             api: ModuleApi(
               ApiClient(
