@@ -18,6 +18,7 @@ import 'package:waylight_mobile/ui/widgets/fuel/fuel_widget.dart';
 import 'package:waylight_mobile/ui/widgets/grafana/grafana_widgets.dart';
 import 'package:waylight_mobile/ui/widgets/habits/habits_widget.dart';
 import 'package:waylight_mobile/ui/widgets/holidays/holidays_widget.dart';
+import 'package:waylight_mobile/ui/widgets/household/household_widgets.dart';
 import 'package:waylight_mobile/ui/widgets/lists/list_widgets.dart';
 import 'package:waylight_mobile/ui/widgets/markets/markets_widget.dart';
 import 'package:waylight_mobile/ui/widgets/media/media_widgets.dart';
@@ -58,11 +59,18 @@ const nativeWidgets = WidgetRegistry(
     'apiwidget': ApiValuesWidget.forPlacement,
     'arr': ListWidget.arr,
     'backup-health': BackupHealthWidget.forPlacement,
+    'board': HouseholdWidgets.board,
     'backup-status': BackupsWidget.forPlacement,
     'birthdays': BirthdaysWidget.forPlacement,
     'bookmarks': BookmarksWidget.forPlacement,
     'briefing': ListWidget.briefing,
     'calendar': CalendarWidget.forPlacement,
+    'chores': HouseholdWidgets.chores,
+    'contracts': HouseholdWidgets.contracts,
+    'documents': HouseholdWidgets.documents,
+    'gifts': HouseholdWidgets.gifts,
+    'meals': HouseholdWidgets.meals,
+    'meters': HouseholdWidgets.meters,
     'clock': ClockWidget.forPlacement,
     'countdown': CountdownWidget.forPlacement,
     'diskhealth': DiskHealthWidget.forPlacement,
