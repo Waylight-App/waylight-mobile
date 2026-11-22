@@ -52,6 +52,7 @@ import '../testing/fakes/fake_habits_repository.dart';
 import '../testing/fakes/fake_handover_sealer.dart';
 import '../testing/fakes/fake_help_repository.dart';
 import '../testing/fakes/fake_home_widget_store.dart';
+import '../testing/fakes/fake_household_repository.dart';
 import '../testing/fakes/fake_log_store.dart';
 import '../testing/fakes/fake_nfc_writer.dart';
 import '../testing/fakes/fake_notes_repository.dart';
@@ -120,6 +121,7 @@ void main() {
           announcements: FakeAnnouncementsRepository(),
           scanner: ScannerRepository(scanner: FakeBarcodeScanner()),
           places: FakePlacesRepository(),
+          household: FakeHouseholdRepository(),
           watch: WatchPairingRepository(
             api: ModuleApi(
               ApiClient(

@@ -4501,6 +4501,216 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your phone could not tell where it is. Check that location is switched on.'**
   String get setUpPlaceLocationUnavailable;
+
+  /// Default title of the chore plan widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Chores'**
+  String get choresTitle;
+
+  /// Chore plan without chores.
+  ///
+  /// In en, this message translates to:
+  /// **'No chores yet.'**
+  String get choresEmpty;
+
+  /// A chore that is due today.
+  ///
+  /// In en, this message translates to:
+  /// **'Due today'**
+  String get choreToday;
+
+  /// A chore that is overdue.
+  ///
+  /// In en, this message translates to:
+  /// **'Overdue'**
+  String get choreOverdue;
+
+  /// The day a chore is due.
+  ///
+  /// In en, this message translates to:
+  /// **'Due {date}'**
+  String choreDue(String date);
+
+  /// Tooltip of the button that ticks off a chore.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark {title} as done'**
+  String choreDoneAction(String title);
+
+  /// Default title of the meal plan widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Meal plan'**
+  String get mealsTitle;
+
+  /// Meal plan without dishes.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing planned for the coming days.'**
+  String get mealsEmpty;
+
+  /// Meal of a planned dish.
+  ///
+  /// In en, this message translates to:
+  /// **'Breakfast'**
+  String get mealBreakfast;
+
+  /// Meal of a planned dish.
+  ///
+  /// In en, this message translates to:
+  /// **'Lunch'**
+  String get mealLunch;
+
+  /// Meal of a planned dish.
+  ///
+  /// In en, this message translates to:
+  /// **'Dinner'**
+  String get mealDinner;
+
+  /// Default title of the gift ideas widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Gift ideas'**
+  String get giftsTitle;
+
+  /// Gift ideas widget without ideas.
+  ///
+  /// In en, this message translates to:
+  /// **'No gift ideas yet.'**
+  String get giftsEmpty;
+
+  /// Default title of the family board widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Family board'**
+  String get boardTitle;
+
+  /// Family board without notes.
+  ///
+  /// In en, this message translates to:
+  /// **'No notes on the board.'**
+  String get boardEmpty;
+
+  /// Screen reader label of a pinned note.
+  ///
+  /// In en, this message translates to:
+  /// **'Pinned'**
+  String get boardPinned;
+
+  /// The last day a note is shown.
+  ///
+  /// In en, this message translates to:
+  /// **'until {date}'**
+  String boardUntil(String date);
+
+  /// Default title of the contracts widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Contracts'**
+  String get contractsTitle;
+
+  /// Contracts widget without contracts.
+  ///
+  /// In en, this message translates to:
+  /// **'No contracts yet.'**
+  String get contractsEmpty;
+
+  /// The next cancellation deadline.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel by {date}'**
+  String contractCancelBy(String date);
+
+  /// A contract that ended.
+  ///
+  /// In en, this message translates to:
+  /// **'Ended'**
+  String get contractEnded;
+
+  /// Monthly cost of a contract.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} / month'**
+  String contractPerMonth(String amount);
+
+  /// Default title of the documents widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Documents'**
+  String get documentsTitle;
+
+  /// Documents widget without documents.
+  ///
+  /// In en, this message translates to:
+  /// **'No documents yet.'**
+  String get documentsEmpty;
+
+  /// A document without a warranty.
+  ///
+  /// In en, this message translates to:
+  /// **'No warranty entered'**
+  String get documentNoWarranty;
+
+  /// A running warranty.
+  ///
+  /// In en, this message translates to:
+  /// **'Warranty until {date}'**
+  String documentWarrantyUntil(String date);
+
+  /// A warranty that ends within 30 days.
+  ///
+  /// In en, this message translates to:
+  /// **'Warranty ends {date}'**
+  String documentWarrantyEnds(String date);
+
+  /// A warranty that ended.
+  ///
+  /// In en, this message translates to:
+  /// **'Warranty ended {date}'**
+  String documentWarrantyEnded(String date);
+
+  /// Default title of the meters widget.
+  ///
+  /// In en, this message translates to:
+  /// **'Meters'**
+  String get metersTitle;
+
+  /// Meters widget without meters.
+  ///
+  /// In en, this message translates to:
+  /// **'No meters yet.'**
+  String get metersEmpty;
+
+  /// A meter without readings.
+  ///
+  /// In en, this message translates to:
+  /// **'No reading yet'**
+  String get meterNoReading;
+
+  /// The newest reading of a meter.
+  ///
+  /// In en, this message translates to:
+  /// **'{value} on {date}'**
+  String meterLast(String value, String date);
+
+  /// Tooltip and dialog title for a new meter reading.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a reading for {name}'**
+  String meterAddReading(String name);
+
+  /// Label of the field for a meter reading.
+  ///
+  /// In en, this message translates to:
+  /// **'Meter value'**
+  String get meterReadingValue;
+
+  /// A meter reading that is no number.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the value as a number.'**
+  String get meterReadingInvalid;
 }
 
 class _AppLocalizationsDelegate

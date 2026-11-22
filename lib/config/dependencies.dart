@@ -32,6 +32,7 @@ import 'package:waylight_mobile/data/repositories/habits/habits_repository.dart'
 import 'package:waylight_mobile/data/repositories/habits/habits_repository_remote.dart';
 import 'package:waylight_mobile/data/repositories/help/help_repository.dart';
 import 'package:waylight_mobile/data/repositories/home_widgets/home_widgets_repository.dart';
+import 'package:waylight_mobile/data/repositories/household/household_repository.dart';
 import 'package:waylight_mobile/data/repositories/kiosk/kiosk_repository.dart';
 import 'package:waylight_mobile/data/repositories/lock/app_lock_repository.dart';
 import 'package:waylight_mobile/data/repositories/nfc/nfc_repository.dart';
@@ -131,6 +132,7 @@ typedef Repositories = ({
   AnnouncementsRepository announcements,
   ScannerRepository scanner,
   PlacesRepository places,
+  HouseholdRepository household,
   WatchPairingRepository watch,
   FocusTimerRepository focusTimer,
   HomeServerActionsRepository homeServer,
@@ -185,6 +187,7 @@ List<SingleChildWidget> providers(Repositories repositories) => [
   Provider<AbsencesRepository>.value(value: repositories.absences),
   Provider<ScannerRepository>.value(value: repositories.scanner),
   Provider<PlacesRepository>.value(value: repositories.places),
+  Provider<HouseholdRepository>.value(value: repositories.household),
   Provider<WatchPairingRepository>.value(value: repositories.watch),
   Provider<AnnouncementsRepository>.value(value: repositories.announcements),
   ChangeNotifierProvider<FocusTimerRepository>.value(
@@ -359,6 +362,7 @@ Repositories createRepositories() {
         available: defaultTargetPlatform == TargetPlatform.android,
       ),
     ),
+    household: HouseholdRepositoryRemote(api: modules),
     watch: WatchPairingRepository(
       api: modules,
       scanner: const MethodChannelBarcodeScanner(),

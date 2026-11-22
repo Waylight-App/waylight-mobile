@@ -2539,4 +2539,129 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get setUpPlaceLocationUnavailable =>
       'Dein Telefon konnte seinen Standort nicht bestimmen. Prüfe, ob die Ortung eingeschaltet ist.';
+
+  @override
+  String get choresTitle => 'Aufgaben';
+
+  @override
+  String get choresEmpty => 'Noch keine Aufgaben.';
+
+  @override
+  String get choreToday => 'Heute fällig';
+
+  @override
+  String get choreOverdue => 'Überfällig';
+
+  @override
+  String choreDue(String date) {
+    return 'Fällig $date';
+  }
+
+  @override
+  String choreDoneAction(String title) {
+    return '$title als erledigt markieren';
+  }
+
+  @override
+  String get mealsTitle => 'Speiseplan';
+
+  @override
+  String get mealsEmpty => 'Für die nächsten Tage ist nichts geplant.';
+
+  @override
+  String get mealBreakfast => 'Frühstück';
+
+  @override
+  String get mealLunch => 'Mittagessen';
+
+  @override
+  String get mealDinner => 'Abendessen';
+
+  @override
+  String get giftsTitle => 'Geschenkideen';
+
+  @override
+  String get giftsEmpty => 'Noch keine Geschenkideen.';
+
+  @override
+  String get boardTitle => 'Familientafel';
+
+  @override
+  String get boardEmpty => 'Keine Notizen auf der Tafel.';
+
+  @override
+  String get boardPinned => 'Angeheftet';
+
+  @override
+  String boardUntil(String date) {
+    return 'bis $date';
+  }
+
+  @override
+  String get contractsTitle => 'Verträge';
+
+  @override
+  String get contractsEmpty => 'Noch keine Verträge.';
+
+  @override
+  String contractCancelBy(String date) {
+    return 'Kündigen bis $date';
+  }
+
+  @override
+  String get contractEnded => 'Beendet';
+
+  @override
+  String contractPerMonth(String amount) {
+    return '$amount / Monat';
+  }
+
+  @override
+  String get documentsTitle => 'Dokumente';
+
+  @override
+  String get documentsEmpty => 'Noch keine Dokumente.';
+
+  @override
+  String get documentNoWarranty => 'Keine Garantie eingetragen';
+
+  @override
+  String documentWarrantyUntil(String date) {
+    return 'Garantie bis $date';
+  }
+
+  @override
+  String documentWarrantyEnds(String date) {
+    return 'Garantie endet $date';
+  }
+
+  @override
+  String documentWarrantyEnded(String date) {
+    return 'Garantie endete $date';
+  }
+
+  @override
+  String get metersTitle => 'Zähler';
+
+  @override
+  String get metersEmpty => 'Noch keine Zähler.';
+
+  @override
+  String get meterNoReading => 'Noch kein Stand';
+
+  @override
+  String meterLast(String value, String date) {
+    return '$value am $date';
+  }
+
+  @override
+  String meterAddReading(String name) {
+    return 'Stand für $name eintragen';
+  }
+
+  @override
+  String get meterReadingValue => 'Zählerstand';
+
+  @override
+  String get meterReadingInvalid => 'Gib den Wert als Zahl ein.';
 }
