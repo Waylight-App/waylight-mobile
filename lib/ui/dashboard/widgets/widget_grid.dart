@@ -152,6 +152,7 @@ class WidgetTileState extends State<WidgetTile> {
             constraints: BoxConstraints(minHeight: widget.height),
             child: WidgetSizeScope(
               size: widget.size,
+              height: widget.height,
               child: Builder(builder: widget.builder),
             ),
           ),

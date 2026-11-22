@@ -3,6 +3,7 @@
 import 'package:material_ui/material_ui.dart';
 
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
+import 'package:waylight_mobile/ui/core/widget_size_scope.dart';
 
 /// How good or bad a value is; decides its colour in the widgets.
 ///
@@ -94,6 +95,21 @@ class InfoRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    // A tile fits its rows by their height, so a row keeps to its lines
+    // there (#211).
+    final lines = WidgetSizeScope.inGrid(context) ? 1 : null;
+    final trailingText = trailing == null
+        ? null
+        : Text(
+            trailing!,
+            maxLines: lines,
+            overflow: lines == null ? null : TextOverflow.ellipsis,
+            style: theme.textTheme.titleSmall?.copyWith(
+              color: trailingTone == null
+                  ? null
+                  : toneColor(context, trailingTone!),
+            ),
+          );
     final row = Padding(
       padding: const EdgeInsets.symmetric(vertical: Dimens.gapTiny),
       child: Row(
@@ -106,13 +122,20 @@ class InfoRow extends StatelessWidget {
             const SizedBox(width: Dimens.gapSmall),
           ],
           Expanded(
+            flex: lines == null ? 1 : 3,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(title),
+                Text(
+                  title,
+                  maxLines: lines,
+                  overflow: lines == null ? null : TextOverflow.ellipsis,
+                ),
                 if (subtitle != null && subtitle!.isNotEmpty)
                   Text(
                     subtitle!,
+                    maxLines: lines,
+                    overflow: lines == null ? null : TextOverflow.ellipsis,
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: theme.colorScheme.onSurfaceVariant,
                     ),
@@ -121,14 +144,10 @@ class InfoRow extends StatelessWidget {
             ),
           ),
           if (trailing != null)
-            Text(
-              trailing!,
-              style: theme.textTheme.titleSmall?.copyWith(
-                color: trailingTone == null
-                    ? null
-                    : toneColor(context, trailingTone!),
-              ),
-            ),
+            if (lines == null)
+              trailingText!
+            else
+              Flexible(child: trailingText!),
         ],
       ),
     );

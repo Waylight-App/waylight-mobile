@@ -7,6 +7,8 @@ import 'package:waylight_mobile/domain/models/information.dart';
 import 'package:waylight_mobile/routing/routes.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
+import 'package:waylight_mobile/ui/core/widget_size_scope.dart';
+import 'package:waylight_mobile/ui/core/widgets/tile_rows.dart';
 import 'package:waylight_mobile/ui/widgets/common/compact_state_widget.dart';
 import 'package:waylight_mobile/ui/widgets/common/simple_widget.dart';
 import 'package:waylight_mobile/ui/widgets/common/widget_rows.dart';
@@ -126,48 +128,62 @@ class CalendarWidget extends StatelessWidget {
       final time = DateFormat.Hm(
         Localizations.localeOf(context).toLanguageTag(),
       );
-      final children = <Widget>[];
+      // An event that starts a new day carries the heading of that day, so
+      // a tile never ends on a heading alone.
+      final days = <({CalendarEvent event, String? heading})>[];
       DateTime? lastDay;
       for (final e in upcoming.take(shown)) {
         final day = DateTime(e.start.year, e.start.month, e.start.day);
+        String? heading;
         if (day != lastDay) {
           lastDay = day;
-          final days = day.difference(today).inDays;
-          children
-            ..add(const SizedBox(height: Dimens.gapTiny))
-            ..add(
-              Text(
-                days <= 1 && days >= 0
-                    ? daysText(context, days)
-                    : shortDate(context, day),
-                style: Theme.of(context).textTheme.labelLarge,
-              ),
-            );
+          final ahead = day.difference(today).inDays;
+          heading = ahead <= 1 && ahead >= 0
+              ? daysText(context, ahead)
+              : shortDate(context, day);
         }
-        children.add(
-          InfoRow(
-            title: e.summary,
-            subtitle: [
-              if (e.location.isNotEmpty) e.location,
-              if (e.calendar.isNotEmpty) e.calendar,
-            ].join(' · '),
-            trailing: e.allDay
-                ? l10n.calendarAllDay
-                : '${time.format(e.start)}–${time.format(e.end)}',
-          ),
-        );
+        days.add((event: e, heading: heading));
       }
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          ...children,
-          Align(
-            alignment: Alignment.centerRight,
-            child: TextButton(
-              onPressed: () => context.push(Routes.calendar),
-              child: Text(l10n.calendarShowAll),
-            ),
+          TileRows(
+            items: days,
+            rowHeight: TileRows.twoLineRowHeight,
+            rowBuilder: (context, entry) {
+              final e = entry.event;
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  if (entry.heading != null) ...[
+                    const SizedBox(height: Dimens.gapTiny),
+                    Text(
+                      entry.heading!,
+                      style: Theme.of(context).textTheme.labelLarge,
+                    ),
+                  ],
+                  InfoRow(
+                    title: e.summary,
+                    subtitle: [
+                      if (e.location.isNotEmpty) e.location,
+                      if (e.calendar.isNotEmpty) e.calendar,
+                    ].join(' · '),
+                    trailing: e.allDay
+                        ? l10n.calendarAllDay
+                        : '${time.format(e.start)}–${time.format(e.end)}',
+                  ),
+                ],
+              );
+            },
           ),
+          if (!WidgetSizeScope.inGrid(context))
+            Align(
+              alignment: Alignment.centerRight,
+              child: TextButton(
+                onPressed: () => context.push(Routes.calendar),
+                child: Text(l10n.calendarShowAll),
+              ),
+            ),
         ],
       );
     },

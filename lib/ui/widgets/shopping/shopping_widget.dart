@@ -6,7 +6,9 @@ import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/routing/routes.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
+import 'package:waylight_mobile/ui/core/widget_size_scope.dart';
 import 'package:waylight_mobile/ui/core/widgets/compact_lines.dart';
+import 'package:waylight_mobile/ui/core/widgets/tile_rows.dart';
 import 'package:waylight_mobile/ui/core/widgets/view_model_host.dart';
 import 'package:waylight_mobile/ui/core/widgets/widget_frame.dart';
 import 'package:waylight_mobile/ui/widgets/common/error_snack_listener.dart';
@@ -98,8 +100,11 @@ class _ShoppingListState extends State<_ShoppingList> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(list.name, style: Theme.of(context).textTheme.labelLarge),
-            for (final item in items)
-              CheckboxListTile(
+            TileRows(
+              items: items,
+              rowHeight: Dimens.tapTarget,
+              reserved: 24,
+              rowBuilder: (context, item) => CheckboxListTile(
                 contentPadding: EdgeInsets.zero,
                 dense: true,
                 controlAffinity: ListTileControlAffinity.leading,
@@ -107,40 +112,48 @@ class _ShoppingListState extends State<_ShoppingList> {
                 onChanged: (_) => vm.toggle(item),
                 title: Text(
                   item.summary,
+                  maxLines: WidgetSizeScope.inGrid(context) ? 1 : null,
+                  overflow: WidgetSizeScope.inGrid(context)
+                      ? TextOverflow.ellipsis
+                      : null,
                   style: item.done
                       ? const TextStyle(decoration: TextDecoration.lineThrough)
                       : null,
                 ),
               ),
+            ),
             if (items.isEmpty) Text(l10n.shoppingEmpty),
-            const SizedBox(height: Dimens.gapTiny),
-            TextField(
-              controller: _input,
-              textInputAction: TextInputAction.done,
-              onSubmitted: (_) => _add(),
-              decoration: InputDecoration(
-                hintText: l10n.shoppingAdd,
-                suffixIcon: IconButton(
-                  tooltip: l10n.shoppingAdd,
-                  icon: const Icon(Icons.add),
-                  onPressed: _add,
+            // Adding and clearing are one tap away in the full view.
+            if (!WidgetSizeScope.inGrid(context)) ...[
+              const SizedBox(height: Dimens.gapTiny),
+              TextField(
+                controller: _input,
+                textInputAction: TextInputAction.done,
+                onSubmitted: (_) => _add(),
+                decoration: InputDecoration(
+                  hintText: l10n.shoppingAdd,
+                  suffixIcon: IconButton(
+                    tooltip: l10n.shoppingAdd,
+                    icon: const Icon(Icons.add),
+                    onPressed: _add,
+                  ),
                 ),
               ),
-            ),
-            Wrap(
-              alignment: WrapAlignment.end,
-              children: [
-                if (done > 0)
+              Wrap(
+                alignment: WrapAlignment.end,
+                children: [
+                  if (done > 0)
+                    TextButton(
+                      onPressed: vm.clearCompleted,
+                      child: Text(l10n.shoppingClear(done)),
+                    ),
                   TextButton(
-                    onPressed: vm.clearCompleted,
-                    child: Text(l10n.shoppingClear(done)),
+                    onPressed: () => context.push(Routes.shopping),
+                    child: Text(l10n.shoppingOpen),
                   ),
-                TextButton(
-                  onPressed: () => context.push(Routes.shopping),
-                  child: Text(l10n.shoppingOpen),
-                ),
-              ],
-            ),
+                ],
+              ),
+            ],
           ],
         );
       },

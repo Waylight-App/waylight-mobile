@@ -9,7 +9,9 @@ import 'package:waylight_mobile/domain/models/weather.dart';
 import 'package:waylight_mobile/ui/core/error_messages.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
+import 'package:waylight_mobile/ui/core/widget_size_scope.dart';
 import 'package:waylight_mobile/ui/core/widgets/choice_search_sheet.dart';
+import 'package:waylight_mobile/ui/core/widgets/tile_rows.dart';
 import 'package:waylight_mobile/ui/core/widgets/view_model_host.dart';
 import 'package:waylight_mobile/ui/core/widgets/widget_frame.dart';
 import 'package:waylight_mobile/ui/core/widgets/widget_preview.dart';
@@ -117,7 +119,9 @@ class WeatherWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           _WeatherContent(weather: weather),
-          WeatherExtras(config: widget.config),
+          // The extras are one tap away in the full view.
+          if (!WidgetSizeScope.inGrid(context))
+            WeatherExtras(config: widget.config),
         ],
       ),
     );
@@ -180,6 +184,11 @@ class _WeatherContent extends StatelessWidget {
 
   final Weather weather;
 
+  // The height of a forecast row and of the block above the rows, which a
+  // tile needs to tell how many days fit below the current weather.
+  static const _dayRowHeight = 28.0;
+  static const _headerHeight = 84.0;
+
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
@@ -215,8 +224,12 @@ class _WeatherContent extends StatelessWidget {
         ),
         if (weather.days.isNotEmpty) ...[
           const SizedBox(height: Dimens.gapCard),
-          for (final day in weather.days)
-            Semantics(
+          TileRows(
+            items: weather.days,
+            rowHeight: _dayRowHeight,
+            reserved: _headerHeight,
+            minRows: 0,
+            rowBuilder: (context, day) => Semantics(
               container: true,
               child: Padding(
                 padding: const EdgeInsets.symmetric(
@@ -245,6 +258,7 @@ class _WeatherContent extends StatelessWidget {
                 ),
               ),
             ),
+          ),
         ],
       ],
     );

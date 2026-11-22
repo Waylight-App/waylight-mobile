@@ -1032,6 +1032,8 @@
   "@editTabDiscard": {"description": "Leaves the edit mode without saving."},
   "editTabKeep": "Keep editing",
   "@editTabKeep": {"description": "Stays in the edit mode."},
+  "tileMoreRows": "+{count} more",
+  "@tileMoreRows": {"description": "Last line of a medium or large dashboard tile when rows are left out.", "placeholders": {"count": {"type": "int"}}},
   "dashboardTapToOpen": "Tap to see everything",
   "@dashboardTapToOpen": {"description": "Small dashboard tile of a widget without a compact view yet."},
   "todosCompactOpen": "{count, plural, =1{1 open} other{{count} open}}",

@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/domain/models/tag_action.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
+import 'package:waylight_mobile/ui/core/widget_size_scope.dart';
+import 'package:waylight_mobile/ui/core/widgets/tile_rows.dart';
 import 'package:waylight_mobile/ui/core/widgets/view_model_host.dart';
 import 'package:waylight_mobile/ui/core/widgets/widget_frame.dart';
 import 'package:waylight_mobile/ui/widgets/common/compact_state_widget.dart';
@@ -48,12 +50,17 @@ class HabitsWidget extends StatelessWidget {
           builder: (context, _) {
             final l10n = context.l10n;
             final habits = viewModel.today;
+            // Rows keep to one line in a tile, which fits them by height.
+            final lines = WidgetSizeScope.inGrid(context) ? 1 : null;
+            final overflow = lines == null ? null : TextOverflow.ellipsis;
             if (habits.isEmpty) return Text(l10n.habitsEmpty);
             return Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                for (final h in habits)
-                  TagWritable(
+                TileRows(
+                  items: habits,
+                  rowHeight: TileRows.twoLineRowHeight + 8,
+                  rowBuilder: (context, h) => TagWritable(
                     action: HabitTag(h.id),
                     subject: h.name,
                     child: CheckboxListTile(
@@ -64,10 +71,17 @@ class HabitsWidget extends StatelessWidget {
                       onChanged: (_) => viewModel.toggle(h),
                       title: Text(
                         h.emoji.isEmpty ? h.name : '${h.emoji} ${h.name}',
+                        maxLines: lines,
+                        overflow: overflow,
                       ),
-                      subtitle: Text(l10n.habitsStreak(h.current, h.best)),
+                      subtitle: Text(
+                        l10n.habitsStreak(h.current, h.best),
+                        maxLines: lines,
+                        overflow: overflow,
+                      ),
                     ),
                   ),
+                ),
               ],
             );
           },

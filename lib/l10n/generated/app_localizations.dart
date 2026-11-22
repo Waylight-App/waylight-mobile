@@ -3194,6 +3194,12 @@ abstract class AppLocalizations {
   /// **'Keep editing'**
   String get editTabKeep;
 
+  /// Last line of a medium or large dashboard tile when rows are left out.
+  ///
+  /// In en, this message translates to:
+  /// **'+{count} more'**
+  String tileMoreRows(int count);
+
   /// Small dashboard tile of a widget without a compact view yet.
   ///
   /// In en, this message translates to:
