@@ -392,6 +392,7 @@ ViewModelHost<SettingsViewModel> _settings(
           reminderRepository: context.read(),
           quickTilesRepository: context.read(),
           attentionRepository: context.read(),
+          widgetData: context.read(),
         )
         ..reminderFormatter = ReminderTexts(context.l10n)
         ..quickTileFormatter = QuickTileTexts(context.l10n),

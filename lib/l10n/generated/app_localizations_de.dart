@@ -2494,4 +2494,29 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get widgetHelpUnavailable =>
       'Die Hilfe konnte nicht geladen werden. Die Dokumentation hat die Details.';
+
+  @override
+  String get backupHealthTitle => 'Waylight-Sicherung';
+
+  @override
+  String get backupHealthOk => 'Sicherungen in Ordnung';
+
+  @override
+  String get backupHealthStale => 'Sicherung überfällig';
+
+  @override
+  String get backupHealthFailed => 'Sicherung fehlgeschlagen';
+
+  @override
+  String backupHealthLast(String date) {
+    return 'Letzte Sicherung $date';
+  }
+
+  @override
+  String get backupHealthNone => 'Noch keine Sicherung';
+
+  @override
+  String backupHealthOffsite(String reason) {
+    return 'Externe Kopie fehlgeschlagen: $reason';
+  }
 }

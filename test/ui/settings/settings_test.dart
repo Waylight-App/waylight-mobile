@@ -424,4 +424,32 @@ void main() {
     await tester.pumpAndSettle();
     expect(reminders.settings.eventMinutes, 15);
   });
+
+  testWidgets('shows the backup traffic light when the server gives it', (
+    tester,
+  ) async {
+    final data = FakeWidgetDataRepository();
+    SettingsViewModel create() => SettingsViewModel(
+      serverRepository: servers,
+      sessionRepository: sessions,
+      preferencesRepository: preferences,
+      widgetData: data,
+      appVersion: () async => '0.3.0 (7)',
+    );
+
+    await tester.pumpScreen(SettingsScreen(viewModel: create()));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const ValueKey('settings.backup')), findsNothing);
+
+    data.json['/api/backups/status'] = {
+      'health': 'failed',
+      'lastBackupAt': null,
+      'error': 'disk full',
+      'offsiteError': '',
+    };
+    await tester.pumpScreen(SettingsScreen(viewModel: create()));
+    await tester.pumpAndSettle();
+    expect(find.text('Backup failed'), findsOneWidget);
+    expect(find.text('disk full'), findsOneWidget);
+  });
 }

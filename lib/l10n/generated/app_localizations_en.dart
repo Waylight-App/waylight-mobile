@@ -2484,4 +2484,29 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get widgetHelpUnavailable =>
       'The help could not be loaded. The documentation has the details.';
+
+  @override
+  String get backupHealthTitle => 'Waylight backup';
+
+  @override
+  String get backupHealthOk => 'Backups are fine';
+
+  @override
+  String get backupHealthStale => 'Backup overdue';
+
+  @override
+  String get backupHealthFailed => 'Backup failed';
+
+  @override
+  String backupHealthLast(String date) {
+    return 'Last backup $date';
+  }
+
+  @override
+  String get backupHealthNone => 'No backup yet';
+
+  @override
+  String backupHealthOffsite(String reason) {
+    return 'Off-site copy failed: $reason';
+  }
 }

@@ -1,5 +1,6 @@
 import 'package:waylight_mobile/data/repositories/widget_data/queries/json.dart';
 import 'package:waylight_mobile/data/repositories/widget_data/widget_data_repository.dart';
+import 'package:waylight_mobile/domain/models/backup_health.dart';
 import 'package:waylight_mobile/domain/models/grafana.dart';
 import 'package:waylight_mobile/domain/models/home_server.dart';
 
@@ -17,6 +18,33 @@ const backupSourcesQuery = WidgetQuery<List<BackupSource>>(
   '/api/backup-status/sources',
   parseBackupSources,
 );
+
+/// `GET /api/backups/status`; the server answers the owner only.
+const backupStatusQuery = WidgetQuery<BackupStatus>(
+  '/api/backups/status',
+  parseBackupStatus,
+);
+
+/// Maps `GET /api/backups/status`; `null` if it does not match.
+BackupStatus? parseBackupStatus(Object? json) {
+  if (json case {'health': final String health}) {
+    String text(String key) => switch (json[key]) {
+      final String s => s,
+      _ => '',
+    };
+    return BackupStatus(
+      health: switch (health) {
+        'ok' => BackupHealth.ok,
+        'failed' => BackupHealth.failed,
+        _ => BackupHealth.stale,
+      },
+      lastBackupAt: asDateTime(json['lastBackupAt']),
+      error: text('error'),
+      offsiteError: text('offsiteError'),
+    );
+  }
+  return null;
+}
 
 /// Maps `GET /api/system`; `null` if it does not match.
 SystemStatus? parseSystem(Object? json) {

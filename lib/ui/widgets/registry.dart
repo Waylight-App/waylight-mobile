@@ -3,6 +3,7 @@ import 'package:waylight_mobile/ui/widgets/absences/absences_widget.dart';
 import 'package:waylight_mobile/ui/widgets/adguard/adguard_widget.dart';
 import 'package:waylight_mobile/ui/widgets/announcements/announcements_widget.dart';
 import 'package:waylight_mobile/ui/widgets/apps/apps_widgets.dart';
+import 'package:waylight_mobile/ui/widgets/backups/backup_health_widget.dart';
 import 'package:waylight_mobile/ui/widgets/backups/backups_widget.dart';
 import 'package:waylight_mobile/ui/widgets/birthdays/birthdays_widget.dart';
 import 'package:waylight_mobile/ui/widgets/bookmarks/bookmarks_widget.dart';
@@ -56,6 +57,7 @@ const nativeWidgets = WidgetRegistry(
     'adguard': AdguardWidget.forPlacement,
     'apiwidget': ApiValuesWidget.forPlacement,
     'arr': ListWidget.arr,
+    'backup-health': BackupHealthWidget.forPlacement,
     'backup-status': BackupsWidget.forPlacement,
     'birthdays': BirthdaysWidget.forPlacement,
     'bookmarks': BookmarksWidget.forPlacement,

@@ -1441,5 +1441,19 @@
   "widgetHelpDocs": "Read more in the documentation",
   "@widgetHelpDocs": {"description": "Link below the help of a widget (#289)."},
   "widgetHelpUnavailable": "The help could not be loaded. The documentation has the details.",
-  "@widgetHelpUnavailable": {"description": "Shown in the help of a widget when the server has none or cannot be reached (#289)."}
+  "@widgetHelpUnavailable": {"description": "Shown in the help of a widget when the server has none or cannot be reached (#289)."},
+  "backupHealthTitle": "Waylight backup",
+  "@backupHealthTitle": {"description": "Default title of the backup traffic light widget."},
+  "backupHealthOk": "Backups are fine",
+  "@backupHealthOk": {"description": "Backup traffic light: green."},
+  "backupHealthStale": "Backup overdue",
+  "@backupHealthStale": {"description": "Backup traffic light: amber, the newest backup is older than expected."},
+  "backupHealthFailed": "Backup failed",
+  "@backupHealthFailed": {"description": "Backup traffic light: red, the latest attempt failed."},
+  "backupHealthLast": "Last backup {date}",
+  "@backupHealthLast": {"description": "When the newest backup was made.", "placeholders": {"date": {"type": "String", "example": "Mon, 23 Nov"}}},
+  "backupHealthNone": "No backup yet",
+  "@backupHealthNone": {"description": "Backup traffic light without any backup."},
+  "backupHealthOffsite": "Off-site copy failed: {reason}",
+  "@backupHealthOffsite": {"description": "The upload of the backup to the off-site target failed.", "placeholders": {"reason": {"type": "String", "example": "connection refused"}}}
 }
