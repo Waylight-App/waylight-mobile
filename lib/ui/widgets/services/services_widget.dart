@@ -9,6 +9,7 @@ import 'package:waylight_mobile/routing/routes.dart';
 import 'package:waylight_mobile/ui/core/link_opener.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
+import 'package:waylight_mobile/ui/core/widgets/tile_rows.dart';
 import 'package:waylight_mobile/ui/widgets/common/admin_actions.dart';
 import 'package:waylight_mobile/ui/widgets/common/compact_state_widget.dart';
 import 'package:waylight_mobile/ui/widgets/common/remote_widget.dart';
@@ -53,8 +54,10 @@ class ServicesWidget extends StatelessWidget {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          for (final s in services)
-            Builder(
+          TileRows(
+            items: services,
+            rowHeight: TileRows.twoLineRowHeight,
+            rowBuilder: (context, s) => Builder(
               builder: (context) {
                 final (tone, label) = _stateOf(context, s.state);
                 return InfoRow(
@@ -71,6 +74,7 @@ class ServicesWidget extends StatelessWidget {
                 );
               },
             ),
+          ),
         ],
       );
     },
@@ -191,20 +195,28 @@ class StatusOverviewWidget extends StatelessWidget {
           ),
           if (down.isNotEmpty) ...[
             const SizedBox(height: Dimens.gapSmall),
-            for (final s in down)
-              InfoRow(
+            TileRows(
+              items: down,
+              rowHeight: TileRows.lineRowHeight,
+              reserved: _countsHeight,
+              rowBuilder: (context, s) => InfoRow(
                 leading: StatusDot(
                   tone: Tone.critical,
                   label: context.l10n.servicesOffline,
                 ),
                 title: s.name,
               ),
+            ),
           ],
         ],
       );
     },
   );
 }
+
+// The height, at normal text size, of the counts above the list of offline
+// services, which a tile needs to tell how many of them fit.
+const _countsHeight = 64.0;
 
 class _Count extends StatelessWidget {
   const _Count({required this.count, required this.state});

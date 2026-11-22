@@ -3,6 +3,7 @@ import 'package:waylight_mobile/data/repositories/widget_data/queries/network.da
 import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/domain/models/network.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
+import 'package:waylight_mobile/ui/core/widgets/tile_rows.dart';
 import 'package:waylight_mobile/ui/widgets/common/compact_state_widget.dart';
 import 'package:waylight_mobile/ui/widgets/common/simple_widget.dart';
 import 'package:waylight_mobile/ui/widgets/common/widget_rows.dart';
@@ -45,9 +46,8 @@ class SpeedtestWidget extends StatelessWidget {
                       results.history.length)
                   .round(),
             );
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
+      return TileRows<Widget>(
+        items: [
           InfoRow(
             leading: const Text('⬇️', semanticsLabel: ''),
             title: l10n.speedtestDownload,
@@ -66,6 +66,8 @@ class SpeedtestWidget extends StatelessWidget {
             trailing: '${latest.pingMs.round()} ms',
           ),
         ],
+        rowHeight: TileRows.twoLineRowHeight,
+        rowBuilder: (context, row) => row,
       );
     },
   );

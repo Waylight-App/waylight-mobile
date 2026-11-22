@@ -6,6 +6,7 @@ import 'package:waylight_mobile/domain/models/home_server.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
 import 'package:waylight_mobile/ui/core/widgets/compact_lines.dart';
+import 'package:waylight_mobile/ui/core/widgets/tile_rows.dart';
 import 'package:waylight_mobile/ui/widgets/common/remote_widget.dart';
 import 'package:waylight_mobile/ui/widgets/common/widget_rows.dart';
 
@@ -47,30 +48,45 @@ class SystemWidget extends StatelessWidget {
         children: [
           Text(
             '${s.hostname} · ${facts.join(' · ')}',
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
             style: theme.textTheme.bodySmall?.copyWith(
               color: theme.colorScheme.onSurfaceVariant,
             ),
           ),
           const SizedBox(height: Dimens.gapSmall),
-          MeterRow(label: l10n.systemCpu, percent: s.cpuPercent),
-          MeterRow(label: l10n.systemMemory, percent: s.memoryPercent),
-          if (s.swapPercent > 0)
-            MeterRow(label: l10n.systemSwap, percent: s.swapPercent),
-          for (final d in s.disks)
-            MeterRow(
-              label: d.label,
-              percent: d.percent,
-              detail: [
-                l10n.systemDiskOf(
-                  formatBytes(d.usedBytes),
-                  formatBytes(d.totalBytes),
+          // CPU and memory first, so a small tile keeps what matters most.
+          TileRows<Widget>(
+            items: [
+              MeterRow(label: l10n.systemCpu, percent: s.cpuPercent),
+              MeterRow(label: l10n.systemMemory, percent: s.memoryPercent),
+              if (s.swapPercent > 0)
+                MeterRow(label: l10n.systemSwap, percent: s.swapPercent),
+              for (final d in s.disks)
+                MeterRow(
+                  label: d.label,
+                  percent: d.percent,
+                  detail: [
+                    l10n.systemDiskOf(
+                      formatBytes(d.usedBytes),
+                      formatBytes(d.totalBytes),
+                    ),
+                    if (d.daysUntilFull != null)
+                      l10n.systemFullIn(d.daysUntilFull!),
+                  ].join(' · '),
                 ),
-                if (d.daysUntilFull != null)
-                  l10n.systemFullIn(d.daysUntilFull!),
-              ].join(' · '),
-            ),
+            ],
+            rowHeight: _meterHeight,
+            reserved: _factsHeight,
+            rowBuilder: (context, meter) => meter,
+          ),
         ],
       );
     },
   );
 }
+
+// The heights, at normal text size, of a meter and of the line of facts above
+// them, which a tile needs to tell how many meters fit.
+const _meterHeight = 48.0;
+const _factsHeight = 28.0;
