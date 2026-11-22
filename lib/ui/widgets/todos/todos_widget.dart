@@ -8,8 +8,10 @@ import 'package:waylight_mobile/domain/models/todo.dart';
 import 'package:waylight_mobile/ui/core/error_messages.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
+import 'package:waylight_mobile/ui/core/widget_size_scope.dart';
 import 'package:waylight_mobile/ui/core/widgets/message_banner.dart';
 import 'package:waylight_mobile/ui/core/widgets/rows.dart';
+import 'package:waylight_mobile/ui/core/widgets/tile_rows.dart';
 import 'package:waylight_mobile/ui/core/widgets/view_model_host.dart';
 import 'package:waylight_mobile/ui/core/widgets/widget_frame.dart';
 import 'package:waylight_mobile/ui/core/widgets/widget_preview.dart';
@@ -168,7 +170,8 @@ class _TodoListState extends State<_TodoList> {
       builder: (context, _) => Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          if (viewModel.conflicts.isNotEmpty)
+          if (viewModel.conflicts.isNotEmpty &&
+              !WidgetSizeScope.inGrid(context))
             Padding(
               padding: const EdgeInsets.only(bottom: Dimens.gapSmall),
               child: MessageBanner(
@@ -182,8 +185,10 @@ class _TodoListState extends State<_TodoList> {
               ),
             ),
           if (viewModel.todos.isEmpty) Text(l10n.todosEmpty),
-          for (final todo in viewModel.todos)
-            _TodoRow(
+          TileRows(
+            items: viewModel.todos,
+            rowHeight: Dimens.tapTarget,
+            rowBuilder: (context, todo) => _TodoRow(
               todo: todo,
               today: viewModel.today,
               pending: viewModel.isPending(todo),
@@ -194,7 +199,9 @@ class _TodoListState extends State<_TodoList> {
                   ? () => editTodo(context, viewModel, todo)
                   : null,
             ),
-          if (viewModel.canEdit) ...[
+          ),
+          // Adding and clearing are one tap away in the full view.
+          if (viewModel.canEdit && !WidgetSizeScope.inGrid(context)) ...[
             const SizedBox(height: Dimens.gapSmall),
             TextField(
               key: const ValueKey('todos.new'),

@@ -516,6 +516,7 @@
   "editTabDiscardTitle": "Änderungen verwerfen?",
   "editTabDiscard": "Verwerfen",
   "editTabKeep": "Weiter bearbeiten",
+  "tileMoreRows": "+{count} weitere",
   "dashboardTapToOpen": "Antippen, um alles zu sehen",
   "todosCompactOpen": "{count, plural, =1{1 offen} other{{count} offen}}",
   "todosCompactNext": "als Nächstes: {title}",

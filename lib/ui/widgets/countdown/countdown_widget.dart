@@ -5,6 +5,7 @@ import 'package:waylight_mobile/domain/models/dashboard.dart';
 import 'package:waylight_mobile/domain/models/everyday.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/widgets/compact_lines.dart';
+import 'package:waylight_mobile/ui/core/widgets/tile_rows.dart';
 import 'package:waylight_mobile/ui/widgets/common/remote_widget.dart';
 import 'package:waylight_mobile/ui/widgets/common/widget_rows.dart';
 
@@ -50,23 +51,19 @@ class CountdownWidget extends StatelessWidget {
       final today = (now ?? DateTime.now)();
       final ahead = _ahead(countdowns, today);
       if (ahead.isEmpty) return Text(context.l10n.countdownEmpty);
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          for (final c in ahead)
-            InfoRow(
-              leading: c.emoji.isEmpty
-                  ? null
-                  : Text(c.emoji, semanticsLabel: ''),
-              title: c.title,
-              subtitle: [
-                shortDate(context, c.date),
-                if (c.time != null) c.time!,
-              ].join(' · '),
-              trailing: daysText(context, c.daysFrom(today)),
-              trailingTone: c.daysFrom(today) <= 7 ? Tone.warning : null,
-            ),
-        ],
+      return TileRows(
+        items: ahead,
+        rowHeight: TileRows.twoLineRowHeight,
+        rowBuilder: (context, c) => InfoRow(
+          leading: c.emoji.isEmpty ? null : Text(c.emoji, semanticsLabel: ''),
+          title: c.title,
+          subtitle: [
+            shortDate(context, c.date),
+            if (c.time != null) c.time!,
+          ].join(' · '),
+          trailing: daysText(context, c.daysFrom(today)),
+          trailingTone: c.daysFrom(today) <= 7 ? Tone.warning : null,
+        ),
       );
     },
   );

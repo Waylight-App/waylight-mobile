@@ -1771,6 +1771,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get editTabKeep => 'Keep editing';
 
   @override
+  String tileMoreRows(int count) {
+    return '+$count more';
+  }
+
+  @override
   String get dashboardTapToOpen => 'Tap to see everything';
 
   @override
