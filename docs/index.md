@@ -9,6 +9,7 @@
 - [UI components](ui-components.md): design tokens and the reusable components
 - [Design](design/README.md): mockups of every screen and the design decisions
 - [Testing](testing.md): what is tested where, fakes, accessibility, coverage
+- [Accessibility](accessibility.md): automatic and manual checks, TalkBack test guide, flow checklist
 
 ## Using
 

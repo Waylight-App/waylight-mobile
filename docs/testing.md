@@ -53,6 +53,9 @@ await expectLater(tester, meetsGuideline(labeledTapTargetGuideline));
 await expectLater(tester, meetsGuideline(textContrastGuideline));
 ```
 
+What the guidelines cannot check (reading order, announcements, large text,
+reduced motion) is tested by hand: [Accessibility](accessibility.md).
+
 ## Coverage
 
 `make coverage` writes `coverage/lcov.info` and fails below 80 % line

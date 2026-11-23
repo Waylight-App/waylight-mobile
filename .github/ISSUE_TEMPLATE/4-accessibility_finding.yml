@@ -1,0 +1,61 @@
+name: Accessibility finding
+description: A problem found with a screen reader, large text or reduced motion
+type: Bug
+labels: ["area: a11y"]
+body:
+  - type: dropdown
+    id: method
+    attributes:
+      label: How was it found?
+      options:
+        - TalkBack
+        - VoiceOver
+        - Large text or display zoom
+        - Reduced motion
+        - Contrast
+        - Keyboard or switch access
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: screen
+    attributes:
+      label: Screen or flow
+      description: A row of the flow checklist in docs/accessibility.md, or the route.
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happens?
+      description: What is announced, skipped, cut off or moving; include the focus order if it is wrong.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What should happen?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      value: |
+        1.
+        2.
+    validations:
+      required: true
+  - type: input
+    id: app-version
+    attributes:
+      label: App version
+    validations:
+      required: true
+  - type: input
+    id: device
+    attributes:
+      label: Device, OS version and settings
+      placeholder: Pixel 8, Android 16, TalkBack 16, font size largest
+    validations:
+      required: true
