@@ -38,6 +38,10 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    env:
+      # Secrets cannot be tested in a step condition directly; only this
+      # boolean is exposed, never the secret itself.
+      PLAY_UPLOAD: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON != '' }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: actions/setup-java@d1374f8ac74474200d16ef8ecee22c7ae7a51880 # v6.3.0
@@ -53,8 +57,6 @@ jobs:
           channel: stable
           flutter-version: ${{ steps.flutter.outputs.version }}
           cache: true
-      # Until store signing is set up (see ROADMAP.md), the APK is signed
-      # with the debug key: fine for testers, not for the stores.
       # Signs the release APK with the fixed release key (#284); a release
       # signed with a changing debug key could never be updated.
       - name: Provide the release keystore
@@ -84,6 +86,21 @@ jobs:
         run: |
           cp build/app/outputs/flutter-apk/app-release.apk "waylight-${TAG}.apk"
           gh release upload "$TAG" "waylight-${TAG}.apk" --clobber
+      # Google Play upload (#25): runs only when the service account secret
+      # exists. The bundle is signed with the same key as the APK, which
+      # then acts as the Play upload key (docs/releasing.md).
+      - name: Build the app bundle
+        if: env.PLAY_UPLOAD == 'true'
+        run: flutter build appbundle --release
+      - name: Upload the bundle to the internal track
+        if: env.PLAY_UPLOAD == 'true'
+        uses: r0adkll/upload-google-play@e738b9dd8f2476ea806d921b64aacd24f34515a5 # v1.1.5
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+          packageName: app.waylight.mobile
+          releaseFiles: build/app/outputs/bundle/release/app-release.aab
+          track: internal
+          status: completed
 
   # The Wear OS app (ADR 0015) carries the same version from pubspec.yaml
   # and is attached to the same release.

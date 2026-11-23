@@ -66,14 +66,31 @@ requests keep the debug key.
 Losing the key means installed apps can no longer be updated: keep a copy of
 the keystore and its password outside GitHub. iOS builds are unsigned.
 
+### Google Play upload
+
+The `android` job of the release workflow additionally builds the app
+bundle and uploads it to the internal track of Google Play when the secret
+`PLAY_SERVICE_ACCOUNT_JSON` exists. Without it both steps are skipped and
+the release stays a GitHub release. The bundle is signed with the release
+key above, which is registered as the upload key in Play App Signing.
+
+| Secret | Content |
+| --- | --- |
+| `PLAY_SERVICE_ACCOUNT_JSON` | JSON key of a Google Cloud service account that has release rights for the app in the Play Console |
+
+The first upload of a new app has to be made by hand in the Play Console;
+the workflow only publishes further releases. Play accepts each version code
+once; release-please raises the build number on every release.
+
 Still open ([#25](https://github.com/Waylight-App/waylight-mobile/issues/25)):
 
-- **Google Play:** Play App Signing and upload of the AAB to the internal
-  track, if the app goes to the store.
-- **iOS:** built, signed and uploaded to TestFlight locally on the
-  maintainer's Mac; certificates stay on that Mac.
+- **Google Play:** developer account, app entry, Play App Signing
+  enrolment with the upload key, service account and the secret above; a
+  test release has to reach the internal track.
+- **iOS:** paused; built, signed and uploaded to TestFlight locally on the
+  maintainer's Mac, certificates stay on that Mac.
 - **F-Droid:** possible because the app has no proprietary dependencies
-  (ADR 0011); to be decided.
+  (ADR 0011); to be decided (#26).
 
 Signing material never goes into the repository; `.gitignore` excludes
 keystores and `key.properties`.
