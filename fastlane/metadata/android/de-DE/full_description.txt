@@ -1,0 +1,20 @@
+Waylight ist die App zur selbst gehosteten Startseite Waylight. Sie verbindet sich mit deinem eigenen Waylight-Server und zeigt dein Dashboard, deine To-dos und Notizen auf dem Handy. Es gibt kein Konto bei uns, kein Tracking und keine Werbung: Die App spricht nur mit deinem Server.
+
+Das bekommst du
+- Anmeldung mit Passwort, Zwei-Faktor-Code, QR-Code oder Single Sign-on im Browser
+- Deine Tabs und jedes Widget der Weboberfläche
+- To-dos, Notizen, intelligente Suche und Schnellerfassung, auch über das Teilen-Menü
+- Eine Offline-Kopie des Dashboards
+- Bis zu drei Serveradressen, zum Beispiel Heimnetz und unterwegs
+- Startbildschirm-Widgets und Schnelleinstellungs-Kacheln
+- Erinnerungen für To-dos, Termine und Geburtstage, vom Handy selbst angezeigt
+- Smart-Home-Steuerung in den Gerätesteuerungen von Android
+- NFC-Tags, die eine Gewohnheit abhaken, ein Gerät schalten oder einen Tab öffnen
+- Ein Wanddisplay für ein altes Tablet
+- Glances und eine Kachel auf Wear-OS-Uhren
+- Optionale App-Sperre mit Fingerabdruck, Gesicht oder Geräte-PIN
+
+Benachrichtigungen ohne Google
+Push-Benachrichtigungen sind optional. Sie kommen Ende-zu-Ende-verschlüsselt über das Waylight-Relay an, während ein kleiner Vordergrunddienst die Verbindung hält. Weder Google-Dienste noch Firebase sind Teil der App.
+
+Du brauchst einen Waylight-Server, den dein Handy erreicht, im selben Netzwerk oder per VPN. Waylight ist Open Source.

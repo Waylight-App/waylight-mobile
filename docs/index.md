@@ -18,10 +18,12 @@
 
 - [Workflow](workflow.md): issues, branches, commits, pull requests, reviews, repository settings
 - [Releasing](releasing.md): versions, changelog, identifiers, signing
+- [Store listings](store-listing.md): store texts, data safety facts, screenshots, F-Droid options
 - [Decision records](adr/README.md)
 - [Roadmap](../ROADMAP.md)
 
 ## Trust
 
 - [Security and privacy](security.md)
+- [Privacy policy](privacy-policy.md)
 - [Security policy](../SECURITY.md)
