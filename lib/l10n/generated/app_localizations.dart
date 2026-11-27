@@ -662,6 +662,24 @@ abstract class AppLocalizations {
   /// **'Still not working.'**
   String get attentionStillBroken;
 
+  /// Status word next to a red dot in the attention strip of the dashboard: something is broken.
+  ///
+  /// In en, this message translates to:
+  /// **'Problem'**
+  String get attentionLevelProblem;
+
+  /// Status word next to a coloured dot in the attention strip of the dashboard: something needs a look soon, such as an overdue to-do.
+  ///
+  /// In en, this message translates to:
+  /// **'Warning'**
+  String get attentionLevelWarning;
+
+  /// Last line of the attention strip when more entries exist than it shows.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 more needs attention} other{{count} more need attention}}'**
+  String attentionStripMore(int count);
+
   /// Button that opens the widget's tab in the web interface.
   ///
   /// In en, this message translates to:
@@ -4855,6 +4873,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The value is empty or too long.'**
   String get pasteValueInvalid;
+
+  /// Button in the edit mode: gives every widget without a size the default size of its kind.
+  ///
+  /// In en, this message translates to:
+  /// **'Make this tab shorter'**
+  String get editTabShorten;
+
+  /// Snack bar after making the tab shorter.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 widget got its default size.} other{{count} widgets got their default size.}}'**
+  String editTabShortened(int count);
+
+  /// Snack bar action that undoes making the tab shorter.
+  ///
+  /// In en, this message translates to:
+  /// **'Undo'**
+  String get editTabUndo;
 }
 
 class _AppLocalizationsDelegate

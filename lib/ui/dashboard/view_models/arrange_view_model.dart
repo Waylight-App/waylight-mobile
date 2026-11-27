@@ -42,6 +42,10 @@ class ArrangeViewModel extends ChangeNotifier {
   int _desktopRows;
   bool _changed = false;
 
+  /// The layout before [shorten], for [undoShorten]; `null` once anything
+  /// else changed, so undo never throws away later edits.
+  ({List<PhoneLayoutItem> items, bool changed})? _beforeShorten;
+
   /// Stores the layout.
   late final Command0<void> save;
 
@@ -77,6 +81,39 @@ class ArrangeViewModel extends ChangeNotifier {
   void _update(List<PhoneLayoutItem> items) {
     _items = List.unmodifiable(items);
     _changed = true;
+    _beforeShorten = null;
+    notifyListeners();
+  }
+
+  /// Whether some widget has no size of its own and takes the full width
+  /// (#336).
+  bool get canShorten => _items.any((i) => i.size == null);
+
+  /// Whether [undoShorten] can bring back the layout before [shorten].
+  bool get canUndoShorten => _beforeShorten != null;
+
+  /// Gives every widget without a size the default size of its kind from
+  /// [defaultSize], so the tab gets shorter (#336). Sizes chosen before
+  /// stay as they are. Returns how many widgets got a size.
+  int shorten(WidgetSize Function(String kind) defaultSize) {
+    if (!canShorten) return 0;
+    final before = (items: _items, changed: _changed);
+    final count = _items.where((i) => i.size == null).length;
+    _update([
+      for (final item in _items)
+        item.size == null ? item.withSize(defaultSize(item.widget.kind)) : item,
+    ]);
+    _beforeShorten = before;
+    return count;
+  }
+
+  /// Brings back the layout as it was before [shorten].
+  void undoShorten() {
+    final before = _beforeShorten;
+    if (before == null) return;
+    _items = before.items;
+    _changed = before.changed;
+    _beforeShorten = null;
     notifyListeners();
   }
 
@@ -140,7 +177,10 @@ class ArrangeViewModel extends ChangeNotifier {
     final server = _serverRepository.current;
     if (server == null) return const Result.error(NotConnectedException());
     final result = await _dashboardRepository.saveLayout(server, tabId, _items);
-    if (result is Ok<void>) _changed = false;
+    if (result is Ok<void>) {
+      _changed = false;
+      _beforeShorten = null;
+    }
     return result;
   }
 
@@ -187,6 +227,8 @@ class ArrangeViewModel extends ChangeNotifier {
 
   @override
   void dispose() {
+    // The snack bar's undo may still be tapped after the edit mode closed.
+    _beforeShorten = null;
     save.dispose();
     reset.dispose();
     kinds.dispose();

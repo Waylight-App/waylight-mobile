@@ -18,6 +18,7 @@ import 'package:waylight_mobile/ui/core/window_size.dart';
 import 'package:waylight_mobile/ui/dashboard/view_models/arrange_view_model.dart';
 import 'package:waylight_mobile/ui/dashboard/view_models/dashboard_view_model.dart';
 import 'package:waylight_mobile/ui/dashboard/widgets/arrange_view.dart';
+import 'package:waylight_mobile/ui/dashboard/widgets/attention_strip.dart';
 import 'package:waylight_mobile/ui/dashboard/widgets/widget_card.dart';
 import 'package:waylight_mobile/ui/dashboard/widgets/widget_detail_sheet.dart';
 import 'package:waylight_mobile/ui/dashboard/widgets/widget_full_screen.dart';
@@ -100,6 +101,7 @@ class DashboardScreen extends StatelessWidget {
                   webUrl: viewModel.webUrl(tab.id),
                   setUpNeedOf: viewModel.setUpNeedOf,
                   hidden: viewModel.isEmptyWidget,
+                  attention: viewModel.attentionOf(tab),
                   onArrange: tab.mine && !viewModel.simpleView
                       ? () => _arrange(context, tab)
                       : null,
@@ -257,9 +259,13 @@ class TabPage extends StatelessWidget {
     this.setUpNeedOf,
     this.hidden,
     this.readOnly = false,
+    this.attention = const [],
     this.favourites = const [],
     super.key,
   });
+
+  /// What needs attention now on this tab (#335), shown above the widgets.
+  final List<AttentionStripEntry> attention;
 
   /// The favourites of every tab (#333), shown first in their own section
   /// with the sizes they have on their tabs; empty on all tabs but home.
@@ -466,6 +472,11 @@ class TabPage extends StatelessWidget {
       return _Hint(context.l10n.dashboardNothingToShow);
     }
     final blocks = <Widget>[
+      if (attention.isNotEmpty && !readOnly)
+        AttentionStrip(
+          entries: attention,
+          onOpen: (widget) => _openTile(context, widget),
+        ),
       if (favourites.isNotEmpty) ...[
         Semantics(
           header: true,

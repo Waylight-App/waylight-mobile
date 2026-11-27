@@ -188,6 +188,12 @@
   "@attentionConnect": {"description": "Action: the integration is not set up; opens the web interface."},
   "attentionStillBroken": "Still not working.",
   "@attentionStillBroken": {"description": "Snack bar after Check again when the entry is still listed."},
+  "attentionLevelProblem": "Problem",
+  "@attentionLevelProblem": {"description": "Status word next to a red dot in the attention strip of the dashboard: something is broken."},
+  "attentionLevelWarning": "Warning",
+  "@attentionLevelWarning": {"description": "Status word next to a coloured dot in the attention strip of the dashboard: something needs a look soon, such as an overdue to-do."},
+  "attentionStripMore": "{count, plural, =1{1 more needs attention} other{{count} more need attention}}",
+  "@attentionStripMore": {"description": "Last line of the attention strip when more entries exist than it shows.", "placeholders": {"count": {"type": "int"}}},
   "dashboardOpenInWaylight": "Open in Waylight",
   "@dashboardOpenInWaylight": {"description": "Button that opens the widget's tab in the web interface."},
   "transitTitle": "Departures",
@@ -1585,5 +1591,11 @@
   "pasteExpired": "The code has expired or was already used. Show a new code in the setup assistant and scan it again.",
   "@pasteExpired": {"description": "The server does not know the code any more."},
   "pasteValueInvalid": "The value is empty or too long.",
-  "@pasteValueInvalid": {"description": "The server rejected the value."}
+  "@pasteValueInvalid": {"description": "The server rejected the value."},
+  "editTabShorten": "Make this tab shorter",
+  "@editTabShorten": {"description": "Button in the edit mode: gives every widget without a size the default size of its kind."},
+  "editTabShortened": "{count, plural, =1{1 widget got its default size.} other{{count} widgets got their default size.}}",
+  "@editTabShortened": {"description": "Snack bar after making the tab shorter.", "placeholders": {"count": {"type": "int", "example": "3"}}},
+  "editTabUndo": "Undo",
+  "@editTabUndo": {"description": "Snack bar action that undoes making the tab shorter."}
 }

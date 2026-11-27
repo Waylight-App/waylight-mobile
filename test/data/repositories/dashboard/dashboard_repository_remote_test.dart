@@ -106,6 +106,29 @@ void main() {
       expect(reloaded.sizesOnServer, isFalse);
     });
 
+    test('a tab without sizes reads as before (#336)', () async {
+      final repo = repository(withSizes: false);
+      final layout = (await tab(repo)).layout;
+      await repo.saveLayout(testServer(), 't', layout);
+
+      final reloaded = await tab(repo);
+      expect(reloaded.sizes, isEmpty);
+      expect(reloaded.layout.map((i) => i.size), everyElement(isNull));
+    });
+
+    test('keeps default sizes given to every widget (#336)', () async {
+      final repo = repository(withSizes: false);
+      final layout = (await tab(repo)).layout;
+      await repo.saveLayout(testServer(), 't', [
+        for (final item in layout) item.withSize(WidgetSize.medium),
+      ]);
+
+      expect((await tab(repo)).sizes, {
+        'a': WidgetSize.medium,
+        'b': WidgetSize.medium,
+      });
+    });
+
     test('forgets the sizes of a tab on reset', () async {
       final repo = repository(withSizes: false);
       final layout = (await tab(repo)).layout;

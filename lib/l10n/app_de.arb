@@ -94,6 +94,9 @@
   "attentionChoose": "Einrichten",
   "attentionConnect": "Verbinden",
   "attentionStillBroken": "Funktioniert immer noch nicht.",
+  "attentionLevelProblem": "Problem",
+  "attentionLevelWarning": "Warnung",
+  "attentionStripMore": "{count, plural, =1{1 weiterer Eintrag braucht Aufmerksamkeit} other{{count} weitere brauchen Aufmerksamkeit}}",
   "dashboardOpenInWaylight": "In Waylight öffnen",
   "transitTitle": "Abfahrten",
   "transitNoStop": "Noch keine Haltestelle gewählt.",
@@ -792,5 +795,8 @@
   "pasteInvalidCode": "Das ist kein Code des Einrichtungsassistenten. Öffne dort „Vom Handy einfügen“ und scanne den angezeigten Code.",
   "pasteOtherServer": "Dieser Code gehört zu einem anderen Server als dem, mit dem die App verbunden ist.",
   "pasteExpired": "Der Code ist abgelaufen oder wurde schon benutzt. Lass im Einrichtungsassistenten einen neuen Code anzeigen und scanne ihn erneut.",
-  "pasteValueInvalid": "Der Wert ist leer oder zu lang."
+  "pasteValueInvalid": "Der Wert ist leer oder zu lang.",
+  "editTabShorten": "Tab kürzer machen",
+  "editTabShortened": "{count, plural, =1{1 Widget hat seine Standardgröße bekommen.} other{{count} Widgets haben ihre Standardgröße bekommen.}}",
+  "editTabUndo": "Rückgängig"
 }

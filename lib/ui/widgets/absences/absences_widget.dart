@@ -26,10 +26,14 @@ String absenceKindLabel(AppLocalizations l10n, AbsenceKind k) => switch (k) {
 /// The native view of the absences widget (#201).
 class AbsencesWidget extends StatelessWidget {
   /// Creates the view for [widget].
-  const AbsencesWidget({required this.widget, super.key});
+  const AbsencesWidget({required this.widget, this.now, super.key});
 
   /// The placement of the widget.
   final WidgetPlacement widget;
+
+  /// The clock that decides what is today; the device's by default. Tests
+  /// fix it, so their example absences do not run out.
+  final DateTime Function()? now;
 
   /// The builder for the widget registry.
   static Widget forPlacement(BuildContext context, WidgetPlacement widget) =>
@@ -40,6 +44,7 @@ class AbsencesWidget extends StatelessWidget {
     create: (context) => AbsencesViewModel(
       serverRepository: context.read(),
       absencesRepository: context.read(),
+      now: now,
     ),
     builder: (context, viewModel) => WidgetFrame<void>(
       title: widget.title.isNotEmpty

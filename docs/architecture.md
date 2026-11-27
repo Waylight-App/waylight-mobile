@@ -235,6 +235,13 @@ widgets sit on a grid of square cells, 4 wide on phones and 8 on tablets:
   `GET /api/modules`, searchable. Adding stores the widget on the server
   right away, below the desktop grid (half its width, so it fits on every
   desktop), and it joins the phone layout as a small tile.
+- Above the widgets of a tab, the attention strip (#335) lists up to
+  three things that need attention now, problems first, and counts the
+  rest: widgets whose connection stopped working on the server's
+  attention list (`GET /api/attention`) and widgets whose compact state
+  has the level `problem` or `attention`. The dashboard reads those states
+  with the tabs, the same requests that find empty widgets. Widgets that
+  are not set up stay on the attention screen (#229).
 - Sizes are part of the phone layout of a tab. The dashboard repository
   sends them to servers that know them (Waylight-App/waylight#585) and
   keeps them on the device for the others.
