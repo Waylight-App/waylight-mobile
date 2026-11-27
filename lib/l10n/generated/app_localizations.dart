@@ -662,6 +662,24 @@ abstract class AppLocalizations {
   /// **'Still not working.'**
   String get attentionStillBroken;
 
+  /// Status word next to a red dot in the attention strip of the dashboard: something is broken.
+  ///
+  /// In en, this message translates to:
+  /// **'Problem'**
+  String get attentionLevelProblem;
+
+  /// Status word next to a coloured dot in the attention strip of the dashboard: something needs a look soon, such as an overdue to-do.
+  ///
+  /// In en, this message translates to:
+  /// **'Warning'**
+  String get attentionLevelWarning;
+
+  /// Last line of the attention strip when more entries exist than it shows.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 more needs attention} other{{count} more need attention}}'**
+  String attentionStripMore(int count);
+
   /// Button that opens the widget's tab in the web interface.
   ///
   /// In en, this message translates to:

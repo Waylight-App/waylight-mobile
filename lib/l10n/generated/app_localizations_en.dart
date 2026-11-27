@@ -326,6 +326,23 @@ class AppLocalizationsEn extends AppLocalizations {
   String get attentionStillBroken => 'Still not working.';
 
   @override
+  String get attentionLevelProblem => 'Problem';
+
+  @override
+  String get attentionLevelWarning => 'Warning';
+
+  @override
+  String attentionStripMore(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count more need attention',
+      one: '1 more needs attention',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get dashboardOpenInWaylight => 'Open in Waylight';
 
   @override
