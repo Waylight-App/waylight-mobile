@@ -23,21 +23,21 @@ void main() {
   }) => Dashboard(
     defaultTabId: 'home',
     tabs: [
-      DashboardTab(
+      const DashboardTab(
         id: 'server',
         name: 'Server',
-        widgets: const [docker, todos],
-        layout: const [
+        widgets: [docker, todos],
+        layout: [
           PhoneLayoutItem(widget: docker),
           PhoneLayoutItem(widget: todos),
         ],
-        sizes: const {'todos': WidgetSize.small},
+        sizes: {'todos': WidgetSize.small},
       ).withFavourites(server),
-      DashboardTab(
+      const DashboardTab(
         id: 'home',
         name: 'Home',
-        widgets: const [clock, notes],
-        layout: const [
+        widgets: [clock, notes],
+        layout: [
           PhoneLayoutItem(widget: clock),
           PhoneLayoutItem(widget: notes),
         ],
@@ -148,13 +148,13 @@ void main() {
     await tester.tap(find.byKey(const ValueKey('dashboard.edit')));
     await tester.pumpAndSettle();
 
-    final star = find.byKey(const ValueKey('editTab.favourite.notes'));
-    expect(find.byTooltip(l10nEn.editTabFavourite('Notes')), findsOneWidget);
+    final star = find.byKey(const ValueKey('editTab.favourite.clock'));
+    expect(find.byTooltip(l10nEn.editTabFavourite('Clock')), findsOneWidget);
     await tester.tap(star);
     await tester.pumpAndSettle();
 
-    expect(vm.arranging!.items.last.favourite, isTrue);
-    expect(find.byTooltip(l10nEn.editTabUnfavourite('Notes')), findsOneWidget);
+    expect(vm.arranging!.items.first.favourite, isTrue);
+    expect(find.byTooltip(l10nEn.editTabUnfavourite('Clock')), findsOneWidget);
     await expectLater(tester, meetsGuideline(androidTapTargetGuideline));
     await expectLater(tester, meetsGuideline(labeledTapTargetGuideline));
   });
