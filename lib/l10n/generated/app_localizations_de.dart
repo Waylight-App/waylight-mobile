@@ -2793,6 +2793,38 @@ class AppLocalizationsDe extends AppLocalizations {
   String get pasteValueInvalid => 'Der Wert ist leer oder zu lang.';
 
   @override
+  String get widgetCategoryEveryday => 'Alltag';
+
+  @override
+  String get widgetCategoryInformation => 'Informationen';
+
+  @override
+  String get widgetCategoryServer => 'Server';
+
+  @override
+  String get widgetCategoryNetwork => 'Netzwerk & Verbindungen';
+
+  @override
+  String dashboardSectionCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count Widgets',
+      one: '1 Widget',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get dashboardSectionAttention => 'braucht Aufmerksamkeit';
+
+  @override
+  String get dashboardSectionExpand => 'aufklappen';
+
+  @override
+  String get dashboardSectionCollapse => 'zuklappen';
+
+  @override
   String get editTabShorten => 'Tab kürzer machen';
 
   @override

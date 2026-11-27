@@ -50,6 +50,7 @@ import 'package:waylight_mobile/data/repositories/reminders/reminder_repository.
 import 'package:waylight_mobile/data/repositories/scanner/scanner_repository.dart';
 import 'package:waylight_mobile/data/repositories/search/search_repository.dart';
 import 'package:waylight_mobile/data/repositories/search/search_repository_remote.dart';
+import 'package:waylight_mobile/data/repositories/sections/section_state_repository.dart';
 import 'package:waylight_mobile/data/repositories/server/address_selector.dart';
 import 'package:waylight_mobile/data/repositories/server/server_repository.dart';
 import 'package:waylight_mobile/data/repositories/server/server_repository_remote.dart';
@@ -159,6 +160,7 @@ typedef Repositories = ({
   AppLockRepository lock,
   KioskRepository kiosk,
   FirstStartRepository firstStart,
+  SectionStateRepository sections,
 });
 
 /// The services and repositories of the app: the composition root.
@@ -215,6 +217,9 @@ List<SingleChildWidget> providers(Repositories repositories) => [
   Provider<HelpRepository>.value(value: repositories.help),
   ChangeNotifierProvider<AppLockRepository>.value(value: repositories.lock),
   ChangeNotifierProvider<KioskRepository>.value(value: repositories.kiosk),
+  ChangeNotifierProvider<SectionStateRepository>.value(
+    value: repositories.sections,
+  ),
   ChangeNotifierProvider<FirstStartRepository>.value(
     value: repositories.firstStart,
   ),
@@ -414,5 +419,6 @@ Repositories createRepositories() {
     lock: lock,
     kiosk: kiosk,
     firstStart: FirstStartRepository(store: store),
+    sections: SectionStateRepository(store: store),
   );
 }
