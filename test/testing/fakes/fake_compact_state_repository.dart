@@ -16,6 +16,9 @@ class FakeCompactStateRepository implements CompactStateRepository {
     CompactState(title: CompactText(text: '')),
   );
 
+  /// What [state] returns for a kind instead of [result].
+  final Map<String, Result<CompactState>> byKind = {};
+
   /// The kinds asked for.
   final List<String> asked = [];
 
@@ -57,6 +60,6 @@ class FakeCompactStateRepository implements CompactStateRepository {
   }) async {
     asked.add(kind);
     configs.add(config);
-    return result;
+    return byKind[kind] ?? result;
   }
 }

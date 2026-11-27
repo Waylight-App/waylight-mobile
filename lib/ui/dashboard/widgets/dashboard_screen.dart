@@ -18,6 +18,7 @@ import 'package:waylight_mobile/ui/core/window_size.dart';
 import 'package:waylight_mobile/ui/dashboard/view_models/arrange_view_model.dart';
 import 'package:waylight_mobile/ui/dashboard/view_models/dashboard_view_model.dart';
 import 'package:waylight_mobile/ui/dashboard/widgets/arrange_view.dart';
+import 'package:waylight_mobile/ui/dashboard/widgets/attention_strip.dart';
 import 'package:waylight_mobile/ui/dashboard/widgets/section_header.dart';
 import 'package:waylight_mobile/ui/dashboard/widgets/widget_card.dart';
 import 'package:waylight_mobile/ui/dashboard/widgets/widget_detail_sheet.dart';
@@ -100,6 +101,7 @@ class DashboardScreen extends StatelessWidget {
                   webUrl: viewModel.webUrl(tab.id),
                   setUpNeedOf: viewModel.setUpNeedOf,
                   hidden: viewModel.isEmptyWidget,
+                  attention: viewModel.attentionOf(tab),
                   onArrange: tab.mine && !viewModel.simpleView
                       ? () => _arrange(context, tab)
                       : null,
@@ -263,11 +265,15 @@ class TabPage extends StatelessWidget {
     this.setUpNeedOf,
     this.hidden,
     this.readOnly = false,
+    this.attention = const [],
     this.isCollapsed,
     this.onToggleSection,
     this.needsAttention,
     super.key,
   });
+
+  /// What needs attention now on this tab (#335), shown above the widgets.
+  final List<AttentionStripEntry> attention;
 
   /// Whether the section of a [WidgetCategory], by its name, is collapsed
   /// (#334).
@@ -477,7 +483,13 @@ class TabPage extends StatelessWidget {
   Widget build(BuildContext context) {
     if (tab.widgets.isEmpty) return _Hint(context.l10n.dashboardEmptyTab);
     if (_shown.isEmpty) return _Hint(context.l10n.dashboardNothingToShow);
-    final blocks = <Widget>[];
+    final blocks = <Widget>[
+      if (attention.isNotEmpty && !readOnly)
+        AttentionStrip(
+          entries: attention,
+          onOpen: (widget) => _openTile(context, widget),
+        ),
+    ];
     final toggle = onToggleSection;
     final sections = toggle == null || simple ? null : _sections();
     // A tab with a single section shows no header, as before (#334).
