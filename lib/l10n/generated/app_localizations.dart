@@ -3332,6 +3332,66 @@ abstract class AppLocalizations {
   /// **'Wallpaper'**
   String get settingsColoursWallpaper;
 
+  /// Settings, appearance: heading of the account's accessibility options.
+  ///
+  /// In en, this message translates to:
+  /// **'Accessibility'**
+  String get settingsAccessibility;
+
+  /// Settings, accessibility: why the options also change the web interface.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved in your account, so the web interface uses them too.'**
+  String get settingsAccessibilityHint;
+
+  /// Settings, accessibility: label of the text size choice, on top of the system's.
+  ///
+  /// In en, this message translates to:
+  /// **'Text size'**
+  String get settingsTextSize;
+
+  /// Text size: as the system.
+  ///
+  /// In en, this message translates to:
+  /// **'Normal'**
+  String get settingsTextSizeNormal;
+
+  /// Text size: one step larger.
+  ///
+  /// In en, this message translates to:
+  /// **'Large'**
+  String get settingsTextSizeLarge;
+
+  /// Text size: two steps larger.
+  ///
+  /// In en, this message translates to:
+  /// **'Larger'**
+  String get settingsTextSizeLarger;
+
+  /// Settings, accessibility: switch for the high-contrast colours.
+  ///
+  /// In en, this message translates to:
+  /// **'High contrast'**
+  String get settingsHighContrast;
+
+  /// Settings, accessibility: what high contrast does.
+  ///
+  /// In en, this message translates to:
+  /// **'Black and white text with strong outlines'**
+  String get settingsHighContrastHint;
+
+  /// Settings, accessibility: switch for the simple dashboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Simple view'**
+  String get settingsSimpleView;
+
+  /// Settings, accessibility: what the simple view does.
+  ///
+  /// In en, this message translates to:
+  /// **'One column of compact widgets, without edit controls'**
+  String get settingsSimpleViewHint;
+
   /// Settings, server: heading of the server's addresses.
   ///
   /// In en, this message translates to:

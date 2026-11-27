@@ -114,6 +114,52 @@ void main() {
       expect(store.values, isEmpty);
     });
 
+    test('are saved with the rest of the appearance unchanged', () async {
+      Object? sent;
+      final store = InMemoryKeyValueStore();
+      final repo = ThemeRepository(
+        api: ModuleApi(
+          ApiClient(
+            client: MockClient((request) async {
+              if (request.method == 'PUT') {
+                sent = jsonDecode(request.body);
+                return http.Response(request.body, 200);
+              }
+              return http.Response(
+                '{"theme":"dark","customCss":"x","profile":"homelab",'
+                '"textSize":"normal","highContrast":false,"simpleView":false}',
+                200,
+              );
+            }),
+          ),
+        ),
+        store: store,
+      );
+      const options = Accessibility(textSize: TextSize.large, simpleView: true);
+      final result = await repo.saveAccessibility(testServer(), options);
+      expect(result, isA<Ok<void>>());
+      expect(sent, {
+        'theme': 'dark',
+        'customCss': 'x',
+        'profile': 'homelab',
+        'textSize': 'large',
+        'highContrast': false,
+        'simpleView': true,
+      });
+      expect(repo.accessibility, options);
+      expect(store.values, isNotEmpty);
+    });
+
+    test('are not changed when saving fails', () async {
+      final repo = create('', InMemoryKeyValueStore());
+      final result = await repo.saveAccessibility(
+        testServer(),
+        const Accessibility(highContrast: true),
+      );
+      expect(result, isA<Error<void>>());
+      expect(repo.accessibility, const Accessibility());
+    });
+
     test('stay off on a server that does not know them', () async {
       final repo = create(
         '{"customCss":"","textSize":"huge"}',

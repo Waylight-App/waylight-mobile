@@ -115,6 +115,38 @@ enum SettingsItem {
     'material you',
   ]),
 
+  /// The account's text size on top of the system's (#291).
+  textSize(SettingsArea.appearance, [
+    'text size',
+    'textgrosse',
+    'font',
+    'schrift',
+    'larger',
+    'grosser',
+    'accessibility',
+    'barrierefreiheit',
+  ]),
+
+  /// The account's high-contrast colours (#291).
+  highContrast(SettingsArea.appearance, [
+    'contrast',
+    'kontrast',
+    'accessibility',
+    'barrierefreiheit',
+    'low vision',
+    'sehschwache',
+  ]),
+
+  /// The account's simple view of the dashboard (#291).
+  simpleView(SettingsArea.appearance, [
+    'simple',
+    'einfach',
+    'one column',
+    'eine spalte',
+    'accessibility',
+    'barrierefreiheit',
+  ]),
+
   /// The language of the app.
   language(SettingsArea.appearance, [
     'language',

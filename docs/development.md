@@ -56,7 +56,7 @@ a link leads to the start page. The areas are defined in
 | --- | --- | --- |
 | Account & security | `waylight://settings/account` | who is signed in, password and sign-in methods (`/settings/security`), sign out |
 | Server & connection | `waylight://settings/server` | address and version, addresses in the order they are tried, other servers, checking the addresses again, disconnecting |
-| Appearance | `waylight://settings/appearance` | theme, wallpaper colours, language |
+| Appearance | `waylight://settings/appearance` | theme, wallpaper colours, language, the account's accessibility options |
 | Notifications & reminders | `waylight://settings/notifications` | push notifications with the battery hint, reminders on the phone |
 | This phone | `waylight://settings/phone` | app lock, home screen widgets, Quick Settings tiles, pairing a watch, wall display |
 | About & help | `waylight://settings/about` | app version, licences, source code, privacy, diagnostic report |

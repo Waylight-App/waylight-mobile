@@ -1884,6 +1884,39 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsColoursWallpaper => 'Wallpaper';
 
   @override
+  String get settingsAccessibility => 'Accessibility';
+
+  @override
+  String get settingsAccessibilityHint =>
+      'Saved in your account, so the web interface uses them too.';
+
+  @override
+  String get settingsTextSize => 'Text size';
+
+  @override
+  String get settingsTextSizeNormal => 'Normal';
+
+  @override
+  String get settingsTextSizeLarge => 'Large';
+
+  @override
+  String get settingsTextSizeLarger => 'Larger';
+
+  @override
+  String get settingsHighContrast => 'High contrast';
+
+  @override
+  String get settingsHighContrastHint =>
+      'Black and white text with strong outlines';
+
+  @override
+  String get settingsSimpleView => 'Simple view';
+
+  @override
+  String get settingsSimpleViewHint =>
+      'One column of compact widgets, without edit controls';
+
+  @override
   String get addressesTitle => 'Addresses';
 
   @override
