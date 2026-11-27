@@ -18,6 +18,7 @@ import 'package:waylight_mobile/ui/core/window_size.dart';
 import 'package:waylight_mobile/ui/dashboard/view_models/arrange_view_model.dart';
 import 'package:waylight_mobile/ui/dashboard/view_models/dashboard_view_model.dart';
 import 'package:waylight_mobile/ui/dashboard/widgets/arrange_view.dart';
+import 'package:waylight_mobile/ui/dashboard/widgets/attention_strip.dart';
 import 'package:waylight_mobile/ui/dashboard/widgets/widget_card.dart';
 import 'package:waylight_mobile/ui/dashboard/widgets/widget_detail_sheet.dart';
 import 'package:waylight_mobile/ui/dashboard/widgets/widget_full_screen.dart';
@@ -99,6 +100,7 @@ class DashboardScreen extends StatelessWidget {
                   webUrl: viewModel.webUrl(tab.id),
                   setUpNeedOf: viewModel.setUpNeedOf,
                   hidden: viewModel.isEmptyWidget,
+                  attention: viewModel.attentionOf(tab),
                   onArrange: tab.mine && !viewModel.simpleView
                       ? () => _arrange(context, tab)
                       : null,
@@ -256,8 +258,12 @@ class TabPage extends StatelessWidget {
     this.setUpNeedOf,
     this.hidden,
     this.readOnly = false,
+    this.attention = const [],
     super.key,
   });
+
+  /// What needs attention now on this tab (#335), shown above the widgets.
+  final List<AttentionStripEntry> attention;
 
   /// Widgets with nothing to show (#288); left out here and listed in the
   /// edit mode only.
@@ -438,7 +444,13 @@ class TabPage extends StatelessWidget {
     final window = WindowSize.of(context);
     final columns = window.columns;
     final gridColumns = SizedGrid.columnsOf(context);
-    final blocks = <Widget>[];
+    final blocks = <Widget>[
+      if (attention.isNotEmpty && !readOnly)
+        AttentionStrip(
+          entries: attention,
+          onOpen: (widget) => _openTile(context, widget),
+        ),
+    ];
     for (final run in simple ? const <List<WidgetPlacement>>[] : _runs()) {
       if (tab.sizes.containsKey(run.first.id)) {
         blocks.add(
