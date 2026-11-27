@@ -98,6 +98,7 @@ class DashboardScreen extends StatelessWidget {
                 TabPage(
                   tab: tab,
                   registry: registry,
+                  favourites: viewModel.favouritesOn(tab),
                   webUrl: viewModel.webUrl(tab.id),
                   setUpNeedOf: viewModel.setUpNeedOf,
                   hidden: viewModel.isEmptyWidget,
@@ -266,14 +267,12 @@ class TabPage extends StatelessWidget {
     this.hidden,
     this.readOnly = false,
     this.attention = const [],
+    this.favourites = const [],
     this.isCollapsed,
     this.onToggleSection,
     this.needsAttention,
     super.key,
   });
-
-  /// What needs attention now on this tab (#335), shown above the widgets.
-  final List<AttentionStripEntry> attention;
 
   /// Whether the section of a [WidgetCategory], by its name, is collapsed
   /// (#334).
@@ -286,15 +285,40 @@ class TabPage extends StatelessWidget {
   /// Whether a widget needs attention, for the dot on a collapsed header.
   final bool Function(WidgetPlacement widget)? needsAttention;
 
+  /// What needs attention now on this tab (#335), shown above the widgets.
+  final List<AttentionStripEntry> attention;
+
+  /// The favourites of every tab (#333), shown first in their own section
+  /// with the sizes they have on their tabs; empty on all tabs but home.
+  final List<({WidgetPlacement widget, WidgetSize? size})> favourites;
+
   /// Widgets with nothing to show (#288); left out here and listed in the
   /// edit mode only.
   final bool Function(WidgetPlacement widget)? hidden;
 
-  /// The widgets that show.
-  List<WidgetPlacement> get _shown => [
-    for (final w in tab.widgets)
-      if (!(hidden?.call(w) ?? false)) w,
+  bool _isShown(WidgetPlacement w) => !(hidden?.call(w) ?? false);
+
+  /// The favourites that show.
+  List<WidgetPlacement> get _favouritesShown => [
+    for (final f in favourites)
+      if (_isShown(f.widget)) f.widget,
   ];
+
+  /// The tab's widgets that show below the favourites; a favourite of this
+  /// tab is shown once, in the favourites.
+  List<WidgetPlacement> get _rest {
+    final pinned = {for (final f in favourites) f.widget.id};
+    return [
+      for (final w in tab.widgets)
+        if (_isShown(w) && !pinned.contains(w.id)) w,
+    ];
+  }
+
+  /// The grid size of [widget]: its size on this tab, or for a favourite of
+  /// another tab the size it has there.
+  WidgetSize? _sizeOf(WidgetPlacement widget) =>
+      tab.sizes[widget.id] ??
+      favourites.where((f) => f.widget.id == widget.id).firstOrNull?.size;
 
   /// What a widget misses before it can show anything (#230), or `null`
   /// when it is set up; such widgets show *Set up*.
@@ -388,7 +412,7 @@ class TabPage extends StatelessWidget {
   /// (#226); larger tiles open it full screen.
   void _openTile(BuildContext context, WidgetPlacement widget) {
     if (readOnly) return;
-    if (isCompact(tab.sizes[widget.id])) {
+    if (isCompact(_sizeOf(widget))) {
       _openSheet(context, widget);
     } else {
       _open(context, widget);
@@ -450,7 +474,7 @@ class TabPage extends StatelessWidget {
     final runs = <List<WidgetPlacement>>[];
     bool? sized;
     for (final widget in widgets) {
-      final isSized = tab.sizes.containsKey(widget.id);
+      final isSized = _sizeOf(widget) != null;
       if (isSized != sized) runs.add([]);
       runs.last.add(widget);
       sized = isSized;
@@ -458,12 +482,14 @@ class TabPage extends StatelessWidget {
     return runs;
   }
 
-  /// The shown widgets grouped by the category of their kind (#334). The
-  /// sections follow the first widget of each in the phone order, and the
-  /// widgets keep that order inside their section.
-  Map<WidgetCategory, List<WidgetPlacement>> _sections() {
+  /// [widgets] grouped by the category of their kind (#334). The sections
+  /// follow the first widget of each in the phone order, and the widgets
+  /// keep that order inside their section.
+  Map<WidgetCategory, List<WidgetPlacement>> _sections(
+    List<WidgetPlacement> widgets,
+  ) {
     final sections = <WidgetCategory, List<WidgetPlacement>>{};
-    for (final widget in _shown) {
+    for (final widget in widgets) {
       sections
           .putIfAbsent(registry.categoryOf(widget.kind), () => [])
           .add(widget);
@@ -481,17 +507,34 @@ class TabPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (tab.widgets.isEmpty) return _Hint(context.l10n.dashboardEmptyTab);
-    if (_shown.isEmpty) return _Hint(context.l10n.dashboardNothingToShow);
+    final favourites = _favouritesShown;
+    final rest = _rest;
+    if (tab.widgets.isEmpty && favourites.isEmpty) {
+      return _Hint(context.l10n.dashboardEmptyTab);
+    }
+    if (rest.isEmpty && favourites.isEmpty) {
+      return _Hint(context.l10n.dashboardNothingToShow);
+    }
     final blocks = <Widget>[
       if (attention.isNotEmpty && !readOnly)
         AttentionStrip(
           entries: attention,
           onOpen: (widget) => _openTile(context, widget),
         ),
+      if (favourites.isNotEmpty) ...[
+        Semantics(
+          header: true,
+          child: Text(
+            context.l10n.dashboardFavourites,
+            key: const ValueKey('dashboard.favourites'),
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+        ),
+        ..._blocksOf(context, favourites),
+      ],
     ];
     final toggle = onToggleSection;
-    final sections = toggle == null || simple ? null : _sections();
+    final sections = toggle == null || simple ? null : _sections(rest);
     // A tab with a single section shows no header, as before (#334).
     if (sections != null && sections.length > 1) {
       for (final MapEntry(key: category, value: widgets) in sections.entries) {
@@ -506,12 +549,10 @@ class TabPage extends StatelessWidget {
             onToggle: () => toggle!(category.name),
           ),
         );
-        if (!collapsed) blocks.addAll(_blocks(context, widgets));
+        if (!collapsed) blocks.addAll(_blocksOf(context, widgets));
       }
-    } else if (simple) {
-      blocks.addAll([for (final w in _shown) _simpleItem(context, w)]);
     } else {
-      blocks.addAll(_blocks(context, _shown));
+      blocks.addAll(_blocksOf(context, rest));
     }
     return RefreshIndicator(
       // Reloads the widgets of this tab that are on screen (#19).
@@ -529,19 +570,20 @@ class TabPage extends StatelessWidget {
     );
   }
 
-  /// The views of [widgets]: grids for runs with a size, full-width views
-  /// for the others.
-  List<Widget> _blocks(BuildContext context, List<WidgetPlacement> widgets) {
+  /// The blocks of the list for [widgets]: grids, full-width widgets or,
+  /// in the simple view, one item per widget.
+  List<Widget> _blocksOf(BuildContext context, List<WidgetPlacement> widgets) {
+    if (simple) return [for (final w in widgets) _simpleItem(context, w)];
     final columns = WindowSize.of(context).columns;
     final gridColumns = SizedGrid.columnsOf(context);
     final blocks = <Widget>[];
     for (final run in _runs(widgets)) {
-      if (tab.sizes.containsKey(run.first.id)) {
+      if (_sizeOf(run.first) != null) {
         blocks.add(
           WidgetGrid(
             items: [
               for (final widget in run)
-                (widget: widget, size: tab.sizes[widget.id]!),
+                (widget: widget, size: _sizeOf(widget)!),
             ],
             columns: gridColumns,
             builder: _card,

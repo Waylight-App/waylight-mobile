@@ -15,6 +15,16 @@ final class Dashboard {
     final index = tabs.indexWhere((t) => t.id == defaultTabId);
     return index < 0 ? 0 : index;
   }
+
+  /// The favourites of every tab (#333), in tab order and then in the
+  /// order of each tab's phone layout, with the size each has on its tab.
+  /// Widgets hidden on phones are left out.
+  List<({WidgetPlacement widget, WidgetSize? size})> get favourites => [
+    for (final tab in tabs)
+      for (final widget in tab.widgets)
+        if (tab.favourites.contains(widget.id))
+          (widget: widget, size: tab.sizes[widget.id]),
+  ];
 }
 
 /// One tab of the dashboard with its widgets in phone order.
@@ -29,7 +39,35 @@ final class DashboardTab {
     this.sizes = const {},
     this.sizesOnServer = false,
     this.desktopRows = 0,
+    this.favourites = const {},
+    this.favouritesOnServer = false,
   });
+
+  /// The ids of the widgets marked as favourites (#333), shown first on the
+  /// home tab.
+  final Set<String> favourites;
+
+  /// Whether the server stores favourites in its phone layout
+  /// (Waylight-App/waylight#844); otherwise the app keeps them on the
+  /// device.
+  final bool favouritesOnServer;
+
+  /// A copy of the tab with [favourites], in [layout] too.
+  DashboardTab withFavourites(Set<String> favourites) => DashboardTab(
+    id: id,
+    name: name,
+    widgets: widgets,
+    layout: [
+      for (final item in layout)
+        item.copyWith(favourite: favourites.contains(item.widget.id)),
+    ],
+    mine: mine,
+    sizes: sizes,
+    sizesOnServer: sizesOnServer,
+    desktopRows: desktopRows,
+    favourites: Set.unmodifiable(favourites),
+    favouritesOnServer: favouritesOnServer,
+  );
 
   /// The server's id of the tab.
   final String id;
@@ -70,6 +108,8 @@ final class DashboardTab {
     sizes: Map.unmodifiable(sizes),
     sizesOnServer: sizesOnServer,
     desktopRows: desktopRows,
+    favourites: favourites,
+    favouritesOnServer: favouritesOnServer,
   );
 }
 
@@ -174,7 +214,11 @@ final class PhoneLayoutItem {
     this.hidden = false,
     this.rows = 1,
     this.size,
+    this.favourite = false,
   });
+
+  /// Whether the widget is a favourite, shown first on the home tab (#333).
+  final bool favourite;
 
   /// The widget.
   final WidgetPlacement widget;
@@ -189,17 +233,23 @@ final class PhoneLayoutItem {
   /// widget's natural height (#208).
   final WidgetSize? size;
 
-  /// A copy with [hidden] changed.
-  PhoneLayoutItem copyWith({bool? hidden}) => PhoneLayoutItem(
+  /// A copy with [hidden] or [favourite] changed.
+  PhoneLayoutItem copyWith({bool? hidden, bool? favourite}) => PhoneLayoutItem(
     widget: widget,
     hidden: hidden ?? this.hidden,
     rows: rows,
     size: size,
+    favourite: favourite ?? this.favourite,
   );
 
   /// A copy with [size] instead of the current size; `null` removes it.
-  PhoneLayoutItem withSize(WidgetSize? size) =>
-      PhoneLayoutItem(widget: widget, hidden: hidden, rows: rows, size: size);
+  PhoneLayoutItem withSize(WidgetSize? size) => PhoneLayoutItem(
+    widget: widget,
+    hidden: hidden,
+    rows: rows,
+    size: size,
+    favourite: favourite,
+  );
 }
 
 /// A widget on a tab: what it is and how it is configured.

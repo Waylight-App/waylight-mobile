@@ -153,6 +153,16 @@ class ArrangeViewModel extends ChangeNotifier {
     _update(list);
   }
 
+  /// Marks widget [id] as a favourite or takes the mark away (#333); the
+  /// home tab shows favourites first.
+  void toggleFavourite(String id) {
+    final index = _indexOf(id);
+    if (index < 0) return;
+    final list = [..._items];
+    list[index] = list[index].copyWith(favourite: !list[index].favourite);
+    _update(list);
+  }
+
   /// Sets the grid size of widget [id]; `null` shows it at the full width
   /// and its natural height (#208).
   void setSize(String id, WidgetSize? size) {

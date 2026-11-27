@@ -245,6 +245,13 @@ widgets sit on a grid of square cells, 4 wide on phones and 8 on tablets:
 - Sizes are part of the phone layout of a tab. The dashboard repository
   sends them to servers that know them (Waylight-App/waylight#585) and
   keeps them on the device for the others.
+- Favourites (#333) work the same way: a star in the edit mode sets the
+  `favourite` flag of the phone layout on servers that know it
+  (Waylight-App/waylight#844), otherwise the repository keeps the flag on
+  the device per server, tab and widget. The home tab (the server's
+  default tab) shows the favourites of every tab first, in their own
+  section and in the sizes they have on their tabs; a favourite of the
+  home tab is shown there only once.
 
 ## Models at the boundaries
 

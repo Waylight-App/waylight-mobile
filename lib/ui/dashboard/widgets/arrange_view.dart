@@ -241,6 +241,20 @@ class _ArrangeTile extends StatelessWidget {
           ),
         ),
         PositionedDirectional(
+          top: 0,
+          end: 0,
+          child: IconButton.filledTonal(
+            key: ValueKey('editTab.favourite.$_id'),
+            tooltip: item.favourite
+                ? l10n.editTabUnfavourite(title)
+                : l10n.editTabFavourite(title),
+            isSelected: item.favourite,
+            icon: const Icon(Icons.star_border),
+            selectedIcon: const Icon(Icons.star),
+            onPressed: () => viewModel.toggleFavourite(_id),
+          ),
+        ),
+        PositionedDirectional(
           bottom: 0,
           end: 0,
           child: narrow
