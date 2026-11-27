@@ -19,6 +19,7 @@ import 'package:waylight_mobile/data/repositories/offline/offline_repository.dar
 import 'package:waylight_mobile/data/repositories/quick_tiles/quick_tiles_repository.dart';
 import 'package:waylight_mobile/data/repositories/reminders/reminder_repository.dart';
 import 'package:waylight_mobile/data/repositories/scanner/scanner_repository.dart';
+import 'package:waylight_mobile/data/repositories/sections/section_state_repository.dart';
 import 'package:waylight_mobile/data/repositories/setup_paste/setup_paste_repository.dart';
 import 'package:waylight_mobile/data/repositories/todos/todos_repository_outbox.dart';
 import 'package:waylight_mobile/data/repositories/watch/watch_pairing_repository.dart';
@@ -189,6 +190,7 @@ void main() {
           firstStart:
               firstStart ??
               FirstStartRepository(store: InMemoryKeyValueStore()),
+          sections: SectionStateRepository(store: InMemoryKeyValueStore()),
           logs: FakeLogStore(),
           reminders: ReminderRepository(
             scheduler: FakeReminderScheduler(),

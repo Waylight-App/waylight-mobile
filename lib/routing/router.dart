@@ -119,6 +119,7 @@ GoRouter createRouter(
           attentionRepository: context.read(),
           compactRepository: context.read(),
           helpRepository: context.read(),
+          sectionStateRepository: context.read(),
         ),
         builder: (context, viewModel) => DashboardScreen(
           viewModel: viewModel,

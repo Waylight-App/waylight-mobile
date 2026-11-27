@@ -4856,6 +4856,54 @@ abstract class AppLocalizations {
   /// **'The value is empty or too long.'**
   String get pasteValueInvalid;
 
+  /// Section of a tab with everyday widgets; the widget picker's category.
+  ///
+  /// In en, this message translates to:
+  /// **'Everyday'**
+  String get widgetCategoryEveryday;
+
+  /// Section of a tab with information widgets.
+  ///
+  /// In en, this message translates to:
+  /// **'Information'**
+  String get widgetCategoryInformation;
+
+  /// Section of a tab with home server widgets.
+  ///
+  /// In en, this message translates to:
+  /// **'Server'**
+  String get widgetCategoryServer;
+
+  /// Section of a tab with network widgets.
+  ///
+  /// In en, this message translates to:
+  /// **'Network & connections'**
+  String get widgetCategoryNetwork;
+
+  /// Screen reader text of a section header: how many widgets the section holds.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 widget} other{{count} widgets}}'**
+  String dashboardSectionCount(int count);
+
+  /// Screen reader text of a collapsed section header when a widget in it needs attention.
+  ///
+  /// In en, this message translates to:
+  /// **'needs attention'**
+  String get dashboardSectionAttention;
+
+  /// Screen reader action of a collapsed section header.
+  ///
+  /// In en, this message translates to:
+  /// **'expand'**
+  String get dashboardSectionExpand;
+
+  /// Screen reader action of an open section header.
+  ///
+  /// In en, this message translates to:
+  /// **'collapse'**
+  String get dashboardSectionCollapse;
+
   /// Button in the edit mode: gives every widget without a size the default size of its kind.
   ///
   /// In en, this message translates to:
