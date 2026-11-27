@@ -3098,6 +3098,24 @@ abstract class AppLocalizations {
   /// **'open details'**
   String get dashboardOpenDetails;
 
+  /// Heading of the section of favourite widgets on top of the home tab.
+  ///
+  /// In en, this message translates to:
+  /// **'Favourites'**
+  String get dashboardFavourites;
+
+  /// Tooltip and screen reader label of the star of a widget in the edit mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Add {widget} to favourites'**
+  String editTabFavourite(String widget);
+
+  /// Tooltip and screen reader label of the filled star of a favourite widget in the edit mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove {widget} from favourites'**
+  String editTabUnfavourite(String widget);
+
   /// Tooltip of the quick action on a small focus tile.
   ///
   /// In en, this message translates to:

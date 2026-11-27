@@ -103,6 +103,20 @@ class DashboardViewModel extends ChangeNotifier {
     ).initialIndex;
   }
 
+  /// The favourites shown on top of [tab] (#333): those of every tab on the
+  /// home tab, the server's default tab, and none on the others.
+  List<({WidgetPlacement widget, WidgetSize? size})> favouritesOn(
+    DashboardTab tab,
+  ) {
+    final dashboard = switch (load.result) {
+      Ok(:final value) => value,
+      _ => null,
+    };
+    if (dashboard == null || dashboard.tabs.isEmpty) return const [];
+    final home = dashboard.tabs[dashboard.initialIndex];
+    return home.id == tab.id ? dashboard.favourites : const [];
+  }
+
   /// How many entries need the account's attention (#229); 0 hides the
   /// badge.
   int get attentionCount => _attention?.items.length ?? 0;

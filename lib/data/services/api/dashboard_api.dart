@@ -30,11 +30,14 @@ class DashboardApi {
   ///
   /// Sizes are sent only [withSizes]: servers without them reject unknown
   /// fields (Waylight-App/waylight#585). An empty size means "no size".
+  /// Favourites are sent only [withFavourites], for the same reason
+  /// (Waylight-App/waylight#844).
   Future<Result<void>> saveLayout(
     ServerAddress server,
     String tabId,
     List<PhoneLayoutItem> layout, {
     bool withSizes = false,
+    bool withFavourites = false,
   }) async => switch (await _client.putJson(
     _layoutUri(server, tabId),
     body: {
@@ -45,6 +48,7 @@ class DashboardApi {
             'hidden': item.hidden,
             'rows': item.rows,
             if (withSizes) 'size': item.size?.name ?? '',
+            if (withFavourites) 'favourite': item.favourite,
           },
       ],
     },
@@ -200,6 +204,15 @@ Dashboard? parseDashboard(Object? json) {
         if (item case {'id': final String id, 'size': final Object? name})
           id: ?WidgetSize.parse(name),
     };
+    // A server that knows favourites sends the field on every item
+    // (Waylight-App/waylight#844).
+    final favouritesOnServer = mobile.any(
+      (item) => item is Map<String, Object?> && item.containsKey('favourite'),
+    );
+    final favourites = {
+      for (final item in mobile)
+        if (item case {'id': final String id, 'favourite': true}) id,
+    };
     // Every widget once, in phone order, hidden ones included (#53).
     final order = [
       for (final p in phone)
@@ -228,12 +241,15 @@ Dashboard? parseDashboard(Object? json) {
               hidden: hidden.contains(id),
               rows: rows[id] ?? 1,
               size: sizes[id],
+              favourite: favourites.contains(id),
             ),
         ],
         mine: json['mine'] != false,
         sizes: sizes,
         sizesOnServer: sizesOnServer,
         desktopRows: desktopRows,
+        favourites: favourites,
+        favouritesOnServer: favouritesOnServer,
       ),
     );
   }

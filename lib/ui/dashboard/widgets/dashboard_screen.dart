@@ -96,6 +96,7 @@ class DashboardScreen extends StatelessWidget {
                 TabPage(
                   tab: tab,
                   registry: registry,
+                  favourites: viewModel.favouritesOn(tab),
                   webUrl: viewModel.webUrl(tab.id),
                   setUpNeedOf: viewModel.setUpNeedOf,
                   hidden: viewModel.isEmptyWidget,
@@ -256,18 +257,41 @@ class TabPage extends StatelessWidget {
     this.setUpNeedOf,
     this.hidden,
     this.readOnly = false,
+    this.favourites = const [],
     super.key,
   });
+
+  /// The favourites of every tab (#333), shown first in their own section
+  /// with the sizes they have on their tabs; empty on all tabs but home.
+  final List<({WidgetPlacement widget, WidgetSize? size})> favourites;
 
   /// Widgets with nothing to show (#288); left out here and listed in the
   /// edit mode only.
   final bool Function(WidgetPlacement widget)? hidden;
 
-  /// The widgets that show.
-  List<WidgetPlacement> get _shown => [
-    for (final w in tab.widgets)
-      if (!(hidden?.call(w) ?? false)) w,
+  bool _isShown(WidgetPlacement w) => !(hidden?.call(w) ?? false);
+
+  /// The favourites that show.
+  List<WidgetPlacement> get _favouritesShown => [
+    for (final f in favourites)
+      if (_isShown(f.widget)) f.widget,
   ];
+
+  /// The tab's widgets that show below the favourites; a favourite of this
+  /// tab is shown once, in the favourites.
+  List<WidgetPlacement> get _rest {
+    final pinned = {for (final f in favourites) f.widget.id};
+    return [
+      for (final w in tab.widgets)
+        if (_isShown(w) && !pinned.contains(w.id)) w,
+    ];
+  }
+
+  /// The grid size of [widget]: its size on this tab, or for a favourite of
+  /// another tab the size it has there.
+  WidgetSize? _sizeOf(WidgetPlacement widget) =>
+      tab.sizes[widget.id] ??
+      favourites.where((f) => f.widget.id == widget.id).firstOrNull?.size;
 
   /// What a widget misses before it can show anything (#230), or `null`
   /// when it is set up; such widgets show *Set up*.
@@ -361,7 +385,7 @@ class TabPage extends StatelessWidget {
   /// (#226); larger tiles open it full screen.
   void _openTile(BuildContext context, WidgetPlacement widget) {
     if (readOnly) return;
-    if (isCompact(tab.sizes[widget.id])) {
+    if (isCompact(_sizeOf(widget))) {
       _openSheet(context, widget);
     } else {
       _open(context, widget);
@@ -417,13 +441,13 @@ class TabPage extends StatelessWidget {
         .ignore();
   }
 
-  /// The tab's widgets as runs: widgets with a size go into one grid,
-  /// widgets without one stay full width at their natural height (#208).
-  List<List<WidgetPlacement>> _runs() {
+  /// [widgets] as runs: widgets with a size go into one grid, widgets
+  /// without one stay full width at their natural height (#208).
+  List<List<WidgetPlacement>> _runs(List<WidgetPlacement> widgets) {
     final runs = <List<WidgetPlacement>>[];
     bool? sized;
-    for (final widget in _shown) {
-      final isSized = tab.sizes.containsKey(widget.id);
+    for (final widget in widgets) {
+      final isSized = _sizeOf(widget) != null;
       if (isSized != sized) runs.add([]);
       runs.last.add(widget);
       sized = isSized;
@@ -433,19 +457,58 @@ class TabPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (tab.widgets.isEmpty) return _Hint(context.l10n.dashboardEmptyTab);
-    if (_shown.isEmpty) return _Hint(context.l10n.dashboardNothingToShow);
-    final window = WindowSize.of(context);
-    final columns = window.columns;
+    final favourites = _favouritesShown;
+    final rest = _rest;
+    if (tab.widgets.isEmpty && favourites.isEmpty) {
+      return _Hint(context.l10n.dashboardEmptyTab);
+    }
+    if (rest.isEmpty && favourites.isEmpty) {
+      return _Hint(context.l10n.dashboardNothingToShow);
+    }
+    final blocks = <Widget>[
+      if (favourites.isNotEmpty) ...[
+        Semantics(
+          header: true,
+          child: Text(
+            context.l10n.dashboardFavourites,
+            key: const ValueKey('dashboard.favourites'),
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+        ),
+        ..._blocksOf(context, favourites),
+      ],
+      ..._blocksOf(context, rest),
+    ];
+    return RefreshIndicator(
+      // Reloads the widgets of this tab that are on screen (#19).
+      onRefresh: () =>
+          RefreshHost.maybeOf(context)?.refresh() ?? Future.value(),
+      child: ListView.separated(
+        physics: const AlwaysScrollableScrollPhysics(),
+        // Each tab keeps its own scroll position when swiping.
+        key: PageStorageKey(tab.id),
+        padding: const EdgeInsets.all(Dimens.gap),
+        itemCount: blocks.length,
+        separatorBuilder: (_, _) => const SizedBox(height: Dimens.gap),
+        itemBuilder: (context, i) => blocks[i],
+      ),
+    );
+  }
+
+  /// The blocks of the list for [widgets]: grids, full-width widgets or,
+  /// in the simple view, one item per widget.
+  List<Widget> _blocksOf(BuildContext context, List<WidgetPlacement> widgets) {
+    if (simple) return [for (final w in widgets) _simpleItem(context, w)];
+    final columns = WindowSize.of(context).columns;
     final gridColumns = SizedGrid.columnsOf(context);
     final blocks = <Widget>[];
-    for (final run in simple ? const <List<WidgetPlacement>>[] : _runs()) {
-      if (tab.sizes.containsKey(run.first.id)) {
+    for (final run in _runs(widgets)) {
+      if (_sizeOf(run.first) != null) {
         blocks.add(
           WidgetGrid(
             items: [
               for (final widget in run)
-                (widget: widget, size: tab.sizes[widget.id]!),
+                (widget: widget, size: _sizeOf(widget)!),
             ],
             columns: gridColumns,
             builder: _card,
@@ -463,23 +526,7 @@ class TabPage extends StatelessWidget {
         blocks.add(_Columns(widgets: run, columns: columns, card: _unsized));
       }
     }
-    if (simple) {
-      blocks.addAll([for (final w in _shown) _simpleItem(context, w)]);
-    }
-    return RefreshIndicator(
-      // Reloads the widgets of this tab that are on screen (#19).
-      onRefresh: () =>
-          RefreshHost.maybeOf(context)?.refresh() ?? Future.value(),
-      child: ListView.separated(
-        physics: const AlwaysScrollableScrollPhysics(),
-        // Each tab keeps its own scroll position when swiping.
-        key: PageStorageKey(tab.id),
-        padding: const EdgeInsets.all(Dimens.gap),
-        itemCount: blocks.length,
-        separatorBuilder: (_, _) => const SizedBox(height: Dimens.gap),
-        itemBuilder: (context, i) => blocks[i],
-      ),
-    );
+    return blocks;
   }
 }
 

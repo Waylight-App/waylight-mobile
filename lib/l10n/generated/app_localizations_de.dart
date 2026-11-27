@@ -1716,6 +1716,19 @@ class AppLocalizationsDe extends AppLocalizations {
   String get dashboardOpenDetails => 'Details öffnen';
 
   @override
+  String get dashboardFavourites => 'Favoriten';
+
+  @override
+  String editTabFavourite(String widget) {
+    return '$widget zu den Favoriten';
+  }
+
+  @override
+  String editTabUnfavourite(String widget) {
+    return '$widget aus den Favoriten entfernen';
+  }
+
+  @override
   String get focusStartFocus => 'Fokus starten';
 
   @override
