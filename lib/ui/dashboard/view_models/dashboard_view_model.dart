@@ -11,6 +11,7 @@ import 'package:waylight_mobile/data/repositories/offline/offline_repository.dar
 import 'package:waylight_mobile/data/repositories/push/push_repository.dart';
 import 'package:waylight_mobile/data/repositories/quick_tiles/quick_tiles_repository.dart';
 import 'package:waylight_mobile/data/repositories/reminders/reminder_repository.dart';
+import 'package:waylight_mobile/data/repositories/sections/section_state_repository.dart';
 import 'package:waylight_mobile/data/repositories/server/server_repository.dart';
 import 'package:waylight_mobile/domain/models/attention.dart';
 import 'package:waylight_mobile/domain/models/compact_state.dart';
@@ -44,7 +45,9 @@ class DashboardViewModel extends ChangeNotifier {
     AttentionRepository? attentionRepository,
     CompactStateRepository? compactRepository,
     HelpRepository? helpRepository,
+    SectionStateRepository? sectionStateRepository,
   }) : _offline = offlineRepository,
+       _sections = sectionStateRepository,
        _compact = compactRepository,
        _help = helpRepository,
        _attention = attentionRepository,
@@ -56,6 +59,7 @@ class DashboardViewModel extends ChangeNotifier {
     _offline?.addListener(notifyListeners);
     _attention?.addListener(notifyListeners);
     _theme?.addListener(notifyListeners);
+    _sections?.addListener(notifyListeners);
     load = Command0(_load)..execute().ignore();
     _loadDemo().ignore();
   }
@@ -74,6 +78,7 @@ class DashboardViewModel extends ChangeNotifier {
   final QuickTileFormatter? _quickTileFormatter;
   final CompactStateRepository? _compact;
   final HelpRepository? _help;
+  final SectionStateRepository? _sections;
   bool _pushRefreshed = false;
 
   /// When the server cannot be reached: the time of the stored data shown.
@@ -123,6 +128,35 @@ class DashboardViewModel extends ChangeNotifier {
         )
         .firstOrNull
         ?.message;
+  }
+
+  /// Whether [widget] is on the attention list (#229), for the dot on the
+  /// header of a collapsed section (#334).
+  bool needsAttention(WidgetPlacement widget) =>
+      _attention?.items.any((item) => item.widgetId == widget.id) ?? false;
+
+  /// Whether tabs show sections that can be collapsed (#334).
+  bool get hasSections => _sections != null;
+
+  /// Whether [section] of tab [tabId] is collapsed on this device.
+  bool isSectionCollapsed(String tabId, String section) {
+    final server = _serverRepository.current;
+    return server != null &&
+        (_sections?.isCollapsed(server, tabId, section) ?? false);
+  }
+
+  /// Collapses an open [section] of tab [tabId], or opens a collapsed one.
+  void toggleSection(String tabId, String section) {
+    final server = _serverRepository.current;
+    if (server == null) return;
+    _sections
+        ?.setCollapsed(
+          server,
+          tabId,
+          section,
+          collapsed: !isSectionCollapsed(tabId, section),
+        )
+        .ignore();
   }
 
   Set<String> _emptyWidgets = {};
@@ -287,6 +321,7 @@ class DashboardViewModel extends ChangeNotifier {
     _offline?.removeListener(notifyListeners);
     _attention?.removeListener(notifyListeners);
     _theme?.removeListener(notifyListeners);
+    _sections?.removeListener(notifyListeners);
     load.dispose();
     super.dispose();
   }
