@@ -2793,4 +2793,21 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get dashboardSectionCollapse => 'zuklappen';
+
+  @override
+  String get editTabShorten => 'Tab kürzer machen';
+
+  @override
+  String editTabShortened(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count Widgets haben ihre Standardgröße bekommen.',
+      one: '1 Widget hat seine Standardgröße bekommen.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get editTabUndo => 'Rückgängig';
 }

@@ -4885,6 +4885,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'collapse'**
   String get dashboardSectionCollapse;
+
+  /// Button in the edit mode: gives every widget without a size the default size of its kind.
+  ///
+  /// In en, this message translates to:
+  /// **'Make this tab shorter'**
+  String get editTabShorten;
+
+  /// Snack bar after making the tab shorter.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 widget got its default size.} other{{count} widgets got their default size.}}'**
+  String editTabShortened(int count);
+
+  /// Snack bar action that undoes making the tab shorter.
+  ///
+  /// In en, this message translates to:
+  /// **'Undo'**
+  String get editTabUndo;
 }
 
 class _AppLocalizationsDelegate

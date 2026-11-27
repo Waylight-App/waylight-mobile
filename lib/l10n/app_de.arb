@@ -797,5 +797,8 @@
   "dashboardSectionCount": "{count, plural, =1{1 Widget} other{{count} Widgets}}",
   "dashboardSectionAttention": "braucht Aufmerksamkeit",
   "dashboardSectionExpand": "aufklappen",
-  "dashboardSectionCollapse": "zuklappen"
+  "dashboardSectionCollapse": "zuklappen",
+  "editTabShorten": "Tab kürzer machen",
+  "editTabShortened": "{count, plural, =1{1 Widget hat seine Standardgröße bekommen.} other{{count} Widgets haben ihre Standardgröße bekommen.}}",
+  "editTabUndo": "Rückgängig"
 }

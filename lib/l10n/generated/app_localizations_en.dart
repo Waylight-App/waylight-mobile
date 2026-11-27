@@ -2782,4 +2782,21 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dashboardSectionCollapse => 'collapse';
+
+  @override
+  String get editTabShorten => 'Make this tab shorter';
+
+  @override
+  String editTabShortened(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count widgets got their default size.',
+      one: '1 widget got its default size.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get editTabUndo => 'Undo';
 }
