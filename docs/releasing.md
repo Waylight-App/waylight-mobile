@@ -82,15 +82,14 @@ The first upload of a new app has to be made by hand in the Play Console;
 the workflow only publishes further releases. Play accepts each version code
 once; release-please raises the build number on every release.
 
-Still open ([#25](https://github.com/Waylight-App/waylight-mobile/issues/25)):
-
-- **Google Play:** developer account, app entry, Play App Signing
-  enrolment with the upload key, service account and the secret above; a
-  test release has to reach the internal track.
-- **iOS:** paused; built, signed and uploaded to TestFlight locally on the
-  maintainer's Mac, certificates stay on that Mac.
-- **F-Droid:** possible because the app has no proprietary dependencies
-  (ADR 0011); to be decided (#26).
+Google Play and F-Droid are on hold
+([ADR 0016](adr/0016-distribution-without-f-droid-and-google-play.md)):
+releases are published through GitHub Releases and Obtainium only, and the
+upload steps above stay skipped. Adding Google Play later needs a developer
+account, the app entry, Play App Signing enrolment with the upload key, a
+service account with the secret above, and a test release on the internal
+track. iOS is paused; it is built, signed and uploaded to TestFlight locally
+on the maintainer's Mac, certificates stay on that Mac.
 
 Signing material never goes into the repository; `.gitignore` excludes
 keystores and `key.properties`.

@@ -61,28 +61,8 @@ emulator. Reproducible procedure on a machine with an Android emulator:
 The demo content is the same for every capture, so the set can be repeated
 for each release.
 
-## Decision for the maintainer: F-Droid
+## F-Droid
 
-Open, not decided. Facts:
-
-- The app has no proprietary dependency and no Google or Firebase code; CI
-  checks the APK for it (ADR 0011). The licence is MIT. The build is a
-  Flutter build from source with the pinned version in `.fvmrc`.
-- F-Droid builds the app itself from a tagged source revision and signs it
-  with its own key, unless the build is reproducible and the maintainers
-  publish the upstream signature. Without that, a person who installed the
-  GitHub APK cannot update to the F-Droid build over it (different
-  signatures), and the reverse.
-- The F-Droid listing reads the `fastlane/metadata` files above.
-
-Options:
-
-1. **Official F-Droid repository.** Submit a metadata file to
-   `fdroiddata`; reviewed by F-Droid, builds and signing by F-Droid.
-2. **IzzyOnDroid.** Third-party repository that serves the APKs of the
-   GitHub releases with the upstream signature.
-3. **Own F-Droid repository.** The project hosts an index of its own
-   releases; people add it to the F-Droid client.
-4. **GitHub Releases and Obtainium only** (current state, ADR 0010).
-
-When a decision is made, it is recorded in an ADR.
+Not listed for now. Releases are published through GitHub Releases and
+Obtainium only; the facts and options are in
+[ADR 0016](adr/0016-distribution-without-f-droid-and-google-play.md).
