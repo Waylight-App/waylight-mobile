@@ -2,7 +2,7 @@ name: waylight_mobile
 description: Waylight for Android and iOS, the companion app of the self-hosted start page.
 publish_to: none
 # Managed by release-please; do not edit by hand (see docs/releasing.md).
-version: 0.0.0+1
+version: 1.0.0+2
 
 environment:
   sdk: ^3.14.0
