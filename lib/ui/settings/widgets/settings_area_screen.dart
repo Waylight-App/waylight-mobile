@@ -9,10 +9,12 @@ import 'package:waylight_mobile/domain/models/reminder.dart';
 import 'package:waylight_mobile/domain/models/server_address.dart';
 import 'package:waylight_mobile/routing/routes.dart';
 import 'package:waylight_mobile/ui/core/address_errors.dart';
+import 'package:waylight_mobile/ui/core/error_messages.dart';
 import 'package:waylight_mobile/ui/core/link_opener.dart';
 import 'package:waylight_mobile/ui/core/localization.dart';
 import 'package:waylight_mobile/ui/core/themes/dimens.dart';
 import 'package:waylight_mobile/ui/core/widgets/command_button.dart';
+import 'package:waylight_mobile/ui/core/widgets/message_banner.dart';
 import 'package:waylight_mobile/ui/core/widgets/section_card.dart';
 import 'package:waylight_mobile/ui/settings/view_models/settings_area.dart';
 import 'package:waylight_mobile/ui/settings/view_models/settings_index.dart';
@@ -87,7 +89,11 @@ class SettingsAreaScreen extends StatelessWidget {
       ),
       _Advanced(viewModel: viewModel),
     ],
-    SettingsArea.appearance => [_Appearance(viewModel: viewModel)],
+    SettingsArea.appearance => [
+      _Appearance(viewModel: viewModel),
+      if (viewModel.accessibilityAvailable)
+        _Accessibility(viewModel: viewModel),
+    ],
     SettingsArea.notifications => [
       if (viewModel.pushAvailable) _Push(viewModel: viewModel),
       if (viewModel.remindersAvailable)
@@ -471,6 +477,94 @@ class _Appearance extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+/// The accessibility options of the account (#291): saved on the server,
+/// so they apply in the web interface too.
+class _Accessibility extends StatelessWidget {
+  const _Accessibility({required this.viewModel});
+
+  final SettingsViewModel viewModel;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    return SectionCard(
+      title: l10n.settingsAccessibility,
+      child: ListenableBuilder(
+        listenable: viewModel.setAccessibility,
+        builder: (context, _) {
+          final options = viewModel.accessibility;
+          final save = viewModel.setAccessibility;
+          void apply(Accessibility changed) => save.execute(changed).ignore();
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(l10n.settingsAccessibilityHint),
+              const SizedBox(height: Dimens.gap),
+              Text(l10n.settingsTextSize),
+              const SizedBox(height: Dimens.gapSmall),
+              SettingsTarget(
+                item: SettingsItem.textSize,
+                child: SegmentedButton<TextSize>(
+                  key: const ValueKey('settings.textSize'),
+                  segments: [
+                    ButtonSegment(
+                      value: TextSize.normal,
+                      label: Text(l10n.settingsTextSizeNormal),
+                    ),
+                    ButtonSegment(
+                      value: TextSize.large,
+                      label: Text(l10n.settingsTextSizeLarge),
+                    ),
+                    ButtonSegment(
+                      value: TextSize.larger,
+                      label: Text(l10n.settingsTextSizeLarger),
+                    ),
+                  ],
+                  selected: {options.textSize},
+                  onSelectionChanged: save.running
+                      ? null
+                      : (s) => apply(options.copyWith(textSize: s.single)),
+                ),
+              ),
+              SettingsTarget(
+                item: SettingsItem.highContrast,
+                child: SwitchListTile(
+                  key: const ValueKey('settings.highContrast'),
+                  contentPadding: EdgeInsets.zero,
+                  title: Text(l10n.settingsHighContrast),
+                  subtitle: Text(l10n.settingsHighContrastHint),
+                  value: options.highContrast,
+                  onChanged: save.running
+                      ? null
+                      : (on) => apply(options.copyWith(highContrast: on)),
+                ),
+              ),
+              SettingsTarget(
+                item: SettingsItem.simpleView,
+                child: SwitchListTile(
+                  key: const ValueKey('settings.simpleView'),
+                  contentPadding: EdgeInsets.zero,
+                  title: Text(l10n.settingsSimpleView),
+                  subtitle: Text(l10n.settingsSimpleViewHint),
+                  value: options.simpleView,
+                  onChanged: save.running
+                      ? null
+                      : (on) => apply(options.copyWith(simpleView: on)),
+                ),
+              ),
+              if (save.result case Error(:final error))
+                MessageBanner(
+                  kind: MessageKind.error,
+                  message: l10n.errorMessage(error),
+                ),
+            ],
+          );
+        },
       ),
     );
   }

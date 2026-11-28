@@ -147,6 +147,17 @@ final class Accessibility {
   /// One column of compact views, without edit controls.
   final bool simpleView;
 
+  /// A copy with the given values replaced.
+  Accessibility copyWith({
+    TextSize? textSize,
+    bool? highContrast,
+    bool? simpleView,
+  }) => Accessibility(
+    textSize: textSize ?? this.textSize,
+    highContrast: highContrast ?? this.highContrast,
+    simpleView: simpleView ?? this.simpleView,
+  );
+
   /// The options as the server sends them.
   Map<String, Object?> toJson() => {
     'textSize': textSize.name,

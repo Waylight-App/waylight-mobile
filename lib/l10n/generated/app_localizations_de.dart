@@ -1916,6 +1916,39 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settingsColoursWallpaper => 'Hintergrundbild';
 
   @override
+  String get settingsAccessibility => 'Barrierefreiheit';
+
+  @override
+  String get settingsAccessibilityHint =>
+      'Wird in deinem Konto gespeichert, gilt also auch in der Weboberfläche.';
+
+  @override
+  String get settingsTextSize => 'Textgröße';
+
+  @override
+  String get settingsTextSizeNormal => 'Normal';
+
+  @override
+  String get settingsTextSizeLarge => 'Groß';
+
+  @override
+  String get settingsTextSizeLarger => 'Größer';
+
+  @override
+  String get settingsHighContrast => 'Hoher Kontrast';
+
+  @override
+  String get settingsHighContrastHint =>
+      'Schwarz-weißer Text mit kräftigen Rändern';
+
+  @override
+  String get settingsSimpleView => 'Einfache Ansicht';
+
+  @override
+  String get settingsSimpleViewHint =>
+      'Eine Spalte kompakter Widgets, ohne Bearbeiten';
+
+  @override
   String get addressesTitle => 'Adressen';
 
   @override

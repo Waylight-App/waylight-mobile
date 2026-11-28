@@ -223,6 +223,29 @@ class SettingsViewModel extends ChangeNotifier {
     await _theme?.setWallpaper(server, enabled: enabled);
   }
 
+  /// The accessibility options of the account (#291); off without a theme
+  /// repository.
+  Accessibility get accessibility =>
+      _theme?.accessibility ?? const Accessibility();
+
+  /// Whether the options can be changed here: with a server and a theme
+  /// repository.
+  bool get accessibilityAvailable =>
+      _theme != null && _serverRepository.current != null;
+
+  /// Stores changed accessibility options on the account; the app applies
+  /// them as soon as the server has them.
+  late final Command1<void, Accessibility> setAccessibility = Command1(
+    _setAccessibility,
+  );
+
+  Future<Result<void>> _setAccessibility(Accessibility options) async {
+    final theme = _theme;
+    final server = _serverRepository.current;
+    if (theme == null || server == null) return const Result.ok(null);
+    return theme.saveAccessibility(server, options);
+  }
+
   bool _pushAvailable = false;
   bool _pushOn = false;
 
@@ -384,6 +407,9 @@ class SettingsViewModel extends ChangeNotifier {
     SettingsItem.pairWatch => watchPairingAvailable,
     SettingsItem.quickTiles => quickTilesAvailable,
     SettingsItem.colours => wallpaperAvailable,
+    SettingsItem.textSize ||
+    SettingsItem.highContrast ||
+    SettingsItem.simpleView => accessibilityAvailable,
     SettingsItem.diagnostics => diagnosticsAvailable,
     SettingsItem.serverVersion => serverVersion.result is Ok,
     _ => true,

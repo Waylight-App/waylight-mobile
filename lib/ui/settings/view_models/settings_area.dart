@@ -12,7 +12,7 @@ enum SettingsArea {
   /// The addresses of the server, other servers, disconnecting.
   server(Routes.settingsServer),
 
-  /// Theme, wallpaper colours and language.
+  /// Theme, wallpaper colours, language and the accessibility options.
   appearance(Routes.settingsAppearance),
 
   /// Push notifications with the battery hint, reminders on the device.

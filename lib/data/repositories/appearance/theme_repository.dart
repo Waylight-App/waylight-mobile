@@ -127,6 +127,40 @@ class ThemeRepository extends ChangeNotifier {
     }
   }
 
+  /// Stores [options] on the account, so the web interface and the other
+  /// devices of the account get them too (#291).
+  ///
+  /// `PUT /api/appearance` replaces the whole appearance, so the current one
+  /// is read first and sent back with only the options changed; the app
+  /// never resets a setting it does not show.
+  Future<Result<void>> saveAccessibility(
+    ServerAddress server,
+    Accessibility options,
+  ) async {
+    final current = await _api.read<Map<String, Object?>>(
+      server,
+      '/api/appearance',
+      (json) => json is Map<String, Object?> ? json : null,
+    );
+    final Map<String, Object?> appearance;
+    switch (current) {
+      case Ok(:final value):
+        appearance = value;
+      case Error(:final error):
+        return Result.error(error);
+    }
+    final saved = await _api.put(
+      server,
+      '/api/appearance',
+      body: {...appearance, ...options.toJson()},
+    );
+    if (saved case Error(:final error)) return Result.error(error);
+    await _store.write(_accessibilityKey, jsonEncode(options.toJson()));
+    _accessibility = options;
+    notifyListeners();
+    return const Result.ok(null);
+  }
+
   /// Forgets the palette, e.g. when signing out.
   Future<void> clear() async {
     _palette = null;

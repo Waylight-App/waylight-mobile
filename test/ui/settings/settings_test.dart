@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
@@ -331,6 +333,65 @@ void main() {
       await tester.tap(find.text('Wallpaper'));
       await tester.pumpAndSettle();
       expect(repo.useWallpaper, isTrue);
+    },
+  );
+
+  testWidgets(
+    'changes the accessibility options of the account, also at the largest '
+    'system font (#291)',
+    (tester) async {
+      tester.view.physicalSize = const Size(800, 4000);
+      tester.view.devicePixelRatio = 1;
+      tester.platformDispatcher.textScaleFactorTestValue = 2;
+      addTearDown(tester.view.reset);
+      addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
+      final puts = <Object?>[];
+      final repo = ThemeRepository(
+        api: ModuleApi(
+          ApiClient(
+            client: MockClient((request) async {
+              if (request.method == 'PUT') puts.add(jsonDecode(request.body));
+              return http.Response('{"theme":"system","customCss":""}', 200);
+            }),
+          ),
+        ),
+        store: InMemoryKeyValueStore(),
+      );
+      final handle = tester.ensureSemantics();
+      await tester.pumpScreen(
+        SettingsAreaScreen(
+          area: SettingsArea.appearance,
+          viewModel: SettingsViewModel(
+            serverRepository: servers,
+            sessionRepository: sessions,
+            preferencesRepository: preferences,
+            themeRepository: repo,
+            appVersion: () async => '0.3.0 (7)',
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text(l10nEn.settingsTextSizeLarger));
+      await tester.pumpAndSettle();
+      expect(repo.accessibility.textSize, TextSize.larger);
+
+      await tester.tap(find.byKey(const ValueKey('settings.highContrast')));
+      await tester.pumpAndSettle();
+      expect(repo.accessibility.highContrast, isTrue);
+      expect(repo.accessibility.simpleView, isFalse);
+      expect(puts.last, {
+        'theme': 'system',
+        'customCss': '',
+        'textSize': 'larger',
+        'highContrast': true,
+        'simpleView': false,
+      });
+
+      expect(tester.takeException(), isNull);
+      await expectLater(tester, meetsGuideline(androidTapTargetGuideline));
+      await expectLater(tester, meetsGuideline(labeledTapTargetGuideline));
+      handle.dispose();
     },
   );
 

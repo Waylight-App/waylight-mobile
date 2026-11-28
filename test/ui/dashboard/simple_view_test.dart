@@ -114,4 +114,24 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.byType(WidgetDetailSheet), findsOneWidget);
   });
+
+  testWidgets('works with a screen reader at the largest system font', (
+    tester,
+  ) async {
+    tester.platformDispatcher.textScaleFactorTestValue = 2;
+    addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
+    final handle = tester.ensureSemantics();
+    await pump(tester, simple: true);
+
+    expect(tester.takeException(), isNull);
+    // The compact widget is one button, which a screen reader opens with a
+    // double tap.
+    expect(
+      tester.getSemantics(find.text('todos view')),
+      isSemantics(isButton: true, hasTapAction: true),
+    );
+    await expectLater(tester, meetsGuideline(androidTapTargetGuideline));
+    await expectLater(tester, meetsGuideline(labeledTapTargetGuideline));
+    handle.dispose();
+  });
 }
