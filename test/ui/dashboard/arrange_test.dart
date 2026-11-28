@@ -206,6 +206,50 @@ void main() {
       expect(viewModel.changed, isFalse, reason: 'saved');
     });
 
+    test('makes the tab shorter with default sizes and undoes it (#336)', () {
+      final viewModel = arrange()..setSize('c', WidgetSize.large);
+      final changedBefore = viewModel.changed;
+
+      final count = viewModel.shorten(
+        (kind) => kind == 'clock' ? WidgetSize.small : WidgetSize.medium,
+      );
+
+      expect(count, 2);
+      expect(viewModel.items.map((i) => (i.widget.id, i.size)), [
+        ('b', WidgetSize.medium),
+        ('a', WidgetSize.small),
+        ('c', WidgetSize.large),
+      ], reason: 'explicit sizes stay as chosen');
+      expect(viewModel.canShorten, isFalse);
+      expect(viewModel.shorten((_) => WidgetSize.strip), 0);
+
+      viewModel.undoShorten();
+      expect(viewModel.items.map((i) => (i.widget.id, i.size)), [
+        ('b', null),
+        ('a', null),
+        ('c', WidgetSize.large),
+      ]);
+      expect(viewModel.changed, changedBefore);
+      expect(viewModel.canUndoShorten, isFalse);
+    });
+
+    test('keeps later edits: undo ends with the next change', () {
+      final viewModel = arrange()
+        ..shorten((_) => WidgetSize.medium)
+        ..hide('b');
+
+      expect(viewModel.canUndoShorten, isFalse);
+      viewModel.undoShorten();
+      expect(viewModel.items.first.size, WidgetSize.medium);
+    });
+
+    test('a tab that is not shortened keeps no sizes', () async {
+      final viewModel = arrange()..moveBy('b', 1);
+      await viewModel.save.execute();
+
+      expect(dashboards.saved['t']!.map((i) => i.size), everyElement(isNull));
+    });
+
     test('resets to the desktop grid', () async {
       final viewModel = arrange()..hide('b');
       await viewModel.reset.execute();
@@ -444,6 +488,31 @@ void main() {
 
       expect(viewModel.arranging, isNull);
       expect(dashboards.saved, isEmpty);
+    });
+
+    testWidgets('makes the tab shorter and undoes it (#336)', (tester) async {
+      await edit(tester);
+
+      await tester.tap(find.byKey(const ValueKey('editTab.shorten')));
+      await tester.pumpAndSettle();
+
+      expect(viewModel.arranging!.items.map((i) => i.size), [
+        WidgetSize.medium,
+        WidgetSize.small,
+        WidgetSize.medium,
+      ]);
+      expect(find.text(l10nEn.editTabShortened(3)), findsOneWidget);
+      expect(find.byKey(const ValueKey('editTab.shorten')), findsNothing);
+
+      await tester.tap(find.byKey(const ValueKey('editTab.shortenUndo')));
+      await tester.pumpAndSettle();
+
+      expect(
+        viewModel.arranging!.items.map((i) => i.size),
+        everyElement(isNull),
+      );
+      expect(viewModel.arranging!.changed, isFalse);
+      expect(find.byKey(const ValueKey('editTab.shorten')), findsOneWidget);
     });
 
     testWidgets('resets from the menu', (tester) async {

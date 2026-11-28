@@ -22,6 +22,7 @@ Future<void> main() async {
   await repositories.todos.restore();
   await repositories.reminders.restore();
   await repositories.kiosk.restore();
+  await repositories.sections.restore();
   await repositories.firstStart.restore(
     signedInOn: repositories.session.signedIn
         ? repositories.server.current

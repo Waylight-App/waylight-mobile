@@ -326,6 +326,23 @@ class AppLocalizationsEn extends AppLocalizations {
   String get attentionStillBroken => 'Still not working.';
 
   @override
+  String get attentionLevelProblem => 'Problem';
+
+  @override
+  String get attentionLevelWarning => 'Warning';
+
+  @override
+  String attentionStripMore(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count more need attention',
+      one: '1 more needs attention',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get dashboardOpenInWaylight => 'Open in Waylight';
 
   @override
@@ -1714,6 +1731,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dashboardOpenDetails => 'open details';
 
   @override
+  String get dashboardFavourites => 'Favourites';
+
+  @override
+  String editTabFavourite(String widget) {
+    return 'Add $widget to favourites';
+  }
+
+  @override
+  String editTabUnfavourite(String widget) {
+    return 'Remove $widget from favourites';
+  }
+
+  @override
   String get focusStartFocus => 'Start focus';
 
   @override
@@ -2783,4 +2813,53 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get pasteValueInvalid => 'The value is empty or too long.';
+
+  @override
+  String get widgetCategoryEveryday => 'Everyday';
+
+  @override
+  String get widgetCategoryInformation => 'Information';
+
+  @override
+  String get widgetCategoryServer => 'Server';
+
+  @override
+  String get widgetCategoryNetwork => 'Network & connections';
+
+  @override
+  String dashboardSectionCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count widgets',
+      one: '1 widget',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get dashboardSectionAttention => 'needs attention';
+
+  @override
+  String get dashboardSectionExpand => 'expand';
+
+  @override
+  String get dashboardSectionCollapse => 'collapse';
+
+  @override
+  String get editTabShorten => 'Make this tab shorter';
+
+  @override
+  String editTabShortened(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count widgets got their default size.',
+      one: '1 widget got its default size.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get editTabUndo => 'Undo';
 }

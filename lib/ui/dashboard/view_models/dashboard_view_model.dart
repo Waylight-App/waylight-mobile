@@ -11,6 +11,7 @@ import 'package:waylight_mobile/data/repositories/offline/offline_repository.dar
 import 'package:waylight_mobile/data/repositories/push/push_repository.dart';
 import 'package:waylight_mobile/data/repositories/quick_tiles/quick_tiles_repository.dart';
 import 'package:waylight_mobile/data/repositories/reminders/reminder_repository.dart';
+import 'package:waylight_mobile/data/repositories/sections/section_state_repository.dart';
 import 'package:waylight_mobile/data/repositories/server/server_repository.dart';
 import 'package:waylight_mobile/domain/models/attention.dart';
 import 'package:waylight_mobile/domain/models/compact_state.dart';
@@ -44,7 +45,9 @@ class DashboardViewModel extends ChangeNotifier {
     AttentionRepository? attentionRepository,
     CompactStateRepository? compactRepository,
     HelpRepository? helpRepository,
+    SectionStateRepository? sectionStateRepository,
   }) : _offline = offlineRepository,
+       _sections = sectionStateRepository,
        _compact = compactRepository,
        _help = helpRepository,
        _attention = attentionRepository,
@@ -56,6 +59,7 @@ class DashboardViewModel extends ChangeNotifier {
     _offline?.addListener(notifyListeners);
     _attention?.addListener(notifyListeners);
     _theme?.addListener(notifyListeners);
+    _sections?.addListener(notifyListeners);
     load = Command0(_load)..execute().ignore();
     _loadDemo().ignore();
   }
@@ -74,6 +78,7 @@ class DashboardViewModel extends ChangeNotifier {
   final QuickTileFormatter? _quickTileFormatter;
   final CompactStateRepository? _compact;
   final HelpRepository? _help;
+  final SectionStateRepository? _sections;
   bool _pushRefreshed = false;
 
   /// When the server cannot be reached: the time of the stored data shown.
@@ -103,6 +108,20 @@ class DashboardViewModel extends ChangeNotifier {
     ).initialIndex;
   }
 
+  /// The favourites shown on top of [tab] (#333): those of every tab on the
+  /// home tab, the server's default tab, and none on the others.
+  List<({WidgetPlacement widget, WidgetSize? size})> favouritesOn(
+    DashboardTab tab,
+  ) {
+    final dashboard = switch (load.result) {
+      Ok(:final value) => value,
+      _ => null,
+    };
+    if (dashboard == null || dashboard.tabs.isEmpty) return const [];
+    final home = dashboard.tabs[dashboard.initialIndex];
+    return home.id == tab.id ? dashboard.favourites : const [];
+  }
+
   /// How many entries need the account's attention (#229); 0 hides the
   /// badge.
   int get attentionCount => _attention?.items.length ?? 0;
@@ -125,36 +144,104 @@ class DashboardViewModel extends ChangeNotifier {
         ?.message;
   }
 
-  Set<String> _emptyWidgets = {};
+  /// Whether [widget] is on the attention list (#229), for the dot on the
+  /// header of a collapsed section (#334).
+  bool needsAttention(WidgetPlacement widget) =>
+      _attention?.items.any((item) => item.widgetId == widget.id) ?? false;
+
+  /// Whether tabs show sections that can be collapsed (#334).
+  bool get hasSections => _sections != null;
+
+  /// Whether [section] of tab [tabId] is collapsed on this device.
+  bool isSectionCollapsed(String tabId, String section) {
+    final server = _serverRepository.current;
+    return server != null &&
+        (_sections?.isCollapsed(server, tabId, section) ?? false);
+  }
+
+  /// Collapses an open [section] of tab [tabId], or opens a collapsed one.
+  void toggleSection(String tabId, String section) {
+    final server = _serverRepository.current;
+    if (server == null) return;
+    _sections
+        ?.setCollapsed(
+          server,
+          tabId,
+          section,
+          collapsed: !isSectionCollapsed(tabId, section),
+        )
+        .ignore();
+  }
+
+  Map<String, CompactState> _states = {};
 
   /// Whether [widget] has nothing to show, as its compact state says
   /// (#288); the dashboard hides it, the edit mode still lists it.
   bool isEmptyWidget(WidgetPlacement widget) =>
-      _emptyWidgets.contains(widget.id);
+      _states[widget.id]?.empty ?? false;
 
-  /// Asks the compact state of every widget that has one whether it is
-  /// empty. Widgets with the same kind and settings share one request.
-  Future<void> _loadEmpty(ServerAddress server, Dashboard dashboard) async {
+  /// How many entries the attention strip shows at most (#335).
+  static const attentionStripLength = 3;
+
+  /// What needs attention now on [tab] (#335), most urgent first and in
+  /// layout order otherwise: widgets whose connection stopped working on
+  /// the server's attention list, then the problems and the things to look
+  /// at of the compact states. Widgets that are not set up stay on the
+  /// attention screen (#229): they are no news of the day.
+  List<AttentionStripEntry> attentionOf(DashboardTab tab) {
+    final broken = {
+      for (final item in _attention?.items ?? const <AttentionItem>[])
+        if (item.kind == AttentionKind.connection) item.widgetId,
+    };
+    final entries = <AttentionStripEntry>[];
+    for (final widget in tab.widgets) {
+      final state = _states[widget.id];
+      if (broken.contains(widget.id)) {
+        entries.add(
+          AttentionStripEntry(widget: widget, level: CompactLevel.problem),
+        );
+      } else if (state != null &&
+          !state.empty &&
+          (state.level == CompactLevel.problem ||
+              state.level == CompactLevel.attention)) {
+        entries.add(
+          AttentionStripEntry(
+            widget: widget,
+            level: state.level,
+            text: state.title,
+          ),
+        );
+      }
+    }
+    // Problems before things to look at; within a level the layout order
+    // stays, which List.sort does not promise.
+    return [
+      ...entries.where((e) => e.level == CompactLevel.problem),
+      ...entries.where((e) => e.level != CompactLevel.problem),
+    ];
+  }
+
+  /// Reads the compact state of every widget that has one, for the empty
+  /// widgets (#288) and the attention strip (#335). Widgets with the same
+  /// kind and settings share one request.
+  Future<void> _loadStates(ServerAddress server, Dashboard dashboard) async {
     final compact = _compact;
     if (compact == null) return;
-    final checks = <String, Future<bool>>{};
+    final requests = <String, Future<Result<CompactState>>>{};
     final keyOf = <String, String>{};
     for (final tab in dashboard.tabs) {
       for (final w in tab.widgets) {
         if (!compact.supports(w.kind, config: w.config)) continue;
         final key = '${w.kind} ${jsonEncode(w.config)}';
         keyOf[w.id] = key;
-        checks[key] ??= compact
-            .state(server, w.kind, config: w.config)
-            .then((r) => r is Ok<CompactState> && r.value.empty);
+        requests[key] ??= compact.state(server, w.kind, config: w.config);
       }
     }
-    final empty = {
-      for (final MapEntry(key: id, value: key) in keyOf.entries)
-        if (await checks[key]!) id,
-    };
-    if (setEquals(empty, _emptyWidgets)) return;
-    _emptyWidgets = empty;
+    final states = <String, CompactState>{};
+    for (final MapEntry(key: id, value: key) in keyOf.entries) {
+      if (await requests[key]! case Ok(:final value)) states[id] = value;
+    }
+    _states = states;
     notifyListeners();
   }
 
@@ -258,7 +345,7 @@ class DashboardViewModel extends ChangeNotifier {
       _dashboardRepository.dashboard(server),
       _compact?.load(server) ?? Future<void>.value(),
     ).wait;
-    if (result case Ok(:final value)) _loadEmpty(server, value).ignore();
+    if (result case Ok(:final value)) _loadStates(server, value).ignore();
     // The attention badge follows every load; a failure keeps the old one.
     _attention?.refresh(server).ignore();
     // The home screen widgets follow every load of the dashboard (#42).
@@ -287,7 +374,28 @@ class DashboardViewModel extends ChangeNotifier {
     _offline?.removeListener(notifyListeners);
     _attention?.removeListener(notifyListeners);
     _theme?.removeListener(notifyListeners);
+    _sections?.removeListener(notifyListeners);
     load.dispose();
     super.dispose();
   }
+}
+
+/// One entry of the attention strip (#335).
+final class AttentionStripEntry {
+  /// Creates the entry.
+  const AttentionStripEntry({
+    required this.widget,
+    required this.level,
+    this.text,
+  });
+
+  /// The widget that needs attention; tapping the entry opens it.
+  final WidgetPlacement widget;
+
+  /// How urgent it is: [CompactLevel.problem] or [CompactLevel.attention].
+  final CompactLevel level;
+
+  /// The line of the widget's compact state; `null` for a connection that
+  /// stopped working.
+  final CompactText? text;
 }

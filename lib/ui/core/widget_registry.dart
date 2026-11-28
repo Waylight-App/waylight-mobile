@@ -32,6 +32,23 @@ final class WidgetSizes {
   final WidgetSize defaultSize;
 }
 
+/// The groups of the widget picker, in their order (Waylight-App/waylight
+/// #104); the dashboard groups a tab's widgets into sections by them
+/// (#334).
+enum WidgetCategory {
+  /// Daily life: todos, notes, the household.
+  everyday,
+
+  /// Outside information: weather, news, transit.
+  information,
+
+  /// The home server: services, containers, backups.
+  server,
+
+  /// The network and connected apps.
+  network,
+}
+
 /// Maps widget kinds to their native views (#61).
 ///
 /// The dashboard asks the registry for each widget and falls back to its
@@ -41,16 +58,23 @@ final class WidgetSizes {
 final class WidgetRegistry {
   /// Creates a registry with one builder per widget kind, and previews
   /// from example data for the kinds in `previews`, and the sizes of the
-  /// kinds in `sizes`.
+  /// kinds in `sizes`, and the picker groups of the kinds in `categories`.
   const WidgetRegistry(
     this._builders, {
     this._previews = const {},
     this._sizes = const {},
+    this._categories = const {},
   });
 
   final Map<String, DashboardWidgetBuilder> _builders;
   final Map<String, WidgetPreviewBuilder> _previews;
   final Map<String, WidgetSizes> _sizes;
+  final Map<String, WidgetCategory> _categories;
+
+  /// The picker group of [kind]; [WidgetCategory.everyday] for kinds the
+  /// registry does not know, as on the server for plugins.
+  WidgetCategory categoryOf(String kind) =>
+      _categories[kind] ?? WidgetCategory.everyday;
 
   /// The sizes [kind] supports; all of them unless the registry declares
   /// fewer.

@@ -45,6 +45,18 @@ class ArrangeView extends StatelessWidget {
         padding: const EdgeInsets.all(Dimens.gap),
         children: [
           MessageBanner(kind: MessageKind.info, message: l10n.editTabHint),
+          if (viewModel.canShorten) ...[
+            const SizedBox(height: Dimens.gapSmall),
+            Align(
+              alignment: AlignmentDirectional.centerStart,
+              child: TextButton.icon(
+                key: const ValueKey('editTab.shorten'),
+                icon: const Icon(Icons.unfold_less),
+                label: Text(l10n.editTabShorten),
+                onPressed: () => _shorten(context),
+              ),
+            ),
+          ],
           const SizedBox(height: Dimens.gapLarge),
           _ArrangeGrid(viewModel: viewModel, registry: registry),
           if (viewModel.hidden.isNotEmpty) ...[
@@ -72,6 +84,27 @@ class ArrangeView extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  /// Gives widgets without a size their default size (#336) and offers to
+  /// undo it right away.
+  void _shorten(BuildContext context) {
+    final l10n = context.l10n;
+    final count = viewModel.shorten(
+      (kind) => registry.sizesFor(kind).defaultSize,
+    );
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(
+        SnackBar(
+          content: Text(l10n.editTabShortened(count)),
+          action: SnackBarAction(
+            key: const ValueKey('editTab.shortenUndo'),
+            label: l10n.editTabUndo,
+            onPressed: viewModel.undoShorten,
+          ),
+        ),
+      );
   }
 }
 
@@ -205,6 +238,20 @@ class _ArrangeTile extends StatelessWidget {
             ),
             icon: const Icon(Icons.remove),
             onPressed: () => viewModel.hide(_id),
+          ),
+        ),
+        PositionedDirectional(
+          top: 0,
+          end: 0,
+          child: IconButton.filledTonal(
+            key: ValueKey('editTab.favourite.$_id'),
+            tooltip: item.favourite
+                ? l10n.editTabUnfavourite(title)
+                : l10n.editTabFavourite(title),
+            isSelected: item.favourite,
+            icon: const Icon(Icons.star_border),
+            selectedIcon: const Icon(Icons.star),
+            onPressed: () => viewModel.toggleFavourite(_id),
           ),
         ),
         PositionedDirectional(

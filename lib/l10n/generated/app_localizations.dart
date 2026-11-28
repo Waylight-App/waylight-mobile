@@ -662,6 +662,24 @@ abstract class AppLocalizations {
   /// **'Still not working.'**
   String get attentionStillBroken;
 
+  /// Status word next to a red dot in the attention strip of the dashboard: something is broken.
+  ///
+  /// In en, this message translates to:
+  /// **'Problem'**
+  String get attentionLevelProblem;
+
+  /// Status word next to a coloured dot in the attention strip of the dashboard: something needs a look soon, such as an overdue to-do.
+  ///
+  /// In en, this message translates to:
+  /// **'Warning'**
+  String get attentionLevelWarning;
+
+  /// Last line of the attention strip when more entries exist than it shows.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 more needs attention} other{{count} more need attention}}'**
+  String attentionStripMore(int count);
+
   /// Button that opens the widget's tab in the web interface.
   ///
   /// In en, this message translates to:
@@ -3098,6 +3116,24 @@ abstract class AppLocalizations {
   /// **'open details'**
   String get dashboardOpenDetails;
 
+  /// Heading of the section of favourite widgets on top of the home tab.
+  ///
+  /// In en, this message translates to:
+  /// **'Favourites'**
+  String get dashboardFavourites;
+
+  /// Tooltip and screen reader label of the star of a widget in the edit mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Add {widget} to favourites'**
+  String editTabFavourite(String widget);
+
+  /// Tooltip and screen reader label of the filled star of a favourite widget in the edit mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove {widget} from favourites'**
+  String editTabUnfavourite(String widget);
+
   /// Tooltip of the quick action on a small focus tile.
   ///
   /// In en, this message translates to:
@@ -4897,6 +4933,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The value is empty or too long.'**
   String get pasteValueInvalid;
+
+  /// Section of a tab with everyday widgets; the widget picker's category.
+  ///
+  /// In en, this message translates to:
+  /// **'Everyday'**
+  String get widgetCategoryEveryday;
+
+  /// Section of a tab with information widgets.
+  ///
+  /// In en, this message translates to:
+  /// **'Information'**
+  String get widgetCategoryInformation;
+
+  /// Section of a tab with home server widgets.
+  ///
+  /// In en, this message translates to:
+  /// **'Server'**
+  String get widgetCategoryServer;
+
+  /// Section of a tab with network widgets.
+  ///
+  /// In en, this message translates to:
+  /// **'Network & connections'**
+  String get widgetCategoryNetwork;
+
+  /// Screen reader text of a section header: how many widgets the section holds.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 widget} other{{count} widgets}}'**
+  String dashboardSectionCount(int count);
+
+  /// Screen reader text of a collapsed section header when a widget in it needs attention.
+  ///
+  /// In en, this message translates to:
+  /// **'needs attention'**
+  String get dashboardSectionAttention;
+
+  /// Screen reader action of a collapsed section header.
+  ///
+  /// In en, this message translates to:
+  /// **'expand'**
+  String get dashboardSectionExpand;
+
+  /// Screen reader action of an open section header.
+  ///
+  /// In en, this message translates to:
+  /// **'collapse'**
+  String get dashboardSectionCollapse;
+
+  /// Button in the edit mode: gives every widget without a size the default size of its kind.
+  ///
+  /// In en, this message translates to:
+  /// **'Make this tab shorter'**
+  String get editTabShorten;
+
+  /// Snack bar after making the tab shorter.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 widget got its default size.} other{{count} widgets got their default size.}}'**
+  String editTabShortened(int count);
+
+  /// Snack bar action that undoes making the tab shorter.
+  ///
+  /// In en, this message translates to:
+  /// **'Undo'**
+  String get editTabUndo;
 }
 
 class _AppLocalizationsDelegate

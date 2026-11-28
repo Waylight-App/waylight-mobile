@@ -18,6 +18,9 @@ import '../../../testing/fakes/fake_absences_repository.dart';
 import '../../../testing/fakes/fake_server_repository.dart';
 import '../../../testing/pump_app.dart';
 
+/// A Saturday in the week of the example absences.
+DateTime _demoNow() => DateTime(2026, 11, 21, 9);
+
 /// The absences widget (#201).
 void main() {
   final list = parseAbsences(
@@ -38,7 +41,7 @@ void main() {
     final vm = AbsencesViewModel(
       serverRepository: servers,
       absencesRepository: absences,
-      now: () => DateTime(2026, 11, 21, 9),
+      now: _demoNow,
     );
     await vm.load.execute();
     expect(vm.today.map((a) => a.name), ['Anna', 'Ben']);
@@ -60,6 +63,7 @@ void main() {
         child: const SingleChildScrollView(
           child: AbsencesWidget(
             widget: WidgetPlacement(id: 'a', kind: 'absences'),
+            now: _demoNow,
           ),
         ),
       ),
